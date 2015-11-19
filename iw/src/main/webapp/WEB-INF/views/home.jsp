@@ -82,9 +82,11 @@
             </div>
 
             <div class="row">
+            
+            	<c:forTokens items="1 2 3 4 5 6 7 8" delims=" " var="i">
                 <div class="col-xs-12 col-sm-4 col-md-3">
                     <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item1.png" alt="">
+                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item${i}.png" alt="">
                         <div class="overlay">
                             <div class="recent-work-inner">
                                 <h3><a href="#">Oferta </a> </h3>
@@ -95,104 +97,7 @@
                         </div>
                     </div>
                 </div>   
-
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item2.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div> 
-
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item3.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div>   
-
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item4.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div>   
-                
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item5.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div>   
-
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item6.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div> 
-
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item7.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div>   
-
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div class="recent-work-wrap">
-                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item8.png" alt="">
-                        <div class="overlay">
-                            <div class="recent-work-inner">
-                                <h3><a href="#">Oferta </a> </h3>
-                                <p>Esto es una descripción de la última oferta</p>
-                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
-								<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-                            </div> 
-                        </div>
-                    </div>
-                </div>   
+            	</c:forTokens>
             </div><!--/.row-->
         </div><!--/.container-->
     </section><!--/#recent-works-->
