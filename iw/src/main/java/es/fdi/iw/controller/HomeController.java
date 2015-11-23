@@ -37,9 +37,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.fdi.iw.ContextInitializer;
-import es.fdi.iw.model.Author;
-import es.fdi.iw.model.Book;
-import es.fdi.iw.model.User;
 
 /**
  * Una aplicación de ejemplo para IW.
