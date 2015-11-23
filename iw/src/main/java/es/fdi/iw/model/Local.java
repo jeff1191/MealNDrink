@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -68,6 +69,7 @@ public class Local {
 		this.ubicacion = ubicacion;
 	}
 	@OneToMany(targetEntity=Oferta.class)
+	@JoinColumn(name="local")
 	public Collection<Oferta> getOfertas() {
 		return ofertas;
 	}
@@ -76,6 +78,7 @@ public class Local {
 		this.ofertas = ofertas;
 	}
 	@OneToMany(targetEntity=Comentario.class)
+	@JoinColumn(name="local")
 	public Collection<Comentario> getComentarios() {
 		return comentarios;
 	}

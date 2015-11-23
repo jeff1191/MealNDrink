@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -68,6 +69,7 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 	@OneToMany(targetEntity=Comentario.class)
+	@JoinColumn(name="usuario")
 	public Collection<Comentario> getComentarios() {
 		return comentarios;
 	}
@@ -75,6 +77,7 @@ public class Usuario {
 		this.comentarios = comentarios;
 	}
 	@OneToMany(targetEntity=Reserva.class)
+	@JoinColumn(name="usuario")
 	public Collection<Reserva> getReservas() {
 		return reservas;
 	}
@@ -82,6 +85,7 @@ public class Usuario {
 		this.reservas = reservas;
 	}
 	@OneToMany(targetEntity=Local.class)
+	@JoinColumn(name="usuario")
 	public Collection<Local> getLocales() {
 		return locales;
 	}

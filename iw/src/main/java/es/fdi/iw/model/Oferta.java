@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -73,6 +74,7 @@ public class Oferta {
 		this.capacidadTotal = capacidadTotal;
 	}
 	@OneToMany(targetEntity=Reserva.class)
+	@JoinColumn(name="oferta")
 	public Collection<Reserva> getReservas() {
 		return reservas;
 	}
