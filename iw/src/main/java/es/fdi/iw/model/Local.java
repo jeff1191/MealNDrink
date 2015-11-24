@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -19,6 +20,8 @@ public class Local {
 	private String horario;
 	private Collection<Oferta> ofertas;
 	private Collection<Comentario> comentarios;
+	private Usuario usuario;
+	
 	@Id
 	@GeneratedValue
 	public long getID() {
@@ -85,5 +88,13 @@ public class Local {
 
 	public void setComentarios(Collection<Comentario> comentarios) {
 		this.comentarios = comentarios;
+	}
+	@ManyToOne(targetEntity=Usuario.class)
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 }
