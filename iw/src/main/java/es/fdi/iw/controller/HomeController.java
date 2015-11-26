@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package es.fdi.iw.controller;
 
 import java.io.BufferedInputStream;
@@ -905,4 +904,3 @@ public class HomeController {
 		}
 	}
 }
->>>>>>> origin/Josemi
