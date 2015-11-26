@@ -36,6 +36,10 @@
 <script src="${prefix}resources/js/main.js"></script>
 <script src="${prefix}resources/js/wow.min.js"></script>
 
+<script src="${prefix}resources/js/jquery-ui.js"></script>
+<link href="${prefix}resources/css/jquery-ui.css" rel="stylesheet">
+<script src="${prefix}resources/js/jquery.ui.datepicker-es.js"></script>
+
 <%-- pageExtraScripts --%>
 <c:forEach var="i" items="${pageExtraScripts}">
 	<script src="${prefix}resources/js/${i}"></script>
@@ -95,6 +99,8 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu">
+                            	<li><a data-toggle="modal" data-toggle="modal" data-target="#myModal">Iniciar sesión</a></li>
+                            	<!-- <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button></li> -->
                                 <li><a href="administracion">Administrador</a></li>
                                 <li><a href="usuario">Cliente</a></li>
                                 <li><a href="comercio_interno">Comercio</a></li>
@@ -107,10 +113,10 @@
         </nav><!--/nav-->
         
 	<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+	<!--	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 		  Launch demo modal
 		</button>
-		
+	-->	
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog modal-sm" role="document">
@@ -161,6 +167,11 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>      
+		</div>     
+		
+
+		
+		
+		 
 		  
 	</header><!--/header-->
