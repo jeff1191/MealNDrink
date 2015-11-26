@@ -7,7 +7,9 @@ jQuery(function($) {'use strict',
 		});
 	});
 
-
+	//Datepicker
+	$("#datepicker").datepicker();
+	
 	// accordian
 	$('.accordion-toggle').on('click', function(){
 		$(this).closest('.panel-group').children().each(function(){

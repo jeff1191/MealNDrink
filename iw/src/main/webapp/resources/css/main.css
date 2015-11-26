@@ -685,7 +685,7 @@ input.search-form:hover {
   margin-bottom: 25px;
 }
 
-.progress-wrap{
+ .progress-wrap{
   position: relative;
 }
 
@@ -768,7 +768,7 @@ input.search-form:hover {
 
 .progress .color4 span:before{
   border-color: #db3615 transparent transparent transparent;
-}
+} 
 
 .accordion h2{
   margin-bottom: 25px;
