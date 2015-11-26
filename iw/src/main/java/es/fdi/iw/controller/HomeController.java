@@ -60,7 +60,7 @@ public class HomeController {
 			@RequestParam("source") String formSource,
 			HttpServletRequest request, HttpServletResponse response, 
 			Model model, HttpSession session) {
-		
+		/*
 		logger.info("Login attempt from '{}' while visiting '{}'", formLogin, formSource);
 		
 		// validate request
@@ -97,7 +97,7 @@ public class HomeController {
 				model.addAttribute("loginError", "error en usuario o contraseña");
 			}
 		}
-		
+		*/
 		// redirects to view from which login was requested
 		return "redirect:" + formSource;
 	}
@@ -173,14 +173,14 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
 	public String book(@PathVariable("id") long id, HttpServletResponse response, Model model) {
-		Book b = entityManager.find(Book.class, id);
+	/*	Book b = entityManager.find(Book.class, id);
 		if (b == null) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			logger.error("No such book: {}", id);
 		} else {
 			model.addAttribute("book", b);
 		}
-		model.addAttribute("prefix", "../");
+		model.addAttribute("prefix", "../");*/
 		return "book";
 	}	
 	
@@ -191,7 +191,7 @@ public class HomeController {
 	@Transactional
 	@ResponseBody
 	public String rmbook(@PathVariable("id") long id, HttpServletResponse response, Model model) {
-		try {
+		/*try {
 			Book b = entityManager.find(Book.class, id);
 			for (Author a : b.getAuthors()) {
 				a.getWritings().remove(b);
@@ -202,9 +202,9 @@ public class HomeController {
 			return "OK";
 		} catch (NoResultException nre) {
 			logger.error("No such book: {}", id, nre);
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);*/
 			return "ERR";
-		}
+		//}
 	}		
 	
 	/*
@@ -213,9 +213,10 @@ public class HomeController {
 	@RequestMapping(value = "/books", method = RequestMethod.GET)
 	@Transactional
 	public String books(Model model) {
-		model.addAttribute("books", entityManager.createNamedQuery("allBooks").getResultList());
+		/*model.addAttribute("books", entityManager.createNamedQuery("allBooks").getResultList());
 		model.addAttribute("owners", entityManager.createNamedQuery("allUsers").getResultList());
 		model.addAttribute("authors", entityManager.createNamedQuery("allAuthors").getResultList());
+		*/
 		return "books";
 	}	
 	
@@ -228,7 +229,7 @@ public class HomeController {
 			@RequestParam("authors") long[] authorIds,
 			@RequestParam("title") String title,
 			@RequestParam("description") String description, Model model) {
-		Book b = new Book();
+		/*Book b = new Book();
 		b.setTitle(title);
 		b.setDescription(description);
 		for (long aid : authorIds) {
@@ -242,8 +243,8 @@ public class HomeController {
 		entityManager.flush();
 		logger.info("Book " + b.getId() + " written ok - owned by " + b.getOwner().getLogin() 
 				+ " written by " + b.getAuthors());
-		
-		return "redirect:book/" + b.getId();
+		*/
+		return "";
 	}	
 	/**
 	 * Load book authors for a given book via post; return as JSON
@@ -252,7 +253,7 @@ public class HomeController {
 	@ResponseBody
 	@Transactional // needed to allow lazy init to work
 	public ResponseEntity<String> bookAuthors(@RequestParam("id") long id, HttpServletRequest request) {
-		try {
+		/*try {
 			Book book = (Book)entityManager.find(Book.class, id);
 			List<Author> authors = book.getAuthors();
 			StringBuilder sb = new StringBuilder("[");
@@ -268,6 +269,8 @@ public class HomeController {
 			logger.error("No such book: {}", id, nre);
 		}
 		return new ResponseEntity<String>("Error: libro no existe", HttpStatus.BAD_REQUEST);		
+	*/
+		return null;
 	}			
 	
 	/**
@@ -275,12 +278,12 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/author/{id}", method = RequestMethod.GET)
 	public String author(@PathVariable("id") long id, Model model) {		
-		try {
+	/*	try {
 			model.addAttribute("author", entityManager.find(Author.class, id));
 		} catch (NoResultException nre) {
 			logger.error("No such author: {}", id, nre);
 		}
-		model.addAttribute("prefix", "../");
+		model.addAttribute("prefix", "../");*/
 		return "author";
 	}	
 	
@@ -292,7 +295,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/user/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] userPhoto(@RequestParam("id") String id) throws IOException {
-	    File f = ContextInitializer.getFile("user", id);
+	 /*   File f = ContextInitializer.getFile("user", id);
 	    InputStream in = null;
 	    if (f.exists()) {
 	    	in = new BufferedInputStream(new FileInputStream(f));
@@ -301,7 +304,8 @@ public class HomeController {
 	    			this.getClass().getClassLoader().getResourceAsStream("unknown-user.jpg"));
 	    }
 	    
-	    return IOUtils.toByteArray(in);
+	    return IOUtils.toByteArray(in);*/
+		return null;
 	}
 	
 	/**
@@ -394,12 +398,12 @@ public class HomeController {
 	@RequestMapping(value = "/about", method = RequestMethod.GET)
 	@Transactional
 	public String about(Locale locale, Model model) {
-		logger.info("User is looking up 'about us'");
+		/*logger.info("User is looking up 'about us'");
 		@SuppressWarnings("unchecked")
 		List<User> us = (List<User>)entityManager.createQuery("select u from User u").getResultList();
 		System.err.println(us.size());
 		model.addAttribute("users", us);
-		model.addAttribute("pageTitle", "IW: Quienes somos");
+		model.addAttribute("pageTitle", "IW: Quienes somos");*/
 		return "about";
 	}	
 	
@@ -429,11 +433,12 @@ public class HomeController {
 	 * Returns true if the user is logged in and is an admin
 	 */
 	static boolean isAdmin(HttpSession session) {
-		User u = (User)session.getAttribute("user");
+		/*User u = (User)session.getAttribute("user");
 		if (u != null) {
 			return u.getRole().equals("admin");
 		} else {
 			return false;
-		}
+		}*/
+		return false;
 	}
 }
