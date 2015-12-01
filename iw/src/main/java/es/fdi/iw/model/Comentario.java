@@ -1,22 +1,22 @@
 package es.fdi.iw.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import es.fdi.iw.model.utils.Fecha;
 
 @Entity
 public class Comentario {
 
 	private long ID;
 	private String texto;
-	private Fecha fecha;
+	private Timestamp fecha;
 	private Local comercio;
 	private Usuario cliente;
 	
-	public Comentario(String texto, Fecha fecha,Local comercio,Usuario cliente){
+	public Comentario(String texto, Timestamp fecha,Local comercio,Usuario cliente){
 		this.texto=texto;
 		this.fecha=fecha;
 		this.comercio=comercio;
@@ -37,10 +37,10 @@ public class Comentario {
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
-	public Fecha getFecha() {
+	public Timestamp getFecha() {
 		return fecha;
 	}
-	public void setFecha(Fecha fecha) {
+	public void setFecha(Timestamp fecha) {
 		this.fecha = fecha;
 	}
 	

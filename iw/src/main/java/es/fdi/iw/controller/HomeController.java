@@ -295,7 +295,8 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/user/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] userPhoto(@RequestParam("id") String id) throws IOException {
-	 /*   File f = ContextInitializer.getFile("user", id);
+	 //con esto accedo a ${base}/user/id
+		/*   File f = ContextInitializer.getFile("user", id);
 	    InputStream in = null;
 	    if (f.exists()) {
 	    	in = new BufferedInputStream(new FileInputStream(f));

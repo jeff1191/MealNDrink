@@ -1,5 +1,6 @@
 package es.fdi.iw.model;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -9,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import es.fdi.iw.model.utils.Fecha;
 
 @Entity
 public class Oferta {
@@ -17,14 +17,14 @@ public class Oferta {
 	private long ID;
 	private String nombre;
 	private String foto;
-	private Fecha fechaLimite;
+	private Timestamp fechaLimite;
 	private int capacidadTotal;
 	private int capacidadActual;
 	private Collection<Reserva> reservas;
 	private Local comercio; //una oferta es puesta por un Local
 	
 	
-	public Oferta(String nombre, String foto, Fecha fechaLimite,int capacidadTotal, int capacidadActual, Local comercio){
+	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, int capacidadActual, Local comercio){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.fechaLimite=fechaLimite;
@@ -49,10 +49,10 @@ public class Oferta {
 	public void setCapacidadACtual(int capacidadACtual) {
 		this.capacidadActual = capacidadACtual;
 	}
-	public Fecha getFechaLimite() {
+	public Timestamp getFechaLimite() {
 		return fechaLimite;
 	}
-	public void setFechaLimite(Fecha fechaLimite) {
+	public void setFechaLimite(Timestamp fechaLimite) {
 		this.fechaLimite = fechaLimite;
 	}
 	public String getFoto() {
