@@ -135,7 +135,7 @@
 					
 						<div class="form-group">
 				        	<label for="nReservas"> Número de comensales</label>
-				        	<input type="number" name="quantity" min="1" max="10" value=1 required">
+				        	<input type="number" name="quantity" min="1" max="10" value=1 required>
 			            </div>
 			            
 			            <div class="form-group">
@@ -145,9 +145,9 @@
 			            
 			             <div class="form-group">
 				        	<label for="hora"> Hora</label>
-							<input type="number" name="hora" title="Hora" min="0" max="23" value=00 size=2 required">
+							<input type="number" name="hora" title="Hora" min="0" max="23" value=00 size=2 required>
 							<label for="hora"> :</label>
-							<input type="number" name="minutos" title="Minutos" min="0" max="59" value=00 size=2 required">
+							<input type="number" name="minutos" title="Minutos" min="0" max="59" value=00 size=2 required>
 						</div>					            
 			            
 								

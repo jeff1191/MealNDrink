@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -320,7 +322,15 @@ public class HomeController {
 				"true".equals(formDebug) ? "true" : "false");
 		return "redirect:/";
 	}
-
+	public static class Plato {
+		private String id;
+		private String[] tags;
+		public Plato(String id, String ... tags) {
+			this.id = id; this.tags = tags;
+		}
+		public String getId() { return id; }
+		public String getTags() { return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim(); }
+	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -337,6 +347,19 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Bienvenido a IW");
 		model.addAttribute("active", "home");
 		logger.info("Setting active tab: home");
+		
+		
+		
+				
+		ArrayList<Plato> platos = new ArrayList<Plato>();
+		platos.add(new Plato("1", "bootstrap", "html"));
+		platos.add(new Plato("2", "bootstrap", "html"));
+		platos.add(new Plato("3", "bootstrap"));
+		platos.add(new Plato("4", "bootstrap"));
+
+		
+		model.addAttribute("platos", platos);
+		
 		return "home";
 	}	
 
