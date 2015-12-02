@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf8"><title>Leeme</title></head>
+<body>
+<h1>MealNDrink - entrega 2: Versión con JSPs y esquema de la BD</h1>
+<p>Componentes del grupo "MealNDrink"
+<ul>
+<li>Jefferson Almache Montoya
+<li>Juan Luis Armas Perona 	
+<li>Daniel García Moreno 
+<li>Jose Miguel Tajuelo Garrigos
+</ul>
+<h2>Vistas que componen esta entrega</h2>
+<ul>
+<li><a href="http://localhost:8080/iw/">Inicio</a> - página de entrada.
+<li><a href="http://localhost:8080/iw/ofertasMes">Ofertas del mes</a> - en esta página se muestran las ofertas con más demanda del mes. 
+<li><a href="http://localhost:8080/iw/ultimasOfertas">Últimas ofertas</a> - versión parecida a ofertas del mes solo que mostrando las últimas ofertas añadidas.
+<li><a href="http://localhost:8080/iw/administracion">Perfil/Administrador</a> - ventana con las acciones posibles de un administrador.
+<li><a href="http://localhost:8080/iw/usuario">Perfil/Usuario</a> - vista de los datos, reservas y comentarios realizados por un usuario sin locales. También puede modificar sus datos.
+<li><a href="http://localhost:8080/iw/comercio_interno">Perfil/Local</a> - página de control para un usuario con locales. Puede gestionar sus ofertas, sus comentarios, sus tags, ver los códigos qr de las ofertas de todos sus locales y modificar sus datos personales.
+</ul>
+
+<small>NOTA 1: Como de momento no tenemos login (bien hecho) hemos puesto a los diferentes usuarios en <b>Perfil</b>. Pero nuestra idea es que allí halla un muñequito o una ventana para que puedeas registrarte/acceder a tu cuenta</small>
+<br>
+<small>NOTA 2: Al meterse en <b>Últimas ofertas</b> y <b>Ofertas del mes</b>, dentro de las fotos, aparece la opción de reservar que es un pop up. Al no poder implementar un for que pudiera mostrar bien las imágenes hemos
+decidido no implementarlo aún. Cuando tengamos implementada la relación con la base de datos, lo incorporaremos.</small>
+
+<h2>Esquema de la base de datos</h2>
+<img src="MealNDrink_BBDD.png" width=69%>
+<pre>
+<b>A tener en cuenta: </b>
+
+   1) <u>Ya hemos añadido las etiquetas JPA</u>, tanto en relaciones como en entidades de nuestro proyecto.
+
+   2) En el modelo consideramos que un usuario puede tener varios locales, eso en las vistas todavía no esta implementado. Lo que aspiramos a hacer 
+      es tener un login decente que dependiendo de la cuenta que inicia sesión se carge el perfil de administración, de usuarios sin locales y la 
+      de usuarios con locales. En este último habría un menu para que pudiera navegar entre sus diferentes locales y la vista para gestionar uno de 
+      ellos sería nuestro actual <b>Local</b>
+</pre>
+<h2>Recursos externos utilizados</h2>
+<ul>
+<li><a href="http://getbootstrap.com/">bootstrap</a> (licencia <a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">MIT</a>) - para el estilo general de la página
+<li><a href="https://jquery.com/">jquery</a> (licencia <a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt">MIT</a>) - es una dependencia de bootstrap
+<li><a href="https://shapebootstrap.net/item/1524962-corlate-free-responsive-business-html-template">Corlate Template</a> (licencia <a href="https://shapebootstrap.net/licenses">SHAPEBOOTSTRAP</a>) - plantilla que hemos usado para construir la pagina
+</ul>
+</body>
+</html>
