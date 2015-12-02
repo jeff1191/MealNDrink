@@ -12,11 +12,13 @@ public class Reserva {
 	private String codigoQr;
 	private Usuario cliente;
 	private Oferta oferta;
+	private int numPersonas;
 	
-	public Reserva(String codigoQr,Usuario cliente, Oferta oferta){
+	public Reserva(String codigoQr,Usuario cliente, Oferta oferta, int numeroPersonas){
 		this.codigoQr=codigoQr;
 		this.setCliente(cliente);
 		this.setOferta(oferta);
+		this.numPersonas=numeroPersonas;
 	}
 	@Id
 	@GeneratedValue
@@ -46,5 +48,11 @@ public class Reserva {
 	}
 	public void setOferta(Oferta oferta) {
 		this.oferta = oferta;
+	}
+	public int getNumPersonas() {
+		return numPersonas;
+	}
+	public void setNumPersonas(int numPersonas) {
+		this.numPersonas = numPersonas;
 	}
 }
