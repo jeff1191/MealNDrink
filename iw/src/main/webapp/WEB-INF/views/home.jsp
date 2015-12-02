@@ -75,7 +75,7 @@
     </section><!--/#main-slider-->
 
 
-    <section id="recent-works">
+    <section id="portfolio">
         <div class="container">
             <div class="center">
                 <h2>Bienvenidos</h2>
@@ -106,7 +106,7 @@
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">Oferta </a> </h3>
 	                                <p>Esto es una descripción de la última oferta</p>
-	                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a>
+<%-- 	                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a> --%>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
 								
 									<!-- Button trigger modal -->
