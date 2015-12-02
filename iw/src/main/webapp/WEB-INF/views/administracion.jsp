@@ -21,7 +21,7 @@
 					<ul class="nav nav-tabs">
 					  <li><a href="#lusuarios" data-toggle="tab">Gestionar usuarios</a></li>
 					  <li><a href="#llocales" data-toggle="tab">Gestionar locales</a></li>
-					  <li><a href="#editarDatos" data-toggle="tab">Editar mis datos</a></li>
+					  <li><a href="#editarDatos" data-toggle="tab">Mis datos</a></li>
 					</ul>
 
 					<div class="tab-content">
@@ -122,9 +122,9 @@
 								  </div>						  
 								</form>									
 						      </div>
-						      <div class="modal-footer">						      	 
-								  <button type="submit" class="btn btn-default">Cancelar</button>
-								  <button type="submit" class="btn btn-default">Enviar</button>
+						      <div class="modal-footer">	
+								  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+						 		  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 						      </div>
 						    </div>
 						  </div>
@@ -241,8 +241,8 @@
 								</form>				
 						      </div>
 						      <div class="modal-footer">						      	 
-								  <button type="submit" class="btn btn-default">Cancelar</button>
-								  <button type="submit" class="btn btn-default">Enviar</button>
+								  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+								  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 						      </div>
 						    </div>
 						  </div>
@@ -272,8 +272,8 @@
 							<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 						  </div>										  
 						  <br></br>
-						  <button type="submit" class="btn btn-default">Cancelar</button>
-						  <button type="submit" class="btn btn-default">Enviar</button>
+						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 						</form>	
 					  </div>
 					</div>

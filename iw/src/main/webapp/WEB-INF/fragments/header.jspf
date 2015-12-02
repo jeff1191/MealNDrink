@@ -102,8 +102,8 @@
                             	<li><a data-toggle="modal" data-target="#myModal">Iniciar sesión</a></li>
                             	<!-- <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button></li> -->
                                 <li><a href="administracion">Administrador</a></li>
-                                <li><a href="usuario">Cliente</a></li>
-                                <li><a href="comercio_interno">Comercio</a></li>
+                                <li><a href="usuario">Usuario</a></li>
+                                <li><a href="comercio_interno">Local</a></li>
                             </ul>
                         </li> 
                       

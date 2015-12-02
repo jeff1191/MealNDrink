@@ -19,7 +19,7 @@
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#reservas" data-toggle="tab">Mis reservas</a></li>
 								<li><a href="#opiniones" data-toggle="tab">Mis opiniones</a></li>
-								<li><a href="#editar" data-toggle="tab">Editar mis datos</a></li>
+								<li><a href="#editar" data-toggle="tab">Mis datos</a></li>
 							</ul>						
 									
 							<div class="tab-content">
@@ -31,7 +31,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Reserva #1</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -41,7 +41,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Reserva #2</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -51,7 +51,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Reserva #3</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>									
 									<br></br>
@@ -66,7 +66,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Comentario #1</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -76,7 +76,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Comentario #2</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>	
 									<br></br>
@@ -107,8 +107,8 @@
 											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 										  </div>										  
 										  <br>
-										  <button type="submit" class="btn btn-default">Cancelar</button>
-										  <button type="submit" class="btn btn-default">Enviar</button>
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										</form>										
 																	
 								</div>
