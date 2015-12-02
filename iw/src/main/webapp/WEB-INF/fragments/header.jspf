@@ -102,8 +102,8 @@
                             	<li><a data-toggle="modal" data-target="#myModal">Iniciar sesión</a></li>
                             	<!-- <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button></li> -->
                                 <li><a href="administracion">Administrador</a></li>
-                                <li><a href="usuario">Cliente</a></li>
-                                <li><a href="comercio_interno">Comercio</a></li>
+                                <li><a href="usuario">Usuario</a></li>
+                                <li><a href="comercio_interno">Local</a></li>
                             </ul>
                         </li> 
                       
@@ -112,11 +112,6 @@
             </div><!--/.container-->
         </nav><!--/nav-->
         
-	<!-- Button trigger modal -->
-	<!--	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-		  Launch demo modal
-		</button>
-	-->	
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog modal-sm" role="document">
@@ -126,8 +121,6 @@
 		        <h4 class="modal-title" id="myModalLabel"> Iniciar sesión</h4>
 		      </div>
 		      <div class="modal-body">
-
-
 				<form role="form">
 		            <div class="form-group">
 		              <label for="login"> Usuario</label>
@@ -139,10 +132,7 @@
 		            </div>
 		            <div class="checkbox">
 		              <label><input type="checkbox" value="" checked>Recordarme</label>
-		            </div>
-		            
-		            
-		            
+		            </div>         
 		            <fieldset>
 						<label for="login">Login</label>
 						<input type="hidden" id="source" name="source" 
@@ -155,11 +145,7 @@
 							<br><span class='errorLogin'>Login o contraseña incorrectos</span>
 						</c:if>
 					</fieldset>
-					
-		            
-		          </form>
-
-
+		         </form>
 		      </div>
 		      <div class="modal-footer">
 		      	<button type="button" class="btn btn-primary"> Registrarse</button>
@@ -168,7 +154,7 @@
 		    </div>
 		  </div>
 		</div>     
-		
+		<!-- End Modal -->
 
 		
 		

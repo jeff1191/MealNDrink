@@ -33,38 +33,19 @@
                     <div class="col-md-8 col-sm-8">
                         
 							<ul class="nav nav-tabs custom-tab">
-							  <li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Gestionar mis ofertas
-								<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-								  <li class="active"><a href="#o_disponibles" data-toggle="tab">Listado</a></li>
-										<li><a href="#o_add" data-toggle="tab">Añadir</a></li>
-										<li><a href="#o_delete" data-toggle="tab">Eliminar</a></li>
-								</ul>
-							  </li>
-							  <li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">QRs
-								<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-								  <li><a href="#qrpendientes" data-toggle="tab">Pendientes</a></li>
-								  <li><a href="#qrvalidados" data-toggle="tab">Validados</a></li>
-								</ul>
-							  </li>
+							  <li><a href="#ofertas" data-toggle="tab">Mis ofertas</a></li>
+							  <li><a href="#qrs" data-toggle="tab">QRs</a></li>
 							  <li><a href="#opiniones" data-toggle="tab">Opiniones</a></li>
-							  <li><a href="#editar" data-toggle="tab">Editar mis datos</a></li>							  
-							  <li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Gestionar mis tags
-								<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-								  <li><a href="#tags" data-toggle="tab">Listado</a></li>
-								  <li><a href="#addTag" data-toggle="tab">Añadir</a></li>
-								  <li><a href="#deleteTag" data-toggle="tab">Eliminar</a></li>
-								</ul>
-							  </li>
+							  <li><a href="#editar" data-toggle="tab">Mis datos</a></li>							  
+							  <li><a href="#tags" data-toggle="tab">Mis tags</a></li>
 							</ul>
 
 							<div class="tab-content">
-								<div class="tab-pane fade in active" id="o_disponibles">
+								<div class="tab-pane fade in active" id="ofertas">
+								 <div class="media">
+								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> Añadir nueva oferta</button>
+								  	<br></br>
+								  </div>
 									<div class="media">
 										<div class="pull-left">											
 											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">											
@@ -72,6 +53,8 @@
 										<div class="media-body">
 											<h4 class="media-heading">Oferta #1</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -81,6 +64,8 @@
 										<div class="media-body">
 											<h4 class="media-heading">Oferta #2</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -90,6 +75,8 @@
 										<div class="media-body">
 											<h4 class="media-heading">Oferta #3</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -99,6 +86,8 @@
 										<div class="media-body">
 											<h4 class="media-heading">Oferta #4</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -108,14 +97,25 @@
 										<div class="media-body">
 											<h4 class="media-heading">Oferta #5</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<br></br>
 									<button type="submit" class="btn btn-default">Anterior</button>
 									<button type="submit" class="btn btn-default">Siguiente</button>
 								</div>
-								<div class="tab-pane fade" id="o_add"> <!--form to add ofert-->
-									<form role="form">
+								
+								<!-- Modal Add Offer-->
+								<div class="modal fade" id="ModalAddOffer" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        <h4 class="modal-title" id="myModalLabel"> Añadir una nueva oferta</h4>
+								      </div>
+								      <div class="modal-body">
+										<form role="form">
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
 											<input type="text" class="form-control" id="name" placeholder="Introduzca el nuevo nombre">
@@ -135,119 +135,81 @@
 										  <div class="form-group">
 											<label for="file">Imagen de la oferta:</label>
 											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-										  </div>										  
-										  <br>
-										  <button type="submit" class="btn btn-default">Cancelar</button>
-										  <button type="submit" class="btn btn-default">Enviar</button>
-									</form>			
-								</div>
-								<div class="tab-pane fade" id="o_delete">
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">											
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #1</h4>
-											 <button type="submit" class="btn btn-default">Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">										
-												<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #2</h4>
-											<button type="submit" class="btn btn-default">Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-												<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #3</h4>
-											<button type="submit" class="btn btn-default">Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-											<a href="#">
-												<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-											</a>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #4</h4>
-											<button type="submit" class="btn btn-default">Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-												<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #5</h4>
-											<button type="submit" class="btn btn-default">Eliminar</button>
-										</div>
-									</div>
-									<br></br>
-									<button type="submit" class="btn btn-default"> Anterior</button>
-									<button type="submit" class="btn btn-default"> Siguiente</button>
-								</div>
-								<div class="tab-pane fade" id="qrpendientes">
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/qr.png">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Codigo QR #1</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/qr.png">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Codigo QR #2</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/qr.png">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Codigo QR #3</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-										</div>
-									</div>		
+										  </div>	
+										</form>							
+								      </div>
+								      <div class="modal-footer">						      	 
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+								      </div>
+								    </div>
+								  </div>
+								</div>     
+								<!-- End Modal Add Offer-->
+														
+								<div class="tab-pane fade" id="qrs">								
+									<div class="row">										
+									  <div class="col-md-6">
+									  	<b><big>Pendientes</big></b>
+									  	<br></br>
+										<table class="table table-bordered">
+										    <thead>
+										        <tr>
+										            <th>QR</th>
+										            <th>Imagen</th>
+										            <th>Información</th>										            								            
+										        </tr>
+										    </thead>
+										    <tbody>
+										        <tr>
+										            <td><h4 class="media-heading">#1</h4></td>
+										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
+										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            									       
+										        </tr>
+										        <tr>
+										            <td><h4 class="media-heading">#2</h4></td>
+										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
+										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            
+										        </tr>
+										        <tr>									        	
+										            <td><h4 class="media-heading">#3</h4></td>
+										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
+													<td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>
+										        </tr>
+										    </tbody>
+										</table>
+									  </div>
+									  <div class="col-md-6">
+									  	<b><big>Validados</big></b>
+									  	<br></br>
+									  	<table class="table table-bordered">
+										    <thead>
+										        <tr>
+										            <th>QR</th>
+										            <th>Imagen</th>
+										            <th>Información</th>										            								            
+										        </tr>
+										    </thead>
+										    <tbody>
+										         <tr>
+										            <td><h4 class="media-heading">#4</h4></td>
+										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
+										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            									       
+										        </tr>
+										        <tr>
+										            <td><h4 class="media-heading">#5</h4></td>
+										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
+										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            
+										        </tr>
+										    </tbody>
+										</table>								  
+									  </div>
+									</div>																		
 									<br></br>									
 									<button type="submit" class="btn btn-default">Anterior</button>
 									<button type="submit" class="btn btn-default">Siguiente</button>
 								</div>
-								<div class="tab-pane fade" id="qrvalidados">
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/qr.png">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Codigo QR #4</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/qr.png">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Codigo QR #5</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-										</div>
-									</div>
-									<br></br>
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
-								</div>
+								
 								<div class="tab-pane fade" id="opiniones">
 									<div class="media">
 										<div class="pull-left">
@@ -256,7 +218,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Comentario #1</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -266,7 +228,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Comentario #2</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
 									<div class="media">
@@ -276,7 +238,7 @@
 										<div class="media-body">
 											<h4 class="media-heading">Comentario #3</h4>
 											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default">Eliminar</button>
+											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>									
 									<br></br>
@@ -314,40 +276,50 @@
 											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 										  </div>										  
 										  <br>
-										  <button type="submit" class="btn btn-default">Cancelar</button>
-										  <button type="submit" class="btn btn-default">Enviar</button>
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									</form>			
 								</div>
 								<div class="tab-pane fade" id="tags"> <!--tags-->
-									<h4>Tag #1</h4>
-									<h4>Tag #2</h4>
-									<h4>Tag #3</h4>
-									<h4>Tag #4</h4>
+									<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddTag"><span class="glyphicon glyphicon-plus"></span> Añadir un nuevo tag</button>
+								  	<br></br>								
+									<h4>Tag #1</h4> 
+									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+									<h4>Tag #2</h4> 
+									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+									<h4>Tag #3</h4> 
+									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+									<h4>Tag #4</h4> 
+									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 									<h4>Tag #5</h4>
+									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 								</div>
-								<div class="tab-pane fade" id="addTag"> <!--tags-->
-									<form role="form">
+																	
+								<!-- Modal Add Tag-->
+								<div class="modal fade" id="ModalAddTag" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo tag</h4>
+								      </div>
+								      <div class="modal-body">
+										<form role="form">
 									  <div class="form-group">
 										<label for="name">Nombre:</label>
 										<input type="text" class="form-control" id="name" placeholder="Introduce un tag nuevo">
-									  </div>
-									  <br></br>
-									  <button type="submit" class="btn btn-default">Cancelar</button>
-									  <button type="submit" class="btn btn-default">Añadir</button>
-									</form>			
-								</div>
-								<div class="tab-pane fade" id="deleteTag"> <!--tags-->
-									<h4>Tag #1</h4> 
-									<button type="submit" class="btn btn-default">Eliminar</button>
-									<h4>Tag #2</h4> 
-									<button type="submit" class="btn btn-default">Eliminar</button>
-									<h4>Tag #3</h4> 
-									<button type="submit" class="btn btn-default">Eliminar</button>
-									<h4>Tag #4</h4> 
-									<button type="submit" class="btn btn-default">Eliminar</button>
-									<h4>Tag #5</h4>
-									<button type="submit" class="btn btn-default">Eliminar</button>
-								</div>
+									  </div>									  
+									</form>					
+								      </div>
+								      <div class="modal-footer">						      	 
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+								      </div>
+								    </div>
+								  </div>
+								</div>     
+								<!-- End Modal Add Tag-->
+														
 							</div><!--tab content-->
                      
                     </div><!--/.col-md-4-->
