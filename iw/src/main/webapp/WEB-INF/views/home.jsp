@@ -106,11 +106,8 @@
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">Oferta </a> </h3>
 	                                <p>Esto es una descripción de la última oferta</p>
-<%-- 	                                <a class="preview" href="${prefix}resources/img/portfolio/full/form.jpg" rel="prettyPhoto"><i class="fa fa-eye"></i> Reservar</a> --%>
-									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-								
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
+									<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
+									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>	
 								</div> 
 	                        </div>
 	                    </div>

@@ -22,11 +22,8 @@
                                 <div class="recent-work-inner">
                                     <h3><a href="#">Oferta 1</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 1</p>
-                                    
-									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
+									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>									
                                 </div> 
                             </div>
                         </div>
@@ -39,12 +36,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 2</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 2</p>
-                                   
+                                   <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 								   <a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-								   
-								   
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>          
@@ -57,11 +50,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 3</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 3</p>
-                                    
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>        
@@ -74,11 +64,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 4</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 4</p>
-                                    
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>           
@@ -91,11 +78,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 5</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 5</p>
-                                    
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>      
@@ -108,11 +92,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 6</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 7</p>
-                                    
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>         
@@ -125,11 +106,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 8</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 8</p>
-                                    
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>          
@@ -142,11 +120,8 @@
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 9</a></h3>
                                     <p>Esta es un pequeña descripción de la oferta 9</p>
-                                    
+                                    <a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>
-									
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reservarModal"> Reservar</button>
                                 </div> 
                             </div>
                         </div>          

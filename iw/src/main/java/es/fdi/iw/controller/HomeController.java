@@ -353,9 +353,9 @@ public class HomeController {
 				
 		ArrayList<Plato> platos = new ArrayList<Plato>();
 		platos.add(new Plato("1", "bootstrap", "html"));
-		platos.add(new Plato("2", "bootstrap", "html"));
+		platos.add(new Plato("2", "bootstrap", "html", "wordpress"));
 		platos.add(new Plato("3", "bootstrap"));
-		platos.add(new Plato("4", "bootstrap"));
+		platos.add(new Plato("4", "wordpress"));
 
 		
 		model.addAttribute("platos", platos);
