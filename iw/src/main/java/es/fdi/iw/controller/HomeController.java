@@ -402,7 +402,7 @@ public class HomeController {
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-		Usuario admin= new Usuario("hola@oooo.com", "laMasFea.jpg", "Jeff", "admin", "974587482");
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
 		
 		entityManager.persist(admin);
 		
