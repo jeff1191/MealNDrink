@@ -385,7 +385,13 @@ public class HomeController {
 		model.addAttribute("active", "usuario");
 
 		return "usuario";
-	}	
+	}
+	@RequestMapping(value = "/registrarse", method = RequestMethod.GET)
+	public String registrarse(Locale locale, Model model) {
+		model.addAttribute("active", "registrarse");
+
+		return "registrarse";
+	}
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)
 	public String comercio_externo(Locale locale, Model model) {
 		model.addAttribute("active", "comercio_externo");
