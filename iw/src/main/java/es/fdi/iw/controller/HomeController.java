@@ -399,9 +399,11 @@ public class HomeController {
 		return "comercio_interno";
 	}	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
+	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-		Usuario admin= new Usuario("Jeff", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
+		Usuario admin= new Usuario("hola@oooo.com", "laMasFea.jpg", "Jeff", "admin", "974587482");
+		
 		entityManager.persist(admin);
 		
 		System.out.println("PEPEPEPEPE");

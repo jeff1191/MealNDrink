@@ -22,7 +22,7 @@ public class Usuario {
 	private Collection<Local> locales; // un usuario puede tener muchos locales
 	
 	
-	public Usuario(String nombre, String foto, String email, String telefono, String rol){
+	public Usuario(String email, String foto, String nombre, String rol, String telefono){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.email=email;
