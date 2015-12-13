@@ -45,6 +45,7 @@ import es.fdi.iw.model.Usuario;
 /**
  * Una aplicación de ejemplo para IW.
  */
+@SuppressWarnings("unused")
 @Controller
 public class HomeController {
 	
@@ -404,7 +405,7 @@ public class HomeController {
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
 		
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
 		ArrayList<String> tags= new ArrayList<String>();
 		tags.add("mexicana");
 		tags.add("tailandesa");
