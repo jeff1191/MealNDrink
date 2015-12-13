@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @Entity
 public class Usuario {
 	
@@ -20,18 +22,63 @@ public class Usuario {
 	private Collection<Comentario> comentarios;
 	private Collection<Reserva> reservas;
 	private Collection<Local> locales; // un usuario puede tener muchos locales
-	
+	private static BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
+	private String hashedAndSalted;
 	
 
 	public Usuario() {
 		
 	}
-	public Usuario(String nombre, String foto, String email, String telefono, String rol){
+	public Usuario(String nombre, String foto, String email, String telefono, String rol, String pass){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.email=email;
 		this.telefono=telefono;
 		this.rol=rol;
+		this.hashedAndSalted = generateHashedAndSalted(pass);
+	}
+	
+	public boolean isPassValid(String pass) {
+		return bcryptEncoder.matches(pass, hashedAndSalted);		
+	}
+	
+	/**
+	 * Generate a hashed&salted hex-string from a user's pass and salt
+	 * @param pass to use; no length-limit!
+	 * @param salt to use
+	 * @return a string to store in the BD that does not reveal the password even
+	 * if the DB is compromised. Note that brute-force is possible, but it will
+	 * have to be targeted (ie.: use the same salt)
+	 */
+	public static String generateHashedAndSalted(String pass) {
+		return bcryptEncoder.encode(pass);
+	}	
+	
+	/**
+	 * Converts a byte array to a hex string
+	 * @param b converts a byte array to a hex string; nice for storing
+	 * @return the corresponding hex string
+	 */
+	public static String byteArrayToHexString(byte[] b) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<b.length; i++) {
+			sb.append(Integer.toString((b[i]&0xff) + 0x100, 16).substring(1));
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * Converts a hex string to a byte array
+	 * @param hex string to convert
+	 * @return equivalent byte array
+	 */
+	public static byte[] hexStringToByteArray(String hex) {
+		byte[] r = new byte[hex.length()/2];
+		for (int i=0; i<r.length; i++) {
+			String h = hex.substring(i*2, (i+1)*2);
+			r[i] = (byte)Integer.parseInt(h, 16);
+		}
+		return r;
 	}
 	
 	@Id
@@ -72,6 +119,12 @@ public class Usuario {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public String getHashedAndSalted() {
+		return hashedAndSalted;
+	}
+	public void setHashedAndSalted(String hashedAndSalted) {
+		this.hashedAndSalted = hashedAndSalted;
 	}
 	@OneToMany(targetEntity=Comentario.class)
 	@JoinColumn(name="usuario")
