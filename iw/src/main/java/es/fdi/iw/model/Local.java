@@ -15,12 +15,24 @@ public class Local {
 	private long ID;
 	private long puntuacion;
 	private String ubicacion;
-	private ArrayList<String> tags;
+	private ArrayList<String> tags; //Es mejor en oferta
 	private String direccion;
 	private String horario;
 	private Collection<Oferta> ofertas;
 	private Collection<Comentario> comentarios;
 	private Usuario usuario;
+	
+	public Local(long puntuacion, String ubicacion, ArrayList<String> tags, String direccion, String horario,
+			Usuario usuario) {
+		this.puntuacion = puntuacion;
+		this.ubicacion = ubicacion;
+		this.tags = tags;
+		this.direccion = direccion;
+		this.horario = horario;
+		this.ofertas = new ArrayList<Oferta>();
+		this.comentarios =new ArrayList<Comentario>();;
+		this.usuario = usuario;
+	}
 	
 	@Id
 	@GeneratedValue

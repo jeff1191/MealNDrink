@@ -1,6 +1,7 @@
 package es.fdi.iw.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -22,15 +23,18 @@ public class Oferta {
 	private int capacidadActual;
 	private Collection<Reserva> reservas;
 	private Local comercio; //una oferta es puesta por un Local
+	private ArrayList<String> tags;
 	
 	
-	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, int capacidadActual, Local comercio){
+	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, int capacidadActual, Local comercio, ArrayList<String> tags){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.fechaLimite=fechaLimite;
 		this.capacidadActual=capacidadActual;
 		this.capacidadTotal=capacidadActual;
 		this.comercio=comercio;
+		this.reservas= new ArrayList<Reserva>();
+		this.setTags(tags);
 	}
 	@Id
 	@GeneratedValue
@@ -87,6 +91,12 @@ public class Oferta {
 	}
 	public void setComercio(Local comercio) {
 		this.comercio = comercio;
+	}
+	public ArrayList<String> getTags() {
+		return tags;
+	}
+	public void setTags(ArrayList<String> tags) {
+		this.tags = tags;
 	}
 
 }
