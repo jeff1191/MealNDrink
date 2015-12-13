@@ -22,6 +22,11 @@ public class Comentario {
 		this.comercio=comercio;
 		this.cliente=cliente;
 	}
+	
+	public Comentario(){
+		
+	}
+	
 	@Id
 	@GeneratedValue
 	public long getID() {
@@ -45,17 +50,17 @@ public class Comentario {
 	}
 	
 	@ManyToOne(targetEntity=Local.class)
-	public Local getComercio() {
+	public Local getLocal() {
 		return comercio;
 	}
-	public void setComercio(Local comercio) {
+	public void setLocal(Local comercio) {
 		this.comercio = comercio;
 	}
 	@ManyToOne(targetEntity=Usuario.class)
-	public Usuario getCliente() {
+	public Usuario getUsuario() {
 		return cliente;
 	}
-	public void setCliente(Usuario cliente) {
+	public void setUsuario(Usuario cliente) {
 		this.cliente = cliente;
 	}
 

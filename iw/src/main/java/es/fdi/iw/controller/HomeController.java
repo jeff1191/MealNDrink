@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.fdi.iw.ContextInitializer;
+import es.fdi.iw.model.Local;
 import es.fdi.iw.model.Usuario;
 
 /**
@@ -402,11 +403,21 @@ public class HomeController {
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
+		
 		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
-		
+		ArrayList<String> tags= new ArrayList<String>();
+		tags.add("mexicana");
+		tags.add("tailandesa");
+		Local local= new Local("Bistro", "img/local", "Calle concha espina nº10", tags, "40234242ºN 702934820438ª", "10-23", admin);
 		entityManager.persist(admin);
+		entityManager.persist(local);
 		
-		System.out.println("PEPEPEPEPE");
+		//long p=1;
+		//Local local2 =entityManager.find(Local.class, p);
+		//System.out.println("DATOS: "+local2.getTags().toString());
+		
+		System.out.println("PEPEPEPEPEPE");
+		//System.out.println("uuuuuuuu");
 		return "administracion";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
