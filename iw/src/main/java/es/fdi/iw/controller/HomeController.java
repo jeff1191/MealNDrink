@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.fdi.iw.ContextInitializer;
+import es.fdi.iw.model.Usuario;
 
 /**
  * Una aplicación de ejemplo para IW.
@@ -353,9 +354,9 @@ public class HomeController {
 				
 		ArrayList<Plato> platos = new ArrayList<Plato>();
 		platos.add(new Plato("1", "bootstrap", "html"));
-		platos.add(new Plato("2", "bootstrap", "html"));
+		platos.add(new Plato("2", "bootstrap", "html", "wordpress"));
 		platos.add(new Plato("3", "bootstrap"));
-		platos.add(new Plato("4", "bootstrap"));
+		platos.add(new Plato("4", "wordpress"));
 
 		
 		model.addAttribute("platos", platos);
@@ -398,9 +399,14 @@ public class HomeController {
 		return "comercio_interno";
 	}	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
+	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
+		
+		entityManager.persist(admin);
+		
+		System.out.println("PEPEPEPEPE");
 		return "administracion";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
