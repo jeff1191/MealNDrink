@@ -22,6 +22,10 @@ public class Usuario {
 	private Collection<Local> locales; // un usuario puede tener muchos locales
 	
 	
+
+	public Usuario() {
+		
+	}
 	public Usuario(String nombre, String foto, String email, String telefono, String rol){
 		this.nombre=nombre;
 		this.foto=foto;
@@ -29,6 +33,7 @@ public class Usuario {
 		this.telefono=telefono;
 		this.rol=rol;
 	}
+	
 	@Id
 	@GeneratedValue
 	public long getID() {
