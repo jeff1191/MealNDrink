@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class Reserva {
 
 	private long ID;
-	private String codigoQr;
+	private String codigoQr; // Cuando nos pongamos con el tema de validar habra q ponerse un campo bool aqui a no ser q veamos una mejor manera
 	private Usuario cliente;
 	private Oferta oferta;
 	private int numPersonas;

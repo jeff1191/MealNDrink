@@ -34,13 +34,13 @@ INSERT INTO OFERTA VALUES (9, 0, 78, TO_TIMESTAMP('2017-07-02 06:14', 'YYYY-MM-D
 INSERT INTO OFERTA VALUES (10, 0, 9, TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), '/img/offers/bistro_inivitar.jpg', 'Invitar es facil', {'Comida india', 'Comida francesa'}, 1)
 
 /*( "ID", "CODIGO_QR", "FECHA_RESERVA", "NUM_PERSONAS", "OFERTA", "USUARIO" )*/
-INSERT INTO RESERVA VALUES (1, '/img/qrcodes/josemi/bistro_copas4_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 5, 1, 2)
-INSERT INTO RESERVA VALUES (2, '/img/qrcodes/fulano/bistro_pareja_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 2, 3, 6)
-INSERT INTO RESERVA VALUES (3, '/img/qrcodes/josemi/azampar_rellenarbebida_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 12, 8, 2)
-INSERT INTO RESERVA VALUES (4, '/img/qrcodes/rosita/tapas_flow_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 11, 5, 8)
-INSERT INTO RESERVA VALUES (5, '/img/qrcodes/mengano/cubosytapas_tapasgratis_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 3, 6, 7)
-INSERT INTO RESERVA VALUES (6, '/img/qrcodes/pablito/tapas_cumple_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 21, 4, 9)
-INSERT INTO RESERVA VALUES (7, '/img/qrcodes/eloisa/azampar_rellenarbebida_0702015.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 4, 8, 10)
+INSERT INTO RESERVA VALUES (1, '/img/qrcodes/copas4_josemi.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 5, 1, 2)
+INSERT INTO RESERVA VALUES (2, '/img/qrcodes/pareja_fulano.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 2, 3, 6)
+INSERT INTO RESERVA VALUES (3, '/img/qrcodes/arellenarbebida_josemi.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 12, 8, 2)
+INSERT INTO RESERVA VALUES (4, '/img/qrcodes/flow_rosita.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 11, 5, 8)
+INSERT INTO RESERVA VALUES (5, '/img/qrcodes/tapasgratis_mengano.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 3, 6, 7)
+INSERT INTO RESERVA VALUES (6, '/img/qrcodes/cumple_pending.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 21, 4, 9)
+INSERT INTO RESERVA VALUES (7, '/img/qrcodes/rellenarbebida_eloisa.jpg', TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 4, 8, 10)
 
 /*( "ID", "FECHA", "TEXTO", "USUARIO", "LOCAL" )*/
 INSERT INTO COMENTARIO VALUES (1, TO_TIMESTAMP('2015-07-02 06:14', 'YYYY-MM-DD HH24:MI'), 'Estuvo genial. Mis diez', 2, 4)
