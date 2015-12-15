@@ -9,10 +9,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="allOffers", query="select o from Oferta o"),
+	@NamedQuery(name="offersByTag", query="select o from Oferta o where o.tags.name=:id.name")
+})
+
 public class Oferta {
 	
 	private long ID;

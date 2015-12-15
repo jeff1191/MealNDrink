@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.fdi.iw.ContextInitializer;
 import es.fdi.iw.model.Local;
+import es.fdi.iw.model.Oferta;
 import es.fdi.iw.model.Usuario;
 
 /**
@@ -422,8 +424,42 @@ public class HomeController {
 		return "administracion";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
+	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
+		model.addAttribute("pageTitle", "Últimas ofertas");		
+				
+		
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
+		ArrayList<String> tags = new ArrayList<String>();
+		tags.add("bootstrap");
+		tags.add("html");
+		tags.add("wordpress");
+		ArrayList<String> tags1 = new ArrayList<String>();
+		tags.add("html");
+		tags.add("wordpress");
+		ArrayList<String> tags2 = new ArrayList<String>();
+		tags.add("bootstrap");
+		Local comercio = new Local("Bistro", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", tags, "Calle 8 inventada", "l-x", admin);
+		Oferta offer = new Oferta("LaMásRica", "/img/offers/" + comercio.getNombre() + "_LaMasRica.jpg", new Timestamp(133333), 10,comercio,tags);
+		Oferta offer1 = new Oferta("LaMásRica2", "/img/offers/" + comercio.getNombre() + "_LaMasRica2.jpg", new Timestamp(133333), 10, comercio,tags1);
+		Oferta offer2 = new Oferta("LaMásRica3", "/img/offers/" + comercio.getNombre() + "_LaMasRica3.jpg", new Timestamp(133333), 10, comercio,tags2);
+		
+		entityManager.persist(admin);
+		entityManager.persist(comercio);
+		entityManager.persist(offer);
+		entityManager.persist(offer1);
+		entityManager.persist(offer2);
+		
+		ArrayList<Oferta> platos = new ArrayList<Oferta>();
+	
+		platos.add(offer);
+		platos.add(offer1);
+		platos.add(offer2);
+		
+		//System.out.println(platos.get(0).getNombre());
+		
+		model.addAttribute("platos", platos);
 
 		return "ultimasOfertas";
 	}	
