@@ -1,5 +1,7 @@
 package es.fdi.iw.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,13 +15,20 @@ public class Reserva {
 	private Usuario cliente;
 	private Oferta oferta;
 	private int numPersonas;
+	private Timestamp fechaReserva;
 	
-	public Reserva(String codigoQr,Usuario cliente, Oferta oferta, int numeroPersonas){
+	public Reserva(String codigoQr,Usuario cliente, Oferta oferta, int numeroPersonas, Timestamp fechaReserva){
 		this.codigoQr=codigoQr;
-		this.setCliente(cliente);
+		this.setUsuario(cliente);
 		this.setOferta(oferta);
 		this.numPersonas=numeroPersonas;
+		this.fechaReserva=fechaReserva;
 	}
+	
+	public Reserva() {
+		
+	}
+	
 	@Id
 	@GeneratedValue
 	public long getID() {
@@ -29,6 +38,12 @@ public class Reserva {
 	public void setID(long iD) {
 		ID = iD;
 	}
+	public Timestamp getfechaReserva() {
+		return fechaReserva;
+	}
+	public void setfechaReserva(Timestamp fechaReserva) {
+		this.fechaReserva = fechaReserva;
+	}
 	public String getCodigoQr() {
 		return codigoQr;
 	}
@@ -36,10 +51,10 @@ public class Reserva {
 		this.codigoQr = codigoQr;
 	}
 	@ManyToOne(targetEntity=Usuario.class)
-	public Usuario getCliente() {
+	public Usuario getUsuario() {
 		return cliente;
 	}
-	public void setCliente(Usuario cliente) {
+	public void setUsuario(Usuario cliente) {
 		this.cliente = cliente;
 	}
 	@ManyToOne(targetEntity=Oferta.class)

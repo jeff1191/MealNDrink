@@ -10,28 +10,41 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+
+
+
 @Entity
 public class Local {
+	
 	private long ID;
 	private long puntuacion;
 	private String ubicacion;
-	private ArrayList<String> tags; //Es mejor en oferta
+	private ArrayList<String> tags;
 	private String direccion;
 	private String horario;
 	private Collection<Oferta> ofertas;
 	private Collection<Comentario> comentarios;
 	private Usuario usuario;
+	private String nombre;
+	private String foto;
 	
-	public Local(long puntuacion, String ubicacion, ArrayList<String> tags, String direccion, String horario,
-			Usuario usuario) {
-		this.puntuacion = puntuacion;
+	public Local(String nombre, String foto, String ubicacion, ArrayList<String> tags,
+			String direccion, String horario, Usuario usuario) {
+		
+		this.puntuacion = 5;
 		this.ubicacion = ubicacion;
 		this.tags = tags;
 		this.direccion = direccion;
 		this.horario = horario;
-		this.ofertas = new ArrayList<Oferta>();
-		this.comentarios =new ArrayList<Comentario>();;
 		this.usuario = usuario;
+		this.nombre = nombre;
+		this.foto = foto;
+		this.ofertas= new ArrayList<Oferta>();
+		this.comentarios = new ArrayList<Comentario>();
+	}
+	
+	public Local() {
+		
 	}
 	
 	@Id
@@ -76,6 +89,22 @@ public class Local {
 		this.puntuacion = puntuacion;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+	
 	public String getUbicacion() {
 		return ubicacion;
 	}

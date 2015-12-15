@@ -407,7 +407,7 @@ public class HomeController {
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
 		
 		entityManager.persist(admin);
 		
@@ -418,10 +418,10 @@ public class HomeController {
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "Últimas ofertas");		
+		model.addAttribute("pageTitle", "ï¿½ltimas ofertas");		
 				
 		
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin","1234");
 		ArrayList<String> tags = new ArrayList<String>();
 		tags.add("bootstrap");
 		tags.add("html");
@@ -431,10 +431,10 @@ public class HomeController {
 		tags.add("wordpress");
 		ArrayList<String> tags2 = new ArrayList<String>();
 		tags.add("bootstrap");
-		Local comercio = new Local(5, "urldeunmapa", tags, "Calle 8 inventada", "l-x", admin);
-		Oferta offer = new Oferta("LaMásRica", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags);
-		Oferta offer1 = new Oferta("LaMásRica2", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags1);
-		Oferta offer2 = new Oferta("LaMásRica3", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags2);
+		Local comercio = new Local("comercioUno", "fotoComercio", "urlDeUnMapa", tags2, "Calle inventada 7", "x-f", admin);
+		Oferta offer = new Oferta("LaMï¿½sRica", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags);
+		Oferta offer1 = new Oferta("LaMï¿½sRica2", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags1);
+		Oferta offer2 = new Oferta("LaMï¿½sRica3", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags2);
 		
 		entityManager.persist(admin);
 		entityManager.persist(comercio);
