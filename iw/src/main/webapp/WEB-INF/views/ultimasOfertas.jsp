@@ -17,13 +17,13 @@
             
             	<div class="portfolio-items">
             
-            	<c:forEach items="${platos}" var="i">
-               		<div class="portfolio-item bootstrap col-xs-12 col-sm-4 col-md-3">
+            	<c:forEach items="${platos}" var="item">
+               		<div class="portfolio-item ${item.tags} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
 	                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item1.png" alt="">
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
-	                                <h3><a href="#">${i[param['get.getNombre']]} </a> </h3>
+	                                <h3><a href="#">${item.nombre} </a> </h3>
 	                                <p>Esto es una descripción de la última oferta</p>
 									<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>	

@@ -432,9 +432,13 @@ public class HomeController {
 		ArrayList<String> tags2 = new ArrayList<String>();
 		tags.add("bootstrap");
 		Local comercio = new Local("comercioUno", "fotoComercio", "urlDeUnMapa", tags2, "Calle inventada 7", "x-f", admin);
-		Oferta offer = new Oferta("LaM�sRica", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags);
-		Oferta offer1 = new Oferta("LaM�sRica2", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags1);
-		Oferta offer2 = new Oferta("LaM�sRica3", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,tags2);
+		Oferta offer = new Oferta("LaMásRica", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio, "bootstrap", "html");
+		Oferta offer1 = new Oferta("LaMásRica2", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio, "bootstrap", "html", "wordpress");
+		Oferta offer2 = new Oferta("LaMásRica3", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,"bootstrap");
+		
+		System.err.println(offer.getTags());
+		System.err.println(offer1.getTags());
+		System.err.println(offer2.getTags());		
 		
 		entityManager.persist(admin);
 		entityManager.persist(comercio);
@@ -443,10 +447,6 @@ public class HomeController {
 		entityManager.persist(offer2);
 		
 		ArrayList<Oferta> platos = new ArrayList<Oferta>();
-	/*	platos.add(new Plato("1", "bootstrap", "html"));
-		platos.add(new Plato("2", "bootstrap", "html", "wordpress"));
-		platos.add(new Plato("3", "bootstrap"));
-		platos.add(new Plato("4", "wordpress"));*/
 		platos.add(offer);
 		platos.add(offer1);
 		platos.add(offer2);
