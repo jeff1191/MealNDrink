@@ -408,10 +408,8 @@ public class HomeController {
 		model.addAttribute("active", "administracion");
 		
 		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
-		ArrayList<String> tags= new ArrayList<String>();
-		tags.add("mexicana");
-		tags.add("tailandesa");
-		Local local= new Local("Bistro", "img/local", "Calle concha espina nº10", tags, "40234242ºN 702934820438ª", "10-23", admin);
+		String[] tags= {"mexicana", "tailandesa"};
+		Local local= new Local("Bistro", "img/local", "Calle concha espina nº10", "40234242ºN 702934820438ª", "10-23", admin, "bootstrap", "html", "wordpress");
 		entityManager.persist(admin);
 		entityManager.persist(local);
 		
@@ -431,35 +429,32 @@ public class HomeController {
 				
 		
 		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
-		ArrayList<String> tags = new ArrayList<String>();
-		tags.add("bootstrap");
-		tags.add("html");
-		tags.add("wordpress");
-		ArrayList<String> tags1 = new ArrayList<String>();
-		tags.add("html");
-		tags.add("wordpress");
-		ArrayList<String> tags2 = new ArrayList<String>();
-		tags.add("bootstrap");
-		Local comercio = new Local("Bistro", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", tags, "Calle 8 inventada", "l-x", admin);
-		Oferta offer = new Oferta("LaMásRica", "/img/offers/" + comercio.getNombre() + "_LaMasRica.jpg", new Timestamp(133333), 10,comercio,tags);
-		Oferta offer1 = new Oferta("LaMásRica2", "/img/offers/" + comercio.getNombre() + "_LaMasRica2.jpg", new Timestamp(133333), 10, comercio,tags1);
-		Oferta offer2 = new Oferta("LaMásRica3", "/img/offers/" + comercio.getNombre() + "_LaMasRica3.jpg", new Timestamp(133333), 10, comercio,tags2);
+		String[] alltags = {"bootstrap", "html", "wordpress"};
+		String[] tags = {"bootstrap", "html", "wordpress"};
+		String[] tags1 = {"html", "wordpress"};
+		String[] tags2 = {"bootstrap"};
+		Local comercio = new Local("Bistro", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 8 inventada", "l-x", admin, "bootstrap", "html", "wordpress");
+		Local comercio2 = new Local("Chachi", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 9 inventada", "l-x", admin, "bootstrap", "html", "wordpress");
+		Oferta offer = new Oferta("LaMásRica", "/img/offers/" + comercio.getNombre() + "_LaMasRica.jpg", new Timestamp(133333), 10,comercio,"bootstrap", "html");
+		Oferta offer1 = new Oferta("LaMásRica2", "/img/offers/" + comercio.getNombre() + "_LaMasRica2.jpg", new Timestamp(133333), 10, comercio,"html");
+		Oferta offer2 = new Oferta("LaMásRica3", "/img/offers/" + comercio.getNombre() + "_LaMasRica3.jpg", new Timestamp(133333), 10, comercio,"bootstrap");
+		
+		Oferta offer3 = new Oferta("Sabroso", "/img/offers/" + comercio2.getNombre() + "_LaMasRica4.jpg", new Timestamp(133333), 11, comercio2,"html");
+		Oferta offer4 = new Oferta("Sabroso2", "/img/offers/" + comercio2.getNombre() + "_LaMasRica5.jpg", new Timestamp(133333), 11, comercio2,"bootstrap");
 		
 		entityManager.persist(admin);
 		entityManager.persist(comercio);
+		entityManager.persist(comercio2);
 		entityManager.persist(offer);
 		entityManager.persist(offer1);
 		entityManager.persist(offer2);
-		
-		ArrayList<Oferta> platos = new ArrayList<Oferta>();
-	
-		platos.add(offer);
-		platos.add(offer1);
-		platos.add(offer2);
-		
+		entityManager.persist(offer3);
+		entityManager.persist(offer4);
+				
 		//System.out.println(platos.get(0).getNombre());
-		
-		model.addAttribute("platos", platos);
+		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
+		model.addAttribute("alltags", alltags);
+		//model.addAttribute("platos", platos);
 
 		return "ultimasOfertas";
 	}	

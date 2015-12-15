@@ -1,6 +1,7 @@
 package es.fdi.iw.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ public class Local {
 	private long ID;
 	private long puntuacion;
 	private String ubicacion;
-	private ArrayList<String> tags;
+	private String[] tags;
 	private String direccion;
 	private String horario;
 	private Collection<Oferta> ofertas;
@@ -25,8 +26,8 @@ public class Local {
 	private String nombre;
 	private String foto;
 	
-	public Local(String nombre, String foto, String ubicacion, ArrayList<String> tags,
-			String direccion, String horario, Usuario usuario) {
+	public Local(String nombre, String foto, String ubicacion, 
+			String direccion, String horario, Usuario usuario, String ... tags) {
 		
 		this.puntuacion = 5;
 		this.ubicacion = ubicacion;
@@ -52,11 +53,11 @@ public class Local {
 		ID = iD;
 	}
 
-	public ArrayList<String> getTags() {
-		return tags;
+	public String getTags() {
+		return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
 	}
 
-	public void setTags(ArrayList<String> tags) {
+	public void setTags(String[] tags) {
 		this.tags = tags;
 	}
 

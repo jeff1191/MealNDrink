@@ -5,25 +5,26 @@
                <h2>Últimas ofertas</h2>
             </div>
         
-
+			
             <ul class="portfolio-filter text-center">
                 <li><a class="btn btn-default active" href="#" data-filter="*">Todas las ofertas</a></li>
-                <li><a class="btn btn-default" href="#" data-filter=".bootstrap">#comida_china</a></li>
-                <li><a class="btn btn-default" href="#" data-filter=".html">#comida_americana</a></li>
-                <li><a class="btn btn-default" href="#" data-filter=".wordpress">#comida_mexicana</a></li>
+                <c:forEach items="${alltags}" var="i">
+                	<li><a class="btn btn-default" href="#" data-filter=".${i}">#${i}</a></li>
+                </c:forEach>
             </ul><!--/#portfolio-filter-->
+           
 
             <div class="row">
             
             	<div class="portfolio-items">
             
             	<c:forEach items="${platos}" var="i">
-               		<div class="portfolio-item bootstrap col-xs-12 col-sm-4 col-md-3">
+               		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
 	                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item1.png" alt="">
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
-	                                <p>${i.getNombre()}</p>
+	                                <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>Esto es una descripción de la última oferta</p>
 									<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>	

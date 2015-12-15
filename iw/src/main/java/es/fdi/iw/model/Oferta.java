@@ -2,6 +2,7 @@ package es.fdi.iw.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -15,11 +16,13 @@ import javax.persistence.OneToMany;
 
 
 @Entity
+@NamedQuery(name="allOffers", query="select o from Oferta o")
+/*
 @NamedQueries({
 	@NamedQuery(name="allOffers", query="select o from Oferta o"),
 	@NamedQuery(name="offersByTag", query="select o from Oferta o where o.tags.name=:id.name")
 })
-
+*/
 public class Oferta {
 	
 	private long ID;
@@ -30,14 +33,14 @@ public class Oferta {
 	private int capacidadActual;
 	private Collection<Reserva> reservas;
 	private Local comercio; //una oferta es puesta por un Local
-	private ArrayList<String> tags;
+	private String[] tags;
 	
 	
 	public Oferta() {
 		
 	}
 	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, 
-			Local comercio, ArrayList<String> tags){
+			Local comercio, String ... tags){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.fechaLimite=fechaLimite;
@@ -57,11 +60,11 @@ public class Oferta {
 		ID = iD;
 	}
 	
-	public ArrayList<String> getTags() {
-		return tags;
+	public String getTags() {
+		return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
 	}
 
-	public void setTags(ArrayList<String> tags) {
+	public void setTags(String[] tags) {
 		this.tags = tags;
 	}
 	
