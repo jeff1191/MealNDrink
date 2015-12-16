@@ -33,14 +33,14 @@ public class Oferta {
 	private int capacidadActual;
 	private Collection<Reserva> reservas;
 	private Local comercio; //una oferta es puesta por un Local
-	private String[] tags;
+	private ArrayList<String> tags;
 	
 	
 	public Oferta() {
 		
 	}
 	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, 
-			Local comercio, String ... tags){
+			Local comercio, ArrayList<String>  tags){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.fechaLimite=fechaLimite;
@@ -48,6 +48,7 @@ public class Oferta {
 		this.capacidadTotal=capacidadTotal;
 		this.comercio=comercio;
 		this.tags = tags;
+		this.reservas= new ArrayList<Reserva>();
 	}
 	
 	@Id
@@ -60,11 +61,12 @@ public class Oferta {
 		ID = iD;
 	}
 	
-	public String getTags() {
-		return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
+	public ArrayList<String>  getTags() {
+		//return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
+		return tags;
 	}
 
-	public void setTags(String[] tags) {
+	public void setTags(ArrayList<String>  tags) {
 		this.tags = tags;
 	}
 	

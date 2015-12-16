@@ -17,7 +17,7 @@ public class Local {
 	private long ID;
 	private long puntuacion;
 	private String ubicacion;
-	private String[] tags;
+	private ArrayList<String> tags;
 	private String direccion;
 	private String horario;
 	private Collection<Oferta> ofertas;
@@ -27,7 +27,7 @@ public class Local {
 	private String foto;
 	
 	public Local(String nombre, String foto, String ubicacion, 
-			String direccion, String horario, Usuario usuario, String ... tags) {
+			String direccion, String horario, Usuario usuario, ArrayList<String> tags) {
 		
 		this.puntuacion = 5;
 		this.ubicacion = ubicacion;
@@ -37,6 +37,8 @@ public class Local {
 		this.usuario = usuario;
 		this.nombre = nombre;
 		this.foto = foto;
+		this.ofertas= new ArrayList<Oferta>();
+		this.comentarios= new ArrayList<Comentario>();
 	}
 	
 	public Local() {
@@ -53,11 +55,12 @@ public class Local {
 		ID = iD;
 	}
 
-	public String getTags() {
-		return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
+	public ArrayList<String>  getTags() {
+		//return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
+		return this.tags;
 	}
 
-	public void setTags(String[] tags) {
+	public void setTags(ArrayList<String>  tags) {
 		this.tags = tags;
 	}
 

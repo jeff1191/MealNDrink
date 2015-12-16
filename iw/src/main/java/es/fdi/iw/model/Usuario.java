@@ -1,5 +1,6 @@
 package es.fdi.iw.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -37,6 +38,9 @@ public class Usuario {
 		this.telefono=telefono;
 		this.rol=rol;
 		this.hashedAndSalted = generateHashedAndSalted(pass);
+		this.comentarios= new ArrayList<Comentario>();
+		this.reservas = new ArrayList<Reserva>();
+		this.locales= new ArrayList<Local>();
 	}
 	
 	public boolean isPassValid(String pass) {
