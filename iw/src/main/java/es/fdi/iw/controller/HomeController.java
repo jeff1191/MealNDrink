@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import scala.annotation.meta.getter;
 /**
  * Una aplicación de ejemplo para IW.
  */
+@SuppressWarnings("unused")
 @Controller
 public class HomeController {
 	
@@ -407,11 +409,14 @@ public class HomeController {
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
+
 		
-		entityManager.persist(admin);
+		//long p=1;
+		//Local local2 =entityManager.find(Local.class, p);
+		//System.out.println("DATOS: "+local2.getTags().toString());
 		
-		System.out.println("PEPEPEPEPE");
+		System.out.println("PEPEPEPEPEPE");
+		//System.out.println("uuuuuuuu");
 		return "administracion";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
@@ -419,50 +424,53 @@ public class HomeController {
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
 		model.addAttribute("pageTitle", "�ltimas ofertas");		
-				
 		
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin","1234");
-		ArrayList<String> tags = new ArrayList<String>();
-		tags.add("bootstrap");
-		tags.add("html");
-		tags.add("wordpress");
-		ArrayList<String> tags1 = new ArrayList<String>();
-		tags.add("html");
-		tags.add("wordpress");
-		ArrayList<String> tags2 = new ArrayList<String>();
-		tags.add("bootstrap");
-		Local comercio = new Local("comercioUno", "fotoComercio", "urlDeUnMapa", tags2, "Calle inventada 7", "x-f", admin);
-		Oferta offer = new Oferta("LaMásRica", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio, "bootstrap", "html");
-		Oferta offer1 = new Oferta("LaMásRica2", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio, "bootstrap", "html", "wordpress");
-		Oferta offer2 = new Oferta("LaMásRica3", admin.getNombre()+".jpg", new Timestamp(133333), 10, 0, comercio,"bootstrap");
+		ArrayList<String> tags1= new ArrayList<String>();
+		tags1.add("bootstrap");
+		tags1.add("html");
+		tags1.add("wordpress");
+		ArrayList<String> tags2= new ArrayList<String>();
+		tags2.add("bootstrap");
+		tags2.add("html");
+		tags2.add("wordpress");
+		ArrayList<String> tags3= new ArrayList<String>();
+		tags3.add("html");
+		tags3.add("bootstrap");
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
+		Local comercio = new Local("Bistro", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 8 inventada", "l-x", admin, tags1);
+		Local comercio2 = new Local("Chachi", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 9 inventada", "l-x", admin, tags2);
+		Oferta offer = new Oferta("LaMasRica", "/img/offers/" + comercio.getNombre() + "_LaMasRica.jpg", new Timestamp(133333), 10,comercio,tags1);
+		Oferta offer1 = new Oferta("LaMasRica2", "/img/offers/" + comercio.getNombre() + "_LaMasRica2.jpg", new Timestamp(133333), 10, comercio,tags2);
+		Oferta offer2 = new Oferta("LaMasRica3", "/img/offers/" + comercio.getNombre() + "_LaMasRica3.jpg", new Timestamp(133333), 10, comercio,tags3);
 		
-		System.err.println(offer.getTags());
-		System.err.println(offer1.getTags());
-		System.err.println(offer2.getTags());		
+	//	Oferta offer3 = new Oferta("Sabroso", "/img/offers/" + comercio2.getNombre() + "_LaMasRica4.jpg", new Timestamp(133333), 11, comercio2,"html");
+	//	Oferta offer4 = new Oferta("Sabroso2", "/img/offers/" + comercio2.getNombre() + "_LaMasRica5.jpg", new Timestamp(133333), 11, comercio2,"bootstrap");
 		
 		entityManager.persist(admin);
 		entityManager.persist(comercio);
+		entityManager.persist(comercio2);
 		entityManager.persist(offer);
 		entityManager.persist(offer1);
 		entityManager.persist(offer2);
-		
-		ArrayList<Oferta> platos = new ArrayList<Oferta>();
-		platos.add(offer);
-		platos.add(offer1);
-		platos.add(offer2);
-		
+	//	entityManager.persist(offer3);
+		//entityManager.persist(offer4);		
+		String[] alltags = {"bootstrap", "html", "wordpress"};
+				
 		//System.out.println(platos.get(0).getNombre());
-		
-		model.addAttribute("platos", platos);
-		
-		
+		ArrayList<String> a = new ArrayList<String>();// = entityManager.createNamedQuery("allOffers").getResultList();
+		System.err.println(a.size());
+		model.addAttribute("platos", a);
+		model.addAttribute("alltags", alltags);
+		//model.addAttribute("platos", platos);
 
 		return "ultimasOfertas";
 	}	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
+	@Transactional
 	public String ofertasMes(Locale locale, Model model) {
 		model.addAttribute("active", "ofertasMes");
-
+		
+				
 		return "ofertasMes";
 	}	
 
