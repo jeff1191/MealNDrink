@@ -19,7 +19,7 @@
             	<div class="portfolio-items">
             
             	<c:forEach items="${platos}" var="i">
-               		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
+               		<div class="portfolio-item ${i.dameTagsSeparados} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
 	                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item1.png" alt="">
 	                        <div class="overlay">

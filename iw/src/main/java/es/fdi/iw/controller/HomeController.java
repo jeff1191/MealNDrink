@@ -458,7 +458,8 @@ public class HomeController {
 		String[] alltags = {"bootstrap", "html", "wordpress"};
 				
 		//System.out.println(platos.get(0).getNombre());
-		ArrayList<String> a = new ArrayList<String>();// = entityManager.createNamedQuery("allOffers").getResultList();
+		@SuppressWarnings("unchecked")
+		List<String> a = entityManager.createNamedQuery("allOffers").getResultList();
 		System.err.println(a.size());
 		model.addAttribute("platos", a);
 		model.addAttribute("alltags", alltags);
