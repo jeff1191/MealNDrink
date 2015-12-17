@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
@@ -104,6 +105,39 @@ public class HomeController {
 		// redirects to view from which login was requested
 		return "redirect:" + formSource;
 	}
+
+	@RequestMapping(value = "/loginpro", method = RequestMethod.POST)
+	@Transactional
+	public String loginProvisional(@RequestParam("login") String formLogin, @RequestParam("pass") String formPass, 
+								HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session){
+		
+		logger.info("He entrado");
+		
+		if (formLogin == null || formPass == null) {
+			model.addAttribute("loginError", "No se ha introducido usuario/contraseña");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		else{
+			Usuario usuAux = null;
+			
+			usuAux = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", formLogin).getSingleResult();
+			
+			if (usuAux.isPassValid(formPass)) {
+				logger.info("pass was valid");				
+				session.setAttribute("user", usuAux);
+				// sets the anti-csrf token
+				getTokenForSession(session);
+			} else {
+				logger.info("pass was NOT valid");
+				model.addAttribute("loginError", "error en usuario o contraseña");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+		}
+		
+		return "redirect:mealndrink";
+	}
+	
 	
 	/**
 	 * Delete a user; return JSON indicating success or failure
@@ -385,13 +419,7 @@ public class HomeController {
 		model.addAttribute("active", "usuario");
 
 		return "usuario";
-	}
-	@RequestMapping(value = "/registrarse", method = RequestMethod.GET)
-	public String registrarse(Locale locale, Model model) {
-		model.addAttribute("active", "registrarse");
-
-		return "registrarse";
-	}
+	}	
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)
 	public String comercio_externo(Locale locale, Model model) {
 		model.addAttribute("active", "comercio_externo");
@@ -408,7 +436,7 @@ public class HomeController {
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin");
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
 		
 		entityManager.persist(admin);
 		
@@ -476,5 +504,12 @@ public class HomeController {
 			return false;
 		}*/
 		return false;
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/creausuariopruebas", method = RequestMethod.GET)
+	public void crearUsuarioPruebas(){
+		Usuario u = new Usuario("prueba", "ppppp", "email", "telefono", "rol", Usuario.generateHashedAndSalted("1234"));
+		entityManager.persist(u);
 	}
 }
