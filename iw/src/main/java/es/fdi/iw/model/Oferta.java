@@ -3,15 +3,14 @@ package es.fdi.iw.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -32,24 +31,12 @@ public class Oferta {
 	private Timestamp fechaLimite;
 	private int capacidadTotal;
 	private int capacidadActual;
-	private Collection<Reserva> reservas;
+	private List<Reserva> reservas;
 	private Local comercio; //una oferta es puesta por un Local
-	private ArrayList<String> tags;
+	private String tags;
 	
 	
 	public Oferta() {
-		
-	}
-	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, 
-			Local comercio, ArrayList<String>  tags){
-		this.nombre=nombre;
-		this.foto=foto;
-		this.fechaLimite=fechaLimite;
-		this.capacidadActual=0;
-		this.capacidadTotal=capacidadTotal;
-		this.comercio=comercio;
-		this.tags = tags;
-		this.reservas= new ArrayList<Reserva>();
 	}
 	
 	@Id
@@ -62,12 +49,26 @@ public class Oferta {
 		ID = iD;
 	}
 	
-	public ArrayList<String>  getTags() {
-		//return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
+	public String getTags() {
 		return tags;
 	}
 
-	public void setTags(ArrayList<String>  tags) {
+	public String[] dameTagsSeparados() {
+		return tags.split(",");
+	}
+	
+	public void ponTagsSeparados(String[] ts) {		
+		StringBuilder sb = new StringBuilder();		
+		for(String t : ts){
+			sb.append(t.trim()).append(",");
+		}
+		if (sb.length()>0) {
+			sb.setLength(sb.length()-1);
+		}
+		tags = sb.toString();
+	}
+	
+	public void setTags(String tags) {		
 		this.tags = tags;
 	}
 	
@@ -103,10 +104,10 @@ public class Oferta {
 	}
 	@OneToMany(targetEntity=Reserva.class)
 	@JoinColumn(name="oferta")
-	public Collection<Reserva> getReservas() {
+	public List<Reserva> getReservas() {
 		return reservas;
 	}
-	public void setReservas(Collection<Reserva> reservas) {
+	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
 	@ManyToOne(targetEntity=Local.class)
