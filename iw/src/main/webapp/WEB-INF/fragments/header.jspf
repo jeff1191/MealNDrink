@@ -93,8 +93,8 @@
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
 			<li class="${active eq 'home'?'active':''}"><a href="home">Inicio</a></li>
-                        <li><a href="ofertasMes">Ofertas del mes</a></li>
-                        <li><a href="ultimasOfertas">Últimas ofertas</a></li>
+                        <li class="${active eq 'ofertasMes'?'active':''}"><a href="ofertasMes">Ofertas del mes</a></li>
+                        <li class="${active eq 'ultimasOfertas'?'active':''}"><a href="ultimasOfertas">Últimas ofertas</a></li>
                         <li class="${active eq 'acercaDe'?'active':''}"><a href="acercaDe">Acerca de</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
