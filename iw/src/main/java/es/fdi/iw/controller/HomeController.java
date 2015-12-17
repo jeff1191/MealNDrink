@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,10 +41,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.fdi.iw.ContextInitializer;
+import es.fdi.iw.model.Comentario;
+import es.fdi.iw.model.Local;
+import es.fdi.iw.model.Oferta;
+import es.fdi.iw.model.Usuario;
+import scala.annotation.meta.getter;
 
 /**
  * Una aplicación de ejemplo para IW.
  */
+@SuppressWarnings("unused")
 @Controller
 public class HomeController {
 	
@@ -398,21 +406,72 @@ public class HomeController {
 		return "comercio_interno";
 	}	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
+	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
 
+		
+		//long p=1;
+		//Local local2 =entityManager.find(Local.class, p);
+		//System.out.println("DATOS: "+local2.getTags().toString());
+		
+		System.out.println("PEPEPEPEPEPE");
+		//System.out.println("uuuuuuuu");
 		return "administracion";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
+	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
+		model.addAttribute("pageTitle", "Últimas ofertas");		
+		
+		ArrayList<String> tags1= new ArrayList<String>();
+		tags1.add("bootstrap");
+		tags1.add("html");
+		tags1.add("wordpress");
+		ArrayList<String> tags2= new ArrayList<String>();
+		tags2.add("bootstrap");
+		tags2.add("html");
+		tags2.add("wordpress");
+		ArrayList<String> tags3= new ArrayList<String>();
+		tags3.add("html");
+		tags3.add("bootstrap");
+		/*
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
+		Local comercio = new Local("Bistro", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 8 inventada", "l-x", admin, tags1);
+		Local comercio2 = new Local("Chachi", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 9 inventada", "l-x", admin, tags2);
+		Oferta offer = new Oferta("LaMasRica", "/img/offers/" + comercio.getNombre() + "_LaMasRica.jpg", new Timestamp(133333), 10,comercio,tags1);
+		Oferta offer1 = new Oferta("LaMasRica2", "/img/offers/" + comercio.getNombre() + "_LaMasRica2.jpg", new Timestamp(133333), 10, comercio,tags2);
+		Oferta offer2 = new Oferta("LaMasRica3", "/img/offers/" + comercio.getNombre() + "_LaMasRica3.jpg", new Timestamp(133333), 10, comercio,tags3);
+		*/
+	//	Oferta offer3 = new Oferta("Sabroso", "/img/offers/" + comercio2.getNombre() + "_LaMasRica4.jpg", new Timestamp(133333), 11, comercio2,"html");
+	//	Oferta offer4 = new Oferta("Sabroso2", "/img/offers/" + comercio2.getNombre() + "_LaMasRica5.jpg", new Timestamp(133333), 11, comercio2,"bootstrap");
+		/*
+		entityManager.persist(admin);
+		entityManager.persist(comercio);
+		entityManager.persist(comercio2);
+		entityManager.persist(offer);
+		entityManager.persist(offer1);
+		entityManager.persist(offer2);
+	//	entityManager.persist(offer3);*/
+		//entityManager.persist(offer4);		
+		String[] alltags = {"bootstrap", "html", "wordpress"};
+				
+		//System.out.println(platos.get(0).getNombre());
+		ArrayList<String> a = new ArrayList<String>();// = entityManager.createNamedQuery("allOffers").getResultList();
+		System.err.println(a.size());
+		model.addAttribute("platos", a);
+		model.addAttribute("alltags", alltags);
+		//model.addAttribute("platos", platos);
 
 		return "ultimasOfertas";
 	}	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
+	@Transactional
 	public String ofertasMes(Locale locale, Model model) {
 		model.addAttribute("active", "ofertasMes");
-
+		
+				
 		return "ofertasMes";
 	}	
 

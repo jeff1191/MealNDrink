@@ -1,17 +1,28 @@
 package es.fdi.iw.model;
 
+
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 @Entity
+@NamedQuery(name="allOffers", query="select o from Oferta o")
+/*
+@NamedQueries({
+	@NamedQuery(name="allOffers", query="select o from Oferta o"),
+	@NamedQuery(name="offersByTag", query="select o from Oferta o where o.tags.name=:id.name")
+})
+*/
 public class Oferta {
 	
 	private long ID;
@@ -20,18 +31,14 @@ public class Oferta {
 	private Timestamp fechaLimite;
 	private int capacidadTotal;
 	private int capacidadActual;
-	private Collection<Reserva> reservas;
+	private List<Reserva> reservas;
 	private Local comercio; //una oferta es puesta por un Local
+	private String tags;
 	
 	
-	public Oferta(String nombre, String foto, Timestamp fechaLimite,int capacidadTotal, int capacidadActual, Local comercio){
-		this.nombre=nombre;
-		this.foto=foto;
-		this.fechaLimite=fechaLimite;
-		this.capacidadActual=capacidadActual;
-		this.capacidadTotal=capacidadActual;
-		this.comercio=comercio;
+	public Oferta() {
 	}
+	
 	@Id
 	@GeneratedValue
 	public long getID() {
@@ -42,12 +49,34 @@ public class Oferta {
 		ID = iD;
 	}
 	
+	public String getTags() {
+		return tags;
+	}
+
+	public String[] dameTagsSeparados() {
+		return tags.split(",");
+	}
 	
-	public int getCapacidadACtual() {
+	public void ponTagsSeparados(String[] ts) {		
+		StringBuilder sb = new StringBuilder();		
+		for(String t : ts){
+			sb.append(t.trim()).append(",");
+		}
+		if (sb.length()>0) {
+			sb.setLength(sb.length()-1);
+		}
+		tags = sb.toString();
+	}
+	
+	public void setTags(String tags) {		
+		this.tags = tags;
+	}
+	
+	public int getCapacidadActual() {
 		return capacidadActual;
 	}
-	public void setCapacidadACtual(int capacidadACtual) {
-		this.capacidadActual = capacidadACtual;
+	public void setCapacidadActual(int capacidadActual) {
+		this.capacidadActual = capacidadActual;
 	}
 	public Timestamp getFechaLimite() {
 		return fechaLimite;
@@ -75,17 +104,17 @@ public class Oferta {
 	}
 	@OneToMany(targetEntity=Reserva.class)
 	@JoinColumn(name="oferta")
-	public Collection<Reserva> getReservas() {
+	public List<Reserva> getReservas() {
 		return reservas;
 	}
-	public void setReservas(Collection<Reserva> reservas) {
+	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
 	@ManyToOne(targetEntity=Local.class)
-	public Local getComercio() {
+	public Local getLocal() {
 		return comercio;
 	}
-	public void setComercio(Local comercio) {
+	public void setLocal(Local comercio) {
 		this.comercio = comercio;
 	}
 
