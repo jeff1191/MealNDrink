@@ -455,13 +455,10 @@ public class HomeController {
 		entityManager.persist(offer2);
 	//	entityManager.persist(offer3);*/
 		//entityManager.persist(offer4);		
-		String[] alltags = {"bootstrap", "html", "wordpress"};
+		String[] alltags = {"bootstrap", "html", "wordpress", "comida_china"};
 				
 		//System.out.println(platos.get(0).getNombre());
-		@SuppressWarnings("unchecked")
-		List<String> a = entityManager.createNamedQuery("allOffers").getResultList();
-		System.err.println(a.size());
-		model.addAttribute("platos", a);
+		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
 		//model.addAttribute("platos", platos);
 

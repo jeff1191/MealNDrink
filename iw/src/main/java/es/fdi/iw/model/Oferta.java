@@ -48,6 +48,7 @@ public class Oferta {
 	}
 	
 	public String getTags() {
+		ponTagsSeparados(dameTagsSeparados());
 		return tags;
 	}
 
@@ -58,7 +59,7 @@ public class Oferta {
 	public void ponTagsSeparados(String[] ts) {		
 		StringBuilder sb = new StringBuilder();		
 		for(String t : ts){
-			sb.append(t.trim()).append(",");
+			sb.append(t.trim()).append(" ");
 		}
 		if (sb.length()>0) {
 			sb.setLength(sb.length()-1);
