@@ -8,11 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
+@NamedQuery(name="dameUsuarioLogin", query="SELECT usu FROM Usuario usu WHERE usu.nombre = nombre")
 public class Usuario {
 	
 	private long ID;
@@ -32,6 +34,19 @@ public class Usuario {
 		
 	}
 
+	public boolean isPassValid(String pass) {
+		return bcryptEncoder.matches(pass, hashedAndSalted);		
+	}
+	
+	public Usuario(String nombre, String foto, String email, String telefono, String rol){
+		this.nombre=nombre;
+		this.foto=foto;
+		this.email=email;
+		this.telefono=telefono;
+		this.rol=rol;
+		this.hashedAndSalted = generateHashedAndSalted(pass);
+	}
+	
 	public boolean isPassValid(String pass) {
 		return bcryptEncoder.matches(pass, hashedAndSalted);		
 	}
@@ -75,8 +90,6 @@ public class Usuario {
 		return r;
 	}
 	
-
-
 	@Id
 	@GeneratedValue
 	public long getID() {

@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
@@ -111,6 +112,39 @@ public class HomeController {
 		// redirects to view from which login was requested
 		return "redirect:" + formSource;
 	}
+
+	@RequestMapping(value = "/loginpro", method = RequestMethod.POST)
+	@Transactional
+	public String loginProvisional(@RequestParam("login") String formLogin, @RequestParam("pass") String formPass, 
+								HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session){
+		
+		logger.info("He entrado");
+		
+		if (formLogin == null || formPass == null) {
+			model.addAttribute("loginError", "No se ha introducido usuario/contraseña");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		else{
+			Usuario usuAux = null;
+			
+			usuAux = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", formLogin).getSingleResult();
+			
+			if (usuAux.isPassValid(formPass)) {
+				logger.info("pass was valid");				
+				session.setAttribute("user", usuAux);
+				// sets the anti-csrf token
+				getTokenForSession(session);
+			} else {
+				logger.info("pass was NOT valid");
+				model.addAttribute("loginError", "error en usuario o contraseña");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+		}
+		
+		return "redirect:mealndrink";
+	}
+	
 	
 	/**
 	 * Delete a user; return JSON indicating success or failure
@@ -415,14 +449,11 @@ public class HomeController {
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-
+		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
 		
-		//long p=1;
-		//Local local2 =entityManager.find(Local.class, p);
-		//System.out.println("DATOS: "+local2.getTags().toString());
+		entityManager.persist(admin);
 		
-		System.out.println("PEPEPEPEPEPE");
-		//System.out.println("uuuuuuuu");
+		System.out.println("PEPEPEPEPE");
 		return "administracion";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
@@ -476,8 +507,7 @@ public class HomeController {
 	@Transactional
 	public String ofertasMes(Locale locale, Model model) {
 		model.addAttribute("active", "ofertasMes");
-		
-				
+
 		return "ofertasMes";
 	}	
 
