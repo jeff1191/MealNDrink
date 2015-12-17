@@ -1,7 +1,5 @@
 package es.fdi.iw.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,17 +7,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 
 @Entity
+@NamedQuery(name="allLocals", query="select o from Local o")
 public class Local {
 	
 	private long ID;
 	private long puntuacion;
 	private String ubicacion;
-	private List<String> tags;
+	private String tags;
 	private String direccion;
 	private String horario;
 	private List<Oferta> ofertas;
@@ -42,15 +42,29 @@ public class Local {
 	public void setID(long iD) {
 		ID = iD;
 	}
-/*
-	public ArrayList<String>  getTags() {
-		//return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
-		return this.tags;
+	public String getTags() {
+		return tags;
 	}
 
-	public void setTags(ArrayList<String>  tags) {
+	public String[] dameTagsSeparados() {
+		return tags.split(",");
+	}
+	
+	public void ponTagsSeparados(String[] ts) {		
+		StringBuilder sb = new StringBuilder();		
+		for(String t : ts){
+			sb.append(t.trim()).append(",");
+		}
+		if (sb.length()>0) {
+			sb.setLength(sb.length()-1);
+		}
+		tags = sb.toString();
+	}
+	
+	public void setTags(String tags) {		
 		this.tags = tags;
-	}*/
+	}
+	
 
 	public String getDireccion() {
 		return direccion;
