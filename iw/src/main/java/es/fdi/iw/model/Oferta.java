@@ -30,7 +30,7 @@ public class Oferta {
 	private int capacidadTotal;
 	private int capacidadActual;
 	private List<Reserva> reservas;
-	private Local comercio; //una oferta es puesta por un Local
+	private Local local; //una oferta es puesta por un Local
 	private String tags;
 	
 	
@@ -111,10 +111,10 @@ public class Oferta {
 	}
 	@ManyToOne(targetEntity=Local.class)
 	public Local getLocal() {
-		return comercio;
+		return local;
 	}
 	public void setLocal(Local comercio) {
-		this.comercio = comercio;
+		this.local = comercio;
 	}
 
 }

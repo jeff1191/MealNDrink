@@ -21,7 +21,7 @@
             	<c:forEach items="${platos}" var="i">
                		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
-	                        <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item1.png" alt="">
+	                        <img class="img-responsive" src="${prefix}resources/img/database/offers/${i.foto}" alt="">
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>
@@ -42,7 +42,7 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="reservarModalLabel"> Iniciar sesión</h4>
+			        <h4 class="modal-title" id="reservarModalLabel"> Reservar para la "oferta"</h4>
 			      </div>
 			      <div class="modal-body">
 		

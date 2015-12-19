@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @NamedQuery(name="allLocals", query="select o from Local o")
+//@NamedQuery(name="infolocal", query="select o from Local where ID =")
 public class Local {
 	
 	private long ID;

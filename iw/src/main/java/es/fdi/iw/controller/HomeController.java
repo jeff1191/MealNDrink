@@ -394,9 +394,10 @@ public class HomeController {
 		return "usuario";
 	}	
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)
+	@Transactional
 	public String comercio_externo(Locale locale, Model model) {
 		model.addAttribute("active", "comercio_externo");
-
+		//model.addAttribute("infoLocal", entityManager.createNamedQuery("infolocal").getResultList());
 		return "comercio_externo";
 	}	
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
@@ -423,44 +424,13 @@ public class HomeController {
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "Ãšltimas ofertas");		
-		
-		ArrayList<String> tags1= new ArrayList<String>();
-		tags1.add("bootstrap");
-		tags1.add("html");
-		tags1.add("wordpress");
-		ArrayList<String> tags2= new ArrayList<String>();
-		tags2.add("bootstrap");
-		tags2.add("html");
-		tags2.add("wordpress");
-		ArrayList<String> tags3= new ArrayList<String>();
-		tags3.add("html");
-		tags3.add("bootstrap");
-		/*
-		Usuario admin= new Usuario("Jeff la guarra", "laMasFea.jpg", "hola@oooo.com", "974587482", "admin", "admin");
-		Local comercio = new Local("Bistro", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 8 inventada", "l-x", admin, tags1);
-		Local comercio2 = new Local("Chachi", "/img/locals/dani_bistro.jpg", "324124114N 12313132S", "Calle 9 inventada", "l-x", admin, tags2);
-		Oferta offer = new Oferta("LaMasRica", "/img/offers/" + comercio.getNombre() + "_LaMasRica.jpg", new Timestamp(133333), 10,comercio,tags1);
-		Oferta offer1 = new Oferta("LaMasRica2", "/img/offers/" + comercio.getNombre() + "_LaMasRica2.jpg", new Timestamp(133333), 10, comercio,tags2);
-		Oferta offer2 = new Oferta("LaMasRica3", "/img/offers/" + comercio.getNombre() + "_LaMasRica3.jpg", new Timestamp(133333), 10, comercio,tags3);
-		*/
-	//	Oferta offer3 = new Oferta("Sabroso", "/img/offers/" + comercio2.getNombre() + "_LaMasRica4.jpg", new Timestamp(133333), 11, comercio2,"html");
-	//	Oferta offer4 = new Oferta("Sabroso2", "/img/offers/" + comercio2.getNombre() + "_LaMasRica5.jpg", new Timestamp(133333), 11, comercio2,"bootstrap");
-		/*
-		entityManager.persist(admin);
-		entityManager.persist(comercio);
-		entityManager.persist(comercio2);
-		entityManager.persist(offer);
-		entityManager.persist(offer1);
-		entityManager.persist(offer2);
-	//	entityManager.persist(offer3);*/
-		//entityManager.persist(offer4);		
-		String[] alltags = {"bootstrap", "html", "wordpress", "comida_china"};
+		model.addAttribute("pageTitle", "Últimas ofertas");		
 				
-		//System.out.println(platos.get(0).getNombre());
+		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
-		//model.addAttribute("platos", platos);
 
 		return "ultimasOfertas";
 	}	

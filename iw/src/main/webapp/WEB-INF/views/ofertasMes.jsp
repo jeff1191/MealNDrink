@@ -17,7 +17,7 @@
                 <div class="portfolio-items">
                     <div class="portfolio-item apps col-xs-12 col-sm-4 col-md-3">
                         <div class="recent-work-wrap">
-                            <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item2.png" alt="">
+                            <img class="img-responsive" src="${prefix}resources/img/database/offers/bistro_pareja.jpg" alt="">
                             <div class="overlay">
                                 <div class="recent-work-inner">
                                     <h3><a href="#">Oferta 1</a></h3>
@@ -31,7 +31,7 @@
 
                     <div class="portfolio-item joomla bootstrap col-xs-12 col-sm-4 col-md-3">
                         <div class="recent-work-wrap">
-                            <img class="img-responsive" src="${prefix}resources/img/portfolio/recent/item2.png" alt="">
+                            <img class="img-responsive" src="${prefix}resources/img/database/offers/bistro_pareja.jpg" alt="">
                             <div class="overlay">
                                 <div class="recent-work-inner">
                                    <h3><a href="#">Oferta 2</a></h3>
