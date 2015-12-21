@@ -44,6 +44,7 @@ public class Local {
 		ID = iD;
 	}
 	public String getTags() {
+		ponTagsSeparados(dameTagsSeparados());
 		return tags;
 	}
 
@@ -54,7 +55,7 @@ public class Local {
 	public void ponTagsSeparados(String[] ts) {		
 		StringBuilder sb = new StringBuilder();		
 		for(String t : ts){
-			sb.append(t.trim()).append(",");
+			sb.append(t.trim()).append(" ");
 		}
 		if (sb.length()>0) {
 			sb.setLength(sb.length()-1);

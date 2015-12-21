@@ -26,6 +26,7 @@ public class Oferta {
 	private long ID;
 	private String nombre;
 	private String foto;
+	private String descripcion;
 	private Timestamp fechaLimite;
 	private int capacidadTotal;
 	private int capacidadActual;
@@ -94,6 +95,12 @@ public class Oferta {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	public int getCapacidadTotal() {
 		return capacidadTotal;

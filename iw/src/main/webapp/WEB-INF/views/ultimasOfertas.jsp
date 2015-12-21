@@ -25,7 +25,7 @@
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>
-	                                <p>Esto es una descripción de la última oferta</p>
+	                                <p>${i.descripcion}</p>
 									<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>	
 								</div> 

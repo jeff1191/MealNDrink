@@ -2,29 +2,29 @@
    <section id="feature" class="transparent-bg">
             <div class="container">
                 <div class="center">
-                     <h2>Nombre de restaurante</h2>
+                     <h2>${infoLocal.nombre}</h2>
                 </div>
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-							<img src="${prefix}resources/img/restaurant.jpg" height="350" width="350">                                  
+							<img src="${prefix}resources/img/database/locals/${infoLocal.foto}" height="350" width="350">                                  
 							<h3>Dirección</h3>
-							<p>1051 Nipomo St San Luis Obispo, CA 93401</p>
+							<p>${infoLocal.direccion}</p>
 														
 							<h3>Horario</h3>
-							<p><span>MONDAY-FRIDAY: </span>8am-6pm</p>
-							<p><span>SATURDAY-SUNDAY: </span>8am-10pm</p>
-														
+							<p>${infoLocal.horario}</p>
+																					
 							<h3>Contacto</h3>
-							<p>contact@mycuisine.com</p>
-							<p>91 441 55 25</a></p>
+							<p>email</p>
+							<p>telefono</p>
+							<p>Preguntar por usuario</p>
 
 							<h3>Tags</h3>
-							<p>#TagUno #TagDos #TagTres #TagCuatro #TagCinco</p>
+							<p>${infoLocal.tags}</p>
 
 							<div>
 								<h3>Puntuación</h4>
-								<h2>4,5/5</h2>
+								<h2>4/5</h2>
 							</div>
 						</div>
                     </div><!--/.col-md-4-->

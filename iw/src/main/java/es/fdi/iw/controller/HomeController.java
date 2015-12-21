@@ -347,24 +347,19 @@ public class HomeController {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);		
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate);
 		model.addAttribute("pageTitle", "Bienvenido a IW");
 		model.addAttribute("active", "home");
 		logger.info("Setting active tab: home");
-		
-		
-		
-				
+						
 		ArrayList<Plato> platos = new ArrayList<Plato>();
 		platos.add(new Plato("1", "bootstrap", "html"));
 		platos.add(new Plato("2", "bootstrap", "html", "wordpress"));
 		platos.add(new Plato("3", "bootstrap"));
 		platos.add(new Plato("4", "wordpress"));
-
 		
 		model.addAttribute("platos", platos);
 		
@@ -384,39 +379,48 @@ public class HomeController {
 	@RequestMapping(value = "/acercaDe", method = RequestMethod.GET)
 	public String acercaDe(Locale locale, Model model) {
 		model.addAttribute("active", "acercaDe");
-
+		model.addAttribute("pageTitle", "Acerca de");
 		return "acercaDe";
 	}	
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
 	public String usuario(Locale locale, Model model) {
 		model.addAttribute("active", "usuario");
-
+		model.addAttribute("pageTitle", "User");
 		return "usuario";
 	}	
-	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/local/{id}", method = RequestMethod.GET)
 	@Transactional
-	public String comercio_externo(Locale locale, Model model) {
+	public String comercio_externo(@PathVariable("id") long id, Model model) {
 		model.addAttribute("active", "comercio_externo");
-		//model.addAttribute("infoLocal", entityManager.createNamedQuery("infolocal").getResultList());
+				
+		try {
+			Local aux = entityManager.find(Local.class, id);
+			model.addAttribute("infoLocal", aux);
+			model.addAttribute("pageTitle", aux.getNombre());
+		} catch (NoResultException nre) {
+			logger.error("No existe ese local: {}", id, nre);
+		}
+		
 		return "comercio_externo";
 	}	
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
 	public String comercio_interno(Locale locale, Model model) {
 		model.addAttribute("active", "comercio_interno");
-
+		model.addAttribute("pageTitle", "Comercio1");
 		return "comercio_interno";
 	}	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
-
+		model.addAttribute("pageTitle", "Administracion");
 		
 		//long p=1;
 		//Local local2 =entityManager.find(Local.class, p);
 		//System.out.println("DATOS: "+local2.getTags().toString());
 		
-		System.out.println("PEPEPEPEPEPE");
+		//System.out.println("PEPEPEPEPEPE");
 		//System.out.println("uuuuuuuu");
 		return "administracion";
 	}	
@@ -431,7 +435,7 @@ public class HomeController {
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
-
+		model.addAttribute("pageTitle", "Ultimas ofertas");
 		return "ultimasOfertas";
 	}	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
@@ -439,7 +443,7 @@ public class HomeController {
 	public String ofertasMes(Locale locale, Model model) {
 		model.addAttribute("active", "ofertasMes");
 		
-				
+		model.addAttribute("pageTitle", "Ofertas del mes");	
 		return "ofertasMes";
 	}	
 
@@ -454,7 +458,8 @@ public class HomeController {
 		List<User> us = (List<User>)entityManager.createQuery("select u from User u").getResultList();
 		System.err.println(us.size());
 		model.addAttribute("users", us);
-		model.addAttribute("pageTitle", "IW: Quienes somos");*/
+		model.addAttribute("pageTitle", "Quienes somos");*/
+	
 		return "about";
 	}	
 	
