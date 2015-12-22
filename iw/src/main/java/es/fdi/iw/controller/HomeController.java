@@ -394,7 +394,22 @@ public class HomeController {
 		model.addAttribute("pageTitle", "User");
 		return "usuario";
 	}	
+	
+	@Transactional
+	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
+	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag,Model model) {		
+		model.addAttribute("active", "comercio_externo");			
+		try {
+			Oferta aux = entityManager.find(Oferta.class, id);
+			model.addAttribute("infoOferta", aux);
+			model.addAttribute("paginaVuelta", pag);
+			model.addAttribute("pageTitle", "Reserva");
+		} catch (NoResultException nre) {
+			logger.error("No existe esa oferta: {}", id, nre);
+		}
 		
+		return "reserva";
+	}		
 	@Transactional
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
 	public String comercio_externo(@RequestParam("id") long id, Model model) {		

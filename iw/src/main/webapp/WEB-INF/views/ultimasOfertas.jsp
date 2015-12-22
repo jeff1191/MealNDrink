@@ -26,7 +26,8 @@
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>${i.descripcion}</p>
-									<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal${i.nombre}"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
+									 <!--<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal${i.nombre}"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>-->
+									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=ultimasOfertas"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
 									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
 								</div> 
 	                        </div>
@@ -45,7 +46,7 @@
 			        <h4 class="modal-title"> Reservar para ${i.nombre}</h4>
 			      </div>
 			      <div class="modal-body">
-			  		<form class="form-horizontal" role="form" action="/iw/ultimasOfertas" method="POST">			  		
+			  		<form class="form-horizontal" role="form" action="/iw/reserva" method="POST">			  		
 						<div class="form-group">
 				        	<label class="control-label col-sm-4" for="nReservas"> Número de comensales</label>
 				        	<div class="col-sm-14">
