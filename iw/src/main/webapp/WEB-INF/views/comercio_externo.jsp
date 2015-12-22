@@ -15,16 +15,16 @@
 							<p>${infoLocal.horario}</p>
 																					
 							<h3>Contacto</h3>
-							<p>email</p>
-							<p>telefono</p>
-							<p>Preguntar por usuario</p>
+							<p>${(infoLocal.usuario).email}</p>
+							<p>${(infoLocal.usuario).telefono}</p>
+							<p>Preguntar por ${(infoLocal.usuario).nombre}</p>
 
 							<h3>Tags</h3>
 							<p>${infoLocal.tags}</p>
 
 							<div>
-								<h3>Puntuación</h4>
-								<h2>4/5</h2>
+								<h3>Puntuación</h3>
+								<h2>${infoLocal.puntuacion}/5</h2>
 							</div>
 						</div>
                     </div><!--/.col-md-4-->
@@ -117,11 +117,11 @@
 
                 </div><!--/.services-->
             </div><!--/.row--> 
-
+</div>
             <div class="clients-area center">
                 <h2>Ubicación</h2>
                 <div>
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.289259162295!2d-120.7989351!3d37.5246781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8091042b3386acd7%3A0x3b4a4cedc60363dd!2sMain+St%2C+Denair%2C+CA+95316%2C+Hoa+K%E1%BB%B3!5e0!3m2!1svi!2s!4v1434016649434" width="100%" height="300" frameborder="0" style="border:0"></iframe>
+					
 				</div>
             </div>
         </section>

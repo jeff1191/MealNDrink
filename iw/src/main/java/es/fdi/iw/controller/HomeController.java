@@ -389,11 +389,10 @@ public class HomeController {
 		return "usuario";
 	}	
 	
-	@RequestMapping(value = "/local/{id}", method = RequestMethod.GET)
 	@Transactional
-	public String comercio_externo(@PathVariable("id") long id, Model model) {
-		model.addAttribute("active", "comercio_externo");
-				
+	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
+	public String comercio_externo(@RequestParam("id") long id, Model model) {		
+		model.addAttribute("active", "comercio_externo");			
 		try {
 			Local aux = entityManager.find(Local.class, id);
 			model.addAttribute("infoLocal", aux);

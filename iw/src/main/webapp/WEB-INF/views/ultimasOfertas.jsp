@@ -27,7 +27,7 @@
 	                                <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>${i.descripcion}</p>
 									<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
-									<a class="preview" href="comercio_externo.html"><i class="fa fa-eye"></i> Ver restaurante</a>	
+									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
 								</div> 
 	                        </div>
 	                    </div>
@@ -38,52 +38,45 @@
             
             <!-- Modal -->
 			<div class="modal fade" id="reservarModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-			  <div class="modal-dialog modal-sm" role="document">
+			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="reservarModalLabel"> Reservar para la "oferta"</h4>
+			        <h4 class="modal-title"> Reservar para la "oferta"</h4>
 			      </div>
 			      <div class="modal-body">
-		
-					<form role="form">
-					
+			  		<form class="form-horizontal" role="form">					
 						<div class="form-group">
-				        	<label for="nReservas"> Número de comensales</label>
-				        	<input type="number" name="quantity" min="1" max="10" value=1 required>
-			            </div>
-			            
+				        	<label class="control-label col-sm-4" for="nReservas"> Número de comensales</label>
+				        	<div class="col-sm-14">
+				        		<input type="number" min="1" max="10" value=1 required>
+				        	</div>
+			            </div>			            
 			            <div class="form-group">
-				        	<label for="fecha"> Fecha</label>
-							<div id="datepicker"></div>				        	
-			            </div>	
-			            
+				        	<label class="control-label col-sm-2" for="fecha"> Fecha</label>
+				        	<div class="col-sm-10">
+								<div id="datepicker"></div>						
+							</div>				        	
+			            </div>				            
 			             <div class="form-group">
-				        	<label for="hora"> Hora</label>
-							<input type="number" name="hora" title="Hora" min="0" max="23" value=00 size=2 required>
-							<label for="hora"> :</label>
-							<input type="number" name="minutos" title="Minutos" min="0" max="59" value=00 size=2 required>
-						</div>					            
-			            
-								
+				        	<label class="control-label col-sm-4" for="hora"> Hora</label>
+				        	<div class="col-sm-14">
+								<input type="number" name="hora" title="Hora" min="0" max="23" value=00 size=2 required>					
+							</div>	
+						</div>									
 						<div class="progress">
 						    <div class="progress-bar progress-bar-striped active color1" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
 						      40%
 						    </div>
-						  </div>		
-								
-										
-			            
+						  </div>									
 			          </form>
-	
-	
 			      </div>
-			      <div class="modal-footer">
-			      	<button type="button" class="btn btn-primary"> Reservar</button>
+			      <div class="modal-footer">			      	
+			      	<button type="button" class="btn btn-primary"> Reservar</button>			      	
 			      </div>
 			    </div>
 			  </div>
-			</div>
+			</div>  <!-- End Modal -->
             
         </div>
     </section><!--/#portfolio-item-->
