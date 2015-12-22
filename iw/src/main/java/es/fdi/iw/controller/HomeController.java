@@ -373,6 +373,12 @@ public class HomeController {
 	public String index(Locale locale, Model model) {
 		return empty(locale, model);
 	}	
+	
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String reservaEnHome(@RequestParam("capacidad") int cap, Locale locale, Model model) {
+		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);	
+		return empty(locale, model);
+	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -388,7 +394,7 @@ public class HomeController {
 		model.addAttribute("pageTitle", "User");
 		return "usuario";
 	}	
-	
+		
 	@Transactional
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
 	public String comercio_externo(@RequestParam("id") long id, Model model) {		
@@ -415,13 +421,18 @@ public class HomeController {
 		model.addAttribute("active", "administracion");
 		model.addAttribute("pageTitle", "Administracion");
 		
-		//long p=1;
-		//Local local2 =entityManager.find(Local.class, p);
-		//System.out.println("DATOS: "+local2.getTags().toString());
 		
-		//System.out.println("PEPEPEPEPEPE");
-		//System.out.println("uuuuuuuu");
 		return "administracion";
+	}	
+	@Transactional
+	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	
+	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
+		//ESTO ES MUY GUARRO... LO MEJOR VA A SER HACERSE OTRA VISTA...?
+		//Hacer varios if
+		
+		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);		
+		
+		return ultimasOfertas(locale,model);
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
 	@Transactional
@@ -434,9 +445,19 @@ public class HomeController {
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
-		model.addAttribute("pageTitle", "Ultimas ofertas");
+		
 		return "ultimasOfertas";
 	}	
+	
+	@Transactional
+	@RequestMapping(value = "/ofertasMes", method = RequestMethod.POST)	
+	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
+		
+		System.out.println("Los comensales en ofertas del mes que vienen son " + cap);		
+		
+		return ofertasMes(locale, model);
+	}
+	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
 	@Transactional
 	public String ofertasMes(Locale locale, Model model) {

@@ -124,27 +124,27 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="reservarModalLabel"> Iniciar sesión</h4>
+			        <h4 class="modal-title" id="reservarModalLabel">  Reservar para la "oferta"</h4>
 			      </div>
 			      <div class="modal-body">
-		
-					<form role="form">
-					
+					<form class="form-horizontal" role="form" action="/iw/home" method="POST">			  		
 						<div class="form-group">
-				        	<label for="nReservas"> Número de comensales</label>
-				        	<input type="number" name="quantity" min="1" max="10" value=1 required>
+				        	<label class="control-label col-sm-4" for="nReservas"> Número de comensales</label>
+				        	<input type="number" max="10" value="1" name="capacidad"/>
 			            </div>
 			            
 			            <div class="form-group">
-				        	<label for="fecha"> Fecha</label>
-							<div id="datepicker"></div>				        	
+				        	<label class="control-label col-sm-2" for="fecha"> Fecha</label>
+							<div class="col-sm-10">
+								<div id="datepicker"></div>						
+							</div>						        	
 			            </div>	
 			            
 			             <div class="form-group">
-				        	<label for="hora"> Hora</label>
-							<input type="number" name="hora" title="Hora" min="0" max="23" value=00 size=2 required>
-							<label for="hora"> :</label>
-							<input type="number" name="minutos" title="Minutos" min="0" max="59" value=00 size=2 required>
+				        	<label class="control-label col-sm-4" for="hora"> Hora</label>
+				        	<div class="col-sm-14">
+								<input type="number" name="hora" title="Hora" min="0" max="23" value=00 size=2 required>					
+							</div>	
 						</div>					            
 			            
 								
@@ -153,16 +153,14 @@
 						      40%
 						    </div>
 						  </div>		
-								
-										
-			            
+						 <div class="modal-footer">							  
+							<button type="submit" class="btn btn-primary" value="Submit"> Reservar</button>	 								 
+						  </div>
 			          </form>
 	
 	
 			      </div>
-			      <div class="modal-footer">
-			      	<button type="button" class="btn btn-primary"> Reservar</button>
-			      </div>
+			      
 			    </div>
 			  </div>
 			</div>
