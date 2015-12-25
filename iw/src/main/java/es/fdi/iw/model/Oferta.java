@@ -9,12 +9,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 @Entity
-@NamedQuery(name="allOffers", query="select o from Oferta o")
+@NamedQueries({
+	@NamedQuery(name="allOffers", 
+			query="select o from Oferta o"),
+	@NamedQuery(name="monthlySpecials", 
+			query="select o from Oferta o where o.ofertaMes is true")
+})
 /*
 @NamedQueries({
 	@NamedQuery(name="allOffers", query="select o from Oferta o"),
@@ -33,6 +39,7 @@ public class Oferta {
 	private List<Reserva> reservas;
 	private Local local; //una oferta es puesta por un Local
 	private String tags;
+	private boolean ofertaMes;
 	
 	
 	public Oferta() {
@@ -46,6 +53,14 @@ public class Oferta {
 
 	public void setID(long iD) {
 		ID = iD;
+	}
+	
+	public boolean getOfertaMes() {
+		return ofertaMes;
+	}
+
+	public void setOfertaMes(boolean o) {
+		ofertaMes = o;
 	}
 	
 	public String getTags() {

@@ -476,9 +476,15 @@ public class HomeController {
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
 	@Transactional
 	public String ofertasMes(Locale locale, Model model) {
-		model.addAttribute("active", "ofertasMes");
-		
+		model.addAttribute("active", "ofertasMes");		
 		model.addAttribute("pageTitle", "Ofertas del mes");	
+		
+		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				
+		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
+		model.addAttribute("alltags", alltags);
+		
 		return "ofertasMes";
 	}	
 

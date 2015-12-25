@@ -177,8 +177,8 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="skill">
-                        <h2>Ofertás más populares</h2>
-                        <p>Las ofertas más populares son.</p>
+                        <h2>Locales más populares</h2>
+                        <p>AQUI PONER UN RANKING MEJOR IGUAL HASTA 5 DE LOS LOCALES Q HAS RESERVAS HAN TENIDO</p>
 
                         <div class="progress-wrap">
                             <h3>Hamburguesa</h3>
