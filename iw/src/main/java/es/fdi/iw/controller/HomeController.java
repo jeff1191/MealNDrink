@@ -442,8 +442,6 @@ public class HomeController {
 	@Transactional
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	
 	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
-		//ESTO ES MUY GUARRO... LO MEJOR VA A SER HACERSE OTRA VISTA...?
-		//Hacer varios if
 		
 		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);		
 		

@@ -39,75 +39,35 @@
 
 				<div class="tab-content">
 				  <div class="tab-pane fade in active" id="ofertas">
-					<div class="media">
-						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
+				    <c:forEach items="${infoLocal.ofertas}" var="i">
+						<div class="media">
+							<div class="pull-left">
+								<img class="media-object" src="${prefix}resources/img/database/offers/toLocals/${i.foto}">
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading">${i.nombre}</h4>
+								<p>${i.descripcion}</p>
+							</div>
 						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Oferta #1</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-						</div>
-					</div>
-					<div class="media">
-						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Oferta #2</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-						</div>
-					</div>
-					<div class="media">
-						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Oferta #3</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-						</div>
-					</div>
-					<div class="media">
-						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Oferta #4</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-						</div>
-					</div>
-					<div class="media">
-						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Oferta #5</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-						</div>
-					</div>
+					</c:forEach>
+					
 					<br></br>
 					<button type="submit" class="btn btn-default">Anterior</button>
 					<button type="submit" class="btn btn-default">Siguiente</button>
-				</div>
+				   </div>
 
-				<div class="tab-pane fade" id="opiniones">
+				   <div class="tab-pane fade" id="opiniones">
+				    <c:forEach items="${infoLocal.comentarios}" var="i">
 					<div class="media">
 						<div class="pull-left">
 							<img class="media-object" src="${prefix}resources/img/user.jpg">
 						</div>
 						<div class="media-body">
-							<h4 class="media-heading">Comentario #1</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+							<h4 class="media-heading">lol0</h4>
+							<p>${i.texto}</p>
 						</div>
 					</div>
-					<div class="media">
-						<div class="pull-left">							
-							<img class="media-object" src="${prefix}resources/img/user.jpg">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Comentario #2</h4>
-							<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-						</div>
-					</div>	
+					</c:forEach>				
 					<br></br>
 					<button type="submit" class="btn btn-default">Anterior</button>
 					<button type="submit" class="btn btn-default">Siguiente</button>
