@@ -177,45 +177,13 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="skill">
-                        <h2>Locales más populares</h2>
-                        <p>AQUI PONER UN RANKING MEJOR IGUAL HASTA 5 DE LOS LOCALES Q HAS RESERVAS HAN TENIDO</p>
-
-                        <div class="progress-wrap">
-                            <h3>Hamburguesa</h3>
-                            <div class="progress">
-                              <div class="progress-bar  color1" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 85%">
-                                <span class="bar-width">85%</span>
-                              </div>
-
-                            </div>
-                        </div>
-
-                        <div class="progress-wrap">
-                            <h3>Pizza</h3>
-                            <div class="progress">
-                              <div class="progress-bar color2" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
-                               <span class="bar-width">95%</span>
-                              </div>
-                            </div>
-                        </div>
-
-                        <div class="progress-wrap">
-                            <h3>Pollo</h3>
-                            <div class="progress">
-                              <div class="progress-bar color3" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                <span class="bar-width">80%</span>
-                              </div>
-                            </div>
-                        </div>
-
-                        <div class="progress-wrap">
-                            <h3>Tacos</h3>
-                            <div class="progress">
-                              <div class="progress-bar color4" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                <span class="bar-width">90%</span>
-                              </div>
-                            </div>
-                        </div>
+                        <h2>Locales más populares</h2>                       
+						<div class="list-group">
+						 <c:forEach items="${popularLocals}" var="i">
+						  <a href="/iw/comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>						
+						 </c:forEach>
+						</div>
+						
                     </div>
 
                 </div><!--/.col-sm-6-->

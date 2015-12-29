@@ -7,14 +7,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 
 @Entity
-@NamedQuery(name="allLocals", query="select o from Local o")
-//@NamedQuery(name="infolocal", query="select o from Local where ID =")
+@NamedQueries({
+	@NamedQuery(name="allLocals", 
+			query="select o from Local o"),
+	@NamedQuery(name="infolocal", 
+			query="select o from Local o where o.id in (:idParam)")
+})
 public class Local {
 	
 	private long ID;

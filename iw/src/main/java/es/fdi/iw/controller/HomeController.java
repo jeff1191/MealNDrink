@@ -339,6 +339,7 @@ public class HomeController {
 		public String getId() { return id; }
 		public String getTags() { return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim(); }
 	}
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -360,8 +361,19 @@ public class HomeController {
 		platos.add(new Plato("2", "bootstrap", "html", "wordpress"));
 		platos.add(new Plato("3", "bootstrap"));
 		platos.add(new Plato("4", "wordpress"));
-		
+		Integer[] localesPopularesID = {4, 1, 5, 2, 6, 3};
+		//Local aux = (Local) entityManager.createNamedQuery("infoLocal").setParameter("idParam", localesPopularesID).getResultList();
+		//String[] localesPopulares = {"A zampar!", "Bistro", "100 sabrositos", "Tapas", "Fileton",
+		//		"Cubos y tapas"};
+		List<Long> ids = new ArrayList<Long>();
+		ids.add((long) 4);
+		ids.add((long) 1);
+		ids.add((long) 5);
+		ids.add((long) 2);
+		ids.add((long) 3);	
 		model.addAttribute("platos", platos);
+		model.addAttribute("popularLocals", entityManager.createNamedQuery("infolocal").setParameter("idParam", ids).getResultList());
+		
 		
 		return "home";
 	}	
