@@ -330,15 +330,6 @@ public class HomeController {
 				"true".equals(formDebug) ? "true" : "false");
 		return "redirect:/";
 	}
-	public static class Plato {
-		private String id;
-		private String[] tags;
-		public Plato(String id, String ... tags) {
-			this.id = id; this.tags = tags;
-		}
-		public String getId() { return id; }
-		public String getTags() { return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim(); }
-	}
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -352,27 +343,33 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("pageTitle", "Bienvenido a IW");
+		model.addAttribute("pageTitle", "Bienvenido a MealNDrink");
 		model.addAttribute("active", "home");
 		logger.info("Setting active tab: home");
-						
-		ArrayList<Plato> platos = new ArrayList<Plato>();
-		platos.add(new Plato("1", "bootstrap", "html"));
-		platos.add(new Plato("2", "bootstrap", "html", "wordpress"));
-		platos.add(new Plato("3", "bootstrap"));
-		platos.add(new Plato("4", "wordpress"));
-		Integer[] localesPopularesID = {4, 1, 5, 2, 6, 3};
-		//Local aux = (Local) entityManager.createNamedQuery("infoLocal").setParameter("idParam", localesPopularesID).getResultList();
-		//String[] localesPopulares = {"A zampar!", "Bistro", "100 sabrositos", "Tapas", "Fileton",
-		//		"Cubos y tapas"};
-		List<Long> ids = new ArrayList<Long>();
-		ids.add((long) 4);
-		ids.add((long) 1);
-		ids.add((long) 5);
-		ids.add((long) 2);
-		ids.add((long) 3);	
-		model.addAttribute("platos", platos);
-		model.addAttribute("popularLocals", entityManager.createNamedQuery("infolocal").setParameter("idParam", ids).getResultList());
+	
+		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};		
+		List<Long> idsOffers = new ArrayList<Long>(); 
+		idsOffers.add((long) 8);
+		idsOffers.add((long) 5);
+		idsOffers.add((long) 7);
+		idsOffers.add((long) 2);
+		List<Long> idsLocals = new ArrayList<Long>();
+		idsLocals.add((long) 4);
+		idsLocals.add((long) 1);
+		idsLocals.add((long) 5);
+		idsLocals.add((long) 2);
+		idsLocals.add((long) 3);	
+		List<Long> idsBooks = new ArrayList<Long>(); 
+		idsBooks.add((long) 1);
+		idsBooks.add((long) 5);
+		idsBooks.add((long) 2);
+		idsBooks.add((long) 3);	
+		
+		model.addAttribute("alltags", alltags);	
+		model.addAttribute("platos", entityManager.createNamedQuery("infoOffers").setParameter("idParam", idsOffers).getResultList());
+		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
+		model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
 		
 		
 		return "home";

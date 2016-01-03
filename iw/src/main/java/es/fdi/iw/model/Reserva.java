@@ -6,8 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
 
 @Entity
+@NamedQuery(name="infoBooks", 
+	query="select o from Reserva o where o.id in (:idParam)")
+
 public class Reserva {
 
 	private long ID;

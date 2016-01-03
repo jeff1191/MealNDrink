@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 @NamedQueries({
 	@NamedQuery(name="allOffers", 
 			query="select o from Oferta o"),
+	@NamedQuery(name="infoOffers", 
+			query="select o from Oferta o where o.id in (:idParam)"),
 	@NamedQuery(name="monthlySpecials", 
 			query="select o from Oferta o where o.ofertaMes is true")
 })
