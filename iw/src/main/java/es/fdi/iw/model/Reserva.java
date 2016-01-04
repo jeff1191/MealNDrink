@@ -21,6 +21,7 @@ public class Reserva {
 	private Oferta oferta;
 	private int numPersonas;
 	private Timestamp fechaReserva;
+	private boolean validado;
 	
 	public Reserva(String codigoQr,Usuario cliente, Oferta oferta, int numeroPersonas, Timestamp fechaReserva){
 		this.codigoQr=codigoQr;
@@ -28,6 +29,7 @@ public class Reserva {
 		this.setOferta(oferta);
 		this.numPersonas=numeroPersonas;
 		this.fechaReserva=fechaReserva;
+		this.setValidado(false);
 	}
 	
 	public Reserva() {
@@ -74,5 +76,13 @@ public class Reserva {
 	}
 	public void setNumPersonas(int numPersonas) {
 		this.numPersonas = numPersonas;
+	}
+
+	public boolean isValidado() {
+		return validado;
+	}
+
+	public void setValidado(boolean validado) {
+		this.validado = validado;
 	}
 }

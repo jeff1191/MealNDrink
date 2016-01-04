@@ -45,6 +45,7 @@ public class Oferta {
 	
 	
 	public Oferta() {
+		capacidadActual=0;
 	}
 	
 	@Id

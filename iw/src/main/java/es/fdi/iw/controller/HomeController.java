@@ -4,10 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.nio.channels.FileChannel;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -368,8 +370,8 @@ public class HomeController {
 		
 		model.addAttribute("alltags", alltags);	
 		model.addAttribute("platos", entityManager.createNamedQuery("infoOffers").setParameter("idParam", idsOffers).getResultList());
-		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
-		model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
+	//	model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
+		//model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
 		
 		
 		return "home";
@@ -433,12 +435,85 @@ public class HomeController {
 		
 		return "comercio_externo";
 	}	
+	@Transactional
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
-	public String comercio_interno(Locale locale, Model model) {
+	public String comercio_interno(@RequestParam("id") long id,Model model) {
+		//Tendriamos que pasarle el LOCAL al que le das click.
+		//Yo creo que es mejor que el desplegable que sale en perfil ponga (Cerrar sesión, perfil y los locales que tiene)
+		//CAMBIAR EL HEADER!!!!!!! 
+		Local local = entityManager.find(Local.class, id);
+		model.addAttribute("pageTitle", local.getNombre());
 		model.addAttribute("active", "comercio_interno");
-		model.addAttribute("pageTitle", "Comercio1");
+		model.addAttribute("local", local);
 		return "comercio_interno";
 	}	
+	@Transactional
+	@RequestMapping(value = "/nuevaOferta", method = RequestMethod.POST)
+	public String nuevaOferta(@RequestParam("fileToUpload") MultipartFile photo,
+    		@RequestParam("id") long id, @RequestParam("name") String nombreOferta,@RequestParam("endTime") String endTime
+    		, @RequestParam("cap") int capacidad,@RequestParam("description") String descripcion){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+	
+		Local local = entityManager.find(Local.class, id);
+		Oferta offer= new Oferta();
+		offer.setNombre(nombreOferta);
+		offer.setFechaLimite(new Timestamp(23)); //ENDTIME!!!!!!!!!!
+		offer.setCapacidadTotal(capacidad);
+		offer.setDescripcion(descripcion);
+		String tags = "plan_romantico, comida_india, comida_mexicana";
+		offer.setTags(tags);		
+		offer.setLocal(local);
+		offer.setOfertaMes(false);
+		local.getOfertas().add(offer);
+        if (!photo.isEmpty()) {
+            try {
+            	offer.setFoto(photo.getOriginalFilename());
+                byte[] bytes = photo.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(
+                        		new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+offer.getFoto())));
+                stream.write(bytes);
+                stream.close();
+        		entityManager.persist(offer);
+        		entityManager.persist(local);
+                return "redirect:comercio_interno?id="+local.getID();
+            } catch (Exception e) {
+            	return "redirect:comercio_interno?id="+local.getID();
+            }
+        } else { //no ha seleccionado foto, poner la por defecto
+        	offer.setFoto("unknown_offer.jpg");
+          
+    	    	BufferedInputStream in = new BufferedInputStream(
+    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+    	    	BufferedOutputStream stream = null;
+				try {
+					stream = new BufferedOutputStream(
+							new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+offer.getNombre()+".jpg")));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					stream.write(IOUtils.toByteArray(in));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				entityManager.persist(offer);
+				entityManager.persist(local);
+				return "redirect:comercio_interno?id="+local.getID();
+        }
+    }
+	@Transactional
+	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
+	public String eliminarOferta(@RequestParam("id") long id, Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+			System.err.println("LLEGAS");
+		return "";
+    }
+	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model) {
