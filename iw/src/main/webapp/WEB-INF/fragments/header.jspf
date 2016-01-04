@@ -28,7 +28,7 @@
 <link href="${prefix}resources/css/responsive.css" rel="stylesheet">
 <script src="${prefix}resources/js/bootstrap.min.js"></script>
 
-<script src="${prefix}resources/js/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="${prefix}resources/js/jquery.js"></script>
 <script src="${prefix}resources/js/bootstrap.min.js"></script>
 <script src="${prefix}resources/js/jquery.prettyPhoto.js"></script>

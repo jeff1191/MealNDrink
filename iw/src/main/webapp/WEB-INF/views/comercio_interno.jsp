@@ -1,5 +1,33 @@
 <%@ include file="../fragments/header.jspf" %>
+<script type="text/javascript">
 
+$(function() {
+	$(".eliminaOferta").click(function() {
+		// en un manejador de eventos jquery, el "this" inicial es el elemento DOM sobre el que se lanza el evento
+		// por tanto, $(this) es el elemento JQuery que lo envuelve 
+		var target = $(this); 
+
+		var idOffer = $(this).attr("id").substring("del_".length); 
+		var idLocal=$('#id_local').get(0).value;
+
+		$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer},function(data){
+			//respuesta es el resultado que devuelve nuestro archivo que recibe las variables
+			//	var offer=$('#ofertas').get(0);
+				$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+				//$('#TodasOfertas').html(allOffers());
+				
+			});
+	})	
+	
+	function allOffers() {
+		var ret;
+	
+	return "";
+}
+
+
+})
+</script>
       
       
          <section id="feature" class="transparent-bg">
@@ -11,7 +39,7 @@
                     <div class="features">
                         <div class="col-md-4 col-sm-4">							
                             <img src="${prefix}resources/img/database/locals/${local.foto}" height="350" width="300">
-                               
+                            <input hidden="submit" id="id_local" value="${local.ID}" />   
 							<h3>Dirección</h3>
 							<p>${local.direccion}</p>
 														
@@ -48,31 +76,27 @@
 								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> Añadir nueva oferta</button>
 								  	<br></br>
 								  </div>
-									<c:forEach items="${local.ofertas}" var="i">
-										<div class="media">
-											<div class="pull-left">
-												<img class="media-object" src="${prefix}resources/img/database/offers/toLocals/${i.foto}">
+									  <div id="TodasOfertas" class="TodasOfertas">
+											<c:forEach items="${local.ofertas}" var="i">
+												<div class="media">
+													<div class="pull-left">
+														<img class="media-object" src="${prefix}resources/img/database/offers/toLocals/${i.foto}">
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading">${i.nombre}</h4>
+												<p>${i.descripcion}</p>											
+													<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditOffer"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+													<button type="submit" id="del_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalDelOffer"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" >Eliminar</button>
+		
+												</div>
+												</div>
+											</c:forEach>	
+											<button type="submit" class="btn btn-default">Anterior</button>
+											<button type="submit" class="btn btn-default">Siguiente</button>						
 										</div>
-										<div class="media-body">
-											<h4 class="media-heading">${i.nombre}</h4>
-										<p>${i.descripcion}</p>											
-											<button type="submit" id="${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditOffer"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button type="submit" id="${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalDelOffer"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-											<button id="${i.ID}" value="${i}" class="btn btn-default"  onclick="eliminaOferta(this.id)">Eliminar</button>
-										<script type="text/javascript">
-
-										function eliminaOferta(clicked_id)
-										{
-										    alert(clicked_id);
-										}
-										</script>
-										</div>
-										</div>
-									</c:forEach>							
-									
 									<br></br>
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
+									
 								</div>
 								
 								<!-- Modal Add Offer-->
@@ -85,7 +109,7 @@
 								      </div>
 								      <div class="modal-body">
 										<form role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
-										<input hidden="submit" name="id" value="${local.ID}" />
+										<input hidden="submit" name="id_local" value="${local.ID}" />
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
 											<input type="text" class="form-control" name="name" id="name" placeholder="Introduzca el nuevo nombre">
@@ -136,9 +160,7 @@
 											<div class="modal-body">
 											
 											<p>¿Está seguro que quiere eliminar esta oferta?</p>
-												<div class="modal-footer">	
-													<input hidden="submit" name="idlocal" value="${local.ID}" />
-													<input hidden="submit" name="idoferta" value="${local.ID}" />
+												<div class="modal-footer">
 													<button id="" class="btn btn-default"  onclick="eliminaOferta(this.id)">Aceptar</button>
 													<button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
 												</div>

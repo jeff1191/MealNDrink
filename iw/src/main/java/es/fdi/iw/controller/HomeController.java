@@ -450,7 +450,7 @@ public class HomeController {
 	@Transactional
 	@RequestMapping(value = "/nuevaOferta", method = RequestMethod.POST)
 	public String nuevaOferta(@RequestParam("fileToUpload") MultipartFile photo,
-    		@RequestParam("id") long id, @RequestParam("name") String nombreOferta,@RequestParam("endTime") String endTime
+    		@RequestParam("id_local") long id, @RequestParam("name") String nombreOferta,@RequestParam("endTime") String endTime
     		, @RequestParam("cap") int capacidad,@RequestParam("description") String descripcion){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
@@ -466,6 +466,21 @@ public class HomeController {
 		offer.setLocal(local);
 		offer.setOfertaMes(false);
 		local.getOfertas().add(offer);
+		
+		/*
+		Properties props = new Properties();
+		try {
+			props.load(getClass().getResourceAsStream("/application.properties"));
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} 
+		File baseFolder = new File(props.getProperty("spring.view.prefix"));
+    	System.err.println("PREFIXXXXXXXXXX :"+ baseFolder.getAbsolutePath());
+		*/
+		
+		
+		
         if (!photo.isEmpty()) {
             try {
             	offer.setFoto(photo.getOriginalFilename());
@@ -507,11 +522,13 @@ public class HomeController {
     }
 	@Transactional
 	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
-	public String eliminarOferta(@RequestParam("id") long id, Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
-			System.err.println("LLEGAS");
-		return "";
+	public String eliminarOferta(@RequestParam("idLocal") long idLocal, @RequestParam("idOferta") long idOffer,Model model){
+			Local local= entityManager.find(Local.class, idLocal);
+			Oferta oferta= entityManager.find(Oferta.class, idOffer);
+			entityManager.remove(oferta);
+			if(local.getOfertas().remove(oferta))// si se ha poddido eliminar
+				entityManager.persist(local);			
+			return "eliminarOferta";
     }
 	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
