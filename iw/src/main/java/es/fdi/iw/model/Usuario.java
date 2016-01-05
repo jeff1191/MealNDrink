@@ -1,6 +1,5 @@
 package es.fdi.iw.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,14 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-@NamedQuery(name="dameUsuarioLogin", query="SELECT usu FROM Usuario usu WHERE usu.nombre = nombre")
+@NamedQueries({
+	@NamedQuery(name="dameUsuarioLogin", query="SELECT usu FROM Usuario usu WHERE usu.nombre = :nombre"),
+	@NamedQuery(name="dameIDUsuarioMasAlto", query="SELECT MAX(ID) AS idU FROM Usuario usu")
+})
 public class Usuario {
+	
+	private static BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 	
 	private long ID;
 	private String nombre;
@@ -26,7 +31,6 @@ public class Usuario {
 	private List<Comentario> comentarios;
 	private List<Reserva> reservas;
 	private List<Local> locales; // un usuario puede tener muchos locales
-	private static BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 	private String hashedAndSalted;
 	
 
@@ -34,11 +38,8 @@ public class Usuario {
 		
 	}
 
-	public boolean isPassValid(String pass) {
-		return bcryptEncoder.matches(pass, hashedAndSalted);		
-	}
 	
-	public Usuario(String nombre, String foto, String email, String telefono, String rol){
+	public Usuario(String nombre, String foto, String email, String telefono, String rol, String pass){
 		this.nombre=nombre;
 		this.foto=foto;
 		this.email=email;
@@ -158,6 +159,6 @@ public class Usuario {
 	}
 	public void setLocales(List<Local> locales) {
 		this.locales = locales;
-	} 
+	}
 
 }

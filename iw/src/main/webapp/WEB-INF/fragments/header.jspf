@@ -26,8 +26,9 @@
 <link href="${prefix}resources/css/prettyPhoto.css" rel="stylesheet">
 <link href="${prefix}resources/css/main.css" rel="stylesheet">
 <link href="${prefix}resources/css/responsive.css" rel="stylesheet">
-<script src="${prefix}resources/js/bootstrap.min.js"></script>
+<link href="${prefix}resources/css/jquery-ui.css" rel="stylesheet">
 
+<script src="${prefix}resources/js/bootstrap.min.js"></script>
 <script src="${prefix}resources/js/jquery.min.js"></script>
 <script src="${prefix}resources/js/jquery.js"></script>
 <script src="${prefix}resources/js/bootstrap.min.js"></script>
@@ -35,9 +36,7 @@
 <script src="${prefix}resources/js/jquery.isotope.min.js"></script>
 <script src="${prefix}resources/js/main.js"></script>
 <script src="${prefix}resources/js/wow.min.js"></script>
-
 <script src="${prefix}resources/js/jquery-ui.js"></script>
-<link href="${prefix}resources/css/jquery-ui.css" rel="stylesheet">
 <script src="${prefix}resources/js/jquery.ui.datepicker-es.js"></script>
 
 <%-- pageExtraScripts --%>
@@ -92,43 +91,33 @@
 				
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-			<li class="${active eq 'home'?'active':''}"><a href="home">Inicio</a></li>
+						<li class="${active eq 'home'?'active':''}"><a href="home">Inicio</a></li>
                         <li class="${active eq 'ofertasMes'?'active':''}"><a href="ofertasMes">Ofertas del mes</a></li>
                         <li class="${active eq 'ultimasOfertas'?'active':''}"><a href="ultimasOfertas">Últimas ofertas</a></li>
                         <li class="${active eq 'acercaDe'?'active':''}"><a href="acercaDe">Acerca de</a></li>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <!-- <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                            	<li><a data-toggle="modal" data-target="#myModal">Iniciar sesión</a></li>
-                            	<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button></li>
-                                <li><a href="administracion">Administrador</a></li>
-                                <li><a href="usuario">Usuario</a></li>
-                                <li><a href="comercio_interno">Local</a></li>
-                            </ul>
-                        </li> --> 
-                        
-                        
-                        
+                       
                         <c:choose>
                         	<c:when test="${not empty user}">
                         
-                        	<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                            	<li><a href="administracion">Administrador</a></li>
-                                <li><a href="usuario">Usuario</a></li>
-                                <li><a href="comercio_interno">Local</a></li>
-                            </ul>
-                        </li>
+	                        	<li class="dropdown">
+	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
+	                            <ul class="dropdown-menu">
+		                        	<c:choose>
+								        <c:when test="${user.rol == 'administrador'}">
+								            <li class="${active eq 'administracion'?'active':''}"><a href="administracion">Mi perfil</a></li>
+								        </c:when>
+								        <c:when test="${user.rol == 'cliente'}">
+								            <li class="${active eq 'usuario'?'active':''}"><a href="usuario">Mi perfil</a></li>
+								        </c:when>
+								        <c:when test="${user.rol == 'empresario'}">
+								            <li class="${active eq 'comercio_interno'?'active':''}"><a href="comercio_interno">Mi perfil</a></li>
+								        </c:when>
+								    </c:choose>
+								    <li><a href="logout">Cerrar sesión</a></li>
+							    </ul>
+	                        	</li>
+        
+                        	
                         
                         	</c:when>
 						<c:otherwise>
@@ -136,13 +125,7 @@
                         	<li><a data-toggle="modal" data-target="#myModal">Iniciar sesión</a></li>
                         	
                         </c:otherwise>
-						</c:choose>
-                        
-                        
-                        
-                        
-                        
-                        
+						</c:choose>   
                       
                     </ul>
                 </div>
@@ -158,7 +141,7 @@
 		        <h4 class="modal-title" id="myModalLabel"> Iniciar sesión</h4>
 		      </div>
 		      <div class="modal-body">
-				<form id="formLogin" action="${prefix}loginpro" method="POST">
+				<form id="formLogin" action="${prefix}login" method="POST">
 		           <fieldset>
 			            <div class="form-group">
 			              <label for="login"> Usuario</label>
@@ -170,9 +153,7 @@
 			            </div>
 			            <div class="checkbox">
 			              <label><input type="checkbox" value="" checked>Recordarme</label>
-			           		
-			           		
-			           		<button type="button" class="btn btn-primary"> Registrarse</button>
+			           	
 		        			<button type="submit" value="loginpro" class="btn btn-primary"> Iniciar sesión</button>
 			            
 			            
@@ -181,8 +162,7 @@
 		         </form>
 		      </div>
 		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary"> Registrarse</button>
-		        <button type="submit" value="loginpro" class="btn btn-primary"> Iniciar sesión</button>
+		      	<a href="registrarse">Registrarse</a> 
 		      </div>
 		    </div>
 		  </div>
