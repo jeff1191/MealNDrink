@@ -24,7 +24,9 @@ $(function() {
 	
 	return "";
 }
-
+	function cargarDatosOferta() {
+			alert("HOLA");
+}
 
 })
 </script>
@@ -85,7 +87,7 @@ $(function() {
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 												<p>${i.descripcion}</p>											
-													<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditOffer"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+													<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 													<button type="submit" id="del_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalDelOffer"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" >Eliminar</button>
 		
@@ -144,7 +146,47 @@ $(function() {
 								<!-- End Modal Add Offer-->
 								
 								<!-- Modal Edit Offer-->
-								
+								<div class="modal fade" id="ModalEditOffer" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        <h4 class="modal-title" id="editModalLabel"> Editar oferta</h4>
+								      </div>
+								      <div class="modal-body">
+										<form role="form" method="POST" enctype="multipart/form-data" action="editarOferta">
+										<input hidden="submit" name="id_local" value="${local.ID}" />
+										  <div class="form-group">
+											<label for="name">Nombre de la oferta:</label>
+											<input type="text" class="form-control" name="Editname" id="Editname" placeholder="Introduzca el nombre">
+										  </div>
+										  <div class="form-group">
+											<label for="endTime">Fecha límite:</label>
+											<input type="time" class="form-control"  name="EditendTime" id="EditendTime" placeholder="Introduzca el dia límite">
+										  </div>
+										  <div class="form-group">
+											<label for="cap">Capacidad total:</label>
+											<input type="number" class="form-control" name="Editcap" id="Editcap" placeholder="Introduzca el numero máximo de beneficiarios">
+										  </div>
+										  <div class="form-group">
+											<label for="descriptcion">Descripción:</label>
+											<input type="text" class="form-control" name="Editdescription" id="Editdescription" placeholder="Introduzca la descripción de la oferta">
+										  </div>
+										  <div class="form-group">
+											<label for="file">Imagen de la oferta:</label>
+											<input type="file" name="EditfileToUpload" accept="image/*" id="EditfileToUpload">											
+										  </div>
+											<div class="modal-footer">						      	 
+											  	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+									     	</div>
+										  	
+										</form>							
+								      </div>
+
+								    </div>
+								  </div>
+								</div>     
 								<!-- End Modal edit Offer-->
 								
 								<!-- Modal Del Offer-->
@@ -236,45 +278,29 @@ $(function() {
 								</div>
 								
 								<div class="tab-pane fade" id="opiniones">
+									<c:forEach items="${local.comentarios}" var="i">
 									<div class="media">
 										<div class="pull-left">
 											<img class="media-object" src="${prefix}resources/img/user.jpg">
 										</div>
 										<div class="media-body">
-											<h4 class="media-heading">Comentario #1</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<h4 class="media-heading">Comentario #${}</h4>
+											<p>${i.texto}</p>
 											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/user.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Comentario #2</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/user.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Comentario #3</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>									
+								
 									<br></br>
 									<button type="submit" class="btn btn-default">Anterior</button>
 									<button type="submit" class="btn btn-default">Siguiente</button>
-								   </div>
+									</c:forEach>
+								</div>
+								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
 									<form role="form">
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="name" placeholder="Introduce un nuevo nombre">
+											<input type="text" class="form-control" id="name" placeholder="${local.nombre}">
 										  </div>
 										  <div class="form-group">
 											<label for="pwd">Contraseña:</label>
@@ -282,19 +308,19 @@ $(function() {
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="time" class="form-control" id="timeBusiness" placeholder="Introduce un nuevo horario">
+											<input type="time" class="form-control" id="timeBusiness" placeholder="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>
-											<input type="text" class="form-control" id="dir" placeholder="Introduce una nueva direccion">
+											<input type="text" class="form-control" id="dir" placeholder="${local.direccion}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="email" placeholder="Introduce un nuevo email">
+											<input type="email" class="form-control" id="email" placeholder="NO CREO QUE ESTE CAMPO HAGA FALTA">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
+											<input type="tel" class="form-control" id="tel" placeholder="EL USUARIO O EL LOCAL???">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>
