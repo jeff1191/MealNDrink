@@ -17,21 +17,19 @@
 			var val = validacionRegistrarse();
 			
 			if(val === true){
-				var formularioRegistro = document.formRegis;
+				var nombr = $("#regname").val();
+				var contr = $("#regpwd").val();
+				var e_mail = $("#regemail").val();
+				var telef = $("#regtel").val();
+				var foto = $("#regfileToUpload").val();
+				var rool = $("#regRol").val();
 				
-				var nombr = document.formRegis.name;
-				var contr = formularioRegistro.pwd;
-				var e_mail = formularioRegistro.email;
-				var telef = formularioRegistro.tel;
-				var foto = formularioRegistro.fileToUpload;
-				var rool = formularioRegistro.Rol;
-				
-				$.ajax({
+				$.ajax({                                      //no me entra nunca en el servlet ¬¬
 					dataType: "json",
 					url: "${prefix}registroUsuario",
 					type: "POST",
 					data: {
-						nombre: nombr,
+						nombre: nombr,  
 						password: contr,
 						email: e_mail,
 						telefono: telef,
@@ -39,12 +37,17 @@
 						rol: rool
 					},
 					success: function(){
-						alert("Apodo libre");
+						location.href = "${prefix}home/";
 					},
 					error: function(){
-						alert("Apodo libre") //apodoOcupado()
+						apodoOcupado()
 					}
 				})
+				
+				/*$.post( "registroUsuario",{nombre: nombr, password: contr, email: e_mail, telefono: telef, photo: foto, rol: rool},function(data){
+					alert("MEC");
+						
+				});*/
 			}
 		};
 
@@ -53,11 +56,11 @@
 			
 			var formularioRegistro = document.formRegis;
 			
-			var nombre = document.formRegis.name;
-			var  contr = formularioRegistro.pwd;
-			var  email = formularioRegistro.email;
-			var  telef = formularioRegistro.tel;
-			var   foto = formularioRegistro.fileToUpload;
+			var nombre = document.formRegis.regname;
+			var  contr = formularioRegistro.regpwd;
+			var  email = formularioRegistro.regemail;
+			var  telef = formularioRegistro.regtel;
+			var   foto = formularioRegistro.regfileToUpload;
 			
 			var error = true;
 			
@@ -105,11 +108,11 @@
 		function recargarElementos(){
 			var formularioRegistro = document.formRegis;
 			
-			var nombre = document.formRegis.name;
-			var  contr = formularioRegistro.pwd;
-			var  email = formularioRegistro.email;
-			var  telef = formularioRegistro.tel;
-			var   foto = formularioRegistro.fileToUpload;
+			var nombre = document.formRegis.regname;
+			var  contr = formularioRegistro.regpwd;
+			var  email = formularioRegistro.regemail;
+			var  telef = formularioRegistro.regtel;
+			var   foto = formularioRegistro.regfileToUpload;
 			
 			email.style.background = "white";
 			email.style.color = "grey";
@@ -122,8 +125,14 @@
 		};
 
 		function apodoOcupado(){
+			var formularioRegistro = document.formRegis;
+			
+			var nombre = document.formRegis.regname;
+			
 			nombre.style.background = "yellow";
 			nombre.style.color = "red";
+			
+			alert("El apodo está ocupado. Elija otro (campo amarillo)")
 		};
 	</script>
 </head>
@@ -140,27 +149,27 @@
 				<form id="formRegis" name="formRegis" enctype="multipart/form-data">
 				  <div class="form-group">
 					<label for="name">Apodo:</label>
-					<input required type="text" class="form-control" id="name" name="name" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
+					<input required type="text" class="form-control" id="regname" name="regname" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
 				  </div>
 				  <div class="form-group">
 					<label for="pwd">Contraseña:</label>
-					<input required type="password" class="form-control" id="pwd" name="pwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
+					<input required type="password" class="form-control" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
 				  </div>
 				  <div class="form-group">
 					<label for="email">Email:</label>
-					<input required type="email" class="form-control" id="email" name="email" placeholder="Introduce un nuevo email">
+					<input required type="email" class="form-control" id="regemail" name="regemail" placeholder="Introduce un nuevo email">
 				  </div>
 				  <div class="form-group">
 					<label for="tel">Teléfono:</label>
-					<input required type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
+					<input required type="tel" class="form-control" id="regtel" name="regtel" placeholder="Introduce un nuevo telefono">
 				  </div>
 				  <div class="form-group">
 					<label for="file">Imagen de perfil:</label>
-					<input required type="file" id="fileToUpload" name="fileToUpload" accept="image/*" id="fileToUpload">											
+					<input required type="file" id="regfileToUpload" name="regfileToUpload" accept="image/*" id="fileToUpload">											
 				  </div>
 				  <div>
 				  	<label for="file">¿Qué tipo de actividad tendrá en MealNDrink?:</label>
-					<select required id="Rol" name="Rol">
+					<select required id="regRol" name="regRol">
 						<option value="cliente">Cliente</option>
 						<option value="propietario_comercio">Propietario de comercio</option>
 					</select>

@@ -208,7 +208,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String empty(Locale locale, Model model) {
+	public String empty(Locale locale, Model model) {logger.info("pass was NOT valid");
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -430,6 +430,7 @@ public class HomeController {
 			MultipartHttpServletRequest req){
 		
 		Usuario u;
+		logger.info("Se metio aqui OK");
 			
 		try{
 			u = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", nombre).getSingleResult();
@@ -439,10 +440,12 @@ public class HomeController {
 			String q = handleFileUpload(photo, String.valueOf(rol + "_" + nombre));
 			entityManager.persist(u);
 
+			logger.info("El usuario no existe");
 			
 			return new ResponseEntity<String>("Usuario creado satisfactoriamente", HttpStatus.OK);	
 		}
 		
-		return new ResponseEntity<String>("Apodo ocupado, usuario no creado", HttpStatus.NOT_ACCEPTABLE);
+		logger.info("El usuario existia");
+		return new ResponseEntity<String>("Apodo ocupado, usuario no creado", HttpStatus.BAD_REQUEST);
 	}
 }
