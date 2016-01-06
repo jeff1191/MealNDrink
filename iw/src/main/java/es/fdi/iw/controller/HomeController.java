@@ -400,10 +400,14 @@ public class HomeController {
 		return "acercaDe";
 	}	
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
-	public String usuario(Locale locale, Model model) {
+	public String usuario(@RequestParam("id") long id,Model model) {
 		model.addAttribute("active", "usuario");
 		model.addAttribute("pageTitle", "User");
-		return "usuario";
+
+		Usuario usuario = entityManager.find(Usuario.class, id);
+
+		model.addAttribute("usuario", usuario);
+		return "usuario";		
 	}	
 	
 	@Transactional
@@ -451,7 +455,7 @@ public class HomeController {
 	@RequestMapping(value = "/nuevaOferta", method = RequestMethod.POST)
 	public String nuevaOferta(@RequestParam("fileToUpload") MultipartFile photo,
     		@RequestParam("id_local") long id, @RequestParam("name") String nombreOferta,@RequestParam("endTime") String endTime
-    		, @RequestParam("cap") int capacidad,@RequestParam("description") String descripcion){
+    		, @RequestParam("cap") int capacidad,@RequestParam("description") String descripcion, Model model){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
@@ -492,7 +496,7 @@ public class HomeController {
                 stream.close();
         		entityManager.persist(offer);
         		entityManager.persist(local);
-                return "redirect:comercio_interno?id="+local.getID();
+        		
             } catch (Exception e) {
             	return "redirect:comercio_interno?id="+local.getID();
             }
@@ -517,8 +521,9 @@ public class HomeController {
 				}
 				entityManager.persist(offer);
 				entityManager.persist(local);
-				return "redirect:comercio_interno?id="+local.getID();
+				
         }
+        return "redirect:comercio_interno?id="+local.getID();
     }
 	@Transactional
 	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
@@ -531,13 +536,123 @@ public class HomeController {
 			return "eliminarOferta";
     }
 	
+	
+	@Transactional
+	@RequestMapping(value = "/nuevoLocal", method = RequestMethod.POST)
+	public String nuevoLocal(@RequestParam("fileToUpload") MultipartFile photo,
+    		@RequestParam("id_usuario") long id, @RequestParam("name") String nombreLocal,@RequestParam("timeBusiness") String horario
+    		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
+    		@RequestParam("tags") String tags,@RequestParam("redireccion")String pagina, Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+	
+		//UBICACIÓN!!!!!!!!!!!!!		
+		Usuario usuario = entityManager.find(Usuario.class, id);
+		Local local= new Local();
+		local.setNombre(nombreLocal);
+		local.setDireccion(direccion);
+		local.setHorario(horario);
+		local.setUsuario(usuario);
+		local.setTags(tags);
+		local.setEmail(email);
+		local.setTelefono(telefono);
+
+        if (!photo.isEmpty()) {
+            try {
+            	local.setFoto(photo.getOriginalFilename());
+                byte[] bytes = photo.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(
+                        		new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+local.getFoto())));
+                stream.write(bytes);
+                stream.close();
+                usuario.getLocales().add(local);
+        		entityManager.persist(usuario);
+        		entityManager.persist(local);       		
+         
+            } catch (Exception e) {
+            	return "redirect:comercio_interno?id="+local.getID();
+            }
+        } else { //no ha seleccionado foto, poner la por defecto
+        	local.setFoto("unknown_local.jpg");
+          
+    	    	BufferedInputStream in = new BufferedInputStream(
+    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+    	    	BufferedOutputStream stream = null;
+				try {
+					stream = new BufferedOutputStream(
+							new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+local.getFoto())));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					stream.write(IOUtils.toByteArray(in));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                usuario.getLocales().add(local);
+        		entityManager.persist(usuario);
+        		entityManager.persist(local);  
+				
+        }
+		
+		if(pagina.equalsIgnoreCase("usuario"))
+			return "redirect:usuario?id="+id;
+		else
+			return "redirect:administracion";	
+    }
+	
+	
+	@Transactional
+	@RequestMapping(value = "/editarLocal", method = RequestMethod.POST)
+	public String editarLocal(@RequestParam("fileToUpload") MultipartFile photo,
+    		@RequestParam("id_usuario") long id, @RequestParam("name") String nombreLocal,@RequestParam("timeBusiness") String horario
+    		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
+    		@RequestParam("tags") String tags,@RequestParam("redireccion")String pagina, Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+		Usuario edit= entityManager.find(Usuario.class, id);
+
+			return "redirect:usuario?id="+id;
+
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
+	public String editarUsuario(@RequestParam("fileToUpload") MultipartFile photo,
+    		@RequestParam("id_usuario") long id, @RequestParam("nameUser") String nombreUsuario,@RequestParam("pwd") String pass
+    		, @RequestParam("email") String email,@RequestParam("tel") String telefono,@RequestParam("redireccion")String pagina, 
+    		Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+		Usuario edit= entityManager.find(Usuario.class, id);
+		
+		if(!pass.equalsIgnoreCase("*****")){ //si ha cambiado
+			edit.setHashedAndSalted(pass);
+		}
+		edit.setNombre(nombreUsuario);
+		edit.setEmail(email);
+		edit.setFoto(photo.getOriginalFilename());
+		edit.setTelefono(telefono);
+		
+		if(pagina.equalsIgnoreCase("usuario"))
+			return "redirect:usuario?id="+id;
+		else
+			return "redirect:administracion";	
+	}
+	
+	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
 		model.addAttribute("pageTitle", "Administracion");
-		
-		
+		//COMPROBAR que lo que nos viene en modo get está logueado como admin
+		model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
+		model.addAttribute("usuarios", entityManager.createNamedQuery("allUsers").getResultList());
+		model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
 		return "administracion";
 	}	
 	@Transactional

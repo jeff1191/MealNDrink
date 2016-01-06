@@ -297,30 +297,26 @@ $(function() {
 								</div>
 								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
-									<form role="form">
+									<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="name" placeholder="${local.nombre}">
-										  </div>
-										  <div class="form-group">
-											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" id="pwd" placeholder="Introduce una nueva contraseña">
+											<input type="text" class="form-control" id="name" value="${local.nombre}">
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="time" class="form-control" id="timeBusiness" placeholder="${local.horario}">
+											<input type="time" class="form-control" id="timeBusiness" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>
-											<input type="text" class="form-control" id="dir" placeholder="${local.direccion}">
+											<input type="text" class="form-control" id="dir" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="email" placeholder="NO CREO QUE ESTE CAMPO HAGA FALTA">
+											<input type="email" class="form-control" id="email" value="${local.email}">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" id="tel" placeholder="EL USUARIO O EL LOCAL???">
+											<input type="tel" class="form-control" id="tel" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>

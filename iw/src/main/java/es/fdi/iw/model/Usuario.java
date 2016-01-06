@@ -7,10 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+@NamedQueries({
+	@NamedQuery(name="allUsers", 
+			query="select o from Usuario o"),
+	@NamedQuery(name="roleUser", 
+			query="select o from Usuario o where rol in (:role)")
+})
 @Entity
 public class Usuario {
 	

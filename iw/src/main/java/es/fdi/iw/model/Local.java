@@ -28,6 +28,8 @@ public class Local {
 	private String tags;
 	private String direccion;
 	private String horario;
+	private String email;
+	private String telefono;
 	private List<Oferta> ofertas;
 	private List<Comentario> comentarios;
 	private Usuario usuario;
@@ -36,7 +38,7 @@ public class Local {
 
 	
 	public Local() {
-		
+		this.puntuacion=5;
 	}
 	
 	@Id
@@ -145,5 +147,21 @@ public class Local {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 }

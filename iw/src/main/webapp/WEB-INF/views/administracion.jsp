@@ -9,12 +9,11 @@
                 <div class="features">
                     <div class="col-md-6 col-sm-6">
 						<img src="${prefix}resources/img/tux.jpg" height="175" width="250">  
-						<h3>Bienvenido Administrador</h3>
-						<p>Esta es una página de administración, Esta es una página de administraciónEsta es una página de administración</p><br/>
-						<h3>Esta es una página de administración</h3>
-						<p>+6221 888 888 90 <br>
-							+6221 888 88891</p>
-						<p>info@ucm.es</p>
+						<h3>Bienvenido Administrador ${admin.nombre}</h3>
+						<p>Esta es una página de administración, aqui podrá hacer todas las gestiones de usuarios y locales, además de editar tus datos personales</p><br/>
+						<h3>Mis datos</h3>
+						<p>+${admin.telefono}</p>
+						<p>${admin.email}</p>
                     </div><!--/.col-md-4-->
 
                     <div class="col-md-6 col-sm-6">
@@ -25,70 +24,32 @@
 					</ul>
 
 					<div class="tab-content">
-					  <div class="tab-pane fade in active" id="lusuarios">
-					  <div class="media">
-					  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddUser"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo usuario</button>
-					  	<br></br>
-					  </div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/user.jpg">
+						
+						 <div class="tab-pane fade in active" id="lusuarios">
+						  <div class="media">
+						  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddUser"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo usuario</button>
+						  	<br></br>
+						  </div>
+							  <c:forEach items="${usuarios }" var="i">
+								<div class="media">
+									<div class="pull-left">
+										<img class="media-object" src="${prefix}resources/img/user.jpg">
+									</div>
+									<div class="media-body">
+										<h4 class="media-heading">${i.nombre} #1</h4>
+										<p>E-mail: ${i.email}</p>
+										<p>Teléfono: ${i.telefono}</p>
+										<p>Rol: ${i.rol}</p>
+										<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+										<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+									</div>
+								</div>
+								</c:forEach>	
+							<button type="submit" class="btn btn-default">Anterior</button>
+							<button type="submit" class="btn btn-default">Siguiente</button>
 							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Usuario #1</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/user.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Usuario #2</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/user.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Usuario #3</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/user.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Usuario #4</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/user.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Usuario #5</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<br></br>
-						<button type="submit" class="btn btn-default">Anterior</button>
-						<button type="submit" class="btn btn-default">Siguiente</button>
-					</div>
+							
+		
 
 					  <!-- Modal Add User-->
 						<div class="modal fade" id="ModalAddUser" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
@@ -117,15 +78,23 @@
 									<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
+									<label for="file">Rol:</label>
+									<select>
+									  <option value="usuario">Usuario</option>
+									  <option value="local">Local</option>
+									</select>						
+								  </div>
+								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-								  </div>						  
+								  </div>
+								  <div class="modal-footer">						      	 
+									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+							      </div>									  						  
 								</form>									
 						      </div>
-						      <div class="modal-footer">	
-								  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-						 		  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-						      </div>
+
 						    </div>
 						  </div>
 						</div>     
@@ -137,61 +106,23 @@
 					  		<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddLocal"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo local</button>
 					  		<br></br>
 					  	</div>
+					  	<c:forEach items="${locales}" var="i">
 						<div class="media">
 							<div class="pull-left">
 								<img class="media-object" src="${prefix}resources/img/bar.jpg">
 							</div>
 							<div class="media-body">
-								<h4 class="media-heading">Local #1</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+								<h4 class="media-heading">${i.nombre} #1</h4>
+								<p>Usuario: ${i.usuario.nombre }</p>
+								<p>Dirección:${i.direccion }</p>
+								<p>Horario: ${i.horario }</p>								
+								<p>Puntuación: ${i.puntuacion }</p>
+								<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 							</div>
 						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/bar.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Local #2</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/bar.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Local #3</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/bar.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Local #4</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/bar.jpg">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Local #5</h4>
-								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
+						</c:forEach>	
+						
 						<br></br>
 						<button type="submit" class="btn btn-default">Anterior</button>
 						<button type="submit" class="btn btn-default">Siguiente</button>
@@ -205,74 +136,134 @@
 						        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo local</h4>
 						      </div>
 						      <div class="modal-body">
-								<form>
+								<form role="form" method="POST" enctype="multipart/form-data" action="nuevoLocal">
+								<input hidden="submit" name="redireccion" value="administracion" />
+								<div class="form-group">								
+								<label for="file">Usuario:</label>								
+								<select name="id_usuario" id="id_usuario">
+									<c:forEach items="${usuarios}" var="i">																	 								
+										  <option value="${i.ID}">${i.nombre}</option>																 
+									</c:forEach>
+								</select>	
+								</div>	
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" id="name" placeholder="Introduce un nuevo nombre">
-								  </div>
-								  <div class="form-group">
-									<label for="pwd">Contraseña:</label>
-									<input type="password" class="form-control" id="pwd" placeholder="Introduce una nueva contraseña">
+									<input type="text" class="form-control" id="name" name="name" placeholder="Introduce un nuevo nombre">
 								  </div>
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
-									<input type="time" class="form-control" id="timeBusiness" placeholder="Introduce un nuevo horario">
+									<input type="time" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
-									<input type="text" class="form-control" id="dir" placeholder="Introduce una nueva direccion">
+									<input type="text" class="form-control" id="dir" name="dir" placeholder="Introduce una nueva direccion">
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
-									<input type="email" class="form-control" id="email" placeholder="Introduce un nuevo email">
+									<input type="email" class="form-control" id="email" name="email" placeholder="Introduce un nuevo email">
 								  </div>
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
+									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
 									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" placeholder="Introduce unos tags iniciales">
+									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
 								  </div>
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 								  </div>
-								</form>				
+								  <div class="modal-footer">						      	 
+									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+							      </div>	
+							      </form>											
 						      </div>
-						      <div class="modal-footer">						      	 
-								  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-								  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-						      </div>
+							      
+						      
 						    </div>
 						  </div>
 						</div>     
 						<!-- End Modal Add Local-->
+						        				<!-- Modal Edit Local-->
+						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+						  <div class="modal-dialog modal-sm" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel"> Editar local</h4>
+						      </div>
+						      <div class="modal-body">
+								<form role="form" method="POST" enctype="multipart/form-data" action="nuevoLocal">
+								<input hidden="submit" name="redireccion" value="administracion" />
+								  <div class="form-group">
+									<label for="name">Nombre:</label>
+									<input type="text" class="form-control" id="name" name="name" placeholder="Introduce un nuevo nombre">
+								  </div>
+								  <div class="form-group">
+									<label for="timeBusiness">Horario:</label>
+									<input type="time" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+								  </div>
+								  <div class="form-group">
+									<label for="dir">Dirección:</label>
+									<input type="text" class="form-control" id="dir" name="dir" placeholder="Introduce una nueva direccion">
+								  </div>
+								  <div class="form-group">
+									<label for="email">Email:</label>
+									<input type="email" class="form-control" id="email" name="email" placeholder="Introduce un nuevo email">
+								  </div>
+								  <div class="form-group">
+									<label for="tel">Teléfono:</label>
+									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
+								  </div>
+								  <div class="form-group">
+									<label for="tags">Tags iniciales:</label>
+									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
+								  </div>
+								  <div class="form-group">
+									<label for="file">Imagen de perfil:</label>
+									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
+								  </div>
+								  <div class="modal-footer">						      	 
+									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+							      </div>	
+							      </form>											
+						      </div>
+							      
+						      
+						    </div>
+						  </div>
+						</div>     
+						<!-- End Modal Edit Local-->	
         					 
 					  <div class="tab-pane fade" id="editarDatos">
-						<form role="form">
+
+						<form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
+						<input hidden="submit" name="id_usuario" value="${admin.ID}" />
+						<input hidden="submit" name="redireccion" value="administracion" />
 						  <div class="form-group">
 							<label for="name">Nombre:</label>
-							<input type="text" class="form-control" id="name" placeholder="Introduce un nuevo nombre">
+							<input type="text" class="form-control" id="nameUser" name="nameUser" value="${admin.nombre}">
 						  </div>
 						  <div class="form-group">
 							<label for="pwd">Contraseña:</label>
-							<input type="password" class="form-control" id="pwd" placeholder="Introduce una nueva contraseña">
+							<input type="password" class="form-control" id="pwd" name="pwd" value="*****">
 						  </div>
 						  <div class="form-group">
 							<label for="email">Email:</label>
-							<input type="email" class="form-control" id="email" placeholder="Introduce un nuevo email">
+							<input type="email" class="form-control" id="email" name="email" value="${admin.email }">
 						  </div>
 						  <div class="form-group">
 							<label for="tel">Teléfono:</label>
-							<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
+							<input type="tel" class="form-control" id="tel" name="tel" value="${admin.telefono }">
 						  </div>
 						  <div class="form-group">
 							<label for="file">Imagen de perfil:</label>
 							<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 						  </div>										  
 						  <br></br>
-						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
 						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 						</form>	
 					  </div>
