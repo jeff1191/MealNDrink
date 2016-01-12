@@ -29,7 +29,7 @@
 										<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
-												<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
+												<img class="media-object" src="${prefix}/userfoto/${usuario.id}">
 											</div>										
 											<div class="media-body">
 												<h4 class="media-heading">Reserva #1</h4>

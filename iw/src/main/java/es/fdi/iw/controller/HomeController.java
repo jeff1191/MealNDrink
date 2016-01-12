@@ -305,20 +305,18 @@ public class HomeController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	@RequestMapping(value="/userfoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] userPhoto(@RequestParam("id") String id) throws IOException {
-	 //con esto accedo a ${base}/user/id
-		/*   File f = ContextInitializer.getFile("user", id);
+	 //con esto accedo a ${base}/userfoto/id
+		File f = ContextInitializer.getFile("user", id);
 	    InputStream in = null;
 	    if (f.exists()) {
 	    	in = new BufferedInputStream(new FileInputStream(f));
 	    } else {
 	    	in = new BufferedInputStream(
-	    			this.getClass().getClassLoader().getResourceAsStream("unknown-user.jpg"));
+	    			this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
 	    }
-	    
-	    return IOUtils.toByteArray(in);*/
-		return null;
+	    return IOUtils.toByteArray(in);		
 	}
 	
 	/**
@@ -350,7 +348,7 @@ public class HomeController {
 		logger.info("Setting active tab: home");
 	
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};		
+				"comida_espaï¿½ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};		
 		List<Long> idsOffers = new ArrayList<Long>(); 
 		idsOffers.add((long) 8);
 		idsOffers.add((long) 5);
@@ -443,7 +441,7 @@ public class HomeController {
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
 	public String comercio_interno(@RequestParam("id") long id,Model model) {
 		//Tendriamos que pasarle el LOCAL al que le das click.
-		//Yo creo que es mejor que el desplegable que sale en perfil ponga (Cerrar sesión, perfil y los locales que tiene)
+		//Yo creo que es mejor que el desplegable que sale en perfil ponga (Cerrar sesiï¿½n, perfil y los locales que tiene)
 		//CAMBIAR EL HEADER!!!!!!! 
 		Local local = entityManager.find(Local.class, id);
 		model.addAttribute("pageTitle", local.getNombre());
@@ -546,7 +544,7 @@ public class HomeController {
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
-		//UBICACIÓN!!!!!!!!!!!!!		
+		//UBICACIï¿½N!!!!!!!!!!!!!		
 		Usuario usuario = entityManager.find(Usuario.class, id);
 		Local local= new Local();
 		local.setNombre(nombreLocal);
@@ -649,7 +647,7 @@ public class HomeController {
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
 		model.addAttribute("pageTitle", "Administracion");
-		//COMPROBAR que lo que nos viene en modo get está logueado como admin
+		//COMPROBAR que lo que nos viene en modo get estï¿½ logueado como admin
 		model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
 		model.addAttribute("usuarios", entityManager.createNamedQuery("allUsers").getResultList());
 		model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
@@ -667,10 +665,10 @@ public class HomeController {
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "Últimas ofertas");		
+		model.addAttribute("pageTitle", "ï¿½ltimas ofertas");		
 				
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				"comida_espaï¿½ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
@@ -694,7 +692,7 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Ofertas del mes");	
 		
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				"comida_espaï¿½ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
 		model.addAttribute("alltags", alltags);

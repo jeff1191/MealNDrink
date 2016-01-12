@@ -1,28 +1,30 @@
 <%@ include file="../fragments/header.jspf" %>
 <script type="text/javascript">
 
+function activaBotonEliminacion() {
+	// en un manejador de eventos jquery, el "this" inicial es el elemento DOM sobre el que se lanza el evento
+	// por tanto, $(this) es el elemento JQuery que lo envuelve 
+	var target = $(this); 
+
+	var idOffer = $(this).attr("id").substring("del_".length); 
+	var idLocal=$('#id_local').get(0).value;
+
+	$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer},function(data){
+		//respuesta es el resultado que devuelve nuestro archivo que recibe las variables
+		//	var offer=$('#ofertas').get(0);
+			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+			//$('#TodasOfertas').html(allOffers());
+	});
+}
+
 $(function() {
-	$(".eliminaOferta").click(function() {
-		// en un manejador de eventos jquery, el "this" inicial es el elemento DOM sobre el que se lanza el evento
-		// por tanto, $(this) es el elemento JQuery que lo envuelve 
-		var target = $(this); 
-
-		var idOffer = $(this).attr("id").substring("del_".length); 
-		var idLocal=$('#id_local').get(0).value;
-
-		$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer},function(data){
-			//respuesta es el resultado que devuelve nuestro archivo que recibe las variables
-			//	var offer=$('#ofertas').get(0);
-				$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
-				//$('#TodasOfertas').html(allOffers());
-				
-			});
-	})	
+	
+	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacion);	
 	
 	function allOffers() {
 		var ret;
 	
-	return "";
+	return "HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 }
 	function cargarDatosOferta() {
 			alert("HOLA");
