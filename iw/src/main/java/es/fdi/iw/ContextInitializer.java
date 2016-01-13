@@ -58,7 +58,7 @@ public class ContextInitializer implements ServletContextInitializer {
     	return folder;
     }
     
-    public static File getFile(String folder, String name) {
-    	return new File(getFolder(folder), name);
+    public static File getFile(String folder, String id) {
+    	return new File(getFolder(folder), id);
     }
 }

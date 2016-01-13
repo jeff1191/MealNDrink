@@ -2,8 +2,6 @@ package es.fdi.iw.model;
 
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,12 +9,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 @Entity
-@NamedQuery(name="allOffers", query="select o from Oferta o")
+@NamedQueries({
+	@NamedQuery(name="allOffers", 
+			query="select o from Oferta o"),
+	@NamedQuery(name="infoOffers", 
+			query="select o from Oferta o where o.id in (:idParam)"),
+	@NamedQuery(name="monthlySpecials", 
+			query="select o from Oferta o where o.ofertaMes is true")
+})
 /*
 @NamedQueries({
 	@NamedQuery(name="allOffers", query="select o from Oferta o"),
@@ -28,15 +34,18 @@ public class Oferta {
 	private long ID;
 	private String nombre;
 	private String foto;
+	private String descripcion;
 	private Timestamp fechaLimite;
 	private int capacidadTotal;
 	private int capacidadActual;
 	private List<Reserva> reservas;
-	private Local comercio; //una oferta es puesta por un Local
+	private Local local; //una oferta es puesta por un Local
 	private String tags;
+	private boolean ofertaMes;
 	
 	
 	public Oferta() {
+		capacidadActual=0;
 	}
 	
 	@Id
@@ -49,7 +58,16 @@ public class Oferta {
 		ID = iD;
 	}
 	
+	public boolean getOfertaMes() {
+		return ofertaMes;
+	}
+
+	public void setOfertaMes(boolean o) {
+		ofertaMes = o;
+	}
+	
 	public String getTags() {
+		ponTagsSeparados(dameTagsSeparados());
 		return tags;
 	}
 
@@ -60,7 +78,7 @@ public class Oferta {
 	public void ponTagsSeparados(String[] ts) {		
 		StringBuilder sb = new StringBuilder();		
 		for(String t : ts){
-			sb.append(t.trim()).append(",");
+			sb.append(t.trim()).append(" ");
 		}
 		if (sb.length()>0) {
 			sb.setLength(sb.length()-1);
@@ -96,6 +114,12 @@ public class Oferta {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 	public int getCapacidadTotal() {
 		return capacidadTotal;
 	}
@@ -112,10 +136,10 @@ public class Oferta {
 	}
 	@ManyToOne(targetEntity=Local.class)
 	public Local getLocal() {
-		return comercio;
+		return local;
 	}
 	public void setLocal(Local comercio) {
-		this.comercio = comercio;
+		this.local = comercio;
 	}
 
 }

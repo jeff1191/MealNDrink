@@ -6,16 +6,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
 
 @Entity
+@NamedQuery(name="infoBooks", 
+	query="select o from Reserva o where o.id in (:idParam)")
+
 public class Reserva {
 
 	private long ID;
-	private String codigoQr; // Cuando nos pongamos con el tema de validar habra q ponerse un campo bool aqui a no ser q veamos una mejor manera
+	private String codigoQr;
 	private Usuario cliente;
 	private Oferta oferta;
 	private int numPersonas;
 	private Timestamp fechaReserva;
+	private boolean validado;
 	
 	public Reserva(String codigoQr,Usuario cliente, Oferta oferta, int numeroPersonas, Timestamp fechaReserva){
 		this.codigoQr=codigoQr;
@@ -23,6 +29,7 @@ public class Reserva {
 		this.setOferta(oferta);
 		this.numPersonas=numeroPersonas;
 		this.fechaReserva=fechaReserva;
+		this.setValidado(false);
 	}
 	
 	public Reserva() {
@@ -69,5 +76,13 @@ public class Reserva {
 	}
 	public void setNumPersonas(int numPersonas) {
 		this.numPersonas = numPersonas;
+	}
+
+	public boolean isValidado() {
+		return validado;
+	}
+
+	public void setValidado(boolean validado) {
+		this.validado = validado;
 	}
 }

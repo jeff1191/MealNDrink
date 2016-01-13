@@ -1,7 +1,5 @@
 package es.fdi.iw.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,19 +7,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="allLocals", 
+			query="select o from Local o"),
+	@NamedQuery(name="infoLocals", 
+			query="select o from Local o where o.id in (:idParam)")
+})
 public class Local {
 	
 	private long ID;
 	private long puntuacion;
 	private String ubicacion;
-	private List<String> tags;
+	private String tags;
 	private String direccion;
 	private String horario;
+	private String email;
+	private String telefono;
 	private List<Oferta> ofertas;
 	private List<Comentario> comentarios;
 	private Usuario usuario;
@@ -30,7 +38,7 @@ public class Local {
 
 	
 	public Local() {
-		
+		this.puntuacion=5;
 	}
 	
 	@Id
@@ -42,15 +50,30 @@ public class Local {
 	public void setID(long iD) {
 		ID = iD;
 	}
-/*
-	public ArrayList<String>  getTags() {
-		//return Arrays.toString(tags).replaceAll("[\\[\\], ]+", " ").trim();
-		return this.tags;
+	public String getTags() {
+		ponTagsSeparados(dameTagsSeparados());
+		return tags;
 	}
 
-	public void setTags(ArrayList<String>  tags) {
+	public String[] dameTagsSeparados() {
+		return tags.split(",");
+	}
+	
+	public void ponTagsSeparados(String[] ts) {		
+		StringBuilder sb = new StringBuilder();		
+		for(String t : ts){
+			sb.append(t.trim()).append(" ");
+		}
+		if (sb.length()>0) {
+			sb.setLength(sb.length()-1);
+		}
+		tags = sb.toString();
+	}
+	
+	public void setTags(String tags) {		
 		this.tags = tags;
-	}*/
+	}
+	
 
 	public String getDireccion() {
 		return direccion;
@@ -124,5 +147,21 @@ public class Local {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 }

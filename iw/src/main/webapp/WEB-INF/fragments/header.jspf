@@ -103,13 +103,13 @@
 	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
 	                            <ul class="dropdown-menu">
 		                        	<c:choose>
-								        <c:when test="${user.rol == 'administrador'}">
+								        <c:when test="${user.rol == 'admin'}">
 								            <li class="${active eq 'administracion'?'active':''}"><a href="administracion">Mi perfil</a></li>
 								        </c:when>
-								        <c:when test="${user.rol == 'cliente'}">
-								            <li class="${active eq 'usuario'?'active':''}"><a href="usuario">Mi perfil</a></li>
+								        <c:when test="${user.rol == 'user'}">
+								            <li class="${active eq 'usuario'?'active':''}"><a href="usuarioId?{${user.ID}">Mi perfil</a></li>
 								        </c:when>
-								        <c:when test="${user.rol == 'empresario'}">
+								        <c:when test="${user.rol == 'local'}">
 								            <li class="${active eq 'comercio_interno'?'active':''}"><a href="comercio_interno">Mi perfil</a></li>
 								        </c:when>
 								    </c:choose>
@@ -152,7 +152,7 @@
 			              <input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña">
 			            </div>
 			            <div class="checkbox">
-			              <label><input type="checkbox" value="" checked>Recordarme</label>
+			              <!-- <label><input type="checkbox" value="" checked>Recordarme</label> -->
 			           	
 		        			<button type="submit" value="loginpro" class="btn btn-primary"> Iniciar sesión</button>
 			            

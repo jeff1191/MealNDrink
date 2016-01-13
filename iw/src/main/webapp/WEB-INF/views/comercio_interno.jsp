@@ -1,31 +1,61 @@
 <%@ include file="../fragments/header.jspf" %>
+<script type="text/javascript">
+
+function activaBotonEliminacionOferta() {
+	var idOffer = $(this).attr("id").substring("del_".length); 
+	var idLocal=$('#id_local').get(0).value;
+	$.post( "eliminarOferta",{idOferta:idOffer},function(data){
+			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+	});
+}
+
+function activaBotonAddOferta() {
+	var fileToUpload=$('#fileToUpload')[0].files[0];
+	var id_local=$('#id_local').get(0).value;
+	var name=$('#name').get(0).value;
+	var endTime=$('#endTime').get(0).value;
+	var cap=$('#cap').get(0).value;
+	var description=$('#description').get(0).value;
+	
+	$.post( "nuevaOferta",{fileToUpload:fileToUpload,id_local:id_local,name:name,endTime:endTime,
+		cap:cap,description:description},function(data){
+			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+	});
+}
+
+$(function() {
+	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
+	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
+})
+</script>
+      
+      
          <section id="feature" class="transparent-bg">
             <div class="container">
                 <div class="center">
-                     <h2>Nombre de restaurante</h2>
+                    <h2>${local.nombre}</h2>
                 </div>
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">							
-                            <img src="${prefix}resources/img/restaurant.jpg" height="350" width="300">
-                               
+                            <img src="${prefix}resources/img/database/locals/${local.foto}" height="350" width="300">
+                            <input hidden="submit" id="id_local" value="${local.ID}" />   
 							<h3>Dirección</h3>
-							<p>1051 Nipomo St San Luis Obispo, CA 93401</p>
+							<p>${local.direccion}</p>
 														
 							<h3>Horario</h3>
-							<p><span>MONDAY-FRIDAY: </span>8am-6pm</p>
-							<p><span>SATURDAY-SUNDAY: </span>8am-10pm</p>
+							<p>${local.horario}</p>
 														
 							<h3>Contacto</h3>
-							<p>contact@mycuisine.com</p>
-							<p>91 441 55 25</a></p>
+							<p>${(local.usuario).email}</p>
+							<p>${(local.usuario).telefono}</p>
 
                         	<h3>Tags</h3>
-							<p>#TagUno #TagDos #TagTres #TagCuatro #TagCinco</p>
+							<p>${local.tags}</p>
 
                             <div>
-								<h3>Puntuación</h4>
-								<h2>4,5/5</h2>
+								<h3>Puntuación</h3>
+								<h2>${local.puntuacion}</h2>
 							</div>
                         </div>
                     </div><!--/.col-md-4-->
@@ -46,64 +76,26 @@
 								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> Añadir nueva oferta</button>
 								  	<br></br>
 								  </div>
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">											
+									  <div id="TodasOfertas" class="TodasOfertas">
+											<c:forEach items="${local.ofertas}" var="i">
+												<div class="media">
+													<div class="pull-left">
+														<img class="media-object" src="${prefix}resources/img/database/offers/toLocals/${i.foto}">
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading">${i.nombre}</h4>
+												<p>${i.descripcion}</p>											
+													<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+		
+												</div>
+												</div>
+											</c:forEach>	
+											<button type="submit" class="btn btn-default">Anterior</button>
+											<button type="submit" class="btn btn-default">Siguiente</button>						
 										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #1</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #2</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #3</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">											
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #4</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">											
-											<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Oferta #5</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
 									<br></br>
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
+									
 								</div>
 								
 								<!-- Modal Add Offer-->
@@ -112,40 +104,112 @@
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        <h4 class="modal-title" id="myModalLabel"> Añadir una nueva oferta</h4>
+								        <h4 class="modal-title" id="addModalLabel"> Añadir una nueva oferta</h4>
 								      </div>
 								      <div class="modal-body">
-										<form role="form">
+										<form id="formAddOferta" role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
+										<input hidden="submit" name="id_local" value="${local.ID}" />
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
-											<input type="text" class="form-control" id="name" placeholder="Introduzca el nuevo nombre">
+											<input type="text" class="form-control" name="name" id="name" placeholder="Introduzca el nuevo nombre">
 										  </div>
 										  <div class="form-group">
 											<label for="endTime">Fecha límite:</label>
-											<input type="time" class="form-control" id="endTime" placeholder="Introduzca el dia límite">
+											<input type="time" class="form-control"  name="endTime" id="endTime" placeholder="Introduzca el dia límite">
 										  </div>
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" id="cap" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="cap" id="cap" placeholder="Introduzca el numero máximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
 											<label for="descriptcion">Descripción:</label>
-											<input type="text" class="form-control" id="descriptcion" placeholder="Introduzca la descripción de la oferta">
+											<input type="text" class="form-control" name="description" id="description" placeholder="Introduzca la descripción de la oferta">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de la oferta:</label>
 											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-										  </div>	
+										  </div>
+											<div class="modal-footer">						      	 
+											  	<button type="submit" ><span class="glyphicon glyphicon-send"></span> Enviar</button>
+												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+									     	</div>
+										  	
 										</form>							
 								      </div>
-								      <div class="modal-footer">						      	 
-										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-								      </div>
+
 								    </div>
 								  </div>
 								</div>     
 								<!-- End Modal Add Offer-->
+								
+								<!-- Modal Edit Offer-->
+								<div class="modal fade" id="ModalEditOffer" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        <h4 class="modal-title" id="editModalLabel"> Editar oferta</h4>
+								      </div>
+								      <div class="modal-body">
+										<form role="form" method="POST" enctype="multipart/form-data" action="editarOferta">
+										<input hidden="submit" name="id_local" value="${local.ID}" />
+										  <div class="form-group">
+											<label for="name">Nombre de la oferta:</label>
+											<input type="text" class="form-control" name="Editname" id="Editname" placeholder="Introduzca el nombre">
+										  </div>
+										  <div class="form-group">
+											<label for="endTime">Fecha límite:</label>
+											<input type="time" class="form-control"  name="EditendTime" id="EditendTime" placeholder="Introduzca el dia límite">
+										  </div>
+										  <div class="form-group">
+											<label for="cap">Capacidad total:</label>
+											<input type="number" class="form-control" name="Editcap" id="Editcap" placeholder="Introduzca el numero máximo de beneficiarios">
+										  </div>
+										  <div class="form-group">
+											<label for="descriptcion">Descripción:</label>
+											<input type="text" class="form-control" name="Editdescription" id="Editdescription" placeholder="Introduzca la descripción de la oferta">
+										  </div>
+										  <div class="form-group">
+											<label for="file">Imagen de la oferta:</label>
+											<input type="file" name="EditfileToUpload" accept="image/*" id="EditfileToUpload">											
+										  </div>
+											<div class="modal-footer">						      	 
+											  	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+									     	</div>
+										  	
+										</form>							
+								      </div>
+
+								    </div>
+								  </div>
+								</div>     
+								<!-- End Modal edit Offer-->
+								
+								<!-- Modal Del Offer-->
+								<div class="modal fade" id="ModalDelOffer" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+												    
+								    		<div class="modal-header">
+								    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        	<h4 class="modal-title" id="addModalLabel"> Eliminar una nueva oferta</h4>
+
+											</div>
+											<div class="modal-body">
+											
+											<p>¿Está seguro que quiere eliminar esta oferta?</p>
+												<div class="modal-footer">
+													<button id="" class="btn btn-default"  onclick="eliminaOferta(this.id)">Aceptar</button>
+													<button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+												</div>
+		
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- End Modal Del Offer-->
+								
 														
 								<div class="tab-pane fade" id="qrs">								
 									<div class="row">										
@@ -211,65 +275,45 @@
 								</div>
 								
 								<div class="tab-pane fade" id="opiniones">
+									<c:forEach items="${local.comentarios}" var="i">
 									<div class="media">
 										<div class="pull-left">
 											<img class="media-object" src="${prefix}resources/img/user.jpg">
 										</div>
 										<div class="media-body">
-											<h4 class="media-heading">Comentario #1</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+											<h4 class="media-heading">Comentario #${}</h4>
+											<p>${i.texto}</p>
 											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/user.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Comentario #2</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>
-									<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/user.jpg">
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Comentario #3</h4>
-											<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-										</div>
-									</div>									
+								
 									<br></br>
 									<button type="submit" class="btn btn-default">Anterior</button>
 									<button type="submit" class="btn btn-default">Siguiente</button>
-								   </div>
+									</c:forEach>
+								</div>
+								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
-									<form role="form">
+									<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="name" placeholder="Introduce un nuevo nombre">
-										  </div>
-										  <div class="form-group">
-											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" id="pwd" placeholder="Introduce una nueva contraseña">
+											<input type="text" class="form-control" id="name" value="${local.nombre}">
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="time" class="form-control" id="timeBusiness" placeholder="Introduce un nuevo horario">
+											<input type="time" class="form-control" id="timeBusiness" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>
-											<input type="text" class="form-control" id="dir" placeholder="Introduce una nueva direccion">
+											<input type="text" class="form-control" id="dir" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="email" placeholder="Introduce un nuevo email">
+											<input type="email" class="form-control" id="email" value="${local.email}">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
+											<input type="tel" class="form-control" id="tel" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>
