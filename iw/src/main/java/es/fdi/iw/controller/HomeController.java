@@ -456,7 +456,6 @@ public class HomeController {
     		, @RequestParam("cap") int capacidad,@RequestParam("description") String descripcion, Model model){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
-	
 		Local local = entityManager.find(Local.class, id);
 		Oferta offer= new Oferta();
 		offer.setNombre(nombreOferta);
@@ -469,27 +468,13 @@ public class HomeController {
 		offer.setOfertaMes(false);
 		local.getOfertas().add(offer);
 		
-		/*
-		Properties props = new Properties();
-		try {
-			props.load(getClass().getResourceAsStream("/application.properties"));
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} 
-		File baseFolder = new File(props.getProperty("spring.view.prefix"));
-    	System.err.println("PREFIXXXXXXXXXX :"+ baseFolder.getAbsolutePath());
-		*/
-		
-		
-		
         if (!photo.isEmpty()) {
             try {
             	offer.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
-                        		new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+offer.getFoto())));
+                        		new FileOutputStream(ContextInitializer.getFile("locales/"+local.getID()+"_"+local.getNombre(), id + "_"+offer.getFoto())));
                 stream.write(bytes);
                 stream.close();
         		entityManager.persist(offer);
@@ -506,7 +491,7 @@ public class HomeController {
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+offer.getNombre()+".jpg")));
+							new FileOutputStream(ContextInitializer.getFile("locales/"+local.getID()+"_"+local.getNombre(), id + "_"+offer.getNombre()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -518,8 +503,7 @@ public class HomeController {
 					e.printStackTrace();
 				}
 				entityManager.persist(offer);
-				entityManager.persist(local);
-				
+				entityManager.persist(local);				
         }
         return "redirect:comercio_interno?id="+local.getID();
     }

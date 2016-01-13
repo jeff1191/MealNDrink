@@ -9,9 +9,23 @@ function activaBotonEliminacionOferta() {
 	});
 }
 
+function activaBotonAddOferta() {
+	var fileToUpload=$('#fileToUpload')[0].files[0];
+	var id_local=$('#id_local').get(0).value;
+	var name=$('#name').get(0).value;
+	var endTime=$('#endTime').get(0).value;
+	var cap=$('#cap').get(0).value;
+	var description=$('#description').get(0).value;
+	
+	$.post( "nuevaOferta",{fileToUpload:fileToUpload,id_local:id_local,name:name,endTime:endTime,
+		cap:cap,description:description},function(data){
+			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+	});
+}
+
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
-	
+	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
 })
 </script>
       
@@ -93,7 +107,7 @@ $(function() {
 								        <h4 class="modal-title" id="addModalLabel"> Añadir una nueva oferta</h4>
 								      </div>
 								      <div class="modal-body">
-										<form role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
+										<form id="formAddOferta" role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
 										<input hidden="submit" name="id_local" value="${local.ID}" />
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
@@ -116,7 +130,7 @@ $(function() {
 											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 										  </div>
 											<div class="modal-footer">						      	 
-											  	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+											  	<button type="submit" ><span class="glyphicon glyphicon-send"></span> Enviar</button>
 												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
 									     	</div>
 										  	
