@@ -1,4 +1,35 @@
 <%@ include file="../fragments/header.jspf" %>
+<script type="text/javascript">
+
+function activaBotonEliminacionLocal() {	
+	var idLocal = $(this).attr("id").substring("delLocal_".length); 
+	$.post( "eliminarLocal",{idLocal:idLocal},function(data){
+			$('#TodosLocales').load('administracion div#TodosLocales');
+	});
+}
+function activaBotonEliminacionComentario() {	
+	var idComentario = $(this).attr("id").substring("delC_".length); 
+	var idUsuario=$('#id_usuario').get(0).value;
+	$.post( "eliminarComentario",{idUsuario:idUsuario,idComentario:idComentario},function(data){
+			$('#TodosComentarios').load('usuario?id='+idUsuario+' div#TodosComentarios');
+	});
+}
+
+function activaBotonEliminacionUsuario() {	
+	var idUsuario = $(this).attr("id").substring("delUsuario_".length); 
+	$.post( "eliminarUsuario",{idUsuario:idUsuario},function(data){
+			$('#TodosUsuarios').load('administracion div#TodosUsuarios');
+	});
+}
+
+$(function() {
+	
+	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
+	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
+	$("body").on("click", ".eliminaUsuario", null, activaBotonEliminacionUsuario);
+})
+</script>
+
 <section id="feature" class="transparent-bg">
         <div class="container">
            <div class="center">
@@ -8,6 +39,7 @@
             <div class="row">
                 <div class="features">
                     <div class="col-md-6 col-sm-6">
+						<input hidden="submit" id="id_admin" value="${admin.ID}" /> 
 						<img src="${prefix}resources/img/tux.jpg" height="175" width="250">  
 						<h3>Bienvenido Administrador ${admin.nombre}</h3>
 						<p>Esta es una página de administración, aqui podrá hacer todas las gestiones de usuarios y locales, además de editar tus datos personales</p><br/>
@@ -30,6 +62,7 @@
 						  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddUser"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo usuario</button>
 						  	<br></br>
 						  </div>
+						  <div id="TodosUsuarios" class="TodosUsuarios">
 							  <c:forEach items="${usuarios }" var="i">
 								<div class="media">
 									<div class="pull-left">
@@ -41,12 +74,14 @@
 										<p>Teléfono: ${i.telefono}</p>
 										<p>Rol: ${i.rol}</p>
 										<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-										<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+										<button id="delUsuario_${i.ID}" class="eliminaUsuario"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 									</div>
 								</div>
-								</c:forEach>	
-							<button type="submit" class="btn btn-default">Anterior</button>
-							<button type="submit" class="btn btn-default">Siguiente</button>
+								</c:forEach>
+							</div>
+								<button type="submit" class="btn btn-default">Anterior</button>
+								<button type="submit" class="btn btn-default">Siguiente</button>
+								
 							</div>
 							
 		
@@ -106,22 +141,24 @@
 					  		<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddLocal"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo local</button>
 					  		<br></br>
 					  	</div>
+					  	<div id="TodosLocales" class="TodosLocales">
 					  	<c:forEach items="${locales}" var="i">
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/bar.jpg">
+							<div class="media">
+								<div class="pull-left">
+									<img class="media-object" src="${prefix}resources/img/bar.jpg">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">${i.nombre} #1</h4>
+									<p>Usuario: ${i.usuario.nombre }</p>
+									<p>Dirección:${i.direccion }</p>
+									<p>Horario: ${i.horario }</p>								
+									<p>Puntuación: ${i.puntuacion }</p>
+									<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+									<button id="delLocal_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
+								</div>
 							</div>
-							<div class="media-body">
-								<h4 class="media-heading">${i.nombre} #1</h4>
-								<p>Usuario: ${i.usuario.nombre }</p>
-								<p>Dirección:${i.direccion }</p>
-								<p>Horario: ${i.horario }</p>								
-								<p>Puntuación: ${i.puntuacion }</p>
-								<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-							</div>
-						</div>
-						</c:forEach>	
+							</c:forEach>
+						</div>	
 						
 						<br></br>
 						<button type="submit" class="btn btn-default">Anterior</button>

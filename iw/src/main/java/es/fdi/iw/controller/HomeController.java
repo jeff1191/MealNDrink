@@ -525,12 +525,9 @@ public class HomeController {
     }
 	@Transactional
 	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
-	public String eliminarOferta(@RequestParam("idLocal") long idLocal, @RequestParam("idOferta") long idOffer,Model model){
-			Local local= entityManager.find(Local.class, idLocal);
+	public String eliminarOferta(@RequestParam("idOferta") long idOffer,Model model){
 			Oferta oferta= entityManager.find(Oferta.class, idOffer);
-			entityManager.remove(oferta);
-			if(local.getOfertas().remove(oferta))// si se ha poddido eliminar
-				entityManager.persist(local);			
+			entityManager.remove(oferta);			
 			return "eliminarOferta";
     }
 	
@@ -602,6 +599,13 @@ public class HomeController {
 			return "redirect:administracion";	
     }
 	
+	@Transactional
+	@RequestMapping(value = "/eliminarLocal", method = RequestMethod.POST)
+	public String eliminarLocal(@RequestParam("idLocal") long idLocal,Model model){
+			Local local= entityManager.find(Local.class, idLocal);
+			entityManager.remove(local);	
+			return "eliminarLocal";
+    }
 	
 	@Transactional
 	@RequestMapping(value = "/editarLocal", method = RequestMethod.POST)
@@ -641,6 +645,21 @@ public class HomeController {
 			return "redirect:administracion";	
 	}
 	
+	@Transactional
+	@RequestMapping(value = "/eliminarUsuario", method = RequestMethod.POST)
+	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario,Model model){
+			Usuario usuario= entityManager.find(Usuario.class, idUsuario);
+			entityManager.remove(usuario);			
+			return "eliminarUsuario";
+    }
+
+	@Transactional
+	@RequestMapping(value = "/eliminarComentario", method = RequestMethod.POST)
+	public String eliminarComentario(@RequestParam("idComentario") long idComentario,Model model){
+			Comentario comentario= entityManager.find(Comentario.class, idComentario);
+			entityManager.remove(comentario);			
+			return "eliminarComentario";
+    }
 	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional

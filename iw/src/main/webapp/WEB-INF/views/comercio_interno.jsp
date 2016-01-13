@@ -1,35 +1,17 @@
 <%@ include file="../fragments/header.jspf" %>
 <script type="text/javascript">
 
-function activaBotonEliminacion() {
-	// en un manejador de eventos jquery, el "this" inicial es el elemento DOM sobre el que se lanza el evento
-	// por tanto, $(this) es el elemento JQuery que lo envuelve 
-	var target = $(this); 
-
+function activaBotonEliminacionOferta() {
 	var idOffer = $(this).attr("id").substring("del_".length); 
 	var idLocal=$('#id_local').get(0).value;
-
-	$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer},function(data){
-		//respuesta es el resultado que devuelve nuestro archivo que recibe las variables
-		//	var offer=$('#ofertas').get(0);
+	$.post( "eliminarOferta",{idOferta:idOffer},function(data){
 			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
-			//$('#TodasOfertas').html(allOffers());
 	});
 }
 
 $(function() {
+	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	
-	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacion);	
-	
-	function allOffers() {
-		var ret;
-	
-	return "HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-}
-	function cargarDatosOferta() {
-			alert("HOLA");
-}
-
 })
 </script>
       
@@ -89,9 +71,8 @@ $(function() {
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 												<p>${i.descripcion}</p>											
-													<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-													<button type="submit" id="del_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalDelOffer"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" >Eliminar</button>
+													<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 		
 												</div>
 												</div>

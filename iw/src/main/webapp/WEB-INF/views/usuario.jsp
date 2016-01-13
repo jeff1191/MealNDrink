@@ -1,4 +1,27 @@
 <%@ include file="../fragments/header.jspf" %>
+<script type="text/javascript">
+
+function activaBotonEliminacionLocal() {	
+	var idLocal = $(this).attr("id").substring("del_".length); 
+	var idUsuario=$('#id_usuario').get(0).value;
+	$.post( "eliminarLocal",{idUsuario:idUsuario,idLocal:idLocal},function(data){
+			$('#TodosLocales').load('usuario?id='+idUsuario+' div#TodosLocales');
+	});
+}
+
+function activaBotonEliminacionComentario() {	
+	var idComentario = $(this).attr("id").substring("delC_".length); 
+	var idUsuario=$('#id_usuario').get(0).value;
+	$.post( "eliminarComentario",{idUsuario:idUsuario,idComentario:idComentario},function(data){
+			$('#TodosComentarios').load('usuario?id='+idUsuario+' div#TodosComentarios');
+	});
+}
+$(function() {
+	
+	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
+	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);	
+})
+</script>
 <section id="feature" class="transparent-bg">
             <div class="container">
                 <div class="center">
@@ -8,6 +31,7 @@
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
                             <img src="${prefix}resources/img/user2.jpg" height="275" width="275">                                
+							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3>Mis datos</h3>
 							<p>${usuario.email}</p>
 							<p>${usuario.telefono}</p>											
@@ -102,7 +126,7 @@
 						  </div>
 						</div>     
 						<!-- End Modal Add Local-->
-								
+								<div id="TodosLocales" class="TodosLocales">
 										<c:forEach items="${usuario.locales}" var="i">
 										<div class="media">
 											<div class="pull-left">
@@ -113,14 +137,15 @@
 												<p>Dirección:${i.direccion }</p>
 												<p>Horario: ${i.horario }</p>								
 												<p>Puntuación: ${i.puntuacion }</p>
-												<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-												<button id="del_${i.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+												<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+												<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 											</div>
 										</div>	
 										</c:forEach>
-										
+									</div>												
 									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>	
+									<button type="submit" class="btn btn-default">Siguiente</button>
+									
 									<br></br>
 								</div>
         				<!-- Modal Edit Local-->
@@ -177,22 +202,23 @@
 									
 												
 								<div class="tab-pane fade" id="opiniones">
-									
-										<c:forEach items="${usuario.comentarios}" var="i">
-											<div class="media">
-											<div class="pull-left">
-												<img class="media-object" src="${prefix}resources/img/res_op.jpg">
-											</div>
-											<div class="media-body">
-												<h4 class="media-heading">Comentario #1</h4>
-												<p>${i.texto}</p>
-												<button id="delC_${i.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-											</div>
-											</div>
-										</c:forEach>
-									
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>									
+									<div id="TodosComentarios" class="TodosComentarios">	
+											<c:forEach items="${usuario.comentarios}" var="i">
+												<div class="media">
+												<div class="pull-left">
+													<img class="media-object" src="${prefix}resources/img/res_op.jpg">
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading">Comentario #1</h4>
+													<p>${i.texto}</p>
+													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+												</div>
+												</div>
+											</c:forEach>
+										
+										<button type="submit" class="btn btn-default">Anterior</button>
+										<button type="submit" class="btn btn-default">Siguiente</button>									
+									</div>
 								</div>
 								
 								<div class="tab-pane fade" id="editar">
