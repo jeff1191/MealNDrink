@@ -22,10 +22,31 @@ function activaBotonAddOferta() {
 			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
 	});
 }
+function activaBotonEditarOferta() {
+	var idOffer = $(this).attr("id").substring("edit_".length);
+	var ie=$("body").attr("id").substring(idOffer+"editName_".length);
+	var editNombre=$('#id_local').get(0).value;
+	alert(ie);
+	$('#Editname').val(editNombre);
+	
+}
+
+var datos = [<c:forEach items="${local.ofertas}" var="i">
+{"nombre": ${i.nombre}, "id": ${i.ID}}
+</c:forEach>];
+
+function datosOferta(id, callback) {
+	return $.getJSON("detallesOferta?id=" + id, function(data) { 
+		
+		callback(data); 
+		
+	});
+}
 
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
+	$("body").on("click", ".editarOferta", null, activaBotonEditarOferta);
 })
 </script>
       
@@ -85,9 +106,11 @@ $(function() {
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 												<p>${i.descripcion}</p>											
-													<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+													<button type="submit" id="edit_${i.ID}" value="${i}" class="editarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-		
+													
+													<input hidden="submit" id="${i.ID}Editname_${i.nombre}" value="" />
+													
 												</div>
 												</div>
 											</c:forEach>	

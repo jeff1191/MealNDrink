@@ -36,6 +36,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -437,6 +438,14 @@ public class HomeController {
 		
 		return "comercio_externo";
 	}	
+
+	@RequestMapping(value = "/detallesOferta", method = RequestMethod.GET)
+	@ResponseBody
+	public String detallesOferta(@RequestParam("id") long id) {
+		Oferta o = (Oferta)entityManager.find(Oferta.class, id);
+		return "{\"nombre\": " + o.getNombre() + ", \"id\": " + o.getID() + "}";
+	}
+
 	@Transactional
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
 	public String comercio_interno(@RequestParam("id") long id,Model model) {
@@ -474,11 +483,10 @@ public class HomeController {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
-                        		new FileOutputStream(ContextInitializer.getFile("locales/"+local.getID()+"_"+local.getNombre(), id + "_"+offer.getFoto())));
+                        		new FileOutputStream(ContextInitializer.getFile("ofertas", ""+offer.getID())));
                 stream.write(bytes);
                 stream.close();
-        		entityManager.persist(offer);
-        		entityManager.persist(local);
+
         		
             } catch (Exception e) {
             	return "redirect:comercio_interno?id="+local.getID();
@@ -491,7 +499,7 @@ public class HomeController {
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("locales/"+local.getID()+"_"+local.getNombre(), id + "_"+offer.getNombre()+".jpg")));
+							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getID()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
