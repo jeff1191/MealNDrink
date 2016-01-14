@@ -665,10 +665,10 @@ public class HomeController {
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "ï¿½ltimas ofertas");		
+		model.addAttribute("pageTitle", "Ultimas ofertas");		
 				
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_espaï¿½ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
@@ -692,7 +692,7 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Ofertas del mes");	
 		
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_espaï¿½ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
 		model.addAttribute("alltags", alltags);
