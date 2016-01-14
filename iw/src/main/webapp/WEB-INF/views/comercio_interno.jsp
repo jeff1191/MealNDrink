@@ -24,22 +24,19 @@ function activaBotonAddOferta() {
 }
 function activaBotonEditarOferta() {
 	var idOffer = $(this).attr("id").substring("edit_".length);
-	var ie=$("body").attr("id").substring(idOffer+"editName_".length);
-	var editNombre=$('#id_local').get(0).value;
-	alert(ie);
-	$('#Editname').val(editNombre);
+	var datos2;
+	var datosO= datosOferta(idOffer, datos2);
+	//var datosO={nombre: "Copas a 4", id: 1}
+	alert(ojeto.nombre);
+	
+	//$('#Editname').val(datosO.nombre);
 	
 }
-
-var datos = [<c:forEach items="${local.ofertas}" var="i">
-{"nombre": ${i.nombre}, "id": ${i.ID}}
-</c:forEach>];
-
 function datosOferta(id, callback) {
-	return $.getJSON("detallesOferta?id=" + id, function(data) { 
-		
-		callback(data); 
-		
+	return $.getJSON("detallesOferta?id=" + id, function(data) { 	
+		//var datos2 = data;
+	//	alert(data.nombre)
+		callback(data); 		
 	});
 }
 

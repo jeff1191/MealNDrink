@@ -443,7 +443,11 @@ public class HomeController {
 	@ResponseBody
 	public String detallesOferta(@RequestParam("id") long id) {
 		Oferta o = (Oferta)entityManager.find(Oferta.class, id);
-		return "{\"nombre\": " + o.getNombre() + ", \"id\": " + o.getID() + "}";
+
+		String ret = "{nombre: " + "\""+o.getNombre()+ "\"" + ", id: " + o.getID() + "}";
+		System.err.println(ret);
+		return ret;
+		//return o;
 	}
 
 	@Transactional
