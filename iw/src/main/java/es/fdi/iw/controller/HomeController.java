@@ -348,7 +348,7 @@ public class HomeController {
 		logger.info("Setting active tab: home");
 	
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_espaï¿½ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};		
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};		
 		List<Long> idsOffers = new ArrayList<Long>(); 
 		idsOffers.add((long) 8);
 		idsOffers.add((long) 5);
@@ -368,8 +368,8 @@ public class HomeController {
 		
 		model.addAttribute("alltags", alltags);	
 		model.addAttribute("platos", entityManager.createNamedQuery("infoOffers").setParameter("idParam", idsOffers).getResultList());
-	//	model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
-		//model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
+		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
+		model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
 		
 		
 		return "home";
