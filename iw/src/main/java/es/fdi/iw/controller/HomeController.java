@@ -784,7 +784,7 @@ public class HomeController {
 			@RequestParam("pwd") String password,
 			@RequestParam("email") String email,
 			@RequestParam("tel") String telefono,
-			@RequestParam("Rol") String rol, HttpSession session){
+			@RequestParam("Rol") String rol, HttpSession session, Model model){
 		
 		Usuario u;
 		logger.info("Se metio aqui OK");
@@ -801,7 +801,9 @@ public class HomeController {
 			}
 			
 			u = creaUsuario(nombre, email, telefono, rol, password);
-			u.setFoto("/iw/usuarios/" + Long.toString(u.getID()) + "/fotoUsuario.jpg");
+			logger.info(Long.toString(u.getID()));
+			entityManager.persist(u);
+			u.setFoto("/usuarios/" + Long.toString(u.getID()) + "/fotoUsuario.jpg");
 			entityManager.persist(u);
 			session.setAttribute("user", u);
 
@@ -814,17 +816,17 @@ public class HomeController {
 		return new ResponseEntity<String>("Apodo ocupado, usuario no creado", HttpStatus.BAD_REQUEST);
 	}
 	
-	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/registroUsuarioFoto", method = RequestMethod.POST, headers = "content-type=multipart/*")
 	public ResponseEntity<String> registroUsuarioFoto(
-			@RequestParam("fileToUpload") MultipartFile photo,
+			@RequestParam("regfileToUpload") MultipartFile photo,
 			MultipartHttpServletRequest req, HttpSession session){
 		
 	
 		Usuario u = (Usuario)session.getAttribute("user");
 		if (u == null) {
-			// aargh!
+			return new ResponseEntity<String>("Ha habido algún problema al cargar el usuario de la base de datos", HttpStatus.NOT_MODIFIED);	
+			
 		}
 				
 		 if (!photo.isEmpty()) {
@@ -836,7 +838,6 @@ public class HomeController {
 		                		new FileOutputStream(ContextInitializer.getFile("usuarios/"+u.getID(), "fotoUsuario")));
 		        stream.write(bytes);
 		        stream.close();
-				entityManager.persist(u);
 				
 		    } catch (Exception e) {
 		    	return new ResponseEntity<String>("Fotografía no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
