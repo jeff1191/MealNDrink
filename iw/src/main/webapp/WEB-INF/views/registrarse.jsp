@@ -38,7 +38,8 @@
 					},
 					success: function(){
 						$("#formRegis").submit();
-						location.href = "${prefix}home/";
+						location.href = "${prefix}/iw";
+						
 					}			
 				})
 			}
@@ -90,6 +91,14 @@
 				error = false;
 			}
 			
+			//validar foto
+			if(foto.val() === "") {
+				foto.css("background", "red");
+				foto.css("color", "white");
+				
+				error = false;
+			}
+			
 			if(error === false)
 				alert("Los campos en rojo son erróneos")
 			
@@ -112,6 +121,8 @@
 			nombr.css("color", "grey");
 			contr.css("background", "white");
 			contr.css("color", "grey");
+			foto.css("background", "white");
+			foto.css("color", "black");
 		};
 
 		function apodoOcupado(){
@@ -155,7 +166,7 @@
 					<input required type="file" id="regfileToUpload" name="regfileToUpload" accept="image/*" id="fileToUpload">											
 				  </div>
 				  <div>
-				<form id="formRegis" action="registraUsuarioFoto" method="post" name="formRegis" enctype="multipart/form-data">
+				<form id="formRegis" action="registroUsuarioFoto" method="post" name="formRegis" enctype="multipart/form-data">
 				  	<label for="file">¿Qué tipo de actividad tendrá en MealNDrink?:</label>
 				</form>	
 					<select required id="regRol" name="regRol">

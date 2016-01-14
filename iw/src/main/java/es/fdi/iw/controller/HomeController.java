@@ -48,7 +48,6 @@ import es.fdi.iw.model.Comentario;
 import es.fdi.iw.model.Local;
 import es.fdi.iw.model.Oferta;
 import es.fdi.iw.model.Usuario;
-import scala.annotation.meta.getter;
 
 /**
  * Una aplicación de ejemplo para IW.
@@ -785,7 +784,7 @@ public class HomeController {
 			@RequestParam("pwd") String password,
 			@RequestParam("email") String email,
 			@RequestParam("tel") String telefono,
-			@RequestParam("Rol") String rol){
+			@RequestParam("Rol") String rol, HttpSession session){
 		
 		Usuario u;
 		logger.info("Se metio aqui OK");
@@ -802,8 +801,9 @@ public class HomeController {
 			}
 			
 			u = creaUsuario(nombre, email, telefono, rol, password);
-			u.setFoto("/img/users/user_" + nombre + ".jpg");
+			u.setFoto("/iw/usuarios/" + Long.toString(u.getID()) + "/fotoUsuario.jpg");
 			entityManager.persist(u);
+			session.setAttribute("user", u);
 
 			logger.info("El usuario no existe");
 			
@@ -819,10 +819,30 @@ public class HomeController {
 	@RequestMapping(value = "/registroUsuarioFoto", method = RequestMethod.POST, headers = "content-type=multipart/*")
 	public ResponseEntity<String> registroUsuarioFoto(
 			@RequestParam("fileToUpload") MultipartFile photo,
-			MultipartHttpServletRequest req){
+			MultipartHttpServletRequest req, HttpSession session){
 		
-		String q = handleFileUpload(photo, String.valueOf("fotoUsuario"));
-			
+	
+		Usuario u = (Usuario)session.getAttribute("user");
+		if (u == null) {
+			// aargh!
+		}
+				
+		 if (!photo.isEmpty()) {
+		    try {
+		    	u.setFoto(photo.getOriginalFilename());
+		        byte[] bytes = photo.getBytes();
+		        BufferedOutputStream stream =
+		                new BufferedOutputStream(
+		                		new FileOutputStream(ContextInitializer.getFile("usuarios/"+u.getID(), "fotoUsuario")));
+		        stream.write(bytes);
+		        stream.close();
+				entityManager.persist(u);
+				
+		    } catch (Exception e) {
+		    	return new ResponseEntity<String>("Fotografía no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
+		    }
+		 }
+		
 		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
 	}
 }
