@@ -61,7 +61,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">							
-                            <img src="LocalesFoto?id=${local.foto}" height="350" width="300">
+                            <img src="localesFoto?id=${local.foto}" height="350" width="300">
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
 							<h3>Dirección</h3>
 							<p>${local.direccion}</p>
@@ -103,7 +103,7 @@ $(function() {
 											<c:forEach items="${local.ofertas}" var="i">
 												<div class="media">
 													<div class="pull-left">
-														<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.foto}">
+														<img class="media-object" height="135" width="180" src="ofertasFoto?id=${i.foto}">
 												</div>
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
@@ -300,10 +300,10 @@ $(function() {
 									<c:forEach items="${local.comentarios}" var="i">
 									<div class="media">
 										<div class="pull-left">
-											<img class="media-object" src="${prefix}resources/img/user.jpg">
+											<img class="media-object" src="localesFoto?id=${i.local.foto}" height="135" width="180"> 
 										</div>
 										<div class="media-body">
-											<h4 class="media-heading">Comentario #${}</h4>
+											<h4 class="media-heading">Comentario #1</h4>
 											<p>${i.texto}</p>
 											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>

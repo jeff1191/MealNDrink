@@ -306,9 +306,8 @@ public class HomeController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/userfoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	public byte[] userPhoto(@RequestParam("id") String id) throws IOException {
-	 //con esto accedo a ${base}/userfoto/id
+	@RequestMapping(value="/usuariosFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] usuariosfoto(@RequestParam("id") String id) throws IOException {
 		File f = ContextInitializer.getFile("usuarios", id);
 	    InputStream in = null;
 	    if (f.exists()) {
@@ -319,7 +318,6 @@ public class HomeController {
 	    }
 	    return IOUtils.toByteArray(in);		
 	}
-	
 	
 	@ResponseBody
 	@RequestMapping(value="/ofertasFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -335,7 +333,7 @@ public class HomeController {
 	    return IOUtils.toByteArray(in);		
 	}
 	@ResponseBody
-	@RequestMapping(value="/LocalesFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	@RequestMapping(value="/localesFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] localFoto(@RequestParam("id") String id) throws IOException {
 		File f = ContextInitializer.getFile("locales", id);
 	    InputStream in = null; 
