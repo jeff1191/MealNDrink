@@ -2,9 +2,10 @@
 <script type="text/javascript">
 
 function activaBotonEliminacionOferta() {
-	var idOffer = $(this).attr("id").substring("del_".length); 
+	//var idOffer = $(this).attr("id").substring("del_".length); 
+	var idOffer=$("#idEliminar").attr("value");
 	var idLocal=$('#id_local').get(0).value;
-	$.post( "eliminarOferta",{idOferta:idOffer},function(data){
+	$.post( "eliminarOferta",{idOferta:idOffer},function(data){ 
 			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
 	});
 }
@@ -39,11 +40,15 @@ function datosOferta(id, callback) {
 		callback(data); 		
 	});
 }
-
+function rellenaDatos() {
+	var idOffer = $(this).attr("id").substring("del_".length); 
+	$("#idEliminar").attr("value" ,idOffer);
+}
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
 	$("body").on("click", ".editarOferta", null, activaBotonEditarOferta);
+	$("body").on("click", ".rellenaDatos", null, rellenaDatos);
 })
 </script>
       
@@ -56,7 +61,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">							
-                            <img src="${prefix}resources/img/database/locals/${local.foto}" height="350" width="300">
+                            <img src="LocalesFoto?id=${local.foto}" height="350" width="300">
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
 							<h3>Dirección</h3>
 							<p>${local.direccion}</p>
@@ -98,16 +103,13 @@ $(function() {
 											<c:forEach items="${local.ofertas}" var="i">
 												<div class="media">
 													<div class="pull-left">
-														<img class="media-object" src="${prefix}resources/img/database/offers/toLocals/${i.foto}">
+														<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.foto}">
 												</div>
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 												<p>${i.descripcion}</p>											
 													<button type="submit" id="edit_${i.ID}" value="${i}" class="editarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-													<button id="del_${i.ID}" value="${i}" class="eliminaOferta" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-													
-													<input hidden="submit" id="${i.ID}Editname_${i.nombre}" value="" />
-													
+													<button id="del_${i.ID}" value="${i}"  class="rellenaDatos" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>													
 												</div>
 												</div>
 											</c:forEach>	
@@ -213,15 +215,15 @@ $(function() {
 												    
 								    		<div class="modal-header">
 								    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        	<h4 class="modal-title" id="addModalLabel"> Eliminar una nueva oferta</h4>
+								        	<h4 class="modal-title" id="delModalLabel"> Eliminar una nueva oferta</h4>
 
 											</div>
 											<div class="modal-body">
 											
 											<p>¿Está seguro que quiere eliminar esta oferta?</p>
 												<div class="modal-footer">
-													<button id="" class="btn btn-default"  onclick="eliminaOferta(this.id)">Aceptar</button>
-													<button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+													<button id="idEliminar" type="submit" class="eliminaOferta" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+													<button type="submit" data-dismiss="modal">Cancel</button>
 												</div>
 		
 											</div>

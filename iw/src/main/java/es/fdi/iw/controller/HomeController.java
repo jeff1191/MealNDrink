@@ -309,13 +309,41 @@ public class HomeController {
 	@RequestMapping(value="/userfoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] userPhoto(@RequestParam("id") String id) throws IOException {
 	 //con esto accedo a ${base}/userfoto/id
-		File f = ContextInitializer.getFile("user", id);
+		File f = ContextInitializer.getFile("usuarios", id);
 	    InputStream in = null;
 	    if (f.exists()) {
 	    	in = new BufferedInputStream(new FileInputStream(f));
 	    } else {
 	    	in = new BufferedInputStream(
 	    			this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
+	    }
+	    return IOUtils.toByteArray(in);		
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/ofertasFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] offerPhoto(@RequestParam("id") String id) throws IOException {
+		File f = ContextInitializer.getFile("ofertas", id);
+	    InputStream in = null; 
+	    if (f.exists()) {
+	    	in = new BufferedInputStream(new FileInputStream(f));
+	    } else {
+	    	in = new BufferedInputStream(
+	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+	    }
+	    return IOUtils.toByteArray(in);		
+	}
+	@ResponseBody
+	@RequestMapping(value="/LocalesFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] localFoto(@RequestParam("id") String id) throws IOException {
+		File f = ContextInitializer.getFile("locales", id);
+	    InputStream in = null; 
+	    if (f.exists()) {
+	    	in = new BufferedInputStream(new FileInputStream(f));
+	    } else {
+	    	in = new BufferedInputStream(
+	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
 	    }
 	    return IOUtils.toByteArray(in);		
 	}
@@ -479,31 +507,30 @@ public class HomeController {
 		offer.setTags(tags);		
 		offer.setLocal(local);
 		offer.setOfertaMes(false);
-		local.getOfertas().add(offer);
-		
+
+		System.err.println(":::::"+offer.getID());
         if (!photo.isEmpty()) {
             try {
-            	offer.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
-                        		new FileOutputStream(ContextInitializer.getFile("ofertas", ""+offer.getID())));
+                        		new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
                 stream.write(bytes);
                 stream.close();
-
-        		
+                offer.setFoto(offer.getID()+".jpg");
+        		local.getOfertas().add(offer);
+				entityManager.persist(offer);
+				entityManager.persist(local);		
             } catch (Exception e) {
             	return "redirect:comercio_interno?id="+local.getID();
             }
-        } else { //no ha seleccionado foto, poner la por defecto
-        	offer.setFoto("unknown_offer.jpg");
-          
+        } else { //no ha seleccionado foto, poner la por defecto          
     	    	BufferedInputStream in = new BufferedInputStream(
     	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getID()+".jpg")));
+							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -514,6 +541,8 @@ public class HomeController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+                offer.setFoto("unknown_offer.jpg");
+        		local.getOfertas().add(offer);
 				entityManager.persist(offer);
 				entityManager.persist(local);				
         }
