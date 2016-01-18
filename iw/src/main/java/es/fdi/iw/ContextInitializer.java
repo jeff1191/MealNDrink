@@ -54,7 +54,9 @@ public class ContextInitializer implements ServletContextInitializer {
     
     public static File getFolder(String name) {
     	File folder = new File(baseFolder, name);
-    	if ( ! folder.exists()) folder.mkdirs();
+    	if ( ! folder.exists()) {
+    		folder.mkdirs();
+    	}
     	return folder;
     }
     

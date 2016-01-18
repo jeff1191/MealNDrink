@@ -1,6 +1,5 @@
 <%@ include file="../fragments/header.jspf" %>
 <script type="text/javascript">
-
 function activaBotonEliminacionLocal() {	
 	var idLocal = $(this).attr("id").substring("del_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
@@ -8,7 +7,6 @@ function activaBotonEliminacionLocal() {
 			$('#TodosLocales').load('usuario?id='+idUsuario+' div#TodosLocales');
 	});
 }
-
 function activaBotonEliminacionComentario() {	
 	var idComentario = $(this).attr("id").substring("delC_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
@@ -30,7 +28,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-                            <img src="${prefix}resources/img/user2.jpg" height="275" width="275">                                
+                            <img src="userFoto?id=${usuario.foto}" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3>Mis datos</h3>
 							<p>${usuario.email}</p>
@@ -53,7 +51,7 @@ $(function() {
 										<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
-												<img class="media-object" src="${prefix}/userfoto/${usuario.id}">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.foto}">
 											</div>										
 											<div class="media-body">
 												<h4 class="media-heading">Reserva #1</h4>
@@ -130,7 +128,7 @@ $(function() {
 										<c:forEach items="${usuario.locales}" var="i">
 										<div class="media">
 											<div class="pull-left">
-												<img class="media-object" src="${prefix}resources/img/pizza120x120.jpg">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.foto}">
 											</div>										
 											<div class="media-body">
 												<h4 class="media-heading">${i.nombre} #1</h4>
@@ -206,7 +204,7 @@ $(function() {
 											<c:forEach items="${usuario.comentarios}" var="i">
 												<div class="media">
 												<div class="pull-left">
-													<img class="media-object" src="${prefix}resources/img/res_op.jpg">
+													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.local.foto}">
 												</div>
 												<div class="media-body">
 													<h4 class="media-heading">Comentario #1</h4>
@@ -258,4 +256,3 @@ $(function() {
             </div>
         </section>
 <%@ include file="../fragments/footer.jspf" %>
-        
