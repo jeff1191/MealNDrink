@@ -13,12 +13,12 @@
 				 <div class="col-md-6 col-sm-6" align="center">
 				 	<p class="lead">Capacidad actual</p>
 					<div class="progress">
-					    <div class="progress-bar progress-bar-striped active color1" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="${infoOferta.capacidadTotal}" style="width:50%">
-					      4/${infoOferta.capacidadTotal}
+					    <div class="progress-bar progress-bar-striped active color1" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="${infoOferta.capacidadTotal}" style="width:${infoOferta.capacidadActual}%">
+					      ${infoOferta.capacidadActual}/${infoOferta.capacidadTotal}
 					    </div>
 					</div>
 					<br></br>
-				 	<form class="form-horizontal" role="form" action="/iw/${paginaVuelta}" method="POST">			  		
+				 	<form class="form-horizontal" role="form" action="/mealndrink/${paginaVuelta}" method="POST">			  		
 						<div class="form-group">
 				        	<label class="control-label col-sm-4" for="reservas"> Número de comensales</label>
 				        	<input id="reservas" type="number" max="${infoOferta.capacidadTotal}" value=0 name="capacidad" placeholder="¿Cuantos sois?"/>

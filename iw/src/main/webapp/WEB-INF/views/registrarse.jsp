@@ -4,48 +4,51 @@
 <head>
 	
 	 <script type="text/javascript"> //javascript aqui es solo de prueba BORRAR
-	 $(function() {
-			$("#regis").click(function() {
-				validacion();	
-			})	
-	 })
-	 
-	 function validacion(){
-			var val = validacionRegistrarse();
+		
+			$(document).keypress(function(e) {
+				if (e.which == 13) {
+					validacion();
+				}
+			});
 
-			if(val === true){
-				var nombr = $("#regname").val();
-				var contr = $("#regpwd").val();
-				var e_mail = $("#regemail").val();
-				var telef = $("#regtel").val();
-				var rool = $("#regRol").val();
-
-				$.ajax({
-					url: "${prefix}registroUsuario",
-					type: "POST",
-					data: {
-						name: nombr,  
-						pwd: contr,
-						email: e_mail,
-						tel: telef,
-						Rol: rool
-					},
-					error: function(){
-						apodoOcupado()
-					},
-					success: function(){
-						$("#formRegis").submit();
-						location.href = "${prefix}/mealndrink";
-
-					}			
+			$(function() {
+				$("#regis").click(function() {
+					validacion();
 				})
-			}
-		}; 
-		
-		
-	 
-	 
-	</script>
+			})
+
+			function validacion() {
+				var val = validacionRegistrarse();
+
+				if (val === true) {
+					var nombr = $("#regname").val();
+					var contr = $("#regpwd").val();
+					var e_mail = $("#regemail").val();
+					var telef = $("#regtel").val();
+					var rool = $("#regRol").val();
+
+					$.ajax({
+						url : "${prefix}registroUsuario",
+						type : "POST",
+						data : {
+							name : nombr,
+							pwd : contr,
+							email : e_mail,
+							tel : telef,
+							Rol : rool
+						},
+						error : function() {
+							apodoOcupado()
+						},
+						success : function() {
+							$("#formRegis").submit();
+							location.href = "${prefix}/mealndrink";
+
+						}
+					})
+				}
+			};
+		</script>
 </head>
 <body>
 <section id="about-us">

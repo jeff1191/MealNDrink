@@ -414,12 +414,12 @@ public class HomeController {
 		return "acercaDe";
 	}	
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
-	public String usuario(@RequestParam("id") long id,Model model) {
+	public String usuario(@RequestParam("id") long id, Model model, HttpSession session) {
 		model.addAttribute("active", "usuario");
 		model.addAttribute("pageTitle", "User");
 
-		Usuario usuario = entityManager.find(Usuario.class, id);
-
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 		model.addAttribute("usuario", usuario);
 		return "usuario";		
 	}	
@@ -703,10 +703,10 @@ public class HomeController {
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "�ltimas ofertas");		
+		model.addAttribute("pageTitle", "últimas ofertas");		
 				
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_espa�ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", alltags);
@@ -730,7 +730,7 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Ofertas del mes");	
 		
 		String[] alltags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-				"comida_espa�ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+				"comida_españFola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 				
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
 		model.addAttribute("alltags", alltags);

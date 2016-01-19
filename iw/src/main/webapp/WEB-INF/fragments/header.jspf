@@ -163,9 +163,9 @@
 											</c:when>
 											<c:when test="${user.rol == 'local'}">
 												<li class="${active eq 'comercio_interno'?'active':''}"><a
-													href="comercio_interno">Mi perfil</a></li>
+													href="usuario?id=${user.ID}">Mi perfil</a></li>
 										            <c:forEach items="${usuario.locales}" var="i">
-										            	<li><a href="comercio_interno?id="${i.ID}>${i.nombre}</a></li>
+										            	<li><a href="comercio_interno?id=${i.ID}">${i.nombre}</a></li>
 										            </c:forEach>
 											</c:when>
 										</c:choose>
