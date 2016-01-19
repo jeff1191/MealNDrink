@@ -41,7 +41,7 @@ $(function() {
                     <div class="col-md-6 col-sm-6">
 						<input hidden="submit" id="id_admin" value="${admin.ID}" />
 						<img src="usuariosFoto?id=${admin.foto}" height="175" width="250">  
-						<h3>Bienvenido Administrador ${admin.nombre}${admin.foto}</h3>
+						<h3>Bienvenido Administrador ${admin.nombre}</h3>
 						<p>Esta es una página de administración, aqui podrá hacer todas las gestiones de usuarios y locales, además de editar tus datos personales</p><br/>
 						<h3>Mis datos</h3>
 						<p>+${admin.telefono}</p>
@@ -113,8 +113,8 @@ $(function() {
 									<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
-									<label for="file">Rol:</label>
-									<select>
+									<label for="tag">Rol:</label>
+									 <select class="form-control" id="tag">
 									  <option value="usuario">Usuario</option>
 									  <option value="local">Local</option>
 									</select>						
@@ -177,7 +177,7 @@ $(function() {
 								<input hidden="submit" name="redireccion" value="administracion" />
 								<div class="form-group">								
 								<label for="file">Usuario:</label>								
-								<select name="id_usuario" id="id_usuario">
+								<select class="form-control" name="id_usuario" id="id_usuario">
 									<c:forEach items="${usuarios}" var="i">																	 								
 										  <option value="${i.ID}">${i.nombre}</option>																 
 									</c:forEach>

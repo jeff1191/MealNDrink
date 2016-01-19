@@ -317,25 +317,27 @@ $(function() {
 								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
 									<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
+									<input hidden="submit" name="id_local" value="${local.ID}" />
+									<input hidden="submit" name="redireccion" value="comercio_interno" />
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="name" value="${local.nombre}">
+											<input type="text" class="form-control" id="name"  name="name" value="${local.nombre}">
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="time" class="form-control" id="timeBusiness" value="${local.horario}">
+											<input type="time" class="form-control" id="horario"  name="horario" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>
-											<input type="text" class="form-control" id="dir" value="${local.direccion}">
+											<input type="text" class="form-control" id="dir"  name="dir" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="email" value="${local.email}">
+											<input type="email" class="form-control" id="email"  name="email" value="${local.email}">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" id="tel" value="${local.telefono}">
+											<input type="tel" class="form-control" id="tel"  name="tel" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>
@@ -369,16 +371,23 @@ $(function() {
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo tag</h4>
 								      </div>
+										
 								      <div class="modal-body">
 										<form role="form">
+									 							  
 									  <div class="form-group">
-										<label for="name">Nombre:</label>
-										<input type="text" class="form-control" id="name" placeholder="Introduce un tag nuevo">
-									  </div>									  
+									 <label for="tag">Tags disponibles:</label>
+										  <select class="form-control" id="tag">
+						               				<c:forEach items="${alltags}" var="i">					               				
+						               					<option> ${i} </option>					               				
+						               				</c:forEach>					               				
+					               				</select>
+									  </div>
+									  								  
 									</form>					
 								      </div>
 								      <div class="modal-footer">						      	 
-										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										  <button type="submit" class="btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
 										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 								      </div>
 								    </div>
