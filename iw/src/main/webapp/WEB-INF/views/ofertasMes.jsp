@@ -18,7 +18,7 @@
                     <c:forEach items="${platos}" var="i">
                		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
-	                        <img class="img-responsive" src="${prefix}resources/img/database/offers/${i.foto}" alt="">
+	                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.foto}" alt="">
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>

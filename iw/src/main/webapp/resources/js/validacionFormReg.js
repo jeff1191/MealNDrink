@@ -79,7 +79,7 @@
 			var nombr = $("#regname");
 			
 			nombr.css("background", "yellow");
-			nombr.css("color", "white");
+			nombr.css("color", "red");
 			
 			alert("El apodo está ocupado. Elija otro (campo amarillo)")
 		};

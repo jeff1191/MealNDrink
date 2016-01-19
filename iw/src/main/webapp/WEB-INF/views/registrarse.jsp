@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="${prefix}resources/js/validacionFormReg.js"></script>
 	
 	 <script type="text/javascript"> //javascript aqui es solo de prueba BORRAR
 	 $(function() {

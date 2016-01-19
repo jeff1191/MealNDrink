@@ -1,5 +1,6 @@
 <%@ include file="../fragments/header.jspf" %>
 <script type="text/javascript">
+
 function activaBotonEliminacionLocal() {	
 	var idLocal = $(this).attr("id").substring("del_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
@@ -7,6 +8,7 @@ function activaBotonEliminacionLocal() {
 			$('#TodosLocales').load('usuario?id='+idUsuario+' div#TodosLocales');
 	});
 }
+
 function activaBotonEliminacionComentario() {	
 	var idComentario = $(this).attr("id").substring("delC_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
@@ -28,7 +30,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-                            <img src="userFoto?id=${usuario.foto}" height="275" width="275">                              
+                            <img src="usuariosFoto?id=${usuario.foto}" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3>Mis datos</h3>
 							<p>${usuario.email}</p>
@@ -256,3 +258,4 @@ $(function() {
             </div>
         </section>
 <%@ include file="../fragments/footer.jspf" %>
+        

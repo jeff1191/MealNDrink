@@ -36,6 +36,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,7 +77,7 @@ public class HomeController {
 		logger.info("Login attempt from '{}' while visiting '{}'", formLogin, formPass);
 		
 		// validate request
-		if (formLogin == null || formLogin.length() < 4 || formPass == null || formPass.length() < 6) { 
+		if (formLogin == null || formLogin.length() < 4 || formPass == null || formPass.length() < 4) { 
 			model.addAttribute("loginError", "usuarios y contraseñas: 4 caracteres mínimo");
 			return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
 		} else {
@@ -294,16 +295,42 @@ public class HomeController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/userFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	public byte[] userPhoto(@RequestParam("id") String id) throws IOException {
-	 //con esto accedo a ${base}/userfoto/id
+	@RequestMapping(value="/usuariosFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] usuariosfoto(@RequestParam("id") String id) throws IOException {
 		File f = ContextInitializer.getFile("usuarios", id);
 	    InputStream in = null;
 	    if (f.exists()) {
 	    	in = new BufferedInputStream(new FileInputStream(f));
 	    } else {
 	    	in = new BufferedInputStream(
-	    			this.getClass().getClassLoader().getResourceAsStream("unknown-user.jpg"));
+	    			this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
+	    }
+	    return IOUtils.toByteArray(in);		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/ofertasFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] offerPhoto(@RequestParam("id") String id) throws IOException {
+		File f = ContextInitializer.getFile("ofertas", id);
+	    InputStream in = null; 
+	    if (f.exists()) {
+	    	in = new BufferedInputStream(new FileInputStream(f));
+	    } else {
+	    	in = new BufferedInputStream(
+	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+	    }
+	    return IOUtils.toByteArray(in);		
+	}
+	@ResponseBody
+	@RequestMapping(value="/localesFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] localFoto(@RequestParam("id") String id) throws IOException {
+		File f = ContextInitializer.getFile("locales", id);
+	    InputStream in = null; 
+	    if (f.exists()) {
+	    	in = new BufferedInputStream(new FileInputStream(f));
+	    } else {
+	    	in = new BufferedInputStream(
+	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
 	    }
 	    return IOUtils.toByteArray(in);		
 	}
@@ -387,23 +414,22 @@ public class HomeController {
 		return "acercaDe";
 	}	
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
-	public String usuario(@RequestParam("id") long id,Model model, HttpSession session) {
+	public String usuario(@RequestParam("id") long id,Model model) {
 		model.addAttribute("active", "usuario");
 		model.addAttribute("pageTitle", "User");
 
 		Usuario usuario = entityManager.find(Usuario.class, id);
-		//Usuario usuario = (Usuario)session.getAttribute("user");
 
 		model.addAttribute("usuario", usuario);
 		return "usuario";		
-	}
-	
+	}	
+
 	@RequestMapping(value = "/registrarse", method = RequestMethod.GET)
 	public String registrarse(Locale locale, Model model) {
 		model.addAttribute("active", "registrarse");
 
 		return "registrarse";
-	}
+	}	
 	
 	@Transactional
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
@@ -434,6 +460,18 @@ public class HomeController {
 		
 		return "comercio_externo";
 	}	
+
+	@RequestMapping(value = "/detallesOferta", method = RequestMethod.GET)
+	@ResponseBody
+	public String detallesOferta(@RequestParam("id") long id) {
+		Oferta o = (Oferta)entityManager.find(Oferta.class, id);
+
+		String ret = "{nombre: " + "\""+o.getNombre()+ "\"" + ", id: " + o.getID() + "}";
+		System.err.println(ret);
+		return ret;
+		//return o;
+	}
+
 	@Transactional
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
 	public String comercio_interno(@RequestParam("id") long id,Model model) {
@@ -463,32 +501,30 @@ public class HomeController {
 		offer.setTags(tags);		
 		offer.setLocal(local);
 		offer.setOfertaMes(false);
-		local.getOfertas().add(offer);
-		
+
+		System.err.println(":::::"+offer.getID());
         if (!photo.isEmpty()) {
             try {
-            	offer.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
-                        		new FileOutputStream(ContextInitializer.getFile("locales/"+local.getID()+"_"+local.getNombre(), id + "_"+offer.getFoto())));
+                        		new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
                 stream.write(bytes);
                 stream.close();
-        		entityManager.persist(offer);
-        		entityManager.persist(local);
-        		
+                offer.setFoto(offer.getID()+".jpg");
+        		local.getOfertas().add(offer);
+				entityManager.persist(offer);
+				entityManager.persist(local);		
             } catch (Exception e) {
             	return "redirect:comercio_interno?id="+local.getID();
             }
-        } else { //no ha seleccionado foto, poner la por defecto
-        	offer.setFoto("unknown_offer.jpg");
-          
+        } else { //no ha seleccionado foto, poner la por defecto          
     	    	BufferedInputStream in = new BufferedInputStream(
     	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("locales/"+local.getID()+"_"+local.getNombre(), id + "_"+offer.getNombre()+".jpg")));
+							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -499,6 +535,8 @@ public class HomeController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+                offer.setFoto("unknown_offer.jpg");
+        		local.getOfertas().add(offer);
 				entityManager.persist(offer);
 				entityManager.persist(local);				
         }
@@ -750,7 +788,7 @@ public class HomeController {
 		}*/
 		return false;
 	}
-	
+
 	public Usuario creaUsuario(String nombre, String email, String telefono, String rol, String contra){
 		Usuario u = new Usuario();
 		
