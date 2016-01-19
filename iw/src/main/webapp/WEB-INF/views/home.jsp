@@ -147,13 +147,13 @@
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h3 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne1">
                                 En ${((i.oferta).local).nombre}  a las  ${i.fechaReserva}  
                                   <i class="fa fa-angle-right pull-right"></i>
                                 </a>
                               </h3>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
+                            <div id="collapseOne1" class="panel-collapse collapse">
                               <div class="panel-body">
                                   <div class="media accordion-inner">
                                         <div class="pull-left">

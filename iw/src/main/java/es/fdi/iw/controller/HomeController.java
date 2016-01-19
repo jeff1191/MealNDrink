@@ -678,10 +678,21 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.POST)	
-	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
+	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+	
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
 		
-		System.out.println("Los comensales en ofertas del mes que vienen son " + cap);		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
 		
+			
+		//cambiar capacidad oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);		
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+				
+				
 		return ofertasMes(locale, model);
 	}
 	

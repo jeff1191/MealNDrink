@@ -3,14 +3,14 @@
         <div class="container">
 			<div class="center">
 				<h2>Acerca de MealNDrink</h2>
-				<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
+				<p class="lead">Somos un grupo de estudiantes de la Facultad de Informatica de la Universidad Complutense de Madrid <br> MealNDrink es un proyecto de un pagina web para la asignatura de Ingeniera Web.</p>
 			</div>
 			
 			<!-- our-team -->
 			<div class="team">
 				<div class="center">
 					<h2>Equipo de MealNDrink</h2>
-					<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
+					<p class="lead">Integrado por estudiantes del grado de ingeniera informatica y del software <br> Asesorados y ayudados por el profesor Manuel Freire</p>
 				</div>
 
 				<div class="row clearfix">

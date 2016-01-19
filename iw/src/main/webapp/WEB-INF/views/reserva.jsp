@@ -14,7 +14,7 @@
 				 	<p class="lead">Capacidad actual</p>
 					<div class="progress">
 					    <div class="progress-bar progress-bar-striped active color1" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="${infoOferta.capacidadTotal}" style="width:50%">
-					      4/${infoOferta.capacidadTotal}
+					      ${infoOferta.capacidadActual}/${infoOferta.capacidadTotal}
 					    </div>
 					</div>
 					<br></br>
@@ -30,7 +30,8 @@
 			             <div class="form-group">
 				        	<label class="control-label col-sm-4" for="timepicker"> Hora</label>
 				        	<input id=timepicker class="form-control" type="text" name="hora" placeholder="Selecciona una hora" value="" />						
-						</div>					
+						</div>		
+							<input hidden="submit" name="oferta" value="${infoOferta.ID}" />			
 					   <div class="form-group">
 					  	<button type="submit" class="btn btn-primary" value="Submit"> Reservar</button>	 								 								
 		         	   </div>
