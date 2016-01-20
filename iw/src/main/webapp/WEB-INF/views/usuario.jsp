@@ -58,6 +58,20 @@ $(function() {
 											<div class="media-body">
 												<h4 class="media-heading">Reserva #1</h4>
 												<p>${i.oferta.nombre}</p>
+												
+												
+												 <div id="qrcode"></div>
+										            
+									            <script>															
+														$('#qrcode').qrcode({
+														    "render": "div",
+														    "size": 100,
+														    "color": "#3a3",
+														    "text": "${i.codigoQr}"
+														});
+												</script>
+												
+												
 												<button id="delO_${i.oferta.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 											</div>
 										</div>	
