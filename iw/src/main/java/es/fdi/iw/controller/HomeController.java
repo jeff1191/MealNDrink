@@ -46,6 +46,7 @@ import es.fdi.iw.ContextInitializer;
 import es.fdi.iw.model.Comentario;
 import es.fdi.iw.model.Local;
 import es.fdi.iw.model.Oferta;
+import es.fdi.iw.model.Reserva;
 import es.fdi.iw.model.Usuario;
 import scala.annotation.meta.getter;
 
@@ -384,8 +385,48 @@ public class HomeController {
 	}	
 	
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String reservaEnHome(@RequestParam("capacidad") int cap, Locale locale, Model model) {
-		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);	
+	public String reservaEnHome(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+	
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
+		
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
+		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
+		Usuario user= entityManager.find(Usuario.class, (long) 9);
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el código qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Añadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);	
+		
 		return empty(locale, model);
 	}
 	/**
@@ -655,10 +696,48 @@ public class HomeController {
 	}	
 	@Transactional
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	
-	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
+	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
 		
-		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);		
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
 		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
+		Usuario user= entityManager.find(Usuario.class, (long) 8);
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el código qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Añadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);
+				
 		return ultimasOfertas(locale,model);
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
@@ -684,14 +763,41 @@ public class HomeController {
 		System.out.println("La fecha en la que vienen es " + fecha);
 		System.out.println("La hora a la que vienen es " + hora);
 		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
 		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
+		Usuario user= entityManager.find(Usuario.class, (long) 7);
 			
-		//cambiar capacidad oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);		
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el código qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Añadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
 		int nuevacap = oferta.getCapacidadActual() + cap;
 		oferta.setCapacidadActual(nuevacap);
-				
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);
 				
 		return ofertasMes(locale, model);
 	}
