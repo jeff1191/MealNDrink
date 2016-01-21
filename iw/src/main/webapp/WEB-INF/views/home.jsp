@@ -13,7 +13,6 @@
                 <div class="item active" style="background-image: url(${prefix}resources/img/slider/bg1.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
-                            
                                 <div class="carousel-content">
                                     <h1 class="animation animated-item-1">La mejor comida, al mejor precio</h1>  
                                 </div>								
@@ -25,7 +24,6 @@
                 <div class="item" style="background-image: url(${prefix}resources/img/slider/bg2.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
-                           
                                 <div class="carousel-content">
                                     <h1 class="animation animated-item-1">Descubre nuevos lugares</h1>
                                 </div>								
@@ -37,7 +35,6 @@
                 <div class="item" style="background-image: url(${prefix}resources/img/slider/bg3.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
-                            
                                 <div class="carousel-content">
                                     <h1 class="animation animated-item-1">No hay nada como las cosas bien hechas</h1>                                   
                                 </div>							
@@ -49,9 +46,11 @@
                            <div class="item" style="background-image: url(${prefix}resources/img/slider/bg4.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
-                          
                                 <div class="carousel-content">
-                                    <h1 class="animation animated-item-1">Los partidos saben mejor rodeado de tus colegas y con una buena cerveza en la mano</h1>
+                                    <h1 class="animation animated-item-1">
+                                    	Los partidos saben mejor rodeado de tus colegas <br> 
+                                    	y con una buena cerveza en la mano
+                                    </h1>
                                 </div>								
                            	
                         </div>
@@ -109,8 +108,12 @@
 	                        <div class="recent-work-inner">
 	                               <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>${i.descripcion}</p>									
-									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=home"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
-									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
+									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=home">
+										<i class="glyphicon glyphicon-cutlery"></i> Reservar
+									</a>
+									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}">
+										<i class="fa fa-eye"></i> Ver restaurante
+									</a>	
 								</div> 
 	                        </div>
 	                    </div>
@@ -187,7 +190,8 @@
                                         </div>
                                         <div class="media-body">
                                              <h4>Adipisicing elit</h4>
-                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
+                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                                             	 eiusmod tempor incididunt ut labore</p>
                                         </div>
                                   </div>
                               </div>
@@ -211,7 +215,8 @@
                                         </div>
                                         <div class="media-body">
                                              <h4>Adipisicing elit</h4>
-                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
+                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do 
+                                             	eiusmod tempor incididunt ut labore</p>
                                         </div>
                                   </div>
                               </div>
@@ -235,7 +240,8 @@
                                         </div>
                                         <div class="media-body">
                                              <h4>Adipisicing elit</h4>
-                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
+                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                                             	 eiusmod tempor incididunt ut labore</p>
                                         </div>
                                   </div>
                               </div>

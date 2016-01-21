@@ -48,6 +48,41 @@
 <c:forEach var="i" items="${pageExtraCSS}">
 	<link rel="stylesheet" href="${prefix}resources/css/${i}">
 </c:forEach>
+
+
+<script type="text/javascript">
+	//javascript aqui es solo de prueba BORRAR
+	$(function() {
+		$("#iniciarsesion").click(function() {
+			validacion();
+		})
+	})
+
+	function validacion() {
+
+		var nombr = $("#login").val();
+		var contr = $("#pass").val();
+
+		$.ajax({
+			url : "${prefix}login",
+			type : "POST",
+			data : {
+				login : nombr,
+				pass : contr
+			},
+			error : function() {
+				$("#pass").empty();
+				alert("El correo electrónico y la contraseña no coinciden.");
+
+			},
+			success : function() {
+				location.href = "${prefix}/mealndrink";
+
+			}
+		})
+	};
+</script>
+
 </head>
 <body>
 	<header id="header">
@@ -96,20 +131,39 @@
                         <li class="${active eq 'ofertasMes'?'active':''}"><a href="ofertasMes">Ofertas del mes</a></li>
                         <li class="${active eq 'ultimasOfertas'?'active':''}"><a href="ultimasOfertas">Últimas ofertas</a></li>
                         <li class="${active eq 'acercaDe'?'active':''}"><a href="acercaDe">Acerca de</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                            	<li><a data-toggle="modal" data-target="#myModal">Iniciar sesión</a></li>
-                            	<!-- <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button></li> -->
-                                <li><a href="administracion">Administrador</a></li>
-                                <li><a href="usuario?id=4">Usuario</a></li>
-                            
-                                
-                                <li><a href="comercio_interno?id=1">Local</a></li>
-                            
-                            
-                            </ul>
-                        </li> 
+	                      <c:choose>
+								<c:when test="${not empty user}">
+	
+									<li class="dropdown"><a href="#" class="dropdown-toggle"
+										data-toggle="dropdown">Perfil <i class="fa fa-angle-down"></i></a>
+										<ul class="dropdown-menu">
+											<c:choose>
+												<c:when test="${user.rol == 'admin'}">
+													<li class="${active eq 'administracion'?'active':''}"><a
+														href="administracion">Mi perfil</a></li>
+												</c:when>
+												<c:when test="${user.rol == 'user'}">
+													<li class="${active eq 'usuario'?'active':''}"><a
+														href="usuario?id=${user.ID}">Mi perfil</a></li>
+												</c:when>
+												<c:when test="${user.rol == 'local'}">
+													<li class="${active eq 'comercio_interno'?'active':''}"><a
+														href="usuario?id=${user.ID}">Mi perfil</a></li>
+											            <c:forEach items="${usuario.locales}" var="i">
+											            	<li><a href="comercio_interno?id=${i.ID}">${i.nombre}</a></li>
+											            </c:forEach>
+												</c:when>
+											</c:choose>
+											<li><a href="logout">Cerrar sesión</a></li>
+										</ul></li>	
+								</c:when>
+								<c:otherwise>
+
+								<li><a data-toggle="modal" data-target="#myModal">Iniciar
+										sesión</a></li>
+
+							</c:otherwise>
+						</c:choose>
                       
                     </ul>
                 </div>
@@ -125,23 +179,25 @@
 		        <h4 class="modal-title" id="myModalLabel"> Iniciar sesión</h4>
 		      </div>
 		      <div class="modal-body">
-				<form role="form">
-		            <div class="form-group">
-		              <label for="login"> Usuario</label>
-		              <input type="text" class="form-control" id="login" placeholder="Nombre de usuario">
-		            </div>
-		            <div class="form-group">
-		              <label for="password"> Contraseña</label>
-		              <input type="password" class="form-control" id="pass" placeholder="Contraseña">
-		            </div>
-		            <div class="checkbox">
-		              <label><input type="checkbox" value="" checked>Recordarme</label>
-		            </div>
-		         </form>
+				<div class="form-group">
+						<label for="login"> Usuario</label> <input type="text"
+								class="form-control" id="login" name="login"
+								placeholder="Nombre de usuario">
+						</div>
+						<div class="form-group">
+							<label for="password"> Contraseña</label> <input type="password"
+								class="form-control" id="pass" name="pass"
+								placeholder="Contraseña">
+						</div>
+						<div class="checkbox">
+
+							<button type="submit" class="btn btn-primary" id="iniciarsesion"
+								name="iniciarsesion">Iniciar sesión</button>
+
+						</div>
 		      </div>
 		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary"> Registrarse</button>
-		        <button type="button" class="btn btn-primary"> Iniciar sesión</button>
+		      	<a href="registrarse">Registrarse</a>
 		      </div>
 		    </div>
 		  </div>
