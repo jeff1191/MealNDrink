@@ -40,15 +40,45 @@ function datosOferta(id, callback) {
 		callback(data); 		
 	});
 }
-function rellenaDatos() {
+function rellenaDatosOferta() {
 	var idOffer = $(this).attr("id").substring("del_".length); 
 	$("#idEliminar").attr("value" ,idOffer);
+}
+function rellenaDatosTags() {
+	var nombreTag = $(this).attr("id").substring("delTags_".length); 
+	$("#idEliminarTags").attr("value" ,nombreTag);
+}
+
+function activaBotonEliminacionTag() {
+	var nombreTag=$("#idEliminarTags").attr("value");
+	var idLocal=$('#id_local').get(0).value;
+
+	$.post( "eliminarTag",{idLocal:idLocal,nombreTag:nombreTag},function(data){ 
+			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
+	});
+}
+function rellenaDatosComentario() {
+	var nombreC = $(this).attr("id").substring("delComment_".length); 
+	$("#idEliminarComentario").attr("value" ,nombreC);
+
+}
+function activaBotonEliminacionComentario() {
+	var idComentario=$("#idEliminarComentario").attr("value");
+	var idLocal=$('#id_local').get(0).value;
+
+	$.post( "eliminarComentario",{idComentario:idComentario},function(data){ 
+			$('#TodosComentarios').load('comercio_interno?id='+idLocal+' div#TodosComentarios');
+	});
 }
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
 	$("body").on("click", ".editarOferta", null, activaBotonEditarOferta);
-	$("body").on("click", ".rellenaDatos", null, rellenaDatos);
+	$("body").on("click", ".rellenaDatos", null, rellenaDatosOferta);
+	$("body").on("click", ".rellenaDatosTags", null, rellenaDatosTags);
+	$("body").on("click", ".eliminaTag", null, activaBotonEliminacionTag);
+	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
+	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 })
 </script>
       
@@ -109,10 +139,12 @@ $(function() {
 													<h4 class="media-heading">${i.nombre}</h4>
 												<p>${i.descripcion}</p>											
 													<button type="submit" id="edit_${i.ID}" value="${i}" class="editarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-													<button id="del_${i.ID}" value="${i}"  class="rellenaDatos" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>													
+													<button id="del_${i.ID}" value="${i}"  class="rellenaDatos" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+												
 												</div>
 												</div>
 											</c:forEach>	
+											<br></br>
 											<button type="submit" class="btn btn-default">Anterior</button>
 											<button type="submit" class="btn btn-default">Siguiente</button>						
 										</div>
@@ -135,6 +167,14 @@ $(function() {
 											<label for="name">Nombre de la oferta:</label>
 											<input type="text" class="form-control" name="name" id="name" placeholder="Introduzca el nuevo nombre">
 										  </div>
+										<div class="form-group" name="tag" id="tag ">
+										<label for="endTime">Tag:</label>
+										<select class="form-control" name="nombreTag" id="nombreTag">
+				               				<c:forEach items="${alltags}" var="i">					               				
+				               					<option value="${i}"> ${i} </option>					               				
+				               				</c:forEach>					               				
+					               		</select>
+					               		 </div>
 										  <div class="form-group">
 											<label for="endTime">Fecha límite:</label>
 											<input type="time" class="form-control"  name="endTime" id="endTime" placeholder="Introduzca el dia límite">
@@ -297,22 +337,27 @@ $(function() {
 								</div>
 								
 								<div class="tab-pane fade" id="opiniones">
-									<c:forEach items="${local.comentarios}" var="i">
+									
 									<div class="media">
+									<div id="TodosComentarios" class="TodosComentarios">
+										<c:forEach items="${local.comentarios}" var="i">
 										<div class="pull-left">
 											<img class="media-object" src="localesFoto?id=${i.local.foto}" height="135" width="180"> 
 										</div>
-										<div class="media-body">
+										
+										<div class="media-body">											
 											<h4 class="media-heading">Comentario #1</h4>
 											<p>${i.texto}</p>
-											<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+											<button id="delComment_${i.ID}" value="${i.ID}"  class="rellenaDatosComentario" data-toggle="modal" data-target="#ModalDelComentario" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
 										</div>
+									</c:forEach>
 									</div>
-								
+									</div>
+									
 									<br></br>
 									<button type="submit" class="btn btn-default">Anterior</button>
 									<button type="submit" class="btn btn-default">Siguiente</button>
-									</c:forEach>
+									
 								</div>
 								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
@@ -351,16 +396,12 @@ $(function() {
 								<div class="tab-pane fade" id="tags"> <!--tags-->
 									<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddTag"><span class="glyphicon glyphicon-plus"></span> Añadir un nuevo tag</button>
 								  	<br></br>								
-									<h4>Tag #1</h4> 
-									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-									<h4>Tag #2</h4> 
-									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-									<h4>Tag #3</h4> 
-									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-									<h4>Tag #4</h4> 
-									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-									<h4>Tag #5</h4>
-									<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+									<div id="TodosTags" class="TodosTags">	
+										<c:forEach items="${alltagsLocal}" var="i">
+											<h4>${i}</h4> 					               				
+								         	<button id="delTags_${i}" value="${i}"  class="rellenaDatosTags" data-toggle="modal" data-target="#ModalDelTags" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>					               				
+							            </c:forEach>	
+									</div>
 								</div>
 																	
 								<!-- Modal Add Tag-->
@@ -377,11 +418,11 @@ $(function() {
 									 							  
 									  <div class="form-group">
 									 <label for="tag">Tags disponibles:</label>
-										  <select class="form-control" id="tag">
-						               				<c:forEach items="${alltags}" var="i">					               				
-						               					<option> ${i} </option>					               				
-						               				</c:forEach>					               				
-					               				</select>
+										<select class="form-control" id="tag">
+				               				<c:forEach items="${alltags}" var="i">					               				
+				               					<option> ${i} </option>					               				
+				               				</c:forEach>					               				
+					               		</select>
 									  </div>
 									  								  
 									</form>					
@@ -394,7 +435,54 @@ $(function() {
 								  </div>
 								</div>     
 								<!-- End Modal Add Tag-->
-														
+								
+								<!-- Modal Del Tags-->
+								<div class="modal fade" id="ModalDelTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+												    
+								    		<div class="modal-header">
+								    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        	<h4 class="modal-title" id="delModalLabel"> Eliminar tag</h4>
+
+											</div>
+											<div class="modal-body">
+											
+											<p>¿Está seguro que quiere eliminar este tag?</p>
+												<div class="modal-footer">
+													<button id="idEliminarTags" value ="" type="submit" class="eliminaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+													<button type="submit" data-dismiss="modal">Cancel</button>
+												</div>
+		
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- End Modal Del Tags-->
+								
+								<!-- Modal Del Comentario-->
+								<div class="modal fade" id="ModalDelComentario" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+												    
+								    		<div class="modal-header">
+								    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        	<h4 class="modal-title" id="delModalLabel"> Eliminar comentario</h4>
+
+											</div>
+											<div class="modal-body">
+											
+											<p>¿Está seguro que quiere eliminar este comentario?</p>
+												<div class="modal-footer">
+													<button id="idEliminarComentario" value ="" type="submit" class="eliminaComentario" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+													<button type="submit" data-dismiss="modal">Cancel</button>
+												</div>
+		
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- End Modal Del Comentario-->														
 							</div><!--tab content-->
                      
                     </div><!--/.col-md-4-->

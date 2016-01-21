@@ -67,6 +67,7 @@ public class HomeController {
 	String[] allTags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
 			"comida_espa�ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 	
+
 	//tags por defecto, en nuestro sistema ya viene incorporado 
 	
 	
@@ -492,6 +493,7 @@ public class HomeController {
 		model.addAttribute("pageTitle", local.getNombre());
 		model.addAttribute("active", "comercio_interno");
 		model.addAttribute("local", local);
+		model.addAttribute("alltagsLocal", local.dameTagsSeparados());	
 		model.addAttribute("alltags", allTags);	
 		return "comercio_interno";
 	}	
@@ -499,8 +501,9 @@ public class HomeController {
 	@RequestMapping(value = "/nuevaOferta", method = RequestMethod.POST)
 	public String nuevaOferta(
 			@RequestParam("fileToUpload") MultipartFile photo,
-    		@RequestParam("id_local") long id, 
+    		@RequestParam("id_local") long id,     		
     		@RequestParam("name") String nombreOferta,
+    		@RequestParam("nombreTag") String tag, 
     		@RequestParam("endTime") String endTime,
     		@RequestParam("cap") int capacidad,
     		@RequestParam("description") String descripcion, 
@@ -513,8 +516,7 @@ public class HomeController {
 		offer.setFechaLimite(new Timestamp(23)); //ENDTIME!!!!!!!!!!
 		offer.setCapacidadTotal(capacidad);
 		offer.setDescripcion(descripcion);
-		String tags = "plan_romantico, comida_india, comida_mexicana";
-		offer.setTags(tags);		
+		offer.setTags(tag+",");		
 		offer.setLocal(local);
 		offer.setOfertaMes(false);
 		entityManager.persist(offer);
@@ -572,7 +574,7 @@ public class HomeController {
 	public String nuevoLocal(@RequestParam("fileToUpload") MultipartFile photo,
     		@RequestParam("id_usuario") long id, @RequestParam("name") String nombreLocal,@RequestParam("timeBusiness") String horario
     		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
-    		@RequestParam("tags") String tags,@RequestParam("redireccion")String pagina, Model model){
+    		@RequestParam("tag") String tag,@RequestParam("redireccion")String pagina, Model model){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
@@ -583,7 +585,7 @@ public class HomeController {
 		local.setDireccion(direccion);
 		local.setHorario(horario);
 		local.setUsuario(usuario);
-		local.setTags(tags);
+		local.setTags(tag+",");
 		local.setEmail(email);
 		local.setTelefono(telefono);
 		entityManager.persist(local);
@@ -595,7 +597,7 @@ public class HomeController {
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
                         		new FileOutputStream(
-                        				ContextInitializer.getFile("locales", ""+local.getID())));
+                        				ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
                 stream.write(bytes);
                 stream.close();
                 usuario.getLocales().add(local);
@@ -613,7 +615,7 @@ public class HomeController {
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile(local.getID()+"_"+local.getNombre(), id + "_"+local.getFoto())));
+							new FileOutputStream(ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -724,6 +726,21 @@ public class HomeController {
 			return "eliminarComentario";
     }
 	
+	@Transactional
+	@RequestMapping(value = "/eliminarTag", method = RequestMethod.POST)
+	public String eliminarTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String delName, Model model){
+			Local local= entityManager.find(Local.class, idLocal);
+			local.getTags().replaceAll(delName, "");
+			//principio de una coma(mirar bbdd)
+			String ret = local.getTags().replaceAll(delName+",", "");
+			//siguiente de una coma(mirar bbdd)
+			ret = ret.replaceAll(","+delName, "");
+			//cuando solamente tienes un elem, ponemos una coma porque en comercio interno invocamos a dameTagsSeparador(split)
+			ret = ret.replaceAll(delName, ","); 
+			local.setTags(ret);
+			entityManager.persist(local);	
+			return "eliminarTag";
+    }
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model) {

@@ -51,7 +51,6 @@ public class Local {
 		ID = iD;
 	}
 	public String getTags() {
-		ponTagsSeparados(dameTagsSeparados());
 		return tags;
 	}
 

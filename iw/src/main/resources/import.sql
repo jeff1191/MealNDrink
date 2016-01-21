@@ -24,7 +24,7 @@ INSERT INTO OFERTA VALUES (2, 0, 11, 'Rico y sabroso. Ven a cenar aqui', '2015-0
 INSERT INTO OFERTA VALUES (3, 0, 30, 'Cena 100% romantica', '2015-07-02 06:14:00', '3.jpg', 'Ven con tu pareja', 1, 'plan_romantico', 1)
 INSERT INTO OFERTA VALUES (4, 0, 20, 'Chewbacca te cantara el cumpleaños feliz', '2016-07-02 06:14:00', '4.jpg', 'Celebra tu cumple', 0, 'comida_mexicana,comida_rusa', 2)
 INSERT INTO OFERTA VALUES (5, 0, 14, 'Vente de fiesta con nosotros', '2015-07-02 06:14:00', '5.jpg', 'Flow non stop', 1, 'comida_china', 2)
-INSERT INTO OFERTA VALUES (6, 0, 13, 'Tapeo del bueno y barato', '2015-07-02 06:14:00', '6.pjpg', 'Tapas gratis', 1, 'comida_española,comida_mexicana,comida_rusa', 3)
+INSERT INTO OFERTA VALUES (6, 0, 13, 'Tapeo del bueno y barato', '2015-07-02 06:14:00', '6.jpg', 'Tapas gratis', 1, 'comida_española,comida_mexicana,comida_rusa', 3)
 INSERT INTO OFERTA VALUES (7, 0, 18, 'Ponte bien fino, hasta que revientes', '2015-07-02 06:14:00','7.jpg', 'Come lo que quieras', 1, 'comida_china,comida_rusa', 4)
 INSERT INTO OFERTA VALUES (8, 0, 22, 'El refill mas molon', '2016-07-02 06:14:00', '8.jpg', 'Rellena tu bebida', 1, 'comida_turca,comida_india', 4)
 INSERT INTO OFERTA VALUES (9, 0, 78, '¡Que ricas estas alitas!', '2017-07-02 06:14:00', '9.jpg', 'Alitas con tu primera consumicion', 0, 'comida_picante', 5)
