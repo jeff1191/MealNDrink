@@ -524,16 +524,28 @@ public class HomeController {
 
 	@Transactional
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
-	public String comercio_interno(@RequestParam("id") long id,Model model) {
+	public String comercio_interno(@RequestParam("id") long id,Model model, HttpSession session) {
 		//Tendriamos que pasarle el LOCAL al que le das click.
 		//Yo creo que es mejor que el desplegable que sale en perfil ponga (Cerrar sesi�n, perfil y los locales que tiene)
 		//CAMBIAR EL HEADER!!!!!!! 
+		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+		
+		Usuario dueño = (Usuario) entityManager.createNamedQuery("dameNombreLocal").setParameter("idParam", usuario.getID()).getSingleResult();
 		Local local = entityManager.find(Local.class, id);
-		model.addAttribute("pageTitle", local.getNombre());
-		model.addAttribute("active", "comercio_interno");
-		model.addAttribute("local", local);
-		model.addAttribute("alltagsLocal", local.dameTagsSeparados());	
-		model.addAttribute("alltags", allTags);	
+		
+		if(dueño.getID() == local.getUsuario().getID()){
+			model.addAttribute("pageTitle", local.getNombre());
+			model.addAttribute("active", "comercio_interno");
+			model.addAttribute("local", local);
+			model.addAttribute("alltagsLocal", local.dameTagsSeparados());	
+			model.addAttribute("alltags", allTags);	
+		}
+		else{
+			usuario(usuarioOnline.getID(), model, session);
+			return "usuario";
+		}
 		return "comercio_interno";
 	}	
 	@Transactional
@@ -615,12 +627,14 @@ public class HomeController {
 	public String nuevoLocal(@RequestParam("fileToUpload") MultipartFile photo,
     		@RequestParam("id_usuario") long id, @RequestParam("name") String nombreLocal,@RequestParam("timeBusiness") String horario
     		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
-    		@RequestParam("tag") String tag,@RequestParam("redireccion")String pagina, Model model){
+    		@RequestParam("tag") String tag,@RequestParam("redireccion")String pagina, Model model, HttpSession session){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
 		//UBICACI�N!!!!!!!!!!!!!		
-		Usuario usuario = entityManager.find(Usuario.class, id);
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+		
 		Local local= new Local();
 		local.setNombre(nombreLocal);
 		local.setDireccion(direccion);

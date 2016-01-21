@@ -153,6 +153,5 @@ public class Usuario {
 	}
 	public void setLocales(List<Local> locales) {
 		this.locales = locales;
-	} 
-
+	}
 }
