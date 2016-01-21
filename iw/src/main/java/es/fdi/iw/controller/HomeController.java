@@ -66,7 +66,7 @@ public class HomeController {
 	@PersistenceContext
 	private EntityManager entityManager;
 	String[] allTags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-			"comida_espa�ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+			"comida_espa�ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 	
 
 	//tags por defecto, en nuestro sistema ya viene incorporado 
@@ -88,8 +88,8 @@ public class HomeController {
 		
 		// validate request
 		if (formLogin == null || formLogin.length() < 4 || formPass == null || formPass.length() < 4) { 
-			model.addAttribute("loginError", "usuarios y contraseñas: 4 caracteres mínimo");
-			return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
+			model.addAttribute("loginError", "usuarios y contrasenyas: 4 caracteres minimo");
+			return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
 		} else {
 			Usuario u = null;
 			try{				
@@ -102,38 +102,18 @@ public class HomeController {
 					getTokenForSession(session);
 				} else {
 					logger.info("pass was NOT valid");
-					model.addAttribute("loginError", "error en usuario o contraseña");
-					return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
+					model.addAttribute("loginError", "error en usuario o contrasenya");
+					return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
 				}
 			} catch (NoResultException nre) {
-				return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
 			}
 		}
 
 		// redirects to view from which login was requested
-		return new ResponseEntity<String>("Inicio de sesión correcto", HttpStatus.OK);
+		return new ResponseEntity<String>("Inicio de sesion correcto", HttpStatus.OK);
 	}
-	
-	/**
-	 * Delete a user; return JSON indicating success or failure
-	 */
-	@RequestMapping(value = "/delUser", method = RequestMethod.POST)
-	@ResponseBody
-	@Transactional // needed to allow DB change
-	public ResponseEntity<String> bookAuthors(@RequestParam("id") long id,
-			@RequestParam("csrf") String token, HttpSession session) {
-		if ( ! isAdmin(session) || ! isTokenValid(session, token)) {
-			return new ResponseEntity<String>("Error: no such user or bad auth", 
-					HttpStatus.FORBIDDEN);
-		} else if (entityManager.createNamedQuery("delUser")
-				.setParameter("idParam", id).executeUpdate() == 1) {
-			return new ResponseEntity<String>("Ok: user " + id + " removed", 
-					HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>("Error: no such user", 
-					HttpStatus.BAD_REQUEST);
-		}
-	}			
+		
 	
 	/**
 	 * Logout (also returns to home view).
@@ -408,52 +388,6 @@ public class HomeController {
 		return empty(locale, model);
 	}	
 	
-	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String reservaEnHome(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
-	
-		System.out.println("Comensales que vienen es " + cap);
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
-		
-		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
-		 *	- Modificar la capacidad de la Oferta 
-		*/
-		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
-		
-		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
-		Usuario user= entityManager.find(Usuario.class, (long) 9);
-			
-		//Nos traemos la oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
-		//Crear un objeto reserva
-		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el código qr esta mal			
-		reserva.setUsuario(user);
-		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
-		reserva.setValidado(false);
-		
-		//Añadir la reserva a User y Oferta
-		user.getReservas().add(reserva);
-		oferta.getReservas().add(reserva);		
-		
-		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
-		oferta.setCapacidadActual(nuevacap);
-		
-		entityManager.persist(reserva);
-		entityManager.persist(user);
-		entityManager.persist(oferta);	
-		
-		return empty(locale, model);
-	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -483,26 +417,76 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
-	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag,Model model) {		
-		model.addAttribute("active", "comercio_externo");			
+	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag, Model model) {		
+		model.addAttribute("active", "reserva");			
 		try {
 			Oferta aux = entityManager.find(Oferta.class, id);
 			model.addAttribute("infoOferta", aux);
-			model.addAttribute("paginaVuelta", pag);
+			model.addAttribute("paginaVuelta", pag);			
 			model.addAttribute("pageTitle", "Reserva");
 		} catch (NoResultException nre) {
 			logger.error("No existe esa oferta: {}", id, nre);
 		}
 		
 		return "reserva";
-	}		
+	}	
+	@Transactional
+	@RequestMapping(value = "/reserva", method = RequestMethod.POST)	
+	public String reserva(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID,
+			@RequestParam("dondeEstoy") String pag, HttpSession session, Locale locale, Model model) {		
+
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
+		
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
+		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+		Usuario user= entityManager.find(Usuario.class, usuarioSesion.getID());
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el codigo qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Anyadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);
+		
+		return "redirect:" + pag;
+	}	
 	@Transactional
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
-	public String comercio_externo(@RequestParam("id") long id, Model model) {		
+	public String comercio_externo(@RequestParam("id") long id, HttpSession session, Model model) {		
 		model.addAttribute("active", "comercio_externo");			
 		try {
 			Local aux = entityManager.find(Local.class, id);
+			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+			//Usuario usuario = entityManager.find(Usuario.class, usuarioSesion.getID());
 			model.addAttribute("infoLocal", aux);
+			//model.addAttribute("tipoUser", usuario.getRol());
 			model.addAttribute("pageTitle", aux.getNombre());
 		} catch (NoResultException nre) {
 			logger.error("No existe ese local: {}", id, nre);
@@ -519,7 +503,6 @@ public class HomeController {
 		String ret = "{nombre: " + "\""+o.getNombre()+ "\"" + ", id: " + o.getID() + "}";
 		System.err.println(ret);
 		return ret;
-		//return o;
 	}
 
 	@Transactional
@@ -585,13 +568,11 @@ public class HomeController {
 					stream = new BufferedOutputStream(
 							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
 					stream.write(IOUtils.toByteArray(in));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 offer.setFoto("unknown_offer.jpg");
@@ -658,13 +639,11 @@ public class HomeController {
 					stream = new BufferedOutputStream(
 							new FileOutputStream(ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
 					stream.write(IOUtils.toByteArray(in));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 usuario.getLocales().add(local);
@@ -793,57 +772,12 @@ public class HomeController {
 		model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
 		return "administracion";
 	}	
-	@Transactional
-	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	
-	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
-
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
-		
-		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
-		 *	- Modificar la capacidad de la Oferta 
-		*/
-		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
-		
-		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
-		Usuario user= entityManager.find(Usuario.class, (long) 8);
-			
-		//Nos traemos la oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
-		//Crear un objeto reserva
-		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el código qr esta mal			
-		reserva.setUsuario(user);
-		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
-		reserva.setValidado(false);
-		
-		//Añadir la reserva a User y Oferta
-		user.getReservas().add(reserva);
-		oferta.getReservas().add(reserva);		
-		
-		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
-		oferta.setCapacidadActual(nuevacap);
-		
-		entityManager.persist(reserva);
-		entityManager.persist(user);
-		entityManager.persist(oferta);
-				
-		return ultimasOfertas(locale,model);
-	}	
+	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "�ltimas ofertas");		
+		model.addAttribute("pageTitle", "Ultimas ofertas");		
 				
 		
 				
@@ -852,54 +786,7 @@ public class HomeController {
 		
 		return "ultimasOfertas";
 	}	
-	
-	@Transactional
-	@RequestMapping(value = "/ofertasMes", method = RequestMethod.POST)	
-	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
-	
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
 		
-		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
-		 *	- Modificar la capacidad de la Oferta 
-		*/
-		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
-		
-		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
-		Usuario user= entityManager.find(Usuario.class, (long) 7);
-			
-		//Nos traemos la oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
-		//Crear un objeto reserva
-		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el código qr esta mal			
-		reserva.setUsuario(user);
-		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
-		reserva.setValidado(false);
-		
-		//Añadir la reserva a User y Oferta
-		user.getReservas().add(reserva);
-		oferta.getReservas().add(reserva);		
-		
-		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
-		oferta.setCapacidadActual(nuevacap);
-		
-		entityManager.persist(reserva);
-		entityManager.persist(user);
-		entityManager.persist(oferta);
-				
-		return ofertasMes(locale, model);
-	}
-	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
 	@Transactional
 	public String ofertasMes(Locale locale, Model model) {
@@ -910,22 +797,6 @@ public class HomeController {
 		model.addAttribute("alltags", allTags);
 		
 		return "ofertasMes";
-	}	
-
-	/**
-	 * A not-very-dynamic view that shows an "about us".
-	 */
-	@RequestMapping(value = "/about", method = RequestMethod.GET)
-	@Transactional
-	public String about(Locale locale, Model model) {
-		/*logger.info("User is looking up 'about us'");
-		@SuppressWarnings("unchecked")
-		List<User> us = (List<User>)entityManager.createQuery("select u from User u").getResultList();
-		System.err.println(us.size());
-		model.addAttribute("users", us);
-		model.addAttribute("pageTitle", "Quienes somos");*/
-	
-		return "about";
 	}	
 	
 	/**
@@ -950,19 +821,6 @@ public class HomeController {
 	    return token;
 	}
 	
-	/** 
-	 * Returns true if the user is logged in and is an admin
-	 */
-	static boolean isAdmin(HttpSession session) {
-		/*User u = (User)session.getAttribute("user");
-		if (u != null) {
-			return u.getRole().equals("admin");
-		} else {
-			return false;
-		}*/
-		return false;
-	}
-
 	public Usuario creaUsuario(String nombre, String email, String telefono, String rol, String contra){
 		Usuario u = new Usuario();
 		
@@ -1020,12 +878,10 @@ public class HomeController {
 	public ResponseEntity<String> registroUsuarioFoto(
 			@RequestParam("regfileToUpload") MultipartFile photo,
 			MultipartHttpServletRequest req, HttpSession session){
-		
-	
-		logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 		Usuario u = (Usuario)session.getAttribute("user");
 		if (u == null) {
-			return new ResponseEntity<String>("Ha habido algún problema al cargar el usuario de la base de datos", HttpStatus.NOT_MODIFIED);	
+			return new ResponseEntity<String>("Ha habido algun problema al cargar el usuario de la base de datos", HttpStatus.NOT_MODIFIED);	
 			
 		}
 				
@@ -1040,10 +896,10 @@ public class HomeController {
 		        stream.close();
 				
 		    } catch (Exception e) {
-		    	return new ResponseEntity<String>("Fotografía no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
+		    	return new ResponseEntity<String>("Fotografia no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
 		    }
 		 }
 		
-		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
+		return new ResponseEntity<String>("Fotografia adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
 	}
 }

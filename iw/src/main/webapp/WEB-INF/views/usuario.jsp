@@ -76,10 +76,7 @@ $(function() {
 											</div>
 										</div>	
 										</c:forEach>
-										
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>	
-									<br></br>
+									
 								</div>	
 								
 								<div class="tab-pane fade" id="locales">
@@ -157,10 +154,7 @@ $(function() {
 										</div>	
 										</c:forEach>
 									</div>												
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
 									
-									<br></br>
 								</div>
         				<!-- Modal Edit Local-->
 						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
@@ -229,9 +223,7 @@ $(function() {
 												</div>
 												</div>
 											</c:forEach>
-										
-										<button type="submit" class="btn btn-default">Anterior</button>
-										<button type="submit" class="btn btn-default">Siguiente</button>									
+																		
 									</div>
 								</div>
 								

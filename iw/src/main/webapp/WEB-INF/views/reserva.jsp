@@ -1,4 +1,11 @@
 <%@ include file="../fragments/header.jspf" %>
+<script type="text/javascript">
+	$(function() {
+		$("#botonReserva").click(function() {
+			alert("Se ha realizado la reserva");
+		})
+	})
+</script>
 <section id="about-us">
         <div class="container">
 			<div class="center">
@@ -13,7 +20,7 @@
 				 	<img class="img-responsive" src="${prefix}resources/img/database/offers/${infoOferta.foto}" alt="">				 		 
 				 </div>			
 				 <div class="col-md-6 col-sm-6" align="center">
-				 	<form class="form-horizontal" role="form" action="/iw/${paginaVuelta}" method="POST">	
+				 	<form class="form-horizontal" role="form" action="reserva" method="POST">	
 				 	<p class="lead"><b>Capacidad actual ${infoOferta.capacidadActual}/${infoOferta.capacidadTotal}</b></p>				 		  		
 						<div class="form-group">
 				        	<label class="control-label col-lg-4" for="reservas"> Comensales</label>
@@ -33,9 +40,10 @@
 				        		<input id=timepicker class="form-control" type="text" name="hora" placeholder="Selecciona una hora" value="" />
 				        	</div>						
 						</div>		
-							<input hidden="submit" name="oferta" value="${infoOferta.ID}" />			
+							<input hidden="submit" name="oferta" value="${infoOferta.ID}" />
+							<input hidden="submit" name="dondeEstoy" value="${paginaVuelta}" />			
 					   <div class="form-group">
-					  	<button type="submit" class="btn btn-primary" value="Submit"> Reservar</button>	 								 								
+					  	<button type="submit" class="btn btn-primary" value="Submit" id="botonReserva" name="botonReserva"> Reservar</button>	 								 								
 		         	   </div>
 			          </form>
 				 </div>		 	   
