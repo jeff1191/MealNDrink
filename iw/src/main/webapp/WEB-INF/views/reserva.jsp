@@ -20,8 +20,8 @@
 					<br></br>
 				 	<form class="form-horizontal" role="form" action="/iw/${paginaVuelta}" method="POST">			  		
 						<div class="form-group">
-				        	<label class="control-label col-sm-4" for="reservas"> Número de comensales</label>
-				        	<input id="reservas" type="number" max="${infoOferta.capacidadTotal}" value=0 name="capacidad" placeholder="¿Cuantos sois?"/>
+				        	<label class="control-label col-sm-4" for="reservas"> NÃºmero de comensales</label>
+				        	<input id="reservas" type="number" max="${infoOferta.capacidadTotal}" value=0 name="capacidad" placeholder="Â¿Cuantos sois?"/>
 			            </div>			            
 			            <div class="form-group">
 				        	<label class="control-label col-sm-4" for="datepicker"> Fecha</label>

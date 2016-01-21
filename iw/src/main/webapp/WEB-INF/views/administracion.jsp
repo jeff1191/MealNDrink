@@ -79,9 +79,11 @@ $(function() {
 								</div>
 								</c:forEach>
 							</div>
-								<button type="submit" class="btn btn-default">Anterior</button>
-								<button type="submit" class="btn btn-default">Siguiente</button>
-								
+							<div class="media-body">
+								<h4 class="media-heading">Usuario #1</h4>
+								<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+								<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 							</div>
 							
 		
@@ -301,6 +303,7 @@ $(function() {
 							<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 						  </div>										  
 						  <br></br>
+						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
 						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 						</form>	
 					  </div>

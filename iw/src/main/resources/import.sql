@@ -19,7 +19,7 @@ INSERT INTO LOCAL VALUES (5, 'Avenida puerto principe nº21','sabrosito@sabroseo.
 INSERT INTO LOCAL VALUES (6, 'Calle de la sabrosusa nº3', 'filetonton@ton.to','6.jpg', '9-21', 'Fileton', 5, 'comida_mexicana,comida_china', '555-555-555','123131342ºN 7029438ºS', 5)
 
 --( "ID", "CAPACIDADACTUAL", "CAPACIDAD_TOTAL", "DESCRIPCION", "FECHA_LIMITE", "FOTO", "NOMBRE", "TAGS, "LOCAL")
-INSERT INTO OFERTA VALUES (1, 0, 10, 'Toma todas tus copas por 4 euros', '2015-07-02 06:14:00', '1.jpg', 'Copas a 4€', 1, 'comida_mexicana,comida_china', 1)
+INSERT INTO OFERTA VALUES (1, 0, 10, 'Toma todas tus copas por 4 euros', '2015-07-02 06:14:00', '1.jpg', 'Copas a 4¤', 1, 'comida_mexicana,comida_china', 1)
 INSERT INTO OFERTA VALUES (2, 0, 11, 'Rico y sabroso. Ven a cenar aqui', '2015-07-02 06:14:00', '2.jpg', 'Riconudo', 0, 'comida_india,comida_china', 1)
 INSERT INTO OFERTA VALUES (3, 0, 30, 'Cena 100% romantica', '2015-07-02 06:14:00', '3.jpg', 'Ven con tu pareja', 1, 'plan_romantico', 1)
 INSERT INTO OFERTA VALUES (4, 0, 20, 'Chewbacca te cantara el cumpleaños feliz', '2016-07-02 06:14:00', '4.jpg', 'Celebra tu cumple', 0, 'comida_mexicana,comida_rusa', 2)
@@ -50,3 +50,4 @@ INSERT INTO COMENTARIO VALUES (5, '2015-07-02 06:14:00', 'Suele estar muy lleno'
 INSERT INTO COMENTARIO VALUES (6, '2015-07-02 06:14:00', 'No se parece en nada a la descripcion. Es horrible', 9, 5)
 INSERT INTO COMENTARIO VALUES (7, '2015-07-02 06:14:00', 'Fantastico local', 10, 5)
 INSERT INTO COMENTARIO VALUES (8, '2015-07-02 06:14:00', 'Aqui conoci a mi mujer. Me trae muy buenos recuerdo cuando voy', 7, 2)
+

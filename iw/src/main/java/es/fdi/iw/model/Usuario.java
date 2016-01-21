@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @NamedQueries({
+	@NamedQuery(name="dameUsuarioLogin", 
+			query="SELECT usu FROM Usuario usu WHERE usu.nombre = :nombre"),
 	@NamedQuery(name="allUsers", 
 			query="select o from Usuario o"),
 	@NamedQuery(name="roleUser", 

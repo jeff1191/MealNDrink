@@ -101,6 +101,8 @@
             
             	<div class="portfolio-items">
             
+            
+            
             	<c:forEach items="${platos}" var="i">
                		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
@@ -109,8 +111,8 @@
 	                        <div class="recent-work-inner">
 	                               <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>${i.descripcion}</p>									
-									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=home"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
-									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
+									<a class="preview" href="/mealndrink/reserva?id=${i.ID}&dondeEstoy=home"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
+									<a class="preview" href="/mealndrink/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
 								</div> 
 	                        </div>
 	                    </div>
@@ -130,7 +132,7 @@
                         <h2>Locales más populares</h2>                       
 						<div class="list-group">
 						 <c:forEach items="${popularLocals}" var="i">
-						  <a href="/iw/comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>						
+						  <a href="/mealndrink/comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>						
 						 </c:forEach>
 						</div>
 						

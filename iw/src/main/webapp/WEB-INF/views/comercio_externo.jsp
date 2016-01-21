@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-							<img src="${prefix}resources/img/database/locals/${infoLocal.foto}" height="350" width="350">                                  
+							<img src="${prefix}localesFoto?id=${infoLocal.foto}" height="350" width="350">                                  
 							<h3>Dirección</h3>
 							<p>${infoLocal.direccion}</p>
 														
@@ -42,7 +42,7 @@
 				    <c:forEach items="${infoLocal.ofertas}" var="i">
 						<div class="media">
 							<div class="pull-left">
-								<img class="media-object" src="${prefix}resources/img/database/offers/toLocals/${i.foto}">
+								<img class="media-object" src="${prefix}ofertasFoto?id=${infoLocal.foto}">
 							</div>
 							<div class="media-body">
 								<h4 class="media-heading">${i.nombre}</h4>
