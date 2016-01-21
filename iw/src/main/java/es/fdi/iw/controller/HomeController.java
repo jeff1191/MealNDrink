@@ -66,7 +66,7 @@ public class HomeController {
 	@PersistenceContext
 	private EntityManager entityManager;
 	String[] allTags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-			"comida_espa�ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+			"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 	
 
 	//tags por defecto, en nuestro sistema ya viene incorporado 
@@ -765,6 +765,20 @@ public class HomeController {
 			Comentario comentario= entityManager.find(Comentario.class, idComentario);
 			entityManager.remove(comentario);			
 			return "eliminarComentario";
+    }
+	
+	
+	
+	@Transactional
+	@RequestMapping(value = "/addNuevoTag", method = RequestMethod.POST)
+	public String addNuevoTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String addName, Model model){
+			Local local= entityManager.find(Local.class, idLocal);
+			//FALTA ENVIAR ERRORES
+			String nuevo= local.getTags();
+			nuevo+=","+addName;			
+			local.setTags(nuevo);
+			entityManager.persist(local);	
+			return "AddNuevoTag";
     }
 	
 	@Transactional

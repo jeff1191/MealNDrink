@@ -111,8 +111,8 @@
 	                        <div class="recent-work-inner">
 	                               <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>${i.descripcion}</p>									
-									<a class="preview" href="/mealndrink/reserva?id=${i.ID}&dondeEstoy=home"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
-									<a class="preview" href="/mealndrink/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
+									<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=home"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
+									<a class="preview" href="comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
 								</div> 
 	                        </div>
 	                    </div>
