@@ -58,6 +58,12 @@
 
 <script type="text/javascript">
 	//javascript aqui es solo de prueba BORRAR
+	$(document).keypress(function(e) {
+				if (e.which == 13 && ($("#login").is(":focus") || $("#pass").is(":focus"))) {
+					validacion();
+				}
+	})
+	
 	$(function() {
 		$("#iniciarsesion").click(function() {
 			validacion();

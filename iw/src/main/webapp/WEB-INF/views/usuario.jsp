@@ -20,6 +20,14 @@ $(function() {
 	
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);	
+    $('.qrcode').each(function(i, o) {
+        $(o).qrcode({
+            "render": "div",
+            "size": 100,
+            "color": "#3a3",
+            "text": $(o).text()
+        })
+    });
 })
 </script>
 <section id="feature" class="transparent-bg">
@@ -49,8 +57,7 @@ $(function() {
 									
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="reservas">
-									
-										<c:forEach items="${usuario.reservas}" var="i">
+									<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
 												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.foto}">
@@ -59,18 +66,7 @@ $(function() {
 												<h4 class="media-heading">Reserva #1</h4>
 												<p>${i.oferta.nombre}</p>
 												
-												
-												 <div id="qrcode"></div>
-										            
-									            <script>															
-														$('#qrcode').qrcode({
-														    "render": "div",
-														    "size": 100,
-														    "color": "#3a3",
-														    "text": "${i.codigoQr}"
-														});
-												</script>
-												
+												 <div class="qrcode">${i.codigoQr}</div>
 												
 												<button id="delO_${i.oferta.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 											</div>
