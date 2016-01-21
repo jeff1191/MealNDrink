@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.nio.channels.FileChannel;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -51,8 +51,8 @@ import es.fdi.iw.ContextInitializer;
 import es.fdi.iw.model.Comentario;
 import es.fdi.iw.model.Local;
 import es.fdi.iw.model.Oferta;
+import es.fdi.iw.model.Reserva;
 import es.fdi.iw.model.Usuario;
-import scala.annotation.meta.getter;
 
 /**
  * Una aplicación de ejemplo para IW.
@@ -365,15 +365,15 @@ public class HomeController {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);		
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("pageTitle", "Bienvenido a IW");
+		model.addAttribute("pageTitle", "Bienvenido a MealNDrink");
 		model.addAttribute("active", "home");
 		logger.info("Setting active tab: home");
 	
+		
 		List<Long> idsOffers = new ArrayList<Long>(); 
 		idsOffers.add((long) 8);
 		idsOffers.add((long) 5);
@@ -393,8 +393,8 @@ public class HomeController {
 		
 		model.addAttribute("alltags", allTags);	
 		model.addAttribute("platos", entityManager.createNamedQuery("infoOffers").setParameter("idParam", idsOffers).getResultList());
-	//	model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
-		//model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
+		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
+		model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
 		
 		
 		return "home";
@@ -409,8 +409,49 @@ public class HomeController {
 	}	
 	
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String reservaEnHome(@RequestParam("capacidad") int cap, Locale locale, Model model) {
-		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);	
+	public String reservaEnHome(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+	
+		System.out.println("Comensales que vienen es " + cap);
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
+		
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
+		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
+		Usuario user= entityManager.find(Usuario.class, (long) 9);
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el código qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Añadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);	
+		
 		return empty(locale, model);
 	}
 	/**
@@ -508,6 +549,7 @@ public class HomeController {
     		Model model){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+	
 		Local local = entityManager.find(Local.class, id);
 		Oferta offer= new Oferta();
 		offer.setNombre(nombreOferta);
@@ -521,6 +563,7 @@ public class HomeController {
 		entityManager.flush();
         if (!photo.isEmpty()) {
             try {
+            	offer.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(
                 		new FileOutputStream(ContextInitializer.getFile(
@@ -744,7 +787,7 @@ public class HomeController {
 	public String administracion(Locale locale, Model model) {
 		model.addAttribute("active", "administracion");
 		model.addAttribute("pageTitle", "Administracion");
-		//COMPROBAR que lo que nos viene en modo get est� logueado como admin
+		//COMPROBAR que lo que nos viene en modo get estï¿½ logueado como admin
 		model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
 		model.addAttribute("usuarios", entityManager.createNamedQuery("allUsers").getResultList());
 		model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
@@ -752,10 +795,48 @@ public class HomeController {
 	}	
 	@Transactional
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	
-	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
+	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
 		
-		System.out.println("Los comensales en ultimas ofertas que vienen son " + cap);		
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
 		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
+		Usuario user= entityManager.find(Usuario.class, (long) 8);
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el código qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Añadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);
+				
 		return ultimasOfertas(locale,model);
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
@@ -774,10 +855,48 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.POST)	
-	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, Locale locale, Model model) {		
+	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
+			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+	
+		System.out.println("La fecha en la que vienen es " + fecha);
+		System.out.println("La hora a la que vienen es " + hora);
 		
-		System.out.println("Los comensales en ofertas del mes que vienen son " + cap);		
+		/*Cosas al hacer una reserva:
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
 		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+			//implementar
+		
+		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
+		Usuario user= entityManager.find(Usuario.class, (long) 7);
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr("algo"); // el código qr esta mal			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(cap);
+		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setValidado(false);
+		
+		//Añadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + cap;
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);
+				
 		return ofertasMes(locale, model);
 	}
 	

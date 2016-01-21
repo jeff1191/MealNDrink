@@ -64,15 +64,15 @@
 					<input required type="text" class="form-control" id="regname" name="regname" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
 				  </div>
 				  <div class="form-group">
-					<label for="pwd">Contraseña:</label>
-					<input required type="password" class="form-control" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
+					<label for="pwd">ContraseÃ±a:</label>
+					<input required type="password" class="form-control" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseÃ±a(6-12 caracteres)">
 				  </div>
 				  <div class="form-group">
 					<label for="email">Email:</label>
 					<input required type="email" class="form-control" id="regemail" name="regemail" placeholder="Introduce un nuevo email">
 				  </div>
 				  <div class="form-group">
-					<label for="tel">Teléfono:</label>
+					<label for="tel">TelÃ©fono:</label>
 					<input required type="tel" class="form-control" id="regtel" name="regtel" placeholder="Introduce un nuevo telefono">
 				  </div>
 				  <div class="form-group">
@@ -82,7 +82,7 @@
 				  	</form>	
 				  </div>
 				  <div>
-				  	<label for="file">¿Qué tipo de actividad tendrá en MealNDrink?:</label>
+				  	<label for="file">Â¿QuÃ© tipo de actividad tendrÃ¡ en MealNDrink?:</label>
 					<select required id="regRol" name="regRol">
 						<option value="cliente">Cliente</option>
 						<option value="propietario_comercio">Propietario de comercio</option>

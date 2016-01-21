@@ -22,10 +22,13 @@
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>
-	                                <p>${i.descripcion}</p>
-									 <!--<a class="preview" href="#" data-toggle="modal" data-target="#reservarModal${i.nombre}"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>-->
-									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=ofertasMes"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
-									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
+	                                <p>${i.descripcion}</p>									 
+									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=ofertasMes">
+											<i class="glyphicon glyphicon-cutlery"></i> Reservar
+									</a>
+									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}">
+										<i class="fa fa-eye"></i> Ver restaurante
+									</a>	
 								</div> 
 	                        </div>
 	                    </div>

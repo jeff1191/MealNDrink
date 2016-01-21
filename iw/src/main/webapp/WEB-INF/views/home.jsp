@@ -132,7 +132,7 @@
                         <h2>Locales más populares</h2>                       
 						<div class="list-group">
 						 <c:forEach items="${popularLocals}" var="i">
-						  <a href="/mealndrink/comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>						
+						  <a href="/iw/comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>						
 						 </c:forEach>
 						</div>
 						

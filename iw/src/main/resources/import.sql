@@ -50,4 +50,3 @@ INSERT INTO COMENTARIO VALUES (5, '2015-07-02 06:14:00', 'Suele estar muy lleno'
 INSERT INTO COMENTARIO VALUES (6, '2015-07-02 06:14:00', 'No se parece en nada a la descripcion. Es horrible', 9, 5)
 INSERT INTO COMENTARIO VALUES (7, '2015-07-02 06:14:00', 'Fantastico local', 10, 5)
 INSERT INTO COMENTARIO VALUES (8, '2015-07-02 06:14:00', 'Aqui conoci a mi mujer. Me trae muy buenos recuerdo cuando voy', 7, 2)
-
