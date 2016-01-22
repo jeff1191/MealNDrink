@@ -23,9 +23,18 @@
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>
 	                                <p>${i.descripcion}</p>									 
+							<c:choose>
+									<c:when test="${not empty user}">	
 									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=ofertasMes">
-											<i class="glyphicon glyphicon-cutlery"></i> Reservar
+										<i class="glyphicon glyphicon-cutlery"></i> Reservar
+									</a>	
+									</c:when>		
+									<c:otherwise>
+									<a class="preview" href="registrarse">
+										<i class="glyphicon glyphicon-cutlery"></i> Reservar
 									</a>
+									</c:otherwise>
+							</c:choose>
 									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}">
 										<i class="fa fa-eye"></i> Ver restaurante
 									</a>	

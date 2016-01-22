@@ -175,8 +175,6 @@
 										<li><a href="logout">Cerrar sesión</a></li>
 									</ul></li>
 
-
-
 							</c:when>
 							<c:otherwise>
 

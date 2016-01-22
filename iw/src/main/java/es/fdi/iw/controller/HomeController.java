@@ -361,7 +361,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String empty(Locale locale, Model model) {
+	public String empty(Locale locale, Model model, HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -372,7 +372,11 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Bienvenido a MealNDrink");
 		model.addAttribute("active", "home");
 		logger.info("Setting active tab: home");
-	
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		
 		List<Long> idsOffers = new ArrayList<Long>(); 
 		idsOffers.add((long) 8);
@@ -404,13 +408,18 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String index(Locale locale, Model model) {
-		return empty(locale, model);
+	public String index(Locale locale, Model model, HttpSession session) {
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
+		return empty(locale, model, session);
 	}	
 	
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String reservaEnHome(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
+		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model,HttpSession session) {		
 	
 		System.out.println("Comensales que vienen es " + cap);
 		System.out.println("La fecha en la que vienen es " + fecha);
@@ -452,15 +461,20 @@ public class HomeController {
 		entityManager.persist(user);
 		entityManager.persist(oferta);	
 		
-		return empty(locale, model);
+		return empty(locale, model, session);
 	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/acercaDe", method = RequestMethod.GET)
-	public String acercaDe(Locale locale, Model model) {
+	public String acercaDe(Locale locale, Model model, HttpSession session) {
 		model.addAttribute("active", "acercaDe");
-		model.addAttribute("pageTitle", "Acerca de");
+		model.addAttribute("pageTitle", "Acerca de");		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		return "acercaDe";
 	}	
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
@@ -483,8 +497,13 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
-	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag,Model model) {		
-		model.addAttribute("active", "comercio_externo");			
+	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag,Model model, HttpSession session) {		
+		model.addAttribute("active", "comercio_externo");		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		try {
 			Oferta aux = entityManager.find(Oferta.class, id);
 			model.addAttribute("infoOferta", aux);
@@ -498,8 +517,13 @@ public class HomeController {
 	}		
 	@Transactional
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
-	public String comercio_externo(@RequestParam("id") long id, Model model) {		
-		model.addAttribute("active", "comercio_externo");			
+	public String comercio_externo(@RequestParam("id") long id, Model model, HttpSession session) {		
+		model.addAttribute("active", "comercio_externo");
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		try {
 			Local aux = entityManager.find(Local.class, id);
 			model.addAttribute("infoLocal", aux);
@@ -524,10 +548,12 @@ public class HomeController {
 
 	@Transactional
 	@RequestMapping(value = "/comercio_interno", method = RequestMethod.GET)
-	public String comercio_interno(@RequestParam("id") long id,Model model) {
-		//Tendriamos que pasarle el LOCAL al que le das click.
-		//Yo creo que es mejor que el desplegable que sale en perfil ponga (Cerrar sesi�n, perfil y los locales que tiene)
-		//CAMBIAR EL HEADER!!!!!!! 
+	public String comercio_interno(@RequestParam("id") long id,Model model,HttpSession session) {
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		Local local = entityManager.find(Local.class, id);
 		model.addAttribute("pageTitle", local.getNombre());
 		model.addAttribute("active", "comercio_interno");
@@ -608,8 +634,7 @@ public class HomeController {
 			entityManager.remove(oferta);			
 			return "eliminarOferta";
     }
-	
-	
+
 	@Transactional
 	@RequestMapping(value = "/nuevoLocal", method = RequestMethod.POST)
 	public String nuevoLocal(@RequestParam("fileToUpload") MultipartFile photo,
@@ -719,7 +744,6 @@ public class HomeController {
 		edit.setTelefono(telefono);
 	
 		int idUser = 1;
-		
 		if(pagina.equalsIgnoreCase("comercio_interno"))
 			return "redirect:"+pagina+"?id="+id;
 		else
@@ -766,8 +790,6 @@ public class HomeController {
 			entityManager.remove(comentario);			
 			return "eliminarComentario";
     }
-	
-	
 	
 	@Transactional
 	@RequestMapping(value = "/addNuevoTag", method = RequestMethod.POST)
@@ -851,19 +873,20 @@ public class HomeController {
 		entityManager.persist(user);
 		entityManager.persist(oferta);
 				
-		return ultimasOfertas(locale,model);
+		return "ultimasOfertas";
 	}	
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
 	@Transactional
-	public String ultimasOfertas(Locale locale, Model model) {
+	public String ultimasOfertas(Locale locale, Model model, HttpSession session) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "�ltimas ofertas");		
-				
-		
-				
+		model.addAttribute("pageTitle", "Últimas ofertas");		
 		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
 		model.addAttribute("alltags", allTags);
-		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		return "ultimasOfertas";
 	}	
 	
@@ -911,18 +934,22 @@ public class HomeController {
 		entityManager.persist(user);
 		entityManager.persist(oferta);
 				
-		return ofertasMes(locale, model);
+		return "ofertasMes";
 	}
 	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
 	@Transactional
-	public String ofertasMes(Locale locale, Model model) {
+	public String ofertasMes(Locale locale, Model model, HttpSession session) {
 		model.addAttribute("active", "ofertasMes");		
 		model.addAttribute("pageTitle", "Ofertas del mes");	
 		
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
 		model.addAttribute("alltags", allTags);
-		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
 		return "ofertasMes";
 	}	
 
@@ -1000,7 +1027,7 @@ public class HomeController {
 			@RequestParam("Rol") String rol, HttpSession session, Model model){
 		
 		Usuario u;
-		logger.info("Se metio aqui OK");
+		logger.info("registro usuario");
 			
 		try{
 			u = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", nombre).getSingleResult();
