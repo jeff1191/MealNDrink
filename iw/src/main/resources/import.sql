@@ -2,7 +2,7 @@
 INSERT INTO USUARIO VALUES (1, 'seLoTraga@cuca.com', '1.jpg', '$2a$10$KvdO.kOuL9JRSx4lASzm9e0sUxXQAlql7Kd4mA0ug.wiSlyMoy.zO', 'Jeff', 'admin', '974532165') /*1234*/
 INSERT INTO USUARIO VALUES (2, 'topeGuay@home.com', '2.jpg', '$2a$10$1s08.puvsNXIawmhuITYsOey8VwcMe7eSlVsFPZPDJPvlF55UccxO', 'Josemi', 'user','663219078') /*admin*/
 INSERT INTO USUARIO VALUES (3, 'loTengoTodoPapi@linux.com', '3.jpg', '$2a$10$wEHh9dnWsbHhzMQ9i2mMQ.KDmBTG9FO6GGNztt/hNymW7iPCxfv9u', 'Dani', 'local', '974511165') /*pass*/
-INSERT INTO USUARIO VALUES (4, 'aPorEllo@chacho.com', '4.jpg', '$2a$10$xUXi0fHaSQtPJ2UsNPjcfe1dg6hhfao5XUKxcIxbpywSoy63R2XoW', 'Juan Lu', 'local', '974532177') /*5678*/
+INSERT INTO USUARIO VALUES (4, 'aPorEllo@chacho.com', '4.jpg', '$2a$10$xUXi0fHaSQtPJ2UsNPjcfe1dg6hhfao5XUKxcIxbpywSoy63R2XoW', 'JuanLu', 'local', '974532177') /*5678*/
 INSERT INTO USUARIO VALUES (5, 'superIncreible@rubias.com', '5.jpg', '$2a$10$G10MFSXIAnvGkXYBfFS16uhr8dcV3iH9ziCyZhnr7QiAx6ewGGjK.', 'Maria', 'local', '974532177') /*maria*/
 INSERT INTO USUARIO VALUES (6, 'user12@fake.com', '6.jpg', '$2a$10$iaoa.4QjDDGiZARLwcNhqe22h2WuoOxsPDpOVmLofCNcu3dQHT2N6', 'Fulano', 'user', '663219222') /*fun123*/
 INSERT INTO USUARIO VALUES (7, 'user1234@fake.com', '7.jpg', '$2a$10$R77A6Kx.EPWUOiV4YO6DAucKlEgAm/ZZ9MTGINW/HLCHsxRPEfsHG', 'Mengano', 'user', '663256781') /*men123*/
@@ -11,25 +11,25 @@ INSERT INTO USUARIO VALUES (9, 'dormirlonSensual@snoopy.com', '9.jpg', '$2a$10$o
 INSERT INTO USUARIO VALUES (10, 'callMeMaybe@tux.com', '10.jpg', '$2a$10$4jlxSkFm/fl2tryEbCAxiuYBEeLTV/dryHzf5XzJnJBVdFl4HURYS', 'Eloisa', 'user', '663214658') /*isaelo96*/
 
 --( "ID", "DIRECCION", "EMAIL", "FOTO", "HORARIO", "NOMBRE", "PUNTUACION", "TAGS", "TELEFONO", "UBICACION", "USUARIO" ) 
-INSERT INTO LOCAL VALUES (1, 'Calle concha espina nº10','elmaildeDani@dan.da', '1.jpg', '10-23', 'Bistro', 5, 'comida_mexicana,comida_india','111-111-111','40234242ºN 702934820438ºS', 3)
-INSERT INTO LOCAL VALUES (2, 'Paseo del valle nº43', 'elmaildeTapep@taew.da','2.jpg', '10-23', 'Tapas', 5, 'comida_china', '111-111-111','40232134ºN 70293488945ºS', 3)
-INSERT INTO LOCAL VALUES (3, 'Calle mordor nº123', 'juanluar@cerve.ce','3.jpg', '9-20', 'Cubos y tapas', 5, 'comida_mexicana,comida_americana,comida_española','222-222-222', '4123142ºN 70293324438ºS', 4)
-INSERT INTO LOCAL VALUES (4, 'Calle alpargata nº21', 'juanluZam@zamap.za','4.jpg', '22-4', 'A zampar!', 5, 'comida_española,comida_india', '333-333-333','234242ºN 123120438ºS', 4)
-INSERT INTO LOCAL VALUES (5, 'Avenida puerto principe nº21','sabrosito@sabroseo.sa', '5.jpg', '14-22', '100 sabrositos', 5, 'comida_libanesa,comida_española,comida_mexicana', '444-444-444','78974242ºN 7029340438ºS', 4)
-INSERT INTO LOCAL VALUES (6, 'Calle de la sabrosusa nº3', 'filetonton@ton.to','6.jpg', '9-21', 'Fileton', 5, 'comida_mexicana,comida_china', '555-555-555','123131342ºN 7029438ºS', 5)
+INSERT INTO LOCAL VALUES (1, 'Calle concha espina nÂº10','elmaildeDani@dan.da', '1.jpg', '10-23', 'Bistro', 5, 'comida_mexicana,comida_india','111-111-111','40234242ï¿½N 702934820438ï¿½S', 3)
+INSERT INTO LOCAL VALUES (2, 'Paseo del valle nÂº43', 'elmaildeTapep@taew.da','2.jpg', '10-23', 'Tapas', 5, 'comida_china', '111-111-111','40232134ï¿½N 70293488945ï¿½S', 3)
+INSERT INTO LOCAL VALUES (3, 'Calle mordor nÂº123', 'juanluar@cerve.ce','3.jpg', '9-20', 'Cubos y tapas', 5, 'comida_mexicana,comida_americana,comida_espaï¿½ola','222-222-222', '4123142ï¿½N 70293324438ï¿½S', 4)
+INSERT INTO LOCAL VALUES (4, 'Calle alpargata nÂº21', 'juanluZam@zamap.za','4.jpg', '22-4', 'A zampar!', 5, 'comida_espaï¿½ola,comida_india', '333-333-333','234242ï¿½N 123120438ï¿½S', 4)
+INSERT INTO LOCAL VALUES (5, 'Avenida puerto principe nÂº21','sabrosito@sabroseo.sa', '5.jpg', '14-22', '100 sabrositos', 5, 'comida_libanesa,comida_espaï¿½ola,comida_mexicana', '444-444-444','78974242ï¿½N 7029340438ï¿½S', 4)
+INSERT INTO LOCAL VALUES (6, 'Calle de la sabrosusa nÂº3', 'filetonton@ton.to','6.jpg', '9-21', 'Fileton', 5, 'comida_mexicana,comida_china', '555-555-555','123131342ï¿½N 7029438ï¿½S', 5)
 
 --( "ID", "CAPACIDADACTUAL", "CAPACIDAD_TOTAL", "DESCRIPCION", "FECHA_LIMITE", "FOTO", "NOMBRE", "TAGS, "LOCAL")
-INSERT INTO OFERTA VALUES (1, 0, 10, 'Toma todas tus copas por 4 euros', '2015-07-02 06:14:00', '1.jpg', 'Copas a 4¤', 1, 'comida_mexicana,comida_china', 1)
+INSERT INTO OFERTA VALUES (1, 0, 10, 'Toma todas tus copas por 4 euros', '2015-07-02 06:14:00', '1.jpg', 'Copas a 4eur', 1, 'comida_mexicana,comida_china', 1)
 INSERT INTO OFERTA VALUES (2, 0, 11, 'Rico y sabroso. Ven a cenar aqui', '2015-07-02 06:14:00', '2.jpg', 'Riconudo', 0, 'comida_india,comida_china', 1)
 INSERT INTO OFERTA VALUES (3, 0, 30, 'Cena 100% romantica', '2015-07-02 06:14:00', '3.jpg', 'Ven con tu pareja', 1, 'plan_romantico', 1)
-INSERT INTO OFERTA VALUES (4, 0, 20, 'Chewbacca te cantara el cumpleaños feliz', '2016-07-02 06:14:00', '4.jpg', 'Celebra tu cumple', 0, 'comida_mexicana,comida_rusa', 2)
+INSERT INTO OFERTA VALUES (4, 0, 20, 'Chewbacca te cantara el cumpleaÃ±os feliz', '2016-07-02 06:14:00', '4.jpg', 'Celebra tu cumple', 0, 'comida_mexicana,comida_rusa', 2)
 INSERT INTO OFERTA VALUES (5, 0, 14, 'Vente de fiesta con nosotros', '2015-07-02 06:14:00', '5.jpg', 'Flow non stop', 1, 'comida_china', 2)
-INSERT INTO OFERTA VALUES (6, 0, 13, 'Tapeo del bueno y barato', '2015-07-02 06:14:00', '6.jpg', 'Tapas gratis', 1, 'comida_española,comida_mexicana,comida_rusa', 3)
+INSERT INTO OFERTA VALUES (6, 0, 13, 'Tapeo del bueno y barato', '2015-07-02 06:14:00', '6.jpg', 'Tapas gratis', 1, 'comida_espaÃ±ola,comida_mexicana,comida_rusa', 3)
 INSERT INTO OFERTA VALUES (7, 0, 18, 'Ponte bien fino, hasta que revientes', '2015-07-02 06:14:00','7.jpg', 'Come lo que quieras', 1, 'comida_china,comida_rusa', 4)
 INSERT INTO OFERTA VALUES (8, 0, 22, 'El refill mas molon', '2016-07-02 06:14:00', '8.jpg', 'Rellena tu bebida', 1, 'comida_turca,comida_india', 4)
-INSERT INTO OFERTA VALUES (9, 0, 78, '¡Que ricas estas alitas!', '2017-07-02 06:14:00', '9.jpg', 'Alitas con tu primera consumicion', 0, 'comida_picante', 5)
-INSERT INTO OFERTA VALUES (10, 0, 9, 'Invitate a unas cañas ;)', '2015-07-02 06:14:00', '10.jpg', 'Invitar es facil', 1, 'comida_italiana,comida_francesa', 1)
-INSERT INTO OFERTA VALUES (11, 0, 11, 'Gran variedad de vinos de la tierra', '2017-07-02 06:14:00', '11.jpg', '¿Nos vamos de potes?', 0, 'comida_turca, comida_española', 3)
+INSERT INTO OFERTA VALUES (9, 0, 78, 'QuÃ© ricas estas alitas', '2017-07-02 06:14:00', '9.jpg', 'Alitas con tu primera consumicion', 0, 'comida_picante', 5)
+INSERT INTO OFERTA VALUES (10, 0, 9, 'Invitate a unas caÃ±as ;)', '2015-07-02 06:14:00', '10.jpg', 'Invitar es facil', 1, 'comida_italiana,comida_francesa', 1)
+INSERT INTO OFERTA VALUES (11, 0, 11, 'Gran variedad de vinos de la tierra', '2017-07-02 06:14:00', '11.jpg', 'Nos vamos de potes?', 0, 'comida_turca, comida_espaÃ±ola', 3)
 INSERT INTO OFERTA VALUES (12, 0, 5, 'El mejor jamon serrano de la ciudad', '2015-07-02 06:14:00', '12.jpg', 'Al jamon lo invito yo', 1, 'comida_italiana', 5)
 
 --( "ID", "CODIGO_QR", "FECHA_RESERVA", "NUM_PERSONAS", "VALIDADO", "OFERTA", "USUARIO" )

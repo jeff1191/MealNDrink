@@ -70,6 +70,14 @@ function activaBotonEliminacionComentario() {
 			$('#TodosComentarios').load('comercio_interno?id='+idLocal+' div#TodosComentarios');
 	});
 }
+function activaBotonAddTag() {
+	var idLocal=$('#id_local').get(0).value;
+	var nombreTag=$('#nuevoTag').get(0).value;
+	
+	$.post( "addNuevoTag",{idLocal:idLocal,nombreTag:nombreTag},function(data){
+			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
+	});
+}
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
@@ -79,6 +87,7 @@ $(function() {
 	$("body").on("click", ".eliminaTag", null, activaBotonEliminacionTag);
 	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
+	$("body").on("click", ".anyadirTag", null, activaBotonAddTag);
 })
 </script>
       
@@ -414,22 +423,20 @@ $(function() {
 								      </div>
 										
 								      <div class="modal-body">
-										<form role="form">
-									 							  
-									  <div class="form-group">
-									 <label for="tag">Tags disponibles:</label>
-										<select class="form-control" id="tag">
-				               				<c:forEach items="${alltags}" var="i">					               				
-				               					<option> ${i} </option>					               				
-				               				</c:forEach>					               				
-					               		</select>
-									  </div>
-									  								  
-									</form>					
+										<form role="form">									 							  
+										  <div class="form-group">
+										  <label for="tag">Tags disponibles:</label>
+										  	<select class="form-control" name="nuevoTag" id="nuevoTag">
+					               				<c:forEach items="${alltags}" var="i">					               				
+					               					<option value="${i}"> ${i} </option>					               				
+					               				</c:forEach>					               				
+						               		</select>
+										  </div>									  								  
+										</form>					
 								      </div>
 								      <div class="modal-footer">						      	 
 										  <button type="submit" class="btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+										  <button type="submit" class="anyadirTag" data-dismiss="modal"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 								      </div>
 								    </div>
 								  </div>
