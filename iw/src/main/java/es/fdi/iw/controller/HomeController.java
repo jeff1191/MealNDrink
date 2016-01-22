@@ -529,24 +529,48 @@ public class HomeController {
 		//Yo creo que es mejor que el desplegable que sale en perfil ponga (Cerrar sesi�n, perfil y los locales que tiene)
 		//CAMBIAR EL HEADER!!!!!!! 
 		
+		boolean problema = false;
+		
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 		
 		Usuario dueño = (Usuario) entityManager.createNamedQuery("dameNombreLocal").setParameter("idParam", usuario.getID()).getSingleResult();
-		Local local = entityManager.find(Local.class, id);
+		Local local = null;
 		
-		if(dueño.getID() == local.getUsuario().getID()){
-			model.addAttribute("pageTitle", local.getNombre());
-			model.addAttribute("active", "comercio_interno");
-			model.addAttribute("local", local);
-			model.addAttribute("alltagsLocal", local.dameTagsSeparados());	
-			model.addAttribute("alltags", allTags);	
+		
+		try{				
+			local = entityManager.find(Local.class, id);
+		} catch (NoResultException nre) {
+			problema = true;
+		}
+		
+		
+		
+		if(local != null){
+			if(dueño.getID() == local.getUsuario().getID()){
+				model.addAttribute("pageTitle", local.getNombre());
+				model.addAttribute("active", "comercio_interno");
+				model.addAttribute("local", local);
+				model.addAttribute("alltagsLocal", local.dameTagsSeparados());	
+				model.addAttribute("alltags", allTags);	
+			}
+			else{
+				problema = true;
+			}
 		}
 		else{
+			problema = true;
+
+		}
+		
+		
+		if(problema){
 			usuario(usuarioOnline.getID(), model, session);
 			return "usuario";
 		}
-		return "comercio_interno";
+		else{
+			return "comercio_interno";
+		}
 	}	
 	@Transactional
 	@RequestMapping(value = "/nuevaOferta", method = RequestMethod.POST)
