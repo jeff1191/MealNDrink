@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -413,8 +414,38 @@ public class HomeController {
 		model.addAttribute("active", "registrarse");
 
 		return "registrarse";
-	}	
+	}
 	
+	@Transactional
+	@RequestMapping(value = "/nuevoComentario", method = RequestMethod.POST)	
+	public String nuevoComentario(@RequestParam("idLocal") long idLocal, @RequestParam("comment") String comment, HttpSession session, Model model) {		
+			/* Al añadir un comentario hay que hacer:
+			 * 	- Añadir el comentario al usuario
+			 *  - Añadir el comentario al local
+			 */
+		
+			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+			Usuario usuario = entityManager.find(Usuario.class, usuarioSesion.getID());			
+			Local local = entityManager.find(Local.class, idLocal);
+			Comentario comentario = new Comentario();
+			Date date = new java.util.Date();
+			Timestamp fecha = new Timestamp(date.getTime());
+				
+			comentario.setLocal(local);
+			comentario.setUsuario(usuario);
+			comentario.setTexto(comment);
+			comentario.setFecha(fecha);
+						
+			//Creo que falla algo con JPA -- Saca un error raro si se descomenta lo de abajo
+			
+			//usuario.getComentarios().add(comentario);
+			//local.getComentarios().add(comentario);
+			
+			//entityManager.persist(usuario);
+			//entityManager.persist(local);
+		
+		return "redirect:comercio_externo?id="+local.getID();
+	}	
 	@Transactional
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
 	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag, Model model) {		
@@ -430,37 +461,53 @@ public class HomeController {
 		
 		return "reserva";
 	}	
+	
 	@Transactional
 	@RequestMapping(value = "/reserva", method = RequestMethod.POST)	
-	public String reserva(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID,
+	public String reserva(@RequestParam("capacidad") int cap, @RequestParam("fecha") String fecha, 
+			@RequestParam("hora") String hora, @RequestParam("oferta") long ofertaID,
 			@RequestParam("dondeEstoy") String pag, HttpSession session, Locale locale, Model model) {		
-
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
 		
 		/*Cosas al hacer una reserva:
-		 *  - Generar cÃ³digo qr
-		 *	- Crearse un objeto reserva (el cual guarda el cÃ³digo qr) que se aÃ±ade en Usuario y en Oferta
+		 *  - Generar código qr
+		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se aÃ±ade en Usuario y en Oferta
 		 *	- Modificar la capacidad de la Oferta 
 		*/
 		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
+		String fechaTimeStamp = "";	
+		int pos = 2;
+		List<String> aux = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(fecha,"/");
+		while(tokens.hasMoreTokens()){			
+			aux.add(tokens.nextToken());					 
+		}
+		while(pos != -1){			
+			fechaTimeStamp += aux.get(pos);
+			if(pos != 0) fechaTimeStamp += "-";
+			pos--;
+		}
 		
+		Timestamp timestamp = Timestamp.valueOf(fechaTimeStamp + " " + hora + ":00.0");
+			
 		Usuario usuarioSesion = (Usuario)session.getAttribute("user");
 		Usuario user= entityManager.find(Usuario.class, usuarioSesion.getID());
 			
 		//Nos traemos la oferta
 		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
 		
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+		String qrInfo = "Este código QR es valido para que " + cap + " personas disfruten de la oferta " 
+				+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
+				+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
+		
+		
 		//Crear un objeto reserva
 		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el codigo qr esta mal			
+		reserva.setCodigoQr(qrInfo);			
 		reserva.setUsuario(user);
 		reserva.setOferta(oferta);
 		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
+		reserva.setfechaReserva(timestamp);	
 		reserva.setValidado(false);
 		
 		//Anyadir la reserva a User y Oferta
@@ -477,6 +524,15 @@ public class HomeController {
 		
 		return "redirect:" + pag;
 	}	
+	
+	@Transactional
+	@RequestMapping(value = "/eliminarReserva", method = RequestMethod.POST)
+	public String eliminarReserva(@RequestParam("idReserva") long idReserva,Model model){
+			Reserva reserva= entityManager.find(Reserva.class, idReserva);
+			entityManager.remove(reserva);	
+			return "eliminarReserva";
+    }
+	
 	@Transactional
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
 	public String comercio_externo(@RequestParam("id") long id, HttpSession session, Model model) {		

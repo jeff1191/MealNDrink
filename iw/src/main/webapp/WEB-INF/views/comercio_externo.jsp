@@ -83,16 +83,15 @@
 								        <h4 class="modal-title" id="addModalLabel"> Añadir un nuevo comentario</h4>
 								      </div>
 								      <div class="modal-body">
-										<form id="formAddOferta" role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
-										<input hidden="submit" name="id_local" value="${local.ID}" />
+										<form id="formAddComment" role="form" method="POST" enctype="multipart/form-data" action="nuevoComentario">
+										<input hidden="submit" name="idLocal" value="${infoLocal.ID}" />
 										  <div class="form-group">											
-											<input type="text" class="form-control" name="name" id="name" placeholder="Introduzca su comentario">
+											<textarea style="resize:none" name="comment" id="comment" cols="60" rows="7" placeholder="Introduzca su comentario" form="formAddComment" value= ""></textarea>
 										  </div>									
 											<div class="modal-footer">						      	 
-											  	<button type="submit" ><span class="glyphicon glyphicon-send"></span> Enviar</button>
-												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+											  	<button type="submit" class="btn" value="Submit"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+												<button type="submit" class="btn" data-dismiss="modal"><span class="glyphicon glyphicon-trash"></span> Descartar</button>
 									     	</div>
-										  	
 										</form>							
 								      </div>
 

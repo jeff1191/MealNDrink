@@ -135,10 +135,10 @@ public class Local {
 	public List<Comentario> getComentarios() {
 		return comentarios;
 	}
-
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
+	
 	@ManyToOne(targetEntity=Usuario.class)
 	public Usuario getUsuario() {
 		return usuario;
