@@ -529,7 +529,11 @@ public class HomeController {
 	@RequestMapping(value = "/eliminarReserva", method = RequestMethod.POST)
 	public String eliminarReserva(@RequestParam("idReserva") long idReserva,Model model){
 			Reserva reserva= entityManager.find(Reserva.class, idReserva);
+			Oferta oferta = entityManager.find(Oferta.class, reserva.getOferta().getID());			
+			oferta.setCapacidadActual(oferta.getCapacidadActual() - reserva.getNumPersonas());
+			entityManager.persist(oferta);
 			entityManager.remove(reserva);	
+			
 			return "eliminarReserva";
     }
 	
