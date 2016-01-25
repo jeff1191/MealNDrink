@@ -1141,4 +1141,23 @@ public class HomeController {
 		
 		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/disponibilidadApodo", method = RequestMethod.POST)
+	public ResponseEntity<String> comprobarDisponibilidadApodo(
+			@RequestParam("apodo") String apodo,
+			HttpSession session){
+		
+		String res = new String("ocupado");
+		
+		try{				
+			String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", apodo).getSingleResult();
+			
+		} catch (NoResultException nre) {
+			res = "libre";
+			return new ResponseEntity<String>(res, HttpStatus.OK);	
+			
+		}
+		return new ResponseEntity<String>(res, HttpStatus.OK);	
+	}
 }

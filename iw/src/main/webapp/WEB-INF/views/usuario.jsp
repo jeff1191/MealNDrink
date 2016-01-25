@@ -29,6 +29,83 @@ $(function() {
         })
     });
 })
+
+$("body").on( "keyup", "#nameUser", null, function(){
+	var campo = $("#nameUser");
+	var nombr = $("#nameUser").val();
+	
+	$.ajax({
+		url : "${prefix}disponibilidadApodo",
+		type : "POST",
+		data : {
+			apodo : nombr
+		},
+		error : function() {
+			alert("Ups :(");
+		},
+		success : function(data) {
+			if(data === "libre"){
+				campo.css("border-color", "green");
+			}
+			else if(data === "ocupado"){
+				campo.css("border-color", "red");
+			}
+	
+		}
+	})
+} )
+
+function editarDatos(){
+	var camposModificados = 100000;
+		
+	var nombre = $("#nameUser").val();
+	var contra = $("#pwd").val();
+	var email = $("#email").val();
+	var telef = $("#tel").val();
+	var foto = $("#fileToUpload").val();
+	
+	if(nombre != "${usuario.nombre}"){
+		if(nombre.val().length < 4 || nombre.val().length > 12){
+			//error
+		}
+		else{
+			camposModificados += 1;
+		}
+	}
+	
+	if(contra != ""){
+		if(contra.val().length < 6 || contra.val().length > 12){
+			//error
+		}
+		else{
+			camposModificados += 10;
+		}
+	}
+	
+	if(email != "${usuario.email}"){
+		if( !(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e_mail.val())) ){
+			//notificar error
+		}
+		else{
+			camposModificados += 100;
+		}
+	}
+	
+	if(telef != "${usuario.telefono}"){
+		if( !(/^\d{9}$/.test(telef.val()))){
+			//notificar error
+		}
+		else{
+			camposModificados += 1000;
+		}
+	}
+	
+	if(foto != ""){
+		camposModificados += 10000;
+	}
+	
+}
+
 </script>
 <section id="feature" class="transparent-bg">
             <div class="container">
@@ -242,7 +319,7 @@ $(function() {
 										  </div>
 										  <div class="form-group">
 											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" name="pwd" id="pwd" value="*****">
+											<input type="password" class="form-control" name="pwd" id="pwd" value="">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>

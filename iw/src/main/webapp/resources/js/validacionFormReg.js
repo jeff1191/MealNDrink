@@ -83,3 +83,4 @@
 			
 			alert("El apodo está ocupado. Elija otro (campo amarillo)")
 		};
+		
