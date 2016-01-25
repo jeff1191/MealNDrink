@@ -42,7 +42,7 @@
 						},
 						success : function() {
 							$("#formRegis").submit();
-							location.href = "${prefix}/mealndrink";
+							location.href = "${prefix}/iw";
 
 						}
 					})

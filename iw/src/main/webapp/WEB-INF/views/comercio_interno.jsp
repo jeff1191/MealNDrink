@@ -174,7 +174,7 @@ $(function() {
 										<input hidden="submit" name="id_local" value="${local.ID}" />
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
-											<input type="text" class="form-control" name="name" id="name" placeholder="Introduzca el nuevo nombre">
+											<input type="text" class="form-control" name="name" required="required" id="name" placeholder="Introduzca el nuevo nombre">
 										  </div>
 										<div class="form-group" name="tag" id="tag ">
 										<label for="endTime">Tag:</label>
@@ -186,15 +186,15 @@ $(function() {
 					               		 </div>
 										  <div class="form-group">
 											<label for="endTime">Fecha límite:</label>
-											<input type="time" class="form-control"  name="endTime" id="endTime" placeholder="Introduzca el dia límite">
+											<input type="time" class="form-control"  name="endTime" required="required" id="endTime" placeholder="Introduzca el dia límite">
 										  </div>
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" name="cap" id="cap" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero máximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
 											<label for="descriptcion">Descripción:</label>
-											<input type="text" class="form-control" name="description" id="description" placeholder="Introduzca la descripción de la oferta">
+											<input type="text" class="form-control" name="description" required="required" id="description" placeholder="Introduzca la descripción de la oferta">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de la oferta:</label>
@@ -375,23 +375,23 @@ $(function() {
 									<input hidden="submit" name="redireccion" value="comercio_interno" />
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="name"  name="name" value="${local.nombre}">
+											<input type="text" class="form-control" id="name" required="required" name="name" value="${local.nombre}">
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="time" class="form-control" id="horario"  name="horario" value="${local.horario}">
+											<input type="time" class="form-control" id="horario" required="required" name="horario" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>
-											<input type="text" class="form-control" id="dir"  name="dir" value="${local.direccion}">
+											<input type="text" class="form-control" id="dir" required="required" name="dir" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="email"  name="email" value="${local.email}">
+											<input type="email" class="form-control" id="email"required="required"  name="email" value="${local.email}">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" id="tel"  name="tel" value="${local.telefono}">
+											<input type="tel" class="form-control" id="tel" required="required"  name="tel" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>
