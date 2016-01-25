@@ -2,9 +2,9 @@
 <script type="text/javascript">
 	$(function() {
 		$("#botonReserva").click(function() {
-			alert("Se ha realizado la reserva");
+			alert("Se ha realizado la reserva");			
 		})
-	})
+	})	
 </script>
 <section id="about-us">
         <div class="container">
@@ -17,7 +17,7 @@
 			</div>
 			<div class="row">
 				 <div class="col-md-6 col-sm-6" align="center">				 	
-				 	<img class="img-responsive" src="${prefix}resources/img/database/offers/${infoOferta.foto}" alt="">				 		 
+				 	<img class="img-responsive" src="ofertasFoto?id=${infoOferta.ID}.jpg" alt="">				 		 
 				 </div>			
 				 <div class="col-md-6 col-sm-6" align="center">
 				 	<form class="form-horizontal" role="form" action="reserva" method="POST">	
@@ -25,19 +25,19 @@
 						<div class="form-group">
 				        	<label class="control-label col-lg-4" for="reservas"> Comensales</label>
 				        	<div class="col-lg-6">
-				        		<input id="reservas" class="form-control" type="number" min=1 max="${infoOferta.capacidadTotal}" value="" name="capacidad" placeholder="¿Cuantos sois?"/>
+				        		<input id="reservas" class="form-control" required="required" type="number" min=1 max="${infoOferta.capacidadTotal}" value="" name="capacidad" placeholder="¿Cuantos sois?"/>
 			            	</div>
 			            </div>			            
 			            <div class="form-group">
 				        	<label class="control-label col-lg-4" for="datepicker"> Fecha</label>
 				        	<div class="col-lg-6">
-								<input id=datepicker class="form-control" type="text" name="fecha" placeholder="Selecciona una fecha" value="" />	
+								<input id=datepicker class="form-control" required="required" name="fecha" placeholder="Selecciona una fecha" value="" />	
 							</div>									        	
 			            </div>				            
 			             <div class="form-group">
 				        	<label class="control-label col-lg-4" for="timepicker"> Hora</label>
 				        	<div class="col-lg-6">
-				        		<input id=timepicker class="form-control" type="text" name="hora" placeholder="Selecciona una hora" value="" />
+				        		<input id=timepicker class="form-control" required="required" type="text" name="hora" placeholder="Selecciona una hora" value="" />
 				        	</div>						
 						</div>		
 							<input hidden="submit" name="oferta" value="${infoOferta.ID}" />

@@ -131,8 +131,9 @@
                     <div class="skill">
                         <h2>Locales más populares</h2>                       
 						<div class="list-group">
-						 <c:forEach items="${popularLocals}" var="i">
-						  <a href="comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>						
+						 <c:forEach items="${popularLocals}" var="i">							
+						  <a href="comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>		
+						 <br>		
 						 </c:forEach>
 						</div>
 						
@@ -159,7 +160,7 @@
                               <div class="panel-body">
                                   <div class="media accordion-inner">
                                         <div class="pull-left">
-                                            <img class="img-responsive" src="${prefix}resources/img/database/offers/toLocals/${(i.oferta).foto}">
+                                            <img class="img-responsive" src="ofertasFoto?id=${(i.oferta).ID}">
                                         </div>
                                         <div class="media-body">
                                              <h4>${(i.oferta).nombre}</h4>

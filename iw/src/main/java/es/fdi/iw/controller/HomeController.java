@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -67,7 +68,7 @@ public class HomeController {
 	@PersistenceContext
 	private EntityManager entityManager;
 	String[] allTags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-			"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+			"comida_espaÃ±ola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 	
 
 	//tags por defecto, en nuestro sistema ya viene incorporado 
@@ -419,9 +420,9 @@ public class HomeController {
 	@Transactional
 	@RequestMapping(value = "/nuevoComentario", method = RequestMethod.POST)	
 	public String nuevoComentario(@RequestParam("idLocal") long idLocal, @RequestParam("comment") String comment, HttpSession session, Model model) {		
-			/* Al añadir un comentario hay que hacer:
-			 * 	- Añadir el comentario al usuario
-			 *  - Añadir el comentario al local
+			/* Al aï¿½adir un comentario hay que hacer:
+			 * 	- Aï¿½adir el comentario al usuario
+			 *  - Aï¿½adir el comentario al local
 			 */
 		
 			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
@@ -452,6 +453,21 @@ public class HomeController {
 		model.addAttribute("active", "reserva");			
 		try {
 			Oferta aux = entityManager.find(Oferta.class, id);
+			
+			//fecha actual
+			DateFormat dateFormatActualDay = new SimpleDateFormat("dd/MM/yyyy");
+			DateFormat dateFormatActualHour = new SimpleDateFormat("HH:mm");
+			Date dateActual = new Date();
+						
+			// fecha limite
+			DateFormat dateFormatLimitDay = new SimpleDateFormat("dd/MM/yyyy");
+			DateFormat dateFormatLimitHour = new SimpleDateFormat("HH:mm");
+			Date dateLimit = new Date(aux.getFechaLimite().getTime());
+					
+			model.addAttribute("fechaActual", dateFormatActualDay.format(dateActual));
+			model.addAttribute("horaActual", dateFormatActualHour.format(dateActual));
+			model.addAttribute("fechaLimite", dateFormatLimitDay.format(dateLimit));
+			model.addAttribute("horaLimite", dateFormatLimitHour.format(dateLimit));			
 			model.addAttribute("infoOferta", aux);
 			model.addAttribute("paginaVuelta", pag);			
 			model.addAttribute("pageTitle", "Reserva");
@@ -469,8 +485,8 @@ public class HomeController {
 			@RequestParam("dondeEstoy") String pag, HttpSession session, Locale locale, Model model) {		
 		
 		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se aÃ±ade en Usuario y en Oferta
+		 *  - Generar codigo qr
+		 *	- Crearse un objeto reserva (el cual guarda el codigo qr) que se aÃ±ade en Usuario y en Oferta
 		 *	- Modificar la capacidad de la Oferta 
 		*/
 		
@@ -494,9 +510,9 @@ public class HomeController {
 			
 		//Nos traemos la oferta
 		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
+					
 		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-		String qrInfo = "Este código QR es valido para que " + cap + " personas disfruten de la oferta " 
+		String qrInfo = "Este cÃ³digo QR es valido para que " + cap + " personas disfruten de la oferta " 
 				+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
 				+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
 		
