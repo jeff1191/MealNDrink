@@ -40,7 +40,7 @@ $(function() {
                 <div class="features">
                     <div class="col-md-6 col-sm-6">
 						<input hidden="submit" id="id_admin" value="${admin.ID}" />
-						<img src="usuariosFoto?id=${admin.foto}" height="175" width="250">  
+						<img src="usuariosFoto?id=${admin.ID}.jpg" height="175" width="250">  
 						<h3>Bienvenido Administrador ${admin.nombre}</h3>
 						<p>Esta es una página de administración, aqui podrá hacer todas las gestiones de usuarios y locales, además de editar tus datos personales</p><br/>
 						<h3>Mis datos</h3>
@@ -66,7 +66,7 @@ $(function() {
 							  <c:forEach items="${usuarios }" var="i">
 								<div class="media">
 									<div class="pull-left">
-										<img class="media-object" src="usuariosFoto?id=${i.foto}" height="140" width="140"> 
+										<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg" height="140" width="140"> 
 									</div>
 									<div class="media-body">
 										<h4 class="media-heading">${i.nombre} #1</h4>
@@ -142,7 +142,7 @@ $(function() {
 					  	<c:forEach items="${locales}" var="i">
 							<div class="media">
 								<div class="pull-left">
-									<img src="localesFoto?id=${i.foto}" height="175" width="250"> 
+									<img src="localesFoto?id=${i.ID}.jpg" height="175" width="250"> 
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">${i.nombre} #1</h4>

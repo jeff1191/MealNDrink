@@ -34,7 +34,6 @@ public class Local {
 	private List<Comentario> comentarios;
 	private Usuario usuario;
 	private String nombre;
-	private String foto;
 
 	
 	public Local() {
@@ -104,14 +103,6 @@ public class Local {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	
-	public String getFoto() {
-		return foto;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
 	}
 	
 	public String getUbicacion() {

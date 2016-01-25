@@ -106,7 +106,7 @@
             	<c:forEach items="${platos}" var="i">
                		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
-	                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.foto}" alt="">
+	                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.ID}.jpg" alt="">
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
 	                               <h3><a href="#">${i.nombre}</a></h3>
@@ -170,7 +170,7 @@
                               <div class="panel-body">
                                   <div class="media accordion-inner">
                                         <div class="pull-left">
-                                            <img class="img-responsive" src="${prefix}resources/img/database/offers/toLocals/${(i.oferta).foto}">
+                                            <img class="img-responsive" src="${prefix}resources/img/database/offers/toLocals/${(i.oferta).ID}.jpg">
                                         </div>
                                         <div class="media-body">
                                              <h4>${(i.oferta).nombre}</h4>

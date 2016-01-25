@@ -33,7 +33,6 @@ public class Oferta {
 	
 	private long ID;
 	private String nombre;
-	private String foto;
 	private String descripcion;
 	private Timestamp fechaLimite;
 	private int capacidadTotal;
@@ -101,12 +100,6 @@ public class Oferta {
 	}
 	public void setFechaLimite(Timestamp fechaLimite) {
 		this.fechaLimite = fechaLimite;
-	}
-	public String getFoto() {
-		return foto;
-	}
-	public void setFoto(String foto) {
-		this.foto = foto;
 	}
 	public String getNombre() {
 		return nombre;

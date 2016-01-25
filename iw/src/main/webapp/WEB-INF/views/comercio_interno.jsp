@@ -100,7 +100,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">							
-                            <img src="localesFoto?id=${local.foto}" height="350" width="300">
+                            <img src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
 							<h3>Dirección</h3>
 							<p>${local.direccion}</p>
@@ -142,7 +142,7 @@ $(function() {
 											<c:forEach items="${local.ofertas}" var="i">
 												<div class="media">
 													<div class="pull-left">
-														<img class="media-object" height="135" width="180" src="ofertasFoto?id=${i.foto}">
+														<img class="media-object" height="135" width="180" src="ofertasFoto?id=${i.ID}.jpg">
 												</div>
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
@@ -183,11 +183,11 @@ $(function() {
 				               					<option value="${i}"> ${i} </option>					               				
 				               				</c:forEach>					               				
 					               		</select>
-					               		 </div>
-										  <div class="form-group">
-											<label for="endTime">Fecha límite:</label>
-											<input type="time" class="form-control"  name="endTime" required="required" id="endTime" placeholder="Introduzca el dia límite">
-										  </div>
+					               		</div>
+									        <div class="form-group">
+									     	<label for="datepicker"> Fecha: </label>									     
+												<input id=datepicker class="form-control" type="text" id="fecha" name="fecha" placeholder="Selecciona una fecha" value="" />	
+											</div>	
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
 											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero máximo de beneficiarios">
@@ -347,11 +347,12 @@ $(function() {
 								
 								<div class="tab-pane fade" id="opiniones">
 									
-									<div class="media">
+									
 									<div id="TodosComentarios" class="TodosComentarios">
-										<c:forEach items="${local.comentarios}" var="i">
+									<c:forEach items="${local.comentarios}" var="i">
+										<div class="media">
 										<div class="pull-left">
-											<img class="media-object" src="localesFoto?id=${i.local.foto}" height="135" width="180"> 
+											<img class="media-object" src="localesFoto?id=${i.local.ID}.jpg" height="135" width="180"> 
 										</div>
 										
 										<div class="media-body">											
@@ -359,8 +360,9 @@ $(function() {
 											<p>${i.texto}</p>
 											<button id="delComment_${i.ID}" value="${i.ID}"  class="rellenaDatosComentario" data-toggle="modal" data-target="#ModalDelComentario" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
 										</div>
+										</div>
 									</c:forEach>
-									</div>
+									
 									</div>
 									
 									<br></br>
@@ -379,7 +381,7 @@ $(function() {
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="time" class="form-control" id="horario" required="required" name="horario" value="${local.horario}">
+											<input type="text" class="form-control" id="horario" required="required" name="horario" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>

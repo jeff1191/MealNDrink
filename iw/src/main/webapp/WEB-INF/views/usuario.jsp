@@ -30,7 +30,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-                            <img src="usuariosFoto?id=${usuario.foto}" height="275" width="275">                              
+                            <img src="usuariosFoto?id=${usuario.ID}.jpg" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3>Mis datos</h3>
 							<p>${usuario.email}</p>
@@ -53,7 +53,7 @@ $(function() {
 										<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.foto}">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.ID}.jpg" >
 											</div>										
 											<div class="media-body">
 												<h4 class="media-heading">Reserva #1</h4>
@@ -144,7 +144,7 @@ $(function() {
 										<c:forEach items="${usuario.locales}" var="i">
 										<div class="media">
 											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.foto}">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
 											</div>										
 											<div class="media-body">
 												<h4 class="media-heading">${i.nombre} #1</h4>
@@ -220,7 +220,7 @@ $(function() {
 											<c:forEach items="${usuario.comentarios}" var="i">
 												<div class="media">
 												<div class="pull-left">
-													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.local.foto}">
+													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
 												</div>
 												<div class="media-body">
 													<h4 class="media-heading">Comentario #1</h4>

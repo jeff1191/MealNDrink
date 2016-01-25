@@ -589,14 +589,12 @@ public class HomeController {
 		entityManager.flush();
         if (!photo.isEmpty()) {
             try {
-            	offer.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(
                 		new FileOutputStream(ContextInitializer.getFile(
                 				"ofertas", ""+offer.getID())));
                 stream.write(bytes);
                 stream.close();
-                offer.setFoto(offer.getID()+".jpg");
         		local.getOfertas().add(offer);
 				entityManager.persist(offer);
 				entityManager.persist(local);		
@@ -620,7 +618,6 @@ public class HomeController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                offer.setFoto("unknown_offer.jpg");
         		local.getOfertas().add(offer);
 				entityManager.persist(offer);
 				entityManager.persist(local);				
@@ -658,7 +655,6 @@ public class HomeController {
 		entityManager.flush();
         if (!photo.isEmpty()) {
             try {
-            	local.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
@@ -674,7 +670,6 @@ public class HomeController {
             	return "redirect:comercio_interno?id="+local.getID();
             }
         } else { //no ha seleccionado foto, poner la por defecto
-        	local.setFoto("unknown_local.jpg");
           
     	    	BufferedInputStream in = new BufferedInputStream(
     	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
@@ -718,31 +713,29 @@ public class HomeController {
     		@RequestParam("id_local") long id, @RequestParam("name") String nombreLocal,@RequestParam("horario") String horario
     		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
     		@RequestParam("redireccion")String pagina, Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+		//Hay que revisar que el local pertenece a un usuario
 		Local edit= entityManager.find(Local.class, id);
-
+		edit.setNombre(nombreLocal);
+		edit.setHorario(horario);
+		edit.setDireccion(direccion);
+		edit.setEmail(email);
+		edit.setTelefono(telefono);
+		entityManager.persist(edit);
+		entityManager.flush();
 		if(!photo.isEmpty()){
 			
             try {
-            	edit.setFoto(photo.getOriginalFilename());
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(
-                        		new FileOutputStream(ContextInitializer.getFile("locales",edit.getFoto())));
+                        		new FileOutputStream(ContextInitializer.getFile("locales", ""+edit.getID()+".jpg")));
                 stream.write(bytes);
                 stream.close();        		     		
          
             } catch (Exception e) {
             	e.getMessage();
             }
-		}
-		edit.setNombre(nombreLocal);
-		edit.setHorario(horario);
-		edit.setDireccion(direccion);
-		edit.setEmail(email);
-		edit.setTelefono(telefono);
-	
+		}	
 		int idUser = 1;
 		if(pagina.equalsIgnoreCase("comercio_interno"))
 			return "redirect:"+pagina+"?id="+id;
@@ -766,7 +759,6 @@ public class HomeController {
 		}
 		edit.setNombre(nombreUsuario);
 		edit.setEmail(email);
-		edit.setFoto(photo.getOriginalFilename());
 		edit.setTelefono(telefono);
 		
 		if(pagina.equalsIgnoreCase("usuario"))
@@ -1043,7 +1035,6 @@ public class HomeController {
 			u = creaUsuario(nombre, email, telefono, rol, password);
 			logger.info(Long.toString(u.getID()));
 			entityManager.persist(u);
-			u.setFoto(Long.toString(u.getID()) + ".jpg"); //poner el campo foto despues del persist porque sino sale mal el ID
 			entityManager.persist(u);
 			session.setAttribute("user", u);
 
@@ -1063,7 +1054,7 @@ public class HomeController {
 			MultipartHttpServletRequest req, HttpSession session){
 		
 	
-		logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		logger.info("registroUsuarioFoto");
 		Usuario u = (Usuario)session.getAttribute("user");
 		if (u == null) {
 			return new ResponseEntity<String>("Ha habido algún problema al cargar el usuario de la base de datos", HttpStatus.NOT_MODIFIED);	
@@ -1072,7 +1063,6 @@ public class HomeController {
 				
 		 if (!photo.isEmpty()) {
 		    try {
-		    	u.setFoto(photo.getOriginalFilename());
 		        byte[] bytes = photo.getBytes();
 		        BufferedOutputStream stream =
 		                new BufferedOutputStream(

@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-							<img src="${prefix}localesFoto?id=${infoLocal.foto}" height="350" width="350">                                  
+							<img src="${prefix}localesFoto?id=${infoLocal.ID}.jpg" height="350" width="350">                                  
 							<h3>Dirección</h3>
 							<p>${infoLocal.direccion}</p>
 														

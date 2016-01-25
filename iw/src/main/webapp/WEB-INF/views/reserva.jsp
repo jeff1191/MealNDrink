@@ -10,7 +10,7 @@
 			</div>
 			<div class="row">
 				 <div class="col-md-6 col-sm-6" align="center">				 	
-				 	<img class="img-responsive" src="${prefix}resources/img/database/offers/${infoOferta.foto}" alt="">				 		 
+				 	<img class="img-responsive" src="${prefix}resources/img/database/offers/${infoOferta.ID}.jpg" alt="">				 		 
 				 </div>			
 				 <div class="col-md-6 col-sm-6" align="center">
 				 	<form class="form-horizontal" role="form" action="/iw/${paginaVuelta}" method="POST">	

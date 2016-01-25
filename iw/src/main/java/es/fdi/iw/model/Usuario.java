@@ -25,7 +25,6 @@ public class Usuario {
 	
 	private long ID;
 	private String nombre;
-	private String foto;
 	private String email;
 	private String telefono;
 	private String rol;
@@ -105,12 +104,6 @@ public class Usuario {
 	}
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
-	}
-	public String getFoto() {
-		return foto;
-	}
-	public void setFoto(String foto) {
-		this.foto = foto;
 	}
 	public String getEmail() {
 		return email;
