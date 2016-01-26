@@ -22,11 +22,25 @@ function activaBotonEliminacionUsuario() {
 	});
 }
 
-$(function() {
+function activaBotonAddLocal(){
+	var fileToUpload=$('#fileToUpload')[0].files[0];
+	var id_local=$('#id_local').get(0).value;
+	var name=$('#name').get(0).value;
+	var endTime=$('#endTime').get(0).value;
+	var cap=$('#cap').get(0).value;
+	var description=$('#description').get(0).value;
 	
+	$.post( "nuevaOferta",{fileToUpload:fileToUpload,id_local:id_local,name:name,endTime:endTime,
+		cap:cap,description:description},function(data){
+			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+	});
+	
+}
+$(function() {	
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 	$("body").on("click", ".eliminaUsuario", null, activaBotonEliminacionUsuario);
+	$("body").on("click", ".anyadirLocal", null, activaBotonAddLocal);
 })
 </script>
 
@@ -53,6 +67,7 @@ $(function() {
 					  <li><a href="#lusuarios" data-toggle="tab">Gestionar usuarios</a></li>
 					  <li><a href="#llocales" data-toggle="tab">Gestionar locales</a></li>
 					  <li><a href="#editarDatos" data-toggle="tab">Mis datos</a></li>
+					  <li><a href="#ltags" data-toggle="tab">Mis tags</a></li>
 					</ul>
 
 					<div class="tab-content">
@@ -80,7 +95,6 @@ $(function() {
 								</c:forEach>
 							</div>
 						</div>
-							
 		
 
 					  <!-- Modal Add User-->
@@ -95,19 +109,19 @@ $(function() {
 								<form role="form">
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" id="name" placeholder="Introduce un nuevo nombre">
+									<input type="text" class="form-control" required="required" id="name" placeholder="Introduce un nuevo nombre">
 								  </div>
 								  <div class="form-group">
 									<label for="pwd">Contraseña:</label>
-									<input type="password" class="form-control" id="pwd" placeholder="Introduce una nueva contraseña">
+									<input type="password" class="form-control" required="required" id="pwd" placeholder="Introduce una nueva contraseña">
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
-									<input type="email" class="form-control" id="email" placeholder="Introduce un nuevo email">
+									<input type="email" class="form-control" id="email" required="required" placeholder="Introduce un nuevo email">
 								  </div>
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" id="tel" placeholder="Introduce un nuevo telefono">
+									<input type="tel" class="form-control" id="tel" required="required" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
 									<label for="tag">Rol:</label>
@@ -182,28 +196,32 @@ $(function() {
 								</div>	
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" id="name" name="name" placeholder="Introduce un nuevo nombre">
+									<input type="text" class="form-control" id="name" required="required" name="name" placeholder="Introduce un nuevo nombre">
 								  </div>
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
-									<input type="time" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+									<input type="text" class="form-control" required="required" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
-									<input type="text" class="form-control" id="dir" name="dir" placeholder="Introduce una nueva direccion">
+									<input type="text" class="form-control" required="required" id="dir" name="dir" placeholder="Introduce una nueva direccion">
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
-									<input type="email" class="form-control" id="email" name="email" placeholder="Introduce un nuevo email">
+									<input type="email" class="form-control" required="required" id="email" name="email" placeholder="Introduce un nuevo email">
 								  </div>
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
+									<input type="tel" class="form-control" required="required" id="tel" name="tel" placeholder="Introduce un nuevo telefono" maxlength="9">
 								  </div>
-								  <div class="form-group">
-									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
-								  </div>
+								<div class="form-group" name="nombreTag" id="nombreTag">
+								<label for="endTime">Tag:</label>
+								<select class="form-control" name="tag" id="tag">
+		               				<c:forEach items="${alltags}" var="i">					               				
+		               					<option value="${i}"> ${i} </option>					               				
+		               				</c:forEach>					               				
+			               		</select>
+			               		</div>
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
@@ -220,7 +238,8 @@ $(function() {
 						  </div>
 						</div>     
 						<!-- End Modal Add Local-->
-						        				<!-- Modal Edit Local-->
+						
+						<!-- Modal Edit Local-->
 						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 						  <div class="modal-dialog modal-sm" role="document">
 						    <div class="modal-content">
@@ -233,23 +252,23 @@ $(function() {
 								<input hidden="submit" name="redireccion" value="administracion" />
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" id="name" name="name" placeholder="Introduce un nuevo nombre">
+									<input type="text" class="form-control" required="required" id="name" name="name" placeholder="Introduce un nuevo nombre">
 								  </div>
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
-									<input type="time" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+									<input type="time" class="form-control" required="required" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
-									<input type="text" class="form-control" id="dir" name="dir" placeholder="Introduce una nueva direccion">
+									<input type="text" class="form-control" required="required" id="dir" name="dir" placeholder="Introduce una nueva direccion">
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
-									<input type="email" class="form-control" id="email" name="email" placeholder="Introduce un nuevo email">
+									<input type="email" class="form-control" required="required" id="email" name="email" placeholder="Introduce un nuevo email">
 								  </div>
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
+									<input type="tel" class="form-control" required="required" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
 									<label for="tags">Tags iniciales:</label>
@@ -271,7 +290,15 @@ $(function() {
 						  </div>
 						</div>     
 						<!-- End Modal Edit Local-->	
-        					 
+        			<!-- tags -->
+     				<div class="tab-pane fade" id="ltags"> 							
+						<div id="TodosTags" class="TodosTags">	
+							<c:forEach items="${alltags}" var="i">
+								<h4>${i}</h4>		               				
+				            </c:forEach>	
+						</div>
+					</div>
+        			<!--  end tags -->		 
 					  <div class="tab-pane fade" id="editarDatos">
 
 						<form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
@@ -279,19 +306,19 @@ $(function() {
 						<input hidden="submit" name="redireccion" value="administracion" />
 						  <div class="form-group">
 							<label for="name">Nombre:</label>
-							<input type="text" class="form-control" id="nameUser" name="nameUser" value="${admin.nombre}">
+							<input type="text" class="form-control" required="required" id="nameUser" name="nameUser" value="${admin.nombre}">
 						  </div>
 						  <div class="form-group">
 							<label for="pwd">Contraseña:</label>
-							<input type="password" class="form-control" id="pwd" name="pwd" value="*****">
+							<input type="password" class="form-control" required="required" id="pwd" name="pwd" value="*****">
 						  </div>
 						  <div class="form-group">
 							<label for="email">Email:</label>
-							<input type="email" class="form-control" id="email" name="email" value="${admin.email }">
+							<input type="email" class="form-control" required="required" id="email" name="email" value="${admin.email }">
 						  </div>
 						  <div class="form-group">
 							<label for="tel">Teléfono:</label>
-							<input type="tel" class="form-control" id="tel" name="tel" value="${admin.telefono }">
+							<input type="tel" class="form-control" required="required" id="tel" name="tel" value="${admin.telefono }">
 						  </div>
 						  <div class="form-group">
 							<label for="file">Imagen de perfil:</label>

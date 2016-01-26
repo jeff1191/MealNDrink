@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -569,22 +570,36 @@ public class HomeController {
     		@RequestParam("id_local") long id,     		
     		@RequestParam("name") String nombreOferta,
     		@RequestParam("nombreTag") String tag, 
-    		@RequestParam("endTime") String endTime,
+    		@RequestParam("fecha") String fecha,
     		@RequestParam("cap") int capacidad,
     		@RequestParam("description") String descripcion, 
     		Model model){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
+		String fechatTimesStamp="";
+		int pos=2;
+		List<String> aux = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(fecha,"/");
+		while(tokens.hasMoreTokens()){			
+			aux.add(tokens.nextToken());
+		}
+		while(pos != -1){
+			fechatTimesStamp +=aux.get(pos);
+			if(pos != 0) fechatTimesStamp+= "-";
+			pos--;
+		}		
+		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
 		Local local = entityManager.find(Local.class, id);
 		Oferta offer= new Oferta();
 		offer.setNombre(nombreOferta);
-		offer.setFechaLimite(new Timestamp(23)); //ENDTIME!!!!!!!!!!
+		offer.setFechaLimite(timestamp);
 		offer.setCapacidadTotal(capacidad);
 		offer.setDescripcion(descripcion);
 		offer.setTags(tag+",");		
 		offer.setLocal(local);
 		offer.setOfertaMes(false);
+		local.getOfertas().add(offer);
 		entityManager.persist(offer);
 		entityManager.flush();
         if (!photo.isEmpty()) {
@@ -592,10 +607,10 @@ public class HomeController {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(
                 		new FileOutputStream(ContextInitializer.getFile(
-                				"ofertas", ""+offer.getID())));
+                				"ofertas", ""+offer.getID()+".jpg")));
                 stream.write(bytes);
                 stream.close();
-        		local.getOfertas().add(offer);
+
 				entityManager.persist(offer);
 				entityManager.persist(local);		
             } catch (Exception e) {
@@ -607,7 +622,7 @@ public class HomeController {
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
+							new FileOutputStream(ContextInitializer.getFile("ofertas", ""+offer.getID()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -618,7 +633,6 @@ public class HomeController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-        		local.getOfertas().add(offer);
 				entityManager.persist(offer);
 				entityManager.persist(local);				
         }
@@ -626,6 +640,7 @@ public class HomeController {
     }
 	@Transactional
 	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
+	
 	public String eliminarOferta(@RequestParam("idOferta") long idOffer,Model model){
 			Oferta oferta= entityManager.find(Oferta.class, idOffer);
 			entityManager.remove(oferta);			
@@ -771,7 +786,9 @@ public class HomeController {
 	@RequestMapping(value = "/eliminarUsuario", method = RequestMethod.POST)
 	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario,Model model){
 			Usuario usuario= entityManager.find(Usuario.class, idUsuario);
-			entityManager.remove(usuario);			
+			System.err.println("ID: "+idUsuario);
+			entityManager.remove(usuario);		
+
 			return "eliminarUsuario";
     }
 
@@ -812,14 +829,23 @@ public class HomeController {
     }
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
-	public String administracion(Locale locale, Model model) {
+	public String administracion(Locale locale, Model model,HttpSession session) {
 		model.addAttribute("active", "administracion");
 		model.addAttribute("pageTitle", "Administracion");
-		//COMPROBAR que lo que nos viene en modo get estï¿½ logueado como admin
-		model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
-		model.addAttribute("usuarios", entityManager.createNamedQuery("allUsers").getResultList());
-		model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
-		return "administracion";
+		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			if(usuario.getRol().equals("admin")){
+			model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
+			model.addAttribute("usuarios", entityManager.createNamedQuery("allUsersExceptAdmin").getResultList());
+			model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
+			model.addAttribute("alltags", allTags);	
+				return "administracion";
+			}	
+		}
+		model.addAttribute("pageTitle", "Error!");
+		return "errorPagina";
 	}	
 	@Transactional
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	

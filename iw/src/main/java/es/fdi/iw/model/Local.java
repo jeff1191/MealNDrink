@@ -2,6 +2,7 @@ package es.fdi.iw.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -112,7 +113,7 @@ public class Local {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	@OneToMany(targetEntity=Oferta.class)
+	@OneToMany(targetEntity=Oferta.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="local")
 	public List<Oferta> getOfertas() {
 		return ofertas;
@@ -121,7 +122,7 @@ public class Local {
 	public void setOfertas(List<Oferta> ofertas) {
 		this.ofertas = ofertas;
 	}
-	@OneToMany(targetEntity=Comentario.class)
+	@OneToMany(targetEntity=Comentario.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="local")
 	public List<Comentario> getComentarios() {
 		return comentarios;

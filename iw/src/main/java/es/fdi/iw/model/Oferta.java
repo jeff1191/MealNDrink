@@ -4,6 +4,7 @@ package es.fdi.iw.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -119,7 +120,7 @@ public class Oferta {
 	public void setCapacidadTotal(int capacidadTotal) {
 		this.capacidadTotal = capacidadTotal;
 	}
-	@OneToMany(targetEntity=Reserva.class)
+	@OneToMany(targetEntity=Reserva.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="oferta")
 	public List<Reserva> getReservas() {
 		return reservas;

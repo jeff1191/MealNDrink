@@ -3,6 +3,7 @@ package es.fdi.iw.model;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @NamedQueries({
 	@NamedQuery(name="dameUsuarioLogin", 
 			query="SELECT usu FROM Usuario usu WHERE usu.nombre = :nombre"),
+	@NamedQuery(name="allUsersExceptAdmin", 
+			query="select o from Usuario o where rol not like '%admin%' "),
 	@NamedQuery(name="allUsers", 
 			query="select o from Usuario o"),
 	@NamedQuery(name="roleUser", 
@@ -123,7 +126,7 @@ public class Usuario {
 	public void setHashedAndSalted(String hashedAndSalted) {
 		this.hashedAndSalted = hashedAndSalted;
 	}
-	@OneToMany(targetEntity=Comentario.class)
+	@OneToMany(targetEntity=Comentario.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="usuario")
 	public List<Comentario> getComentarios() {
 		return comentarios;
@@ -131,7 +134,7 @@ public class Usuario {
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
-	@OneToMany(targetEntity=Reserva.class)
+	@OneToMany(targetEntity=Reserva.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="usuario")
 	public List<Reserva> getReservas() {
 		return reservas;
@@ -139,7 +142,7 @@ public class Usuario {
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-	@OneToMany(targetEntity=Local.class)
+	@OneToMany(targetEntity=Local.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="usuario")
 	public Collection<Local> getLocales() {
 		return locales;
