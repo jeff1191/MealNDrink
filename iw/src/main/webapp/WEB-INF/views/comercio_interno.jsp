@@ -57,6 +57,26 @@ function activaBotonEliminacionTag() {
 			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
 	});
 }
+
+function activaBotonValidarReserva(ob) {
+	
+	var nombre = ob;
+	
+	$.ajax({
+		url : "${prefix}validarReserva",
+		type : "POST",
+		data : {
+			id_reserva : nombre
+		},
+
+		success : function() {
+			location.href = "${prefix}/mealndrink";
+
+		}
+	})
+	
+}
+
 function rellenaDatosComentario() {
 	var nombreC = $(this).attr("id").substring("delComment_".length); 
 	$("#idEliminarComentario").attr("value" ,nombreC);
@@ -78,6 +98,11 @@ function activaBotonAddTag() {
 			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
 	});
 }
+
+function d(){
+	alert("MEC");
+}
+
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
@@ -88,6 +113,21 @@ $(function() {
 	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 	$("body").on("click", ".anyadirTag", null, activaBotonAddTag);
+	$('.qrcode').each(function(i, o) {
+        $(o).qrcode({
+            "render": "div",
+            "size": 100,
+            "color": "#3a3",
+            "text": $(o).text()
+        })
+    });
+	$('.QRvalidar').each(function(i, o) {
+		//$("body").on("click", "#" + o.ID , null, d/*activaBotonValidarReserva(o.ID)*/);
+       $("#" + o.id).click( function(){
+    	   activaBotonValidarReserva(o.id)
+      }); 
+    
+	});
 })
 </script>
       
@@ -290,59 +330,53 @@ $(function() {
 										<table class="table table-bordered">
 										    <thead>
 										        <tr>
+										        	<th>Oferta</th>
 										            <th>QR</th>
-										            <th>Imagen</th>
-										            <th>Información</th>										            								            
 										        </tr>
 										    </thead>
 										    <tbody>
-										        <tr>
-										            <td><h4 class="media-heading">#1</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            									       
-										        </tr>
-										        <tr>
-										            <td><h4 class="media-heading">#2</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            
-										        </tr>
-										        <tr>									        	
-										            <td><h4 class="media-heading">#3</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-													<td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>
-										        </tr>
+										    	<c:forEach items="${local.ofertas}" var="i">
+										    	 	<c:forEach items="${i.reservas}" var="j">
+											    		<c:if test="${j.validado == false}">
+												    		<tr>
+													            <td><h4 class="media-heading">${i.nombre}</h4>
+<%-- 														            <button id="ValRes_${j.ID}" value="${j.ID}"  class="ValRes" data-toggle="modal" data-target="#ModalValRes" ><span class="glyphicon glyphicon-ok"></span> Validar</button>	 --%>
+														            <button id="valR_${j.ID}" name="valR_${j.ID}" type="submit" class="QRvalidar"><span class="glyphicon glyphicon-ok"></span> Validar</button>
+													            </td>
+													            <td><div class="qrcode">${j.codigoQr}</div></td>		            									       
+													        </tr>	
+														</c:if>
+											    	</c:forEach>
+										   		</c:forEach>
 										    </tbody>
 										</table>
 									  </div>
+									  
 									  <div class="col-md-6">
 									  	<b><big>Validados</big></b>
 									  	<br></br>
 									  	<table class="table table-bordered">
 										    <thead>
 										        <tr>
+										            <th>Oferta</th>
 										            <th>QR</th>
-										            <th>Imagen</th>
-										            <th>Información</th>										            								            
 										        </tr>
 										    </thead>
 										    <tbody>
-										         <tr>
-										            <td><h4 class="media-heading">#4</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            									       
-										        </tr>
-										        <tr>
-										            <td><h4 class="media-heading">#5</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            
-										        </tr>
+										    	<c:forEach items="${local.ofertas}" var="i">
+										    	 	<c:forEach items="${i.reservas}" var="j">
+											    		<c:if test="${j.validado == true}">
+												    		<tr>
+													            <td><h4 class="media-heading">${i.nombre}</h4></td>
+																<td><div class="qrcode">${j.codigoQr}</div></td>
+													        </tr>	
+														</c:if>
+											    	</c:forEach>
+										   		</c:forEach>
 										    </tbody>
 										</table>								  
 									  </div>
-									</div>																		
-									<br></br>									
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
+									</div>
 								</div>
 								
 								<div class="tab-pane fade" id="opiniones">
@@ -442,7 +476,7 @@ $(function() {
 								  </div>
 								</div>     
 								<!-- End Modal Add Tag-->
-								
+																
 								<!-- Modal Del Tags-->
 								<div class="modal fade" id="ModalDelTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 								  <div class="modal-dialog modal-sm" role="document">

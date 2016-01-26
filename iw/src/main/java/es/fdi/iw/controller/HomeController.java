@@ -844,6 +844,30 @@ public class HomeController {
 			entityManager.remove(comentario);			
 			return "eliminarComentario";
     }
+
+	@Transactional
+	@RequestMapping(value = "/validarReserva", method = RequestMethod.POST)
+	public String validarReserva(@RequestParam("id_reserva") String idRes, Model model){
+		
+		long idResBueno;
+		String test;
+		
+		try {
+			test = idRes;
+			test = idRes.substring(7);
+			idResBueno = Long.parseLong(test);
+			
+			Reserva edit= entityManager.find(Reserva.class, idRes);
+
+			edit.setValidado(true);
+			entityManager.persist(edit);	
+			
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+		}
+		return "validarReserva";
+
+	}
 	
 	@Transactional
 	@RequestMapping(value = "/addNuevoTag", method = RequestMethod.POST)

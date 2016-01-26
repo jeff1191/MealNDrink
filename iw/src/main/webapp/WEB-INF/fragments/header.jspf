@@ -84,7 +84,7 @@
 			},
 			error : function() {
 				$("#pass").empty();
-				alert("El correo electrónico y la contraseña no coinciden.");
+				alert("El apodo y la contraseña no coinciden.");
 
 			},
 			success : function() {
