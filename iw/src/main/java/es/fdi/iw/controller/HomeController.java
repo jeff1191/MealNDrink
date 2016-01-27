@@ -854,10 +854,13 @@ public class HomeController {
 		
 		try {
 			test = idRes;
-			test = idRes.substring(7);
+			logger.info(test);
+			test = idRes.substring(5);
+			logger.info(test);
+			
 			idResBueno = Long.parseLong(test);
 			
-			Reserva edit= entityManager.find(Reserva.class, idRes);
+			Reserva edit= entityManager.find(Reserva.class, idResBueno);
 
 			edit.setValidado(true);
 			entityManager.persist(edit);	
