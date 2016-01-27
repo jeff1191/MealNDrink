@@ -455,19 +455,15 @@ public class HomeController {
 			Oferta aux = entityManager.find(Oferta.class, id);
 			
 			//fecha actual
-			DateFormat dateFormatActualDay = new SimpleDateFormat("dd/MM/yyyy");
-			DateFormat dateFormatActualHour = new SimpleDateFormat("HH:mm");
+			DateFormat dateFormatActualDay = new SimpleDateFormat("dd/MM/yyyy");			
 			Date dateActual = new Date();
 						
 			// fecha limite
 			DateFormat dateFormatLimitDay = new SimpleDateFormat("dd/MM/yyyy");
-			DateFormat dateFormatLimitHour = new SimpleDateFormat("HH:mm");
 			Date dateLimit = new Date(aux.getFechaLimite().getTime());
 					
 			model.addAttribute("fechaActual", dateFormatActualDay.format(dateActual));
-			model.addAttribute("horaActual", dateFormatActualHour.format(dateActual));
-			model.addAttribute("fechaLimite", dateFormatLimitDay.format(dateLimit));
-			model.addAttribute("horaLimite", dateFormatLimitHour.format(dateLimit));			
+			model.addAttribute("fechaLimite", dateFormatLimitDay.format(dateLimit));			
 			model.addAttribute("infoOferta", aux);
 			model.addAttribute("paginaVuelta", pag);			
 			model.addAttribute("pageTitle", "Reserva");
@@ -479,11 +475,17 @@ public class HomeController {
 	}	
 	
 	@Transactional
-	@RequestMapping(value = "/reserva", method = RequestMethod.POST)	
-	public String reserva(@RequestParam("capacidad") int cap, @RequestParam("fecha") String fecha, 
-			@RequestParam("hora") String hora, @RequestParam("oferta") long ofertaID,
-			@RequestParam("dondeEstoy") String pag, HttpSession session, Locale locale, Model model) {		
+	@ResponseBody
+	@RequestMapping(value = "/nuevaReserva", method = RequestMethod.POST)	
+	public ResponseEntity<String> nuevaReserva(
+			@RequestParam("capacidad") String cap, 
+			@RequestParam("fecha") String fecha, 
+			@RequestParam("hora") String hora, 
+			@RequestParam("oferta") long ofertaID,
+			HttpSession session, Locale locale, Model model) {
+		//@RequestParam("dondeEstoy") String pag, 
 		
+	
 		/*Cosas al hacer una reserva:
 		 *  - Generar codigo qr
 		 *	- Crearse un objeto reserva (el cual guarda el codigo qr) que se añade en Usuario y en Oferta
@@ -512,7 +514,7 @@ public class HomeController {
 		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
 					
 		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-		String qrInfo = "Este código QR es valido para que " + cap + " personas disfruten de la oferta " 
+		String qrInfo = "Este c�digo QR es valido para que " + cap + " personas disfruten de la oferta " 
 				+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
 				+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
 		
@@ -522,7 +524,7 @@ public class HomeController {
 		reserva.setCodigoQr(qrInfo);			
 		reserva.setUsuario(user);
 		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
+		reserva.setNumPersonas(Integer.parseInt(cap));
 		reserva.setfechaReserva(timestamp);	
 		reserva.setValidado(false);
 		
@@ -531,14 +533,14 @@ public class HomeController {
 		oferta.getReservas().add(reserva);		
 		
 		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
+		int nuevacap = oferta.getCapacidadActual() + Integer.parseInt(cap);
 		oferta.setCapacidadActual(nuevacap);
 		
 		entityManager.persist(reserva);
 		entityManager.persist(user);
 		entityManager.persist(oferta);
-		
-		return "redirect:" + pag;
+		return new ResponseEntity<String>("Reserva creada satisfactoriamente", HttpStatus.OK);
+		//return "redirect:" + pag;
 	}	
 	
 	@Transactional
@@ -918,9 +920,8 @@ public class HomeController {
 			@RequestParam("email") String email,
 			@RequestParam("tel") String telefono,
 			@RequestParam("Rol") String rol, HttpSession session, Model model){
-		
+
 		Usuario u;
-		logger.info("Se metio aqui OK");
 			
 		try{
 			u = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", nombre).getSingleResult();
@@ -933,19 +934,15 @@ public class HomeController {
 				rol = "user";
 			}
 			
-			u = creaUsuario(nombre, email, telefono, rol, password);
-			logger.info(Long.toString(u.getID()));
+			u = creaUsuario(nombre, email, telefono, rol, password);		
 			entityManager.persist(u);
 			u.setFoto(Long.toString(u.getID()) + ".jpg"); //poner el campo foto despues del persist porque sino sale mal el ID
 			entityManager.persist(u);
 			session.setAttribute("user", u);
 
-			logger.info("El usuario no existe");
-			
 			return new ResponseEntity<String>("Usuario creado satisfactoriamente", HttpStatus.OK);	
 		}
 		
-		logger.info("El usuario existia");
 		return new ResponseEntity<String>("Apodo ocupado, usuario no creado", HttpStatus.BAD_REQUEST);
 	}
 	

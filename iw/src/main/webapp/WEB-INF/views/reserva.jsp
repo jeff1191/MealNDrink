@@ -2,9 +2,39 @@
 <script type="text/javascript">
 	$(function() {
 		$("#botonReserva").click(function() {
-			alert("Se ha realizado la reserva");			
+			validacion();			
 		})
 	})	
+	function validacion() {
+		var val = validacionReserva();
+		
+		if (val === true) {
+			var cap = $("#reservas").val();
+			var date = $("#datepicker").val();
+			var hour = $("#timepicker").val();
+			var offer = $("#oferta").val();
+			//var where = $("#dondeEstoy").val();
+
+			$.ajax({
+				url : "nuevaReserva",
+				type : "POST",
+				data : {
+					capacidad : cap,
+					fecha : date,
+					hora : hour,
+					oferta : offer,
+					//dondeEstoy : where					
+				},
+				error : function() {
+					alert("Algun campo no se ha rellenado correctamente o ha surgido un problema con su reserva");
+				},
+				success : function() {
+					$("#formBook").submit();
+					location.href = "${prefix}/mealndrink/${paginaVuelta}";
+				}
+			})
+		}
+	};
 </script>
 <section id="about-us">
         <div class="container">
@@ -20,28 +50,31 @@
 				 	<img class="img-responsive" src="ofertasFoto?id=${infoOferta.ID}.jpg" alt="">				 		 
 				 </div>			
 				 <div class="col-md-6 col-sm-6" align="center">
-				 	<form class="form-horizontal" role="form" action="reserva" method="POST">	
+				 	<form id="formBook" class="form-horizontal" role="form" action="nuevaReserva" method="POST">	
 				 	<p class="lead"><b>Capacidad actual ${infoOferta.capacidadActual}/${infoOferta.capacidadTotal}</b></p>				 		  		
 						<div class="form-group">
 				        	<label class="control-label col-lg-4" for="reservas"> Comensales</label>
 				        	<div class="col-lg-6">
-				        		<input id="reservas" class="form-control" required="required" type="number" min=1 max="${infoOferta.capacidadTotal}" value="" name="capacidad" placeholder="¿Cuantos sois?"/>
+				        		<input id="reservas" name="reservas" class="form-control" required="required" 
+				        		type="number" min=1 max="${infoOferta.capacidadTotal}" value="" placeholder="¿Cuantos sois?"/>
 			            	</div>
 			            </div>			            
 			            <div class="form-group">
 				        	<label class="control-label col-lg-4" for="datepicker"> Fecha</label>
 				        	<div class="col-lg-6">
-								<input id=datepicker class="form-control" required="required" name="fecha" placeholder="Selecciona una fecha" value="" />	
+								<input id="datepicker" name="datepicker" class="form-control" required="required" 
+								placeholder="Selecciona una fecha" value="" />	
 							</div>									        	
 			            </div>				            
 			             <div class="form-group">
 				        	<label class="control-label col-lg-4" for="timepicker"> Hora</label>
 				        	<div class="col-lg-6">
-				        		<input id=timepicker class="form-control" required="required" type="text" name="hora" placeholder="Selecciona una hora" value="" />
+				        		<input id="timepicker" name="timepicker" class="form-control" required="required" 
+				        		type="text" placeholder="Selecciona una hora" value="" />
 				        	</div>						
 						</div>		
-							<input hidden="submit" name="oferta" value="${infoOferta.ID}" />
-							<input hidden="submit" name="dondeEstoy" value="${paginaVuelta}" />			
+							<input hidden="submit" id="oferta" name="oferta" value="${infoOferta.ID}" />
+							<input hidden="submit" id="dondeEstoy" name="dondeEstoy" value="${paginaVuelta}" />			
 					   <div class="form-group">
 					  	<button type="submit" class="btn btn-primary" value="Submit" id="botonReserva" name="botonReserva"> Reservar</button>	 								 								
 		         	   </div>
