@@ -3,6 +3,7 @@
         <div class="container">
             <div class="center">
                <h2>Últimas ofertas</h2>
+               <h3>Ofertas que han reservado otros usuarios este mes</h3>
             </div>
         
 			

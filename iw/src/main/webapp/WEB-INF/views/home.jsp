@@ -7,6 +7,7 @@
                 <li data-target="#main-slider" data-slide-to="2"></li>
                 <li data-target="#main-slider" data-slide-to="3"></li>
                 <li data-target="#main-slider" data-slide-to="4"></li>
+                <li data-target="#main-slider" data-slide-to="5"></li>
             </ol>
             <div class="carousel-inner">
 
@@ -27,7 +28,7 @@
                         <div class="row slide-margin">
                            
                                 <div class="carousel-content">
-                                    <h1 class="animation animated-item-1">Descubre nuevos lugares</h1>
+                                    <h1 class="animation animated-item-1"> <br/> Descubre nuevos lugares</h1>
                                 </div>								
                          
                         </div>
@@ -46,7 +47,7 @@
                     </div>
                 </div><!--/.item-->
                 
-                           <div class="item" style="background-image: url(${prefix}resources/img/slider/bg4.jpg)">
+                <div class="item" style="background-image: url(${prefix}resources/img/slider/bg4.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
                           
@@ -58,12 +59,27 @@
                     </div>
                 </div><!--/.item-->
                 
-                           <div class="item" style="background-image: url(${prefix}resources/img/slider/bg5.jpg)">
+                <div class="item" style="background-image: url(${prefix}resources/img/slider/bg5.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
                             
                                 <div class="carousel-content">
                                     <h1 class="animation animated-item-1">Cientos de ofertas y locales te estan esperando</h1>
+                                </div>								
+                        
+                        </div>
+                    </div>
+                </div><!--/.item-->
+                
+                 <div class="item" style="background-image: url(${prefix}resources/img/slider/bg6.jpg)">
+                    <div class="container">
+                        <div class="row slide-margin">
+                            
+                                <div class="carousel-content">
+                                    <h1 class="animation animated-item-1">Locales más populares</h1>
+                                    <c:forEach items="${popularLocals}" var="i">							
+						  				<h2 class="animation animated-item-1"><a href="comercio_externo?id=${i.ID}">${i.nombre}</a></h2>		
+									</c:forEach>
                                 </div>								
                         
                         </div>
@@ -84,6 +100,7 @@
         <div class="container">
             <div class="center">
                 <h2>Bienvenidos</h2>
+                <h3>Aqui puedes encontrar todas las ofertas disponibles</h3>
             </div>
 
 			<!-- borrar-->
@@ -123,132 +140,4 @@
         </div><!--/.container-->
     </section><!--/#recent-works-->
 
-
-    <section id="middle">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="skill">
-                        <h2>Locales más populares</h2>                       
-						<div class="list-group">
-						 <c:forEach items="${popularLocals}" var="i">							
-						  <a href="comercio_externo?id=${i.ID}" class="list-group-item">${i.nombre}</a>		
-						 <br>		
-						 </c:forEach>
-						</div>
-						
-                    </div>
-
-                </div><!--/.col-sm-6-->
-
-                <div class="col-sm-6">
-                    <div class="accordion">
-                        <h2>Ultimas reservas</h2>
-                        <div class="panel-group" id="accordion1">
-                        
-                         <c:forEach items="${lastBooks}" var="i">
-                          <div class="panel panel-default">
-                            <div class="panel-heading">
-                              <h3 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne1">
-                                En ${((i.oferta).local).nombre}  a las  ${i.fechaReserva}  
-                                  <i class="fa fa-angle-right pull-right"></i>
-                                </a>
-                              </h3>
-                            </div>
-                            <div id="collapseOne1" class="panel-collapse collapse">
-                              <div class="panel-body">
-                                  <div class="media accordion-inner">
-                                        <div class="pull-left">
-                                            <img class="img-responsive" src="ofertasFoto?id=${(i.oferta).ID}">
-                                        </div>
-                                        <div class="media-body">
-                                             <h4>${(i.oferta).nombre}</h4>
-                                             <p>${(i.oferta).descripcion}</p>
-                                        </div>
-                                  </div>
-                              </div>
-                            </div>
-                          </div>
-						</c:forEach>	
-							
-							
-                          <div class="panel panel-default">
-                            <div class="panel-heading">
-                              <h3 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo1">
-                                  Oferta #4 Restaurante Lorem ipsum
-                                  <i class="fa fa-angle-right pull-right"></i>
-                                </a>
-                              </h3>
-                            </div>
-                            <div id="collapseTwo1" class="panel-collapse collapse">
-                              <div class="panel-body">
-                                <div class="media accordion-inner">
-                                        <div class="pull-left">
-                                            <img class="img-responsive" src="${prefix}resources/img/ultimo2.png">
-                                        </div>
-                                        <div class="media-body">
-                                             <h4>Adipisicing elit</h4>
-                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
-                                        </div>
-                                  </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="panel panel-default">
-                            <div class="panel-heading">
-                              <h3 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseThree1">
-                                  Oferta #5 Restaurante Lorem ipsum
-                                  <i class="fa fa-angle-right pull-right"></i>
-                                </a>
-                              </h3>
-                            </div>
-                            <div id="collapseThree1" class="panel-collapse collapse">
-                              <div class="panel-body">
-                                <div class="media accordion-inner">
-                                        <div class="pull-left">
-                                            <img class="img-responsive" src="${prefix}resources/img/ultimo3.png">
-                                        </div>
-                                        <div class="media-body">
-                                             <h4>Adipisicing elit</h4>
-                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
-                                        </div>
-                                  </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="panel panel-default">
-                            <div class="panel-heading">
-                              <h3 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseFour1">
-                                  Oferta #1 Restaurante Lorem ipsum
-                                  <i class="fa fa-angle-right pull-right"></i>
-                                </a>
-                              </h3>
-                            </div>
-                            <div id="collapseFour1" class="panel-collapse collapse">
-                              <div class="panel-body">
-                                <div class="media accordion-inner">
-                                        <div class="pull-left">
-                                            <img class="img-responsive" src="${prefix}resources/img/ultimo4.png">
-                                        </div>
-                                        <div class="media-body">
-                                             <h4>Adipisicing elit</h4>
-                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
-                                        </div>
-                                  </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div><!--/#accordion1-->
-                    </div>
-                </div>
-
-            </div><!--/.row-->
-        </div><!--/.container-->
-    </section><!--/#middle-->
 <%@ include file="../fragments/footer.jspf" %>

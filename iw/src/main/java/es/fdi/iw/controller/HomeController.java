@@ -342,6 +342,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String empty(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -351,33 +352,27 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("pageTitle", "Bienvenido a MealNDrink");
+		model.addAttribute("pageTitle", "MealNDrink");
 		model.addAttribute("active", "home");
-		logger.info("Setting active tab: home");
-	
 		
-		List<Long> idsOffers = new ArrayList<Long>(); 
-		idsOffers.add((long) 8);
-		idsOffers.add((long) 5);
-		idsOffers.add((long) 7);
-		idsOffers.add((long) 2);
+		//Esto es para los locales mas populares
+		//La idea es que vea que locales son los que mas reservas tienen
+		//y le pase a la vista los cinco primeros
+		List<Oferta> aux = new ArrayList<Oferta>();
+		aux = entityManager.createNamedQuery("allOffers").getResultList();	
+		
+				
 		List<Long> idsLocals = new ArrayList<Long>();
 		idsLocals.add((long) 4);
 		idsLocals.add((long) 1);
 		idsLocals.add((long) 5);
 		idsLocals.add((long) 2);
 		idsLocals.add((long) 3);	
-		List<Long> idsBooks = new ArrayList<Long>(); 
-		idsBooks.add((long) 1);
-		idsBooks.add((long) 5);
-		idsBooks.add((long) 2);
-		idsBooks.add((long) 3);	
-		
+	
 		model.addAttribute("alltags", allTags);	
-		model.addAttribute("platos", entityManager.createNamedQuery("infoOffers").setParameter("idParam", idsOffers).getResultList());
+		model.addAttribute("platos", aux);		
 		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
-		model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
-		
+				
 		
 		return "home";
 	}	
@@ -851,15 +846,47 @@ public class HomeController {
 		return "administracion";
 	}	
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
 	@Transactional
 	public String ultimasOfertas(Locale locale, Model model) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "Ultimas ofertas");		
-				
+		model.addAttribute("pageTitle", "Ultimas ofertas");	
 		
-				
-		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
+		//La idea es traerte todas las reservas que se han hecho 
+		//desde el inicio de mes hasta el momento actual
+		
+		//Para delimitar las busquedas al mes actual
+		DateFormat dateFormatActualDay = new SimpleDateFormat("yyyy/MM/dd");		
+		DateFormat dateFormatActualHour = new SimpleDateFormat("hh:mm:ss");
+		Date dateActual = new Date();
+		Date hourActual = new Date();
+		String inifecha = ""; //inicio mes
+		String finfecha = ""; //fecha actual
+		List<String> aux = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(dateFormatActualDay.format(dateActual),"/");
+		while(tokens.hasMoreTokens()){			
+			aux.add(tokens.nextToken());					 
+		}			
+		inifecha += aux.get(0) + "-" + aux.get(1) + "-01"; 
+		finfecha += aux.get(0) + "-" + aux.get(1) + "-" + aux.get(2); // fecha actual		
+			
+		Timestamp beginLast = Timestamp.valueOf(inifecha + " " + "00:00:00.0");
+		Timestamp endLast = Timestamp.valueOf(finfecha + " " +  dateFormatActualHour.format(hourActual) + ".0");
+		
+		List<Reserva> temp = new ArrayList<Reserva>();
+		List<Oferta> lastOffers = new ArrayList<Oferta>();
+		
+		temp = entityManager.createNamedQuery("lastBooks")
+				.setParameter("inicioBusq", beginLast)
+				.setParameter("finBusq", endLast)
+				.getResultList();
+		
+		for(int i =0; i < temp.size(); i++){
+			lastOffers.add(entityManager.find(Oferta.class, temp.get(i).getOferta().getID()));
+		}
+		
+		model.addAttribute("platos", lastOffers);
 		model.addAttribute("alltags", allTags);
 		
 		return "ultimasOfertas";
@@ -871,7 +898,10 @@ public class HomeController {
 		model.addAttribute("active", "ofertasMes");		
 		model.addAttribute("pageTitle", "Ofertas del mes");	
 		
+		//Ofertas del mes: son aquellas que han superado la mitad de su capacidad
+		
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
+	
 		model.addAttribute("alltags", allTags);
 		
 		return "ofertasMes";
