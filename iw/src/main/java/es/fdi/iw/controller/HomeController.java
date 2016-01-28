@@ -358,10 +358,15 @@ public class HomeController {
 		//Esto es para los locales mas populares
 		//La idea es que vea que locales son los que mas reservas tienen
 		//y le pase a la vista los cinco primeros
-		List<Oferta> aux = new ArrayList<Oferta>();
-		aux = entityManager.createNamedQuery("allOffers").getResultList();	
+		List<Oferta> auxOffers = new ArrayList<Oferta>();
+		auxOffers = entityManager.createNamedQuery("allOffers").getResultList();	
 		
-				
+		//Para saber los locales mas populares se cogen los cinco que tengan mas comentarios
+		List<Local> auxLocals = new ArrayList<Local>();
+		auxLocals = entityManager.createNamedQuery("allLocals").getResultList();
+		//consulta sql... hacer un group by local en la tabla comentario
+		
+		
 		List<Long> idsLocals = new ArrayList<Long>();
 		idsLocals.add((long) 4);
 		idsLocals.add((long) 1);
@@ -370,7 +375,8 @@ public class HomeController {
 		idsLocals.add((long) 3);	
 	
 		model.addAttribute("alltags", allTags);	
-		model.addAttribute("platos", aux);		
+		model.addAttribute("platos", auxOffers);	
+		model.addAttribute("locales", auxLocals);
 		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
 				
 		
