@@ -538,11 +538,13 @@ public class HomeController {
 
 	@RequestMapping(value = "/detallesOferta", method = RequestMethod.GET)
 	@ResponseBody
-	public String detallesOferta(@RequestParam("id") long id) {
+	public String detallesOferta(@RequestParam("id") long id,
+								Model model) {
 		Oferta o = (Oferta)entityManager.find(Oferta.class, id);
 
 		String ret = "{nombre: " + "\""+o.getNombre()+ "\"" + ", id: " + o.getID() + "}";
 		System.err.println(ret);
+		model.addAttribute("modalEditarOferta", o);
 		return ret;
 		//return o;
 	}
@@ -639,8 +641,64 @@ public class HomeController {
         return "redirect:comercio_interno?id="+local.getID();
     }
 	@Transactional
-	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
+	@RequestMapping(value = "/editarOferta", method = RequestMethod.POST)
+	public String editarOferta(
+			@RequestParam("EditfileToUpload") MultipartFile photo,
+    		@RequestParam("id_local") long id,     		
+    		@RequestParam("editName") String nombreOferta, 
+    		@RequestParam("editFecha") String fecha,
+    		@RequestParam("editCap") int capacidad,
+    		@RequestParam("editDescription") String descripcion,
+    		@RequestParam("id_Editoffer") String idOffer, 
+    		Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+	/*
+		String fechatTimesStamp="";
+		int pos=2;
+		List<String> aux = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(fecha,"/");
+		while(tokens.hasMoreTokens()){			
+			aux.add(tokens.nextToken());
+		}
+		while(pos != -1){
+			fechatTimesStamp +=aux.get(pos);
+			if(pos != 0) fechatTimesStamp+= "-";
+			pos--;
+		}		
+		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");*/
+		Local local = entityManager.find(Local.class, id);
+		System.err.println("+"+idOffer);
+		Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
+		offer.setNombre(nombreOferta);
+		//offer.setFechaLimite(timestamp);
+		offer.setCapacidadTotal(capacidad);
+		offer.setDescripcion(descripcion);	
+		offer.setLocal(local);
+		offer.setOfertaMes(false);
+		local.getOfertas().add(offer);
+		entityManager.persist(offer);
+		entityManager.flush();
+        if (!photo.isEmpty()) {
+            try {
+                byte[] bytes = photo.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(
+                		new FileOutputStream(ContextInitializer.getFile(
+                				"ofertas", ""+offer.getID()+".jpg")));
+                stream.write(bytes);
+                stream.close();
+
+				entityManager.persist(offer);
+				entityManager.persist(local);		
+            } catch (Exception e) {
+            	return "redirect:comercio_interno?id="+local.getID();
+            }
+        }
+        return "redirect:comercio_interno?id="+local.getID();
+    }
 	
+	@Transactional
+	@RequestMapping(value = "/eliminarOferta", method = RequestMethod.POST)
 	public String eliminarOferta(@RequestParam("idOferta") long idOffer,Model model){
 			Oferta oferta= entityManager.find(Oferta.class, idOffer);
 			entityManager.remove(oferta);			

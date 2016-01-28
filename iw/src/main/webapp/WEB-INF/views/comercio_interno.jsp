@@ -23,24 +23,19 @@ function activaBotonAddOferta() {
 			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
 	});
 }
-function activaBotonEditarOferta() {
+function rellenarModalEditarOferta() {
 	var idOffer = $(this).attr("id").substring("edit_".length);
-	var datos2;
-	var datosO= datosOferta(idOffer, datos2);
-	//var datosO={nombre: "Copas a 4", id: 1}
-	alert(ojeto.nombre);
-	
-	//$('#Editname').val(datosO.nombre);
-	
+	var res = idOffer.split("/,");
+	$("#editName").attr("value" ,res[0]);
+	var fecha = res[1]; 
+	var posFe=fecha.split(" ");//quitamos la hora del timestamp
+	$("#editFecha" ).datepicker();
+	$("#editFecha").attr("value" ,posFe[0].replace(/-/gi,"/"));
+	$("#editCap").attr("value" ,res[2]);
+	$("#editDescription").attr("value" ,res[3]);
+	$("#id_Editoffer").attr("value" ,res[4]);	
 }
-function datosOferta(id, callback) {
-	return $.getJSON("detallesOferta?id=" + id, function(data) { 	
-		//var datos2 = data;
-	//	alert(data.nombre)
-		callback(data); 		
-	});
-}
-function rellenaDatosOferta() {
+function rellenaDatosEliminarOferta() {
 	var idOffer = $(this).attr("id").substring("del_".length); 
 	$("#idEliminar").attr("value" ,idOffer);
 }
@@ -80,8 +75,8 @@ function activaBotonAddTag() {
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
-	$("body").on("click", ".editarOferta", null, activaBotonEditarOferta);
-	$("body").on("click", ".rellenaDatos", null, rellenaDatosOferta);
+	$("body").on("click", ".rellenarEditarOferta", null, rellenarModalEditarOferta);
+	$("body").on("click", ".rellenaDatosEliminarOferta", null, rellenaDatosEliminarOferta);
 	$("body").on("click", ".rellenaDatosTags", null, rellenaDatosTags);
 	$("body").on("click", ".eliminaTag", null, activaBotonEliminacionTag);
 	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
@@ -145,9 +140,11 @@ $(function() {
 												</div>
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
-												<p>${i.descripcion}</p>											
-													<button type="submit" id="edit_${i.ID}" value="${i}" class="editarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-													<button id="del_${i.ID}" value="${i}"  class="rellenaDatos" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+													<p>${i.descripcion}</p>	
+													<p>Número de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
+													<p>${i.fechaLimite}</p>												
+													<button type="submit" id="edit_${i.nombre}/,${i.fechaLimite}/,${i.capacidadTotal}/,${i.descripcion}/,${i.ID}" value="${i}" class="rellenarEditarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+													<button id="del_${i.ID}" value="${i}"  class="rellenaDatosEliminarOferta" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												
 												</div>
 												</div>
@@ -184,7 +181,7 @@ $(function() {
 					               		</select>
 					               		</div>
 									        <div class="form-group">
-									     	<label for="datepicker"> Fecha: </label>									     
+									     	<label for="datepicker2"> Fecha: </label>									     
 												<input id=datepicker class="form-control" type="text" id="fecha" name="fecha" placeholder="Selecciona una fecha" value="" />	
 											</div>	
 										  <div class="form-group">
@@ -222,22 +219,23 @@ $(function() {
 								      </div>
 								      <div class="modal-body">
 										<form role="form" method="POST" enctype="multipart/form-data" action="editarOferta">
-										<input hidden="submit" name="id_local" value="${local.ID}" />
+										<input hidden="submit" id="id_local" name="id_local" value="${local.ID}" />
+										<input hidden="submit" id="id_Editoffer" name="id_Editoffer" />
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
-											<input type="text" class="form-control" name="Editname" id="Editname" placeholder="Introduzca el nombre">
+											<input type="text" class="form-control" value="" name="editName" id="editName" placeholder="Introduzca el nombre" >
 										  </div>
 										  <div class="form-group">
 											<label for="endTime">Fecha límite:</label>
-											<input type="time" class="form-control"  name="EditendTime" id="EditendTime" placeholder="Introduzca el dia límite">
+											<input class="form-control" type="text" id="editFecha" name="editFecha" placeholder="Selecciona una fecha" />	
 										  </div>
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" name="Editcap" id="Editcap" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="editCap" id="editCap" placeholder="Introduzca el numero máximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
 											<label for="descriptcion">Descripción:</label>
-											<input type="text" class="form-control" name="Editdescription" id="Editdescription" placeholder="Introduzca la descripción de la oferta">
+											<input type="text" class="form-control" name="editDescription" id="editDescription" placeholder="Introduzca la descripción de la oferta">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de la oferta:</label>
