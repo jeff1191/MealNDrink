@@ -13,13 +13,13 @@ public class Comentario {
 	private long ID;
 	private String texto;
 	private Timestamp fecha;
-	private Local comercio;
+	private Local local;
 	private Usuario cliente;
 	
-	public Comentario(String texto, Timestamp fecha,Local comercio,Usuario cliente){
+	public Comentario(String texto, Timestamp fecha,Local local,Usuario cliente){
 		this.texto=texto;
 		this.fecha=fecha;
-		this.comercio=comercio;
+		this.local=local;
 		this.cliente=cliente;
 	}
 	
@@ -51,10 +51,10 @@ public class Comentario {
 	
 	@ManyToOne(targetEntity=Local.class)
 	public Local getLocal() {
-		return comercio;
+		return local;
 	}
-	public void setLocal(Local comercio) {
-		this.comercio = comercio;
+	public void setLocal(Local local) {
+		this.local = local;
 	}
 	@ManyToOne(targetEntity=Usuario.class)
 	public Usuario getUsuario() {
