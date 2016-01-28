@@ -19,7 +19,9 @@ import javax.persistence.OneToMany;
 	@NamedQuery(name="allLocals", 
 			query="select o from Local o"),
 	@NamedQuery(name="infoLocals", 
-			query="select o from Local o where o.id in (:idParam)")
+			query="select o from Local o where o.id in (:idParam)"),
+	@NamedQuery(name="dameNombreLocal", 
+			query="select o.usuario from Local o where o.id = :idParam")
 })
 public class Local {
 	

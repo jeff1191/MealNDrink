@@ -1,6 +1,6 @@
 /*( "ID", "EMAIL", "FOTO", "PASSWORD", "NOMBRE", "ROL", "TELEFONO" )*/
-INSERT INTO USUARIO VALUES (1, 'seLoTraga@cuca.com', '$2a$10$KvdO.kOuL9JRSx4lASzm9e0sUxXQAlql7Kd4mA0ug.wiSlyMoy.zO', 'Jeff', 'admin', '974532165') /*admin*/
-INSERT INTO USUARIO VALUES (2, 'topeGuay@home.com',  '$2a$10$1s08.puvsNXIawmhuITYsOey8VwcMe7eSlVsFPZPDJPvlF55UccxO', 'Josemi', 'user','663219078') /*1234*/
+INSERT INTO USUARIO VALUES (2, 'seLoTraga@cuca.com', '$2a$10$KvdO.kOuL9JRSx4lASzm9e0sUxXQAlql7Kd4mA0ug.wiSlyMoy.zO', 'Josemi', 'user', '974532165') /*admin*/
+INSERT INTO USUARIO VALUES (1, 'topeGuay@home.com',  '$2a$10$1s08.puvsNXIawmhuITYsOey8VwcMe7eSlVsFPZPDJPvlF55UccxO','Jeff','admin','663219078') /*1234*/
 INSERT INTO USUARIO VALUES (3, 'loTengoTodoPapi@linux.com', '$2a$10$wEHh9dnWsbHhzMQ9i2mMQ.KDmBTG9FO6GGNztt/hNymW7iPCxfv9u', 'Dani', 'local', '974511165') /*pass*/
 INSERT INTO USUARIO VALUES (4, 'aPorEllo@chacho.com', '$2a$10$xUXi0fHaSQtPJ2UsNPjcfe1dg6hhfao5XUKxcIxbpywSoy63R2XoW', 'JuanLu', 'local', '974532177') /*5678*/
 INSERT INTO USUARIO VALUES (5, 'superIncreible@rubias.com', '$2a$10$G10MFSXIAnvGkXYBfFS16uhr8dcV3iH9ziCyZhnr7QiAx6ewGGjK.', 'Maria', 'local', '974532177') /*maria*/

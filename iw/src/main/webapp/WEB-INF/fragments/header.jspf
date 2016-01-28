@@ -59,6 +59,12 @@
 
 <script type="text/javascript">
 	//javascript aqui es solo de prueba BORRAR
+	$(document).keypress(function(e) {
+				if (e.which == 13 && ($("#login").is(":focus") || $("#pass").is(":focus"))) {
+					validacion();
+				}
+	})
+	
 	$(function() {
 		$("#iniciarsesion").click(function() {
 			validacion();
@@ -79,7 +85,7 @@
 			},
 			error : function() {
 				$("#pass").empty();
-				alert("El correo electrónico y la contraseña no coinciden.");
+				alert("El apodo y la contraseña no coinciden.");
 
 			},
 			success : function() {

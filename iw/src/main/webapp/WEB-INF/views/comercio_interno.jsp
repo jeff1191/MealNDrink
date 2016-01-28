@@ -52,9 +52,57 @@ function activaBotonEliminacionTag() {
 			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
 	});
 }
+
+function activaBotonValidarReserva(ob) {
+	
+	var nombre = ob;
+	var ok= false;
+	
+	$.ajax({
+		url : "${prefix}validarReserva",
+		type : "POST",
+		data : {
+			//id_reserva : nombre
+		},
+
+		success : function(data) {
+			
+			if(data === "ok"){
+				//$(â€˜#contenidoâ€™).fadeOut(1000);
+			//	var r = $("#r"+nombre);
+			//	r.remove();
+			//	$("#tabla2 tbody").append(r);
+				//$(â€˜#contenidoâ€™).fadeIn(1000);
+			//	ok = true;
+			
+				$("#tabla1").load('comercio_interno?id=${local.ID} div#tabla1');
+				$("#tabla2").load('comercio_interno?id=${local.ID} div#tabla2');
+			
+				
+				$(window).load(function(){
+					$('.qrcode').each(function(i, o) {
+			   	        $(o).qrcode({
+			   	            "render": "div",
+			   	            "size": 100,
+			   	            "color": "#3a3",
+			   	            "text": $(o).text()
+		   	     	    })
+		  	 		});
+				});
+				
+			} else if(data === "reserva_no_existe"){
+				location.href = "${prefix}/mealndrink";
+			} else if(data === "usuario_no_permitido"){
+				location.href = "${prefix}/mealndrink";
+			}
+		}
+	})
+}
+
 function rellenaDatosComentario() {
 	var nombreC = $(this).attr("id").substring("delComment_".length); 
 	$("#idEliminarComentario").attr("value" ,nombreC);
+
 }
 function activaBotonEliminacionComentario() {
 	var idComentario=$("#idEliminarComentario").attr("value");
@@ -72,6 +120,7 @@ function activaBotonAddTag() {
 			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
 	});
 }
+
 $(function() {
 	$("body").on("click", ".eliminaOferta", null, activaBotonEliminacionOferta);	
 	$("body").on("click", ".anyadirOferta", null, activaBotonAddOferta);
@@ -82,6 +131,29 @@ $(function() {
 	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 	$("body").on("click", ".anyadirTag", null, activaBotonAddTag);
+	$('.qrcode').each(function(i, o) {
+        $(o).qrcode({
+            "render": "div",
+            "size": 100,
+            "color": "#3a3",
+            "text": $(o).text()
+        })
+    });
+	$('.QRvalidar').each(function(i, o) {
+		//$("body").on("click", "#" + o.id , null, activaBotonValidarReserva(o.id));
+        $("#" + o.id).click( function(){
+			activaBotonValidarReserva(o.id);
+			/*$('.qrcode').each(function(i, o) {
+   	       		$(o).qrcode({
+	   	            "render": "div",
+	   	            "size": 100,
+	   	            "color": "#3a3",
+	   	            "text": $(o).text()
+   	         	})
+  	 		});*/
+     	});
+    
+	});
 })
 </script>
       
@@ -96,7 +168,7 @@ $(function() {
                         <div class="col-md-4 col-sm-4">							
                             <img src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
-							<h3>Dirección</h3>
+							<h3>DirecciÃ³n</h3>
 							<p>${local.direccion}</p>
 														
 							<h3>Horario</h3>
@@ -110,7 +182,7 @@ $(function() {
 							<p>${local.tags}</p>
 
                             <div>
-								<h3>Puntuación</h3>
+								<h3>PuntuaciÃ³n</h3>
 								<h2>${local.puntuacion}</h2>
 							</div>
                         </div>
@@ -129,7 +201,7 @@ $(function() {
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="ofertas">
 								 <div class="media">
-								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> Añadir nueva oferta</button>
+								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> AÃ±adir nueva oferta</button>
 								  	<br></br>
 								  </div>
 									  <div id="TodasOfertas" class="TodasOfertas">
@@ -141,7 +213,7 @@ $(function() {
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 													<p>${i.descripcion}</p>	
-													<p>Número de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
+													<p>NÃºmero de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
 													<p>${i.fechaLimite}</p>												
 													<button type="submit" id="edit_${i.nombre}/,${i.fechaLimite}/,${i.capacidadTotal}/,${i.descripcion}/,${i.ID}" value="${i}" class="rellenarEditarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 													<button id="del_${i.ID}" value="${i}"  class="rellenaDatosEliminarOferta" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
@@ -160,7 +232,7 @@ $(function() {
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        <h4 class="modal-title" id="addModalLabel"> Añadir una nueva oferta</h4>
+								        <h4 class="modal-title" id="addModalLabel"> AÃ±adir una nueva oferta</h4>
 								      </div>
 								      <div class="modal-body">
 										<form id="formAddOferta" role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
@@ -183,11 +255,11 @@ $(function() {
 											</div>	
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero mÃ¡ximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
-											<label for="descriptcion">Descripción:</label>
-											<input type="text" class="form-control" name="description" required="required" id="description" placeholder="Introduzca la descripción de la oferta">
+											<label for="descriptcion">DescripciÃ³n:</label>
+											<input type="text" class="form-control" name="description" required="required" id="description" placeholder="Introduzca la descripciÃ³n de la oferta">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de la oferta:</label>
@@ -223,16 +295,16 @@ $(function() {
 											<input type="text" class="form-control" value="" name="editName" id="editName" placeholder="Introduzca el nombre" >
 										  </div>
 										  <div class="form-group">
-											<label for="endTime">Fecha límite:</label>
+											<label for="endTime">Fecha lÃ­mite:</label>
 											<input class="form-control" type="text" id="editFecha" name="editFecha" placeholder="Selecciona una fecha" />	
 										  </div>
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" name="editCap" id="editCap" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="editCap" id="editCap" placeholder="Introduzca el numero mÃ¡ximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
-											<label for="descriptcion">Descripción:</label>
-											<input type="text" class="form-control" name="editDescription" id="editDescription" placeholder="Introduzca la descripción de la oferta">
+											<label for="descriptcion">DescripciÃ³n:</label>
+											<input type="text" class="form-control" name="editDescription" id="editDescription" placeholder="Introduzca la descripciÃ³n de la oferta">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de la oferta:</label>
@@ -263,7 +335,7 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>¿Está seguro que quiere eliminar esta oferta?</p>
+											<p>Â¿EstÃ¡ seguro que quiere eliminar esta oferta?</p>
 												<div class="modal-footer">
 													<button id="idEliminar" type="submit" class="eliminaOferta" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
 													<button type="submit" data-dismiss="modal">Cancel</button>
@@ -281,57 +353,58 @@ $(function() {
 									  <div class="col-md-6">
 									  	<b><big>Pendientes</big></b>
 									  	<br></br>
-										<table class="table table-bordered">
-										    <thead>
-										        <tr>
-										            <th>QR</th>
-										            <th>Imagen</th>
-										            <th>Información</th>										            								            
-										        </tr>
-										    </thead>
-										    <tbody>
-										        <tr>
-										            <td><h4 class="media-heading">#1</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            									       
-										        </tr>
-										        <tr>
-										            <td><h4 class="media-heading">#2</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            
-										        </tr>
-										        <tr>									        	
-										            <td><h4 class="media-heading">#3</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-													<td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>
-										        </tr>
-										    </tbody>
-										</table>
+									  	<div class="tabla1" id="tabla1">
+											<table class="table table-bordered">
+											    <thead>
+											        <tr>
+											        	<th>Oferta</th>
+											            <th>QR</th>
+											        </tr>
+											    </thead>
+											    <tbody>
+											    	<c:forEach items="${local.ofertas}" var="i">
+											    	 	<c:forEach items="${i.reservas}" var="j">
+												    		<c:if test="${j.validado == false}">
+													    		<tr id="r${j.ID}">
+														            <td><h4 class="media-heading">${i.nombre}</h4>
+	<%-- 														            <button id="ValRes_${j.ID}" value="${j.ID}"  class="ValRes" data-toggle="modal" data-target="#ModalValRes" ><span class="glyphicon glyphicon-ok"></span> Validar</button>	 --%>
+															            <button id="valR_${j.ID}" name="valR_${j.ID}" type="submit" class="QRvalidar"><span class="glyphicon glyphicon-ok"></span> Validar</button>
+														            </td>
+														            <td><div class="qrcode">${j.codigoQr}</div></td>		            									       
+														        </tr>	
+															</c:if>
+									$(window).load(function(){			    	</c:forEach>
+											   		</c:forEach>
+											    </tbody>
+											</table>
+										</div>
 									  </div>
+									  
 									  <div class="col-md-6">
 									  	<b><big>Validados</big></b>
 									  	<br></br>
-									  	<table class="table table-bordered">
-										    <thead>
-										        <tr>
-										            <th>QR</th>
-										            <th>Imagen</th>
-										            <th>Información</th>										            								            
-										        </tr>
-										    </thead>
-										    <tbody>
-										         <tr>
-										            <td><h4 class="media-heading">#4</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            									       
-										        </tr>
-										        <tr>
-										            <td><h4 class="media-heading">#5</h4></td>
-										            <td><img class="media-object" src="${prefix}resources/img/qr.png"></td>
-										            <td><p>Cras sit amet nibh libero. Nulla vel metus scelerisque ante sollicitudin commodo.</p></td>									            
-										        </tr>
-										    </tbody>
-										</table>								  
+									  	<div class="tabla2" id="tabla2">
+										  	<table class="table table-bordered">
+											    <thead>
+											        <tr>
+											            <th>Oferta</th>
+											            <th>QR</th>
+											        </tr>
+											    </thead>
+											    <tbody>
+											    	<c:forEach items="${local.ofertas}" var="i">
+											    	 	<c:forEach items="${i.reservas}" var="j">
+												    		<c:if test="${j.validado == true}">
+													    		<tr>
+														            <td><h4 class="media-heading">${i.nombre}</h4></td>
+																	<td><div class="qrcode">${j.codigoQr}</div></td>
+														        </tr>	
+															</c:if>
+												    	</c:forEach>
+											   		</c:forEach>
+											    </tbody>
+											</table>
+										</div>								  
 									  </div>
 									</div>	
 								</div>
@@ -371,7 +444,7 @@ $(function() {
 											<input type="text" class="form-control" id="editHorarioLocal" required="required" name="editHorarioLocal" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
-											<label for="dir">Dirección:</label>
+											<label for="dir">DirecciÃ³n:</label>
 											<input type="text" class="form-control" id="editDirLocal" required="required" name="editDirLocal" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
@@ -379,7 +452,7 @@ $(function() {
 											<input type="email" class="form-control" id="editEmailLocal" required="required"  name="editEmailLocal" value="${local.email}">
 										  </div>
 										  <div class="form-group">
-											<label for="tel">Teléfono:</label>
+											<label for="tel">TelÃ©fono:</label>
 											<input type="tel" class="form-control" id="editTelLocal" required="required"  name="editTelLocal" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
@@ -392,7 +465,7 @@ $(function() {
 									</form>			
 								</div>
 								<div class="tab-pane fade" id="tags"> <!--tags-->
-									<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddTag"><span class="glyphicon glyphicon-plus"></span> Añadir un nuevo tag</button>
+									<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddTag"><span class="glyphicon glyphicon-plus"></span> AÃ±adir un nuevo tag</button>
 								  	<br></br>								
 									<div id="TodosTags" class="TodosTags">	
 										<c:forEach items="${alltagsLocal}" var="i">
@@ -409,7 +482,7 @@ $(function() {
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo tag</h4>
+								        <h4 class="modal-title" id="myModalLabel"> AÃ±adir un nuevo tag</h4>
 								      </div>
 										
 								      <div class="modal-body">
@@ -445,7 +518,7 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>¿Está seguro que quiere eliminar este tag?</p>
+											<p>Â¿EstÃ¡ seguro que quiere eliminar este tag?</p>
 												<div class="modal-footer">
 													<button id="idEliminarTags" value ="" type="submit" class="eliminaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
 													<button type="submit" data-dismiss="modal">Cancel</button>
@@ -469,7 +542,7 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>¿Está seguro que quiere eliminar este comentario?</p>
+											<p>Â¿EstÃ¡ seguro que quiere eliminar este comentario?</p>
 												<div class="modal-footer">
 													<button id="idEliminarComentario" value ="" type="submit" class="eliminaComentario" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
 													<button type="submit" data-dismiss="modal">Cancel</button>

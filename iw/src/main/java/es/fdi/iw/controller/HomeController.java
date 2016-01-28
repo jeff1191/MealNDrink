@@ -104,16 +104,16 @@ public class HomeController {
 					getTokenForSession(session);
 				} else {
 					logger.info("pass was NOT valid");
-					model.addAttribute("loginError", "error en usuario o contrasenya");
-					return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
+					model.addAttribute("loginError", "error en usuario o contraseña");
+					return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
 				}
 			} catch (NoResultException nre) {
-				return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
 			}
 		}
 
 		// redirects to view from which login was requested
-		return new ResponseEntity<String>("Inicio de sesion correcto", HttpStatus.OK);
+		return new ResponseEntity<String>("Inicio de sesión correcto", HttpStatus.OK);
 	}
 		
 	
@@ -483,7 +483,7 @@ public class HomeController {
 			model.addAttribute("fechaActual", dateFormatActualDay.format(dateActual));
 			model.addAttribute("fechaLimite", dateFormatLimitDay.format(dateLimit));			
 			model.addAttribute("infoOferta", aux);
-			model.addAttribute("paginaVuelta", pag);			
+			model.addAttribute("paginaVuelta", pag);
 			model.addAttribute("pageTitle", "Reserva");
 		} catch (NoResultException nre) {
 			logger.error("No existe esa oferta: {}", id, nre);
@@ -658,7 +658,7 @@ public class HomeController {
 		entityManager.persist(offer);
 		entityManager.flush();
         if (!photo.isEmpty()) {
-            try {
+            try {            	
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(
                 		new FileOutputStream(ContextInitializer.getFile(
@@ -677,7 +677,7 @@ public class HomeController {
     	    	BufferedOutputStream stream = null;
 				try {
 					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("ofertas", ""+offer.getID()+".jpg")));
+							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -867,6 +867,7 @@ public class HomeController {
             	e.getMessage();
             }
 		}
+		
 		if(pagina.equalsIgnoreCase("comercio_interno"))
 			return "redirect:"+pagina+"?id="+id;
 		else
@@ -930,44 +931,137 @@ public class HomeController {
     }
 	
 	@Transactional
+	@ResponseBody
 	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
-	public String editarUsuario(@RequestParam("fileToUpload") MultipartFile photo,
-    		@RequestParam("id_usuario") long id,
-    		@RequestParam("editName") String nombreUsuario,
-    		@RequestParam("editPwd") String pass,
-    		@RequestParam("editEmail") String email,
-    		@RequestParam("editTel") String telefono,
-    		@RequestParam("redireccion")String pagina, 
-    		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
-		Usuario edit= entityManager.find(Usuario.class, id);
+	public ResponseEntity<String> editarUsuario(@RequestParam("editId_usuario") long id, @RequestParam("editNameUser") String nombreUsuario,@RequestParam("editPwd") String pass
+    		, @RequestParam("editEmail") String email,@RequestParam("editTel") String telefono,@RequestParam("editRedireccion")String pagina, 
+    		 Model model, HttpSession session){
+
+
+		int cambio = -1;
+		String res;
 		
-		if(!pass.equalsIgnoreCase("*****")){ //si ha cambiado
-			edit.setHashedAndSalted(pass);
+		Usuario edit= entityManager.find(Usuario.class, id);
+		Usuario u = (Usuario)session.getAttribute("user");
+
+		
+		if(id == u.getID() || u.getRol().equals("admin")){
+			cambio = comprobarCampos(edit, nombreUsuario, pass, email, telefono);
+			
+			if((andLogica(1, cambio, 1000000001) == false) && (andLogica(9, cambio, 1000100001) == true)) //1er and es si el valor es erroneo - 2do campo si se ha cambiado el valor
+				edit.setNombre(nombreUsuario);
+			if((andLogica(2, cambio, 1000000010) == false) && (andLogica(10, cambio, 1001000010) == true))
+				edit.setHashedAndSalted(edit.generateHashedAndSalted(pass));
+			if((andLogica(3, cambio, 1000000100) == false) && (andLogica(11, cambio, 1010000100) == true))
+				edit.setEmail(email);
+			if((andLogica(4, cambio, 1000001000) == false) && (andLogica(12, cambio, 1100001000) == true))
+				edit.setTelefono(telefono);
+			/*if(andLogica(8, cambio, 1000010000))
+				edit.setFoto(photo.getOriginalFilename());*/
 		}
-		edit.setNombre(nombreUsuario);
-		edit.setEmail(email);
-		edit.setTelefono(telefono);
-		entityManager.persist(edit);
-		entityManager.flush();
-        if (!photo.isEmpty()) {
-            try {
-                byte[] bytes = photo.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(
-                		new FileOutputStream(ContextInitializer.getFile(
-                				"usuarios", edit.getID()+".jpg")));
-                stream.write(bytes);
-                stream.close();		
-               
-            } catch (Exception e) {
-            	e.getMessage();
-            }
-        }		
-		if(pagina.equalsIgnoreCase("usuario"))
-			return "redirect:usuario?id="+id;
-		else
-			return "redirect:administracion";	
+		
+		res = Integer.toString(cambio);
+		
+		return new ResponseEntity<String>(res, HttpStatus.OK);
+		
+			
+	}
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value = "/editarUsuarioFoto", method = RequestMethod.POST)
+	public ResponseEntity<String> editarUsuario(@RequestParam("editFileToUpload") MultipartFile photo, @RequestParam("editId_usuario") long id, Model model, HttpSession session){
+
+		Usuario edit= entityManager.find(Usuario.class, id);
+		Usuario u = (Usuario)session.getAttribute("user");
+		
+		
+		if(!photo.isEmpty()){
+			//edit.setFoto(photo.getOriginalFilename());
+		}
+		
+		return new ResponseEntity<String>("MEC", HttpStatus.OK);
+		
+			
+	}
+	
+	private boolean andLogica(int pos, int num1, int num2){
+		boolean res = true;
+		String op;
+		int suma;
+		char valor;
+		
+		if(pos < 1 || pos > 9){
+			res = false;
+		}
+		else{
+			suma = num1 + num2;
+			op = Integer.toString(suma);
+			
+			valor = op.charAt(pos);
+			
+			if(valor == '0'){  // 0 and 0 -> 0
+				res = false;
+			}
+			else if(valor == '1'){  // 0 and 1 -> 0
+				res = false;
+			}
+			else if(valor == '2'){  // 1 and 1 -> 1
+				res = true;
+			}
+			
+		}
+		
+		return res;
+	}
+	
+	int comprobarCampos(Usuario sesion, String nombre, String contra, String email, String telef){
+		int camposModificados = 1000000000; //1-ErrorNombre-ErrorContra-ErrorEmail-ErrorTelef---ModificadoNombre-ModificadoContra-ModificadoEmail-ModificadoTelef-ModificadoFoto
+		             //ejemplo  1100110110    1-    1      -      0    -    0     -   1      ---   1            -     0          -    1          -      1        -     0   
+		if(!nombre.equals(sesion.getNombre())){
+			if(nombre.length() < 4 || nombre.length() > 12){
+				camposModificados += 100000;
+			}
+			else{
+				camposModificados += 1; 
+			}
+		}
+		
+		if(contra != ""){
+			if(contra.length() < 6 || contra.length() > 12){
+				camposModificados += 1000000;
+			}
+			else{
+				camposModificados += 10;
+			}
+		}
+		
+		if(!email.equalsIgnoreCase(sesion.getEmail())){
+			String patron = new String("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+		            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+			if (!email.matches(patron)) {
+				camposModificados += 10000000;
+			}
+			else{
+				camposModificados += 100;
+			}
+		}
+		
+		if(!telef.equals(sesion.getTelefono())){
+			String patron = new String("^[0-9]{9}$");
+			if( !telef.matches(patron)){
+				camposModificados += 100000000;
+			}
+			else{
+				camposModificados += 1000;
+			}
+		}
+		
+		/*if(!photo.isEmpty()){
+			camposModificados += 10000;
+		}*/
+		
+		return camposModificados;
 	}
 	
 	@Transactional
