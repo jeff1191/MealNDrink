@@ -7,6 +7,7 @@
                 <li data-target="#main-slider" data-slide-to="2"></li>
                 <li data-target="#main-slider" data-slide-to="3"></li>
                 <li data-target="#main-slider" data-slide-to="4"></li>
+                <li data-target="#main-slider" data-slide-to="5"></li>
             </ol>
             <div class="carousel-inner">
 
@@ -27,7 +28,7 @@
                         <div class="row slide-margin">
                            
                                 <div class="carousel-content">
-                                    <h1 class="animation animated-item-1">Descubre nuevos lugares</h1>
+                                    <h1 class="animation animated-item-1"> <br/> Descubre nuevos lugares</h1>
                                 </div>								
                          
                         </div>
@@ -46,7 +47,7 @@
                     </div>
                 </div><!--/.item-->
                 
-                           <div class="item" style="background-image: url(${prefix}resources/img/slider/bg4.jpg)">
+                <div class="item" style="background-image: url(${prefix}resources/img/slider/bg4.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
                           
@@ -58,12 +59,27 @@
                     </div>
                 </div><!--/.item-->
                 
-                           <div class="item" style="background-image: url(${prefix}resources/img/slider/bg5.jpg)">
+                <div class="item" style="background-image: url(${prefix}resources/img/slider/bg5.jpg)">
                     <div class="container">
                         <div class="row slide-margin">
                             
                                 <div class="carousel-content">
                                     <h1 class="animation animated-item-1">Cientos de ofertas y locales te estan esperando</h1>
+                                </div>								
+                        
+                        </div>
+                    </div>
+                </div><!--/.item-->
+                
+                 <div class="item" style="background-image: url(${prefix}resources/img/slider/bg6.jpg)">
+                    <div class="container">
+                        <div class="row slide-margin">
+                            
+                                <div class="carousel-content">
+                                    <h1 class="animation animated-item-1">Locales más populares</h1>
+                                    <c:forEach items="${popularLocals}" var="i">							
+						  				<h2 class="animation animated-item-1"><a href="comercio_externo?id=${i.ID}">${i.nombre}</a></h2>		
+									</c:forEach>
                                 </div>								
                         
                         </div>
@@ -84,6 +100,7 @@
         <div class="container">
             <div class="center">
                 <h2>Bienvenidos</h2>
+                <h3>Aqui puedes encontrar todas las ofertas disponibles</h3>
             </div>
 
 			<!-- borrar-->
@@ -170,7 +187,7 @@
                               <div class="panel-body">
                                   <div class="media accordion-inner">
                                         <div class="pull-left">
-                                            <img class="img-responsive" src="${prefix}resources/img/database/offers/toLocals/${(i.oferta).ID}.jpg">
+                                            <img class="img-responsive" src="${prefix}resources/img/database/offers/toLocals/${(i.oferta).foto}">
                                         </div>
                                         <div class="media-body">
                                              <h4>${(i.oferta).nombre}</h4>

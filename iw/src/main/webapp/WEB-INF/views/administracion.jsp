@@ -255,10 +255,6 @@ $(function() {
 							</div>
 							</c:forEach>
 						</div>	
-						
-						<br></br>
-						<button type="submit" class="btn btn-default">Anterior</button>
-						<button type="submit" class="btn btn-default">Siguiente</button>
 					</div>
         				<!-- Modal Add Local-->
 						<div class="modal fade" id="ModalAddLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">

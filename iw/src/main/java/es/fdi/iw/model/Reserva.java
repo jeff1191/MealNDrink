@@ -6,12 +6,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 
 @Entity
-@NamedQuery(name="infoBooks", 
-	query="select o from Reserva o where o.id in (:idParam)")
+@NamedQueries({
+	@NamedQuery(name="infoBooks", 
+		query="select o from Reserva o where o.id in (:idParam)"),
+	@NamedQuery(name="lastBooks", 
+		query="select o from Reserva o where o.fechaReserva >= (:inicioBusq) and o.fechaReserva <= (:finBusq)")
+})
 
 public class Reserva {
 

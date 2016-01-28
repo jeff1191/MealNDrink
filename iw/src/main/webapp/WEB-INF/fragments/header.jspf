@@ -43,6 +43,7 @@
 <link href="${prefix}resources/css/jquery-ui.css" rel="stylesheet">
 <script src="${prefix}resources/js/jquery.ui.datepicker-es.js"></script>
 <script src="${prefix}resources/js/validacionFormReg.js"></script>
+<script src="${prefix}resources/js/validacionFormBook.js"></script>
 <script src="${prefix}resources/js/jquery.qrcode-0.12.0.js"></script>
 
 
@@ -93,39 +94,7 @@
 </head>
 <body>
 	<header id="header">
-		<div class="top-bar">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-6 col-xs-4">
-						<div class="top-number">
-							<p>
-								<i class="fa fa-phone-square"></i> +0123 456 70 90
-							</p>
-						</div>
-					</div>
-					<div class="col-sm-6 col-xs-8">
-						<div class="social">
-							<ul class="social-share">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-								<li><a href="#"><i class="fa fa-skype"></i></a></li>
-							</ul>
-							<div class="search">
-								<form role="form">
-									<input type="text" class="search-form" autocomplete="off"
-										placeholder="Search"> <i class="fa fa-search"></i>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--/.container-->
-		</div>
-		<!--/.top-bar-->
-
+	
 		<nav class="navbar navbar-inverse" role="banner">
 			<div class="container">
 				<div class="navbar-header">
@@ -148,7 +117,7 @@
 							href="ultimasOfertas">Últimas ofertas</a></li>
 						<li class="${active eq 'acercaDe'?'active':''}"><a
 							href="acercaDe">Acerca de</a></li>
-
+						
 						<c:choose>
 							<c:when test="${not empty user}">
 
@@ -174,6 +143,8 @@
 										</c:choose>
 										<li><a href="logout">Cerrar sesión</a></li>
 									</ul></li>
+
+
 
 							</c:when>
 							<c:otherwise>
@@ -201,29 +172,36 @@
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel">Iniciar sesión</h4>
+						<h4 class="modal-title" id="myModalLabel">Hola!</h4>
 					</div>
 					<div class="modal-body">
-						<div class="form-group">
-							<label for="login"> Usuario</label> <input type="text"
-								class="form-control" id="login" name="login"
-								placeholder="Nombre de usuario">
-						</div>
-						<div class="form-group">
-							<label for="password"> Contraseña</label> <input type="password"
-								class="form-control" id="pass" name="pass"
-								placeholder="Contraseña">
-						</div>
-						<div class="checkbox">
-
-							<button type="submit" class="btn btn-primary" id="iniciarsesion"
-								name="iniciarsesion">Iniciar sesión</button>
-
-						</div>
-
-					</div>
-					<div class="modal-footer">
-						<a href="registrarse">Registrarse</a>
+						<div class="row">
+							<div class="col-md-6">								
+								<br>
+								<div class="form-group">
+									<label for="login"> Usuario</label> <input type="text"
+										class="form-control" id="login" name="login"
+										placeholder="Nombre de usuario">
+								</div>
+								<div class="form-group">
+									<label for="password"> Contraseña</label> <input type="password"
+										class="form-control" id="pass" name="pass"
+										placeholder="Contraseña">
+								</div>
+								<br>
+								<div class="checkbox">	
+									<button type="submit" class="btn btn-primary" id="iniciarsesion"
+										name="iniciarsesion">Iniciar sesión</button>
+								</div>						
+							</div>
+							<div class="col-md-6">	
+								<br>
+								<h5>Si aun no tiene cuenta puedes 
+								registrarse ahora mismo, rapidamente y de forma
+								totalmente gratuita</h5>						
+								<a class="btn btn-default" href="registrarse">Registrarse</a>
+							</div>						
+						</div>					
 					</div>
 				</div>
 			</div>

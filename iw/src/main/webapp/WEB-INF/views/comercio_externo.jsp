@@ -38,7 +38,7 @@
 
 
 				<div class="tab-content">
-				  <div class="tab-pane fade in active" id="ofertas">
+				  <div class="tab-pane fade in active" id="ofertas">				  
 				    <c:forEach items="${infoLocal.ofertas}" var="i">
 						<div class="media">
 							<div class="pull-left">
@@ -52,11 +52,14 @@
 					</c:forEach>
 					
 					<br></br>
-					<button type="submit" class="btn btn-default">Anterior</button>
-					<button type="submit" class="btn btn-default">Siguiente</button>
+				
 				   </div>
 
 				   <div class="tab-pane fade" id="opiniones">
+				    <div class="media">
+				  		<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddComment"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo comentario</button>
+				  		<br></br>
+				    </div>
 				    <c:forEach items="${infoLocal.comentarios}" var="i">
 					<div class="media">
 						<div class="pull-left">
@@ -69,9 +72,33 @@
 					</div>
 					</c:forEach>				
 					<br></br>
-					<button type="submit" class="btn btn-default">Anterior</button>
-					<button type="submit" class="btn btn-default">Siguiente</button>
+					
 				</div>
+						<!-- Modal Add Comment-->
+								<div class="modal fade" id="ModalAddComment" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+								  <div class="modal-dialog modal-sm" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        <h4 class="modal-title" id="addModalLabel"> Añadir un nuevo comentario</h4>
+								      </div>
+								      <div class="modal-body">
+										<form id="formAddComment" role="form" method="POST" enctype="multipart/form-data" action="nuevoComentario">
+										<input hidden="submit" name="idLocal" value="${infoLocal.ID}" />
+										  <div class="form-group">											
+											<textarea style="resize:none" name="comment" id="comment" cols="60" rows="7" placeholder="Introduzca su comentario" form="formAddComment" value= ""></textarea>
+										  </div>									
+											<div class="modal-footer">						      	 
+											  	<button type="submit" class="btn" value="Submit"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+												<button type="submit" class="btn" data-dismiss="modal"><span class="glyphicon glyphicon-trash"></span> Descartar</button>
+									     	</div>
+										</form>							
+								      </div>
+
+								    </div>
+								  </div>
+								</div>     
+								<!-- End Modal Add Comment-->
                         </div>
                     </div><!--/.col-md-4-->
 

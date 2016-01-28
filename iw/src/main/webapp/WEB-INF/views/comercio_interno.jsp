@@ -148,10 +148,7 @@ $(function() {
 												
 												</div>
 												</div>
-											</c:forEach>	
-											<br></br>
-											<button type="submit" class="btn btn-default">Anterior</button>
-											<button type="submit" class="btn btn-default">Siguiente</button>						
+											</c:forEach>																		
 										</div>
 									<br></br>
 									
@@ -336,10 +333,7 @@ $(function() {
 										    </tbody>
 										</table>								  
 									  </div>
-									</div>																		
-									<br></br>									
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
+									</div>	
 								</div>
 								
 								<div class="tab-pane fade" id="opiniones">
@@ -361,10 +355,6 @@ $(function() {
 									</c:forEach>
 									
 									</div>
-									
-									<br></br>
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
 									
 								</div>
 								

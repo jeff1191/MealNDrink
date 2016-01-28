@@ -20,16 +20,11 @@ import javax.persistence.OneToMany;
 	@NamedQuery(name="allOffers", 
 			query="select o from Oferta o"),
 	@NamedQuery(name="infoOffers", 
-			query="select o from Oferta o where o.id in (:idParam)"),
+			query="select o from Oferta o where o.id in (:idParam)"),	
 	@NamedQuery(name="monthlySpecials", 
-			query="select o from Oferta o where o.ofertaMes is true")
+			query="select o from Oferta o where o.capacidadActual >= o.capacidadTotal/2")
 })
-/*
-@NamedQueries({
-	@NamedQuery(name="allOffers", query="select o from Oferta o"),
-	@NamedQuery(name="offersByTag", query="select o from Oferta o where o.tags.name=:id.name")
-})
-*/
+
 public class Oferta {
 	
 	private long ID;
@@ -120,7 +115,7 @@ public class Oferta {
 	public void setCapacidadTotal(int capacidadTotal) {
 		this.capacidadTotal = capacidadTotal;
 	}
-	@OneToMany(targetEntity=Reserva.class, cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Reserva.class, cascade = CascadeType.ALL)
 	@JoinColumn(name="oferta")
 	public List<Reserva> getReservas() {
 		return reservas;

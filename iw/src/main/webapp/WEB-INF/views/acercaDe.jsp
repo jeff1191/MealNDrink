@@ -11,7 +11,7 @@
 			<div class="team">
 				<div class="center">
 					<h2>Equipo de MealNDrink</h2>
-					<p class="lead">Integrado por estudiantes del grado de ingeniera informatica y del software <br>
+					<p class="lead">Integrado por estudiantes del grado de Ingeniera Informatica e Ingenieria del Software <br>
 									 Asesorados y ayudados por el profesor Manuel Freire</p>
 				</div>
 

@@ -3,6 +3,7 @@
         <div class="container">
             <div class="center">
                <h2>Últimas ofertas</h2>
+               <h3>Ofertas que han reservado otros usuarios este mes</h3>
             </div>
         
 			
@@ -28,7 +29,7 @@
 	                                <p>${i.descripcion}</p>	
 							<c:choose>
 									<c:when test="${not empty user}">	
-									<a class="preview" href="/iw/reserva?id=${i.ID}&dondeEstoy=ultimasOfertas">
+									<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=ultimasOfertas">
 										<i class="glyphicon glyphicon-cutlery"></i> Reservar
 									</a>	
 									</c:when>		
@@ -38,7 +39,7 @@
 									</a>
 									</c:otherwise>
 							</c:choose>
-									<a class="preview" href="/iw/comercio_externo?id=${(i.local).ID}">
+									<a class="preview" href="comercio_externo?id=${(i.local).ID}">
 										<i class="fa fa-eye"></i> Ver restaurante
 									</a>	
 								</div> 

@@ -106,7 +106,7 @@ public class Usuario {
 		return telefono;
 	}
 	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+		this.telefono = telefono;	
 	}
 	public String getEmail() {
 		return email;
@@ -134,7 +134,7 @@ public class Usuario {
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
-	@OneToMany(targetEntity=Reserva.class, cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Reserva.class, cascade = CascadeType.ALL)
 	@JoinColumn(name="usuario")
 	public List<Reserva> getReservas() {
 		return reservas;

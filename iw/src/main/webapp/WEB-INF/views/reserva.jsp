@@ -10,32 +10,36 @@
 			</div>
 			<div class="row">
 				 <div class="col-md-6 col-sm-6" align="center">				 	
-				 	<img class="img-responsive" src="${prefix}resources/img/database/offers/${infoOferta.ID}.jpg" alt="">				 		 
+				 	<img class="img-responsive" src="ofertasFoto?id=${infoOferta.ID}.jpg" alt="">				 		 
 				 </div>			
 				 <div class="col-md-6 col-sm-6" align="center">
-				 	<form class="form-horizontal" role="form" action="/iw/${paginaVuelta}" method="POST">	
+				 	<form id="formBook" class="form-horizontal" role="form" action="nuevaReserva" method="POST">	
 				 	<p class="lead"><b>Capacidad actual ${infoOferta.capacidadActual}/${infoOferta.capacidadTotal}</b></p>				 		  		
 						<div class="form-group">
 				        	<label class="control-label col-lg-4" for="reservas"> Comensales</label>
 				        	<div class="col-lg-6">
-				        		<input id="reservas" class="form-control" type="number" min=1 max="${infoOferta.capacidadTotal}" value="" name="capacidad" placeholder="¿Cuantos sois?"/>
+				        		<input id="reservas" name="reservas" class="form-control" required="required" 
+				        		type="number" min=1 max="${infoOferta.capacidadTotal}" value="" placeholder="¿Cuantos sois?"/>
 			            	</div>
 			            </div>			            
 			            <div class="form-group">
 				        	<label class="control-label col-lg-4" for="datepicker"> Fecha</label>
 				        	<div class="col-lg-6">
-								<input id=datepicker class="form-control" type="text" name="fecha" placeholder="Selecciona una fecha" value="" />	
+								<input id="datepicker" name="datepicker" class="form-control" required="required" 
+								placeholder="Selecciona una fecha" value="" />	
 							</div>									        	
 			            </div>				            
 			             <div class="form-group">
 				        	<label class="control-label col-lg-4" for="timepicker"> Hora</label>
 				        	<div class="col-lg-6">
-				        		<input id=timepicker class="form-control" type="text" name="hora" placeholder="Selecciona una hora" value="" />
+				        		<input id="timepicker" name="timepicker" class="form-control" required="required" 
+				        		type="text" placeholder="Selecciona una hora" value="" />
 				        	</div>						
 						</div>		
-							<input hidden="submit" name="oferta" value="${infoOferta.ID}" />			
+							<input hidden="submit" id="oferta" name="oferta" value="${infoOferta.ID}" />
+							<input hidden="submit" id="dondeEstoy" name="dondeEstoy" value="${paginaVuelta}" />			
 					   <div class="form-group">
-					  	<button type="submit" class="btn btn-primary" value="Submit"> Reservar</button>	 								 								
+					  	<button type="submit" class="btn btn-primary" value="Submit" id="botonReserva" name="botonReserva"> Reservar</button>	 								 								
 		         	   </div>
 			          </form>
 				 </div>		 	   

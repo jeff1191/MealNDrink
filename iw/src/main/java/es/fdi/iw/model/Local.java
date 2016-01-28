@@ -122,7 +122,7 @@ public class Local {
 	public void setOfertas(List<Oferta> ofertas) {
 		this.ofertas = ofertas;
 	}
-	@OneToMany(targetEntity=Comentario.class, cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Comentario.class, cascade = CascadeType.ALL)
 	@JoinColumn(name="local")
 	public List<Comentario> getComentarios() {
 		return comentarios;
@@ -131,6 +131,7 @@ public class Local {
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
+	
 	@ManyToOne(targetEntity=Usuario.class)
 	public Usuario getUsuario() {
 		return usuario;

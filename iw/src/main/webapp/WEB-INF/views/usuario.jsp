@@ -9,6 +9,13 @@ function activaBotonEliminacionLocal() {
 	});
 }
 
+function activaBotonEliminacionReserva() {	
+	var idReserva = $(this).attr("id").substring("delR_".length); 
+	var idUsuario=$('#id_usuario').get(0).value;
+	$.post( "eliminarReserva",{idUsuario:idUsuario,idReserva:idReserva},function(data){
+			$('#TodasReservas').load('usuario?id='+idUsuario+' div#TodasReservas');
+	});
+}
 function activaBotonEliminacionComentario() {	
 	var idComentario = $(this).attr("id").substring("delC_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
@@ -19,6 +26,7 @@ function activaBotonEliminacionComentario() {
 $(function() {
 	
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
+	$("body").on("click", ".eliminaReserva", null, activaBotonEliminacionReserva);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);	
 })
 </script>
@@ -49,37 +57,35 @@ $(function() {
 									
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="reservas">
-									
+									<div id="TodasReservas" class="TodasReservas">
 										<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
 												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.ID}.jpg" >
 											</div>										
 											<div class="media-body">
-												<h4 class="media-heading">Reserva #1</h4>
-												<p>${i.oferta.nombre}</p>
-												
-												
-												 <div id="qrcode"></div>
-										            
-									            <script>															
-														$('#qrcode').qrcode({
-														    "render": "div",
-														    "size": 100,
-														    "color": "#3a3",
-														    "text": "${i.codigoQr}"
-														});
-												</script>
-												
-												
-												<button id="delO_${i.oferta.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+												<div class="col-md-7">
+													<h4 class="media-heading">${i.oferta.nombre}</h4>
+													<p>En ${i.oferta.local.nombre}</p>
+													<p>A las ${i.fechaReserva}</p>
+													<p>Para ${i.numPersonas}</p>
+													<br>
+													<button id="delR_${i.ID}" class="eliminaReserva"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+												</div>													
+												 <div class="col-md-5" id="qrcode">										            
+										            <script>															
+															$('#qrcode').qrcode({
+															    "render": "div",
+															    "size": 100,
+															    "color": "#3a3",
+															    "text": "${i.codigoQr}"
+															});
+													</script>
+												</div>
 											</div>
 										</div>	
 										</c:forEach>
-										
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>	
-									<br></br>
+									</div>
 								</div>	
 								
 								<div class="tab-pane fade" id="locales">
@@ -147,7 +153,7 @@ $(function() {
 												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
 											</div>										
 											<div class="media-body">
-												<h4 class="media-heading">${i.nombre} #1</h4>
+												<h4 class="media-heading">${i.nombre}</h4>
 												<p>Dirección:${i.direccion }</p>
 												<p>Horario: ${i.horario }</p>								
 												<p>Puntuación: ${i.puntuacion }</p>
@@ -157,10 +163,7 @@ $(function() {
 										</div>	
 										</c:forEach>
 									</div>												
-									<button type="submit" class="btn btn-default">Anterior</button>
-									<button type="submit" class="btn btn-default">Siguiente</button>
 									
-									<br></br>
 								</div>
         				<!-- Modal Edit Local-->
 						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
@@ -223,15 +226,13 @@ $(function() {
 													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
 												</div>
 												<div class="media-body">
-													<h4 class="media-heading">Comentario #1</h4>
+													<h4 class="media-heading">Comentario</h4>
 													<p>${i.texto}</p>
 													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												</div>
 												</div>
 											</c:forEach>
-										
-										<button type="submit" class="btn btn-default">Anterior</button>
-										<button type="submit" class="btn btn-default">Siguiente</button>									
+																		
 									</div>
 								</div>
 								

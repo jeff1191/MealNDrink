@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -103,38 +104,18 @@ public class HomeController {
 					getTokenForSession(session);
 				} else {
 					logger.info("pass was NOT valid");
-					model.addAttribute("loginError", "error en usuario o contraseña");
-					return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
+					model.addAttribute("loginError", "error en usuario o contrasenya");
+					return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
 				}
 			} catch (NoResultException nre) {
-				return new ResponseEntity<String>("Inicio de sesión incorrecto", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>("Inicio de sesion incorrecto", HttpStatus.BAD_REQUEST);
 			}
 		}
 
 		// redirects to view from which login was requested
-		return new ResponseEntity<String>("Inicio de sesión correcto", HttpStatus.OK);
+		return new ResponseEntity<String>("Inicio de sesion correcto", HttpStatus.OK);
 	}
-	
-	/**
-	 * Delete a user; return JSON indicating success or failure
-	 */
-	@RequestMapping(value = "/delUser", method = RequestMethod.POST)
-	@ResponseBody
-	@Transactional // needed to allow DB change
-	public ResponseEntity<String> bookAuthors(@RequestParam("id") long id,
-			@RequestParam("csrf") String token, HttpSession session) {
-		if ( ! isAdmin(session) || ! isTokenValid(session, token)) {
-			return new ResponseEntity<String>("Error: no such user or bad auth", 
-					HttpStatus.FORBIDDEN);
-		} else if (entityManager.createNamedQuery("delUser")
-				.setParameter("idParam", id).executeUpdate() == 1) {
-			return new ResponseEntity<String>("Ok: user " + id + " removed", 
-					HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>("Error: no such user", 
-					HttpStatus.BAD_REQUEST);
-		}
-	}			
+		
 	
 	/**
 	 * Logout (also returns to home view).
@@ -361,8 +342,9 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String empty(Locale locale, Model model, HttpSession session) {
+	public String empty(Locale locale, Model model,HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -370,7 +352,7 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("pageTitle", "Bienvenido a MealNDrink");
+		model.addAttribute("pageTitle", "MealNDrink");
 		model.addAttribute("active", "home");
 		logger.info("Setting active tab: home");
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
@@ -379,28 +361,24 @@ public class HomeController {
 			model.addAttribute("usuario", usuario);	
 		}
 		
-		List<Long> idsOffers = new ArrayList<Long>(); 
-		idsOffers.add((long) 8);
-		idsOffers.add((long) 5);
-		idsOffers.add((long) 7);
-		idsOffers.add((long) 2);
+		//Esto es para los locales mas populares
+		//La idea es que vea que locales son los que mas reservas tienen
+		//y le pase a la vista los cinco primeros
+		List<Oferta> aux = new ArrayList<Oferta>();
+		aux = entityManager.createNamedQuery("allOffers").getResultList();	
+		
+				
 		List<Long> idsLocals = new ArrayList<Long>();
 		idsLocals.add((long) 4);
 		idsLocals.add((long) 1);
 		idsLocals.add((long) 5);
 		idsLocals.add((long) 2);
 		idsLocals.add((long) 3);	
-		List<Long> idsBooks = new ArrayList<Long>(); 
-		idsBooks.add((long) 1);
-		idsBooks.add((long) 5);
-		idsBooks.add((long) 2);
-		idsBooks.add((long) 3);	
-		
+	
 		model.addAttribute("alltags", allTags);	
-		model.addAttribute("platos", entityManager.createNamedQuery("infoOffers").setParameter("idParam", idsOffers).getResultList());
+		model.addAttribute("platos", aux);		
 		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
-		model.addAttribute("lastBooks", entityManager.createNamedQuery("infoBooks").setParameter("idParam", idsBooks).getResultList());
-		
+				
 		
 		return "home";
 	}	
@@ -418,54 +396,12 @@ public class HomeController {
 		return empty(locale, model, session);
 	}	
 	
-	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String reservaEnHome(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model,HttpSession session) {		
 
-		
-		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
-		 *	- Modificar la capacidad de la Oferta 
-		*/
-		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
-		
-		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
-		Usuario user= entityManager.find(Usuario.class, (long) 9);
-			
-		//Nos traemos la oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
-		//Crear un objeto reserva
-		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el código qr esta mal			
-		reserva.setUsuario(user);
-		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
-		reserva.setValidado(false);
-		
-		//Añadir la reserva a User y Oferta
-		user.getReservas().add(reserva);
-		oferta.getReservas().add(reserva);		
-		
-		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
-		oferta.setCapacidadActual(nuevacap);
-		
-		entityManager.persist(reserva);
-		entityManager.persist(user);
-		entityManager.persist(oferta);	
-		
-		return empty(locale, model, session);
-	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/acercaDe", method = RequestMethod.GET)
-	public String acercaDe(Locale locale, Model model, HttpSession session) {
+	public String acercaDe(Locale locale, Model model,HttpSession session) {
 		model.addAttribute("active", "acercaDe");
 		model.addAttribute("pageTitle", "Acerca de");		
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
@@ -494,6 +430,37 @@ public class HomeController {
 	}	
 	
 	@Transactional
+	@RequestMapping(value = "/nuevoComentario", method = RequestMethod.POST)	
+	public String nuevoComentario(@RequestParam("idLocal") long idLocal, @RequestParam("comment") String comment, HttpSession session, Model model) {		
+			/* Al aï¿½adir un comentario hay que hacer:
+			 * 	- Aï¿½adir el comentario al usuario
+			 *  - Aï¿½adir el comentario al local
+			 */
+		
+			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+			Usuario usuario = entityManager.find(Usuario.class, usuarioSesion.getID());			
+			Local local = entityManager.find(Local.class, idLocal);
+			Comentario comentario = new Comentario();
+			Date date = new java.util.Date();
+			Timestamp fecha = new Timestamp(date.getTime());
+				
+			comentario.setLocal(local);
+			comentario.setUsuario(usuario);
+			comentario.setTexto(comment);
+			comentario.setFecha(fecha);
+						
+			//Creo que falla algo con JPA -- Saca un error raro si se descomenta lo de abajo
+			
+			//usuario.getComentarios().add(comentario);
+			//local.getComentarios().add(comentario);
+			
+			//entityManager.persist(usuario);
+			//entityManager.persist(local);
+		
+		return "redirect:comercio_externo?id="+local.getID();
+	}	
+	
+	@Transactional
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
 	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag,Model model, HttpSession session) {		
 		model.addAttribute("active", "comercio_externo");		
@@ -504,27 +471,118 @@ public class HomeController {
 		}
 		try {
 			Oferta aux = entityManager.find(Oferta.class, id);
+			
+			//fecha actual
+			DateFormat dateFormatActualDay = new SimpleDateFormat("dd/MM/yyyy");			
+			Date dateActual = new Date();
+						
+			// fecha limite
+			DateFormat dateFormatLimitDay = new SimpleDateFormat("dd/MM/yyyy");
+			Date dateLimit = new Date(aux.getFechaLimite().getTime());
+					
+			model.addAttribute("fechaActual", dateFormatActualDay.format(dateActual));
+			model.addAttribute("fechaLimite", dateFormatLimitDay.format(dateLimit));			
 			model.addAttribute("infoOferta", aux);
-			model.addAttribute("paginaVuelta", pag);
+			model.addAttribute("paginaVuelta", pag);			
 			model.addAttribute("pageTitle", "Reserva");
 		} catch (NoResultException nre) {
 			logger.error("No existe esa oferta: {}", id, nre);
 		}
 		
 		return "reserva";
-	}		
+	}	
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value = "/nuevaReserva", method = RequestMethod.POST)	
+	public ResponseEntity<String> nuevaReserva(
+			@RequestParam("capacidad") String cap, 
+			@RequestParam("fecha") String fecha, 
+			@RequestParam("hora") String hora, 
+			@RequestParam("oferta") long ofertaID,
+			HttpSession session, Locale locale, Model model) {
+		//@RequestParam("dondeEstoy") String pag, 
+		
+	
+		/*Cosas al hacer una reserva:
+		 *  - Generar codigo qr
+		 *	- Crearse un objeto reserva (el cual guarda el codigo qr) que se aÃ±ade en Usuario y en Oferta
+		 *	- Modificar la capacidad de la Oferta 
+		*/
+		
+		String fechaTimeStamp = "";	
+		int pos = 2;
+		List<String> aux = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(fecha,"/");
+		while(tokens.hasMoreTokens()){			
+			aux.add(tokens.nextToken());					 
+		}
+		while(pos != -1){			
+			fechaTimeStamp += aux.get(pos);
+			if(pos != 0) fechaTimeStamp += "-";
+			pos--;
+		}
+		
+		Timestamp timestamp = Timestamp.valueOf(fechaTimeStamp + " " + hora + ":00.0");
+			
+		Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+		Usuario user= entityManager.find(Usuario.class, usuarioSesion.getID());
+			
+		//Nos traemos la oferta
+		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
+					
+		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
+		String qrInfo = "Este código QR es valido para que " + cap + " personas disfruten de la oferta " 
+				+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
+				+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
+		
+		
+		//Crear un objeto reserva
+		Reserva reserva = new Reserva();
+		reserva.setCodigoQr(qrInfo);			
+		reserva.setUsuario(user);
+		reserva.setOferta(oferta);
+		reserva.setNumPersonas(Integer.parseInt(cap));
+		reserva.setfechaReserva(timestamp);	
+		reserva.setValidado(false);
+		
+		//Anyadir la reserva a User y Oferta
+		user.getReservas().add(reserva);
+		oferta.getReservas().add(reserva);		
+		
+		//Cambiamos la capacidad de la oferta
+		int nuevacap = oferta.getCapacidadActual() + Integer.parseInt(cap);
+		oferta.setCapacidadActual(nuevacap);
+		
+		entityManager.persist(reserva);
+		entityManager.persist(user);
+		entityManager.persist(oferta);
+		return new ResponseEntity<String>("Reserva creada satisfactoriamente", HttpStatus.OK);
+		//return "redirect:" + pag;
+	}	
+	
+	@Transactional
+	@RequestMapping(value = "/eliminarReserva", method = RequestMethod.POST)
+	public String eliminarReserva(@RequestParam("idReserva") long idReserva,Model model){
+			Reserva reserva= entityManager.find(Reserva.class, idReserva);
+			Oferta oferta = entityManager.find(Oferta.class, reserva.getOferta().getID());			
+			oferta.setCapacidadActual(oferta.getCapacidadActual() - reserva.getNumPersonas());
+			entityManager.persist(oferta);
+			entityManager.remove(reserva);	
+			
+			return "eliminarReserva";
+    }
+	
 	@Transactional
 	@RequestMapping(value = "/comercio_externo", method = RequestMethod.GET)	
-	public String comercio_externo(@RequestParam("id") long id, Model model, HttpSession session) {		
-		model.addAttribute("active", "comercio_externo");
-		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if(usuarioOnline != null){
-			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
-			model.addAttribute("usuario", usuario);	
-		}
+	public String comercio_externo(@RequestParam("id") long id, HttpSession session, Model model) {		
+		model.addAttribute("active", "comercio_externo");			
 		try {
 			Local aux = entityManager.find(Local.class, id);
+			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+			//Usuario usuario = entityManager.find(Usuario.class, usuarioSesion.getID());
 			model.addAttribute("infoLocal", aux);
+			//model.addAttribute("tipoUser", usuario.getRol());
 			model.addAttribute("pageTitle", aux.getNombre());
 		} catch (NoResultException nre) {
 			logger.error("No existe ese local: {}", id, nre);
@@ -535,13 +593,11 @@ public class HomeController {
 
 	@RequestMapping(value = "/detallesOferta", method = RequestMethod.GET)
 	@ResponseBody
-	public String detallesOferta(@RequestParam("id") long id,
-								Model model) {
+	public String detallesOferta(@RequestParam("id") long id) {
 		Oferta o = (Oferta)entityManager.find(Oferta.class, id);
 
 		String ret = "{nombre: " + "\""+o.getNombre()+ "\"" + ", id: " + o.getID() + "}";
 		System.err.println(ret);
-		model.addAttribute("modalEditarOferta", o);
 		return ret;
 		//return o;
 	}
@@ -810,13 +866,12 @@ public class HomeController {
             } catch (Exception e) {
             	e.getMessage();
             }
-		}	
-		int idUser = 1;
+		}
 		if(pagina.equalsIgnoreCase("comercio_interno"))
 			return "redirect:"+pagina+"?id="+id;
 		else
 			if(pagina.equalsIgnoreCase("usuario"))
-				return "redirect:"+pagina+"?id="+idUser;
+				return "redirect:"+pagina+"?id="+1; //MODIFICAR POR EL DE LA SESSION
 			else
 				return "redirect:administracion";
 		
@@ -919,9 +974,7 @@ public class HomeController {
 	@RequestMapping(value = "/eliminarUsuario", method = RequestMethod.POST)
 	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario,Model model){
 			Usuario usuario= entityManager.find(Usuario.class, idUsuario);
-			System.err.println("ID: "+idUsuario);
-			entityManager.remove(usuario);		
-
+			entityManager.remove(usuario);			
 			return "eliminarUsuario";
     }
 
@@ -988,58 +1041,48 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Error!");
 		return "errorPagina";
 	}	
-	@Transactional
-	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.POST)	
-	public String reservaEnUltimasOfertas(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
-
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
-		
-		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
-		 *	- Modificar la capacidad de la Oferta 
-		*/
-		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
-		
-		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
-		Usuario user= entityManager.find(Usuario.class, (long) 8);
-			
-		//Nos traemos la oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
-		//Crear un objeto reserva
-		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el código qr esta mal			
-		reserva.setUsuario(user);
-		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
-		reserva.setValidado(false);
-		
-		//Añadir la reserva a User y Oferta
-		user.getReservas().add(reserva);
-		oferta.getReservas().add(reserva);		
-		
-		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
-		oferta.setCapacidadActual(nuevacap);
-		
-		entityManager.persist(reserva);
-		entityManager.persist(user);
-		entityManager.persist(oferta);
-				
-		return "ultimasOfertas";
-	}	
+	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/ultimasOfertas", method = RequestMethod.GET)
 	@Transactional
-	public String ultimasOfertas(Locale locale, Model model, HttpSession session) {
+	public String ultimasOfertas(Locale locale, Model model,HttpSession session) {
 		model.addAttribute("active", "ultimasOfertas");
-		model.addAttribute("pageTitle", "Últimas ofertas");		
-		model.addAttribute("platos", entityManager.createNamedQuery("allOffers").getResultList());
+		model.addAttribute("pageTitle", "Ultimas ofertas");	
+		
+		//La idea es traerte todas las reservas que se han hecho 
+		//desde el inicio de mes hasta el momento actual
+		
+		//Para delimitar las busquedas al mes actual
+		DateFormat dateFormatActualDay = new SimpleDateFormat("yyyy/MM/dd");		
+		DateFormat dateFormatActualHour = new SimpleDateFormat("hh:mm:ss");
+		Date dateActual = new Date();
+		Date hourActual = new Date();
+		String inifecha = ""; //inicio mes
+		String finfecha = ""; //fecha actual
+		List<String> aux = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(dateFormatActualDay.format(dateActual),"/");
+		while(tokens.hasMoreTokens()){			
+			aux.add(tokens.nextToken());					 
+		}			
+		inifecha += aux.get(0) + "-" + aux.get(1) + "-01"; 
+		finfecha += aux.get(0) + "-" + aux.get(1) + "-" + aux.get(2); // fecha actual		
+			
+		Timestamp beginLast = Timestamp.valueOf(inifecha + " " + "00:00:00.0");
+		Timestamp endLast = Timestamp.valueOf(finfecha + " " +  dateFormatActualHour.format(hourActual) + ".0");
+		
+		List<Reserva> temp = new ArrayList<Reserva>();
+		List<Oferta> lastOffers = new ArrayList<Oferta>();
+		
+		temp = entityManager.createNamedQuery("lastBooks")
+				.setParameter("inicioBusq", beginLast)
+				.setParameter("finBusq", endLast)
+				.getResultList();
+		
+		for(int i =0; i < temp.size(); i++){
+			lastOffers.add(entityManager.find(Oferta.class, temp.get(i).getOferta().getID()));
+		}
+		
+		model.addAttribute("platos", lastOffers);
 		model.addAttribute("alltags", allTags);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
@@ -1049,60 +1092,16 @@ public class HomeController {
 		return "ultimasOfertas";
 	}	
 	
-	@Transactional
-	@RequestMapping(value = "/ofertasMes", method = RequestMethod.POST)	
-	public String reservaEnOfertasMes(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
-			@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model) {		
-	
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
-		
-		/*Cosas al hacer una reserva:
-		 *  - Generar código qr
-		 *	- Crearse un objeto reserva (el cual guarda el código qr) que se añade en Usuario y en Oferta
-		 *	- Modificar la capacidad de la Oferta 
-		*/
-		
-		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-			//implementar
-		
-		//Aqui pongo un usuario cualquiera pero deberia ser el de la sesion..¿¿???
-		Usuario user= entityManager.find(Usuario.class, (long) 7);
-			
-		//Nos traemos la oferta
-		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
-		
-		//Crear un objeto reserva
-		Reserva reserva = new Reserva();
-		reserva.setCodigoQr("algo"); // el código qr esta mal			
-		reserva.setUsuario(user);
-		reserva.setOferta(oferta);
-		reserva.setNumPersonas(cap);
-		reserva.setfechaReserva(null); //la fecha la coge mal		
-		reserva.setValidado(false);
-		
-		//Añadir la reserva a User y Oferta
-		user.getReservas().add(reserva);
-		oferta.getReservas().add(reserva);		
-		
-		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + cap;
-		oferta.setCapacidadActual(nuevacap);
-		
-		entityManager.persist(reserva);
-		entityManager.persist(user);
-		entityManager.persist(oferta);
-				
-		return "ofertasMes";
-	}
-	
 	@RequestMapping(value = "/ofertasMes", method = RequestMethod.GET)
 	@Transactional
 	public String ofertasMes(Locale locale, Model model, HttpSession session) {
 		model.addAttribute("active", "ofertasMes");		
 		model.addAttribute("pageTitle", "Ofertas del mes");	
 		
+		//Ofertas del mes: son aquellas que han superado la mitad de su capacidad
+		
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
+	
 		model.addAttribute("alltags", allTags);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
