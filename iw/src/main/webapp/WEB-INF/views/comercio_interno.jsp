@@ -370,27 +370,27 @@ $(function() {
 								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
 									<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
-									<input hidden="submit" name="id_local" value="${local.ID}" />
-									<input hidden="submit" name="redireccion" value="comercio_interno" />
+									<input hidden="submit" id="id_local" name="id_local" value="${local.ID}" />
+									<input hidden="submit" id="redireccion" name="redireccion" value="comercio_interno" />
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="name" required="required" name="name" value="${local.nombre}">
+											<input type="text" class="form-control" id="editNameLocal" required="required" name="editNameLocal" value="${local.nombre}">
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="text" class="form-control" id="horario" required="required" name="horario" value="${local.horario}">
+											<input type="text" class="form-control" id="editHorarioLocal" required="required" name="editHorarioLocal" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Dirección:</label>
-											<input type="text" class="form-control" id="dir" required="required" name="dir" value="${local.direccion}">
+											<input type="text" class="form-control" id="editDirLocal" required="required" name="editDirLocal" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="email"required="required"  name="email" value="${local.email}">
+											<input type="email" class="form-control" id="editEmailLocal" required="required"  name="editEmailLocal" value="${local.email}">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" id="tel" required="required"  name="tel" value="${local.telefono}">
+											<input type="tel" class="form-control" id="editTelLocal" required="required"  name="editTelLocal" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>

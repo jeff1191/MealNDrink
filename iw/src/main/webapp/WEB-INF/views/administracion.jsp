@@ -36,6 +36,25 @@ function activaBotonAddLocal(){
 	});
 	
 }
+
+function rellenaDatosEditarModalLocal(){
+	var idLocal = $(this).attr("id").substring("edit_".length);
+	var res = idLocal.split("/,");
+	$("#editNameLocal").attr("value" ,res[0]);
+	$("#editHorarioLocal").attr("value" ,res[1]);
+	$("#editDirLocal").attr("value" ,res[2]);
+	$("#editEmailLocal").attr("value" ,res[3]);
+	$("#editTelLocal").attr("value" ,res[4]);
+	$("#id_localLocal").attr("value" ,res[5]);
+}
+function rellenaDatosEditarModalUsuario(){
+	var idUsuario = $(this).attr("id").substring("edit_".length);
+	var res = idUsuario.split("/,");
+	$("#editName").attr("value" ,res[0]);
+	$("#editEmail").attr("value" ,res[1]);
+	$("#editTel").attr("value" ,res[2]);
+	$("#id_usuario").attr("value" ,res[3]);
+}
 function activaBotonRellenaTag() {
 	var nombreTagEdit = $(this).attr("id").substring("editTags_".length); 
 	$("#nameEditTag").attr("value" ,nombreTagEdit);
@@ -62,6 +81,8 @@ $(function() {
 	$("body").on("click", ".anyadirLocal", null, activaBotonAddLocal);
 	$("body").on("click", ".rellenaEditTag", null, activaBotonRellenaTag);
 	$("body").on("click", ".editaTag", null, activaBotonEditTag);
+	$("body").on("click", ".rellenarEditarLocal", null, rellenaDatosEditarModalLocal);
+	$("body").on("click", ".rellenarEditarUsuario", null, rellenaDatosEditarModalUsuario);
 })
 </script>
 
@@ -109,7 +130,7 @@ $(function() {
 										<p>E-mail: ${i.email}</p>
 										<p>Teléfono: ${i.telefono}</p>
 										<p>Rol: ${i.rol}</p>
-										<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+										<button type="submit" id="edit_${i.nombre}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarUsuario" data-toggle="modal" data-target="#ModalEditUser" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										<button id="delUsuario_${i.ID}" class="eliminaUsuario"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 									</div>
 								</div>
@@ -166,7 +187,50 @@ $(function() {
 						  </div>
 						</div>     
 						<!-- End Modal Add User-->
-					  
+					   
+					   <!-- Modal Edit User-->
+						<div class="modal fade" id="ModalEditUser" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+						  <div class="modal-dialog modal-sm" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo usuario</h4>
+						      </div>
+						      <div class="modal-body">
+								<form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
+								<input hidden="submit" id="redireccion" name="redireccion" value="administracion" />
+								<input hidden="submit" id="id_usuario" name="id_usuario" />
+								  <div class="form-group">
+									<label for="name">Nombre:</label>
+									<input type="text" class="form-control" required="required" id="editName" name="editName" placeholder="Introduce un nuevo nombre">
+								  </div>
+								  <div class="form-group">
+									<label for="pwd">Contraseña:</label>
+									<input type="password" class="form-control" required="required" id="editPwd" name="editPwd" value="****" placeholder="Introduce una nueva contraseña">
+								  </div>
+								  <div class="form-group">
+									<label for="email">Email:</label>
+									<input type="email" class="form-control" id="editEmail" required="required" name="editEmail" placeholder="Introduce un nuevo email">
+								  </div>
+								  <div class="form-group">
+									<label for="tel">Teléfono:</label>
+									<input type="tel" class="form-control" id="editTel" required="required" name="editTel" placeholder="Introduce un nuevo telefono">
+								  </div>
+								  <div class="form-group">
+									<label for="file">Imagen de perfil:</label>
+									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
+								  </div>
+								  <div class="modal-footer">						      	 
+									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+							      </div>									  						  
+								</form>									
+						      </div>
+
+						    </div>
+						  </div>
+						</div>     
+					    <!-- End Modal Edit User-->
 					  
 					  <div class="tab-pane fade" id="llocales">
 					  	<div class="media">
@@ -185,7 +249,7 @@ $(function() {
 									<p>Dirección:${i.direccion }</p>
 									<p>Horario: ${i.horario }</p>								
 									<p>Puntuación: ${i.puntuacion }</p>
-									<button type="submit" id="edit_${i.ID}" value="${i}" class="btn btn-default" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+									<button type="submit" id="edit_${i.nombre}/,${i.horario}/,${i.direccion}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarLocal" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									<button id="delLocal_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 								</div>
 							</div>
@@ -270,30 +334,27 @@ $(function() {
 						      </div>
 						      <div class="modal-body">
 								<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
-								<input hidden="submit" name="redireccion" value="administracion" />
+								<input hidden="submit" id="redireccion" name="redireccion" value="administracion" />
+								<input hidden="submit" id="id_local" name="id_local" />
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" required="required" id="name" name="name" placeholder="Introduce un nuevo nombre">
+									<input type="text" class="form-control" required="required" id="editNameLocal" name="editNameLocal" placeholder="Introduce un nuevo nombre">
 								  </div>
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
-									<input type="time" class="form-control" required="required" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+									<input type="text" class="form-control" required="required" id="editHorarioLocal" name="editHorarioLocal" placeholder="Introduce un nuevo horario">
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
-									<input type="text" class="form-control" required="required" id="dir" name="dir" placeholder="Introduce una nueva direccion">
+									<input type="text" class="form-control" required="required" id="editDirLocal" name="editDirLocal" placeholder="Introduce una nueva direccion">
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
-									<input type="email" class="form-control" required="required" id="email" name="email" placeholder="Introduce un nuevo email">
+									<input type="email" class="form-control" required="required" id="editEmailLocal" name="editEmailLocal" placeholder="Introduce un nuevo email">
 								  </div>
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" required="required" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
-								  </div>
-								  <div class="form-group">
-									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
+									<input type="tel" class="form-control" required="required" id="editTelLocal" name="editTelLocal" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
@@ -325,24 +386,24 @@ $(function() {
         			<!--  end tags -->		 
 					  <div class="tab-pane fade" id="editarDatos">
 
-						<form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
+						<form role="form" method="POST" enctype="multipart/form-data" action="editarAdmin">
 						<input hidden="submit" name="id_usuario" value="${admin.ID}" />
 						<input hidden="submit" name="redireccion" value="administracion" />
 						  <div class="form-group">
 							<label for="name">Nombre:</label>
-							<input type="text" class="form-control" required="required" id="nameUser" name="nameUser" value="${admin.nombre}">
+							<input type="text" class="form-control" required="required" id="adminName" name="adminName" value="${admin.nombre}">
 						  </div>
 						  <div class="form-group">
 							<label for="pwd">Contraseña:</label>
-							<input type="password" class="form-control" required="required" id="pwd" name="pwd" value="*****">
+							<input type="password" class="form-control" required="required" id="adminPwd" name="adminPwd" value="*****">
 						  </div>
 						  <div class="form-group">
 							<label for="email">Email:</label>
-							<input type="email" class="form-control" required="required" id="email" name="email" value="${admin.email }">
+							<input type="email" class="form-control" required="required" id="adminEmail" name="adminEmail" value="${admin.email }">
 						  </div>
 						  <div class="form-group">
 							<label for="tel">Teléfono:</label>
-							<input type="tel" class="form-control" required="required" id="tel" name="tel" value="${admin.telefono }">
+							<input type="tel" class="form-control" required="required" id="adminTel" name="adminTel" value="${admin.telefono }">
 						  </div>
 						  <div class="form-group">
 							<label for="file">Imagen de perfil:</label>

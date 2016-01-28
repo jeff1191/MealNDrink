@@ -783,9 +783,14 @@ public class HomeController {
 	@Transactional
 	@RequestMapping(value = "/editarLocal", method = RequestMethod.POST)
 	public String editarLocal(@RequestParam("fileToUpload") MultipartFile photo,
-    		@RequestParam("id_local") long id, @RequestParam("name") String nombreLocal,@RequestParam("horario") String horario
-    		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
-    		@RequestParam("redireccion")String pagina, Model model){
+    		@RequestParam("id_local") long id,
+    		@RequestParam("editNameLocal") String nombreLocal,
+    		@RequestParam("editHorarioLocal") String horario,
+    		@RequestParam("editDirLocal") String direccion,
+    		@RequestParam("editEmailLocal") String email,
+    		@RequestParam("editTelLocal") String telefono,
+    		@RequestParam("redireccionLocal")String pagina, 
+    		 Model model){
 		//Hay que revisar que el local pertenece a un usuario
 		Local edit= entityManager.find(Local.class, id);
 		edit.setNombre(nombreLocal);
@@ -813,7 +818,10 @@ public class HomeController {
 		if(pagina.equalsIgnoreCase("comercio_interno"))
 			return "redirect:"+pagina+"?id="+id;
 		else
-			return "redirect:"+pagina+"?id="+idUser;
+			if(pagina.equalsIgnoreCase("usuario"))
+				return "redirect:"+pagina+"?id="+idUser;
+			else
+				return "redirect:administracion";
 		
 	}
 	@Transactional
@@ -872,8 +880,12 @@ public class HomeController {
 	@Transactional
 	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
 	public String editarUsuario(@RequestParam("fileToUpload") MultipartFile photo,
-    		@RequestParam("id_usuario") long id, @RequestParam("nameUser") String nombreUsuario,@RequestParam("pwd") String pass
-    		, @RequestParam("email") String email,@RequestParam("tel") String telefono,@RequestParam("redireccion")String pagina, 
+    		@RequestParam("id_usuario") long id,
+    		@RequestParam("editName") String nombreUsuario,
+    		@RequestParam("editPwd") String pass,
+    		@RequestParam("editEmail") String email,
+    		@RequestParam("editTel") String telefono,
+    		@RequestParam("redireccion")String pagina, 
     		Model model){
 		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
@@ -885,7 +897,21 @@ public class HomeController {
 		edit.setNombre(nombreUsuario);
 		edit.setEmail(email);
 		edit.setTelefono(telefono);
-		
+		entityManager.persist(edit);
+		entityManager.flush();
+        if (!photo.isEmpty()) {
+            try {
+                byte[] bytes = photo.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(
+                		new FileOutputStream(ContextInitializer.getFile(
+                				"usuarios", edit.getID()+".jpg")));
+                stream.write(bytes);
+                stream.close();		
+                System.err.println("SUBIDA CON ÉXITO");
+            } catch (Exception e) {
+            	e.getMessage();
+            }
+        }		
 		if(pagina.equalsIgnoreCase("usuario"))
 			return "redirect:usuario?id="+id;
 		else
@@ -1220,5 +1246,46 @@ public class HomeController {
 		 }
 		
 		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/editarAdmin", method = RequestMethod.POST)
+	public String editarAdmin(@RequestParam("fileToUpload") MultipartFile photo,
+    		@RequestParam("adminName") String nombreUsuario,
+    		@RequestParam("adminPwd") String pass,
+    		@RequestParam("adminEmail") String email,
+    		@RequestParam("adminTel") String telefono, 
+    		HttpSession session,
+    		Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+		Usuario edit = (Usuario)session.getAttribute("user");
+		Usuario editAdmin = entityManager.find(Usuario.class, edit.getID());
+		if(!editAdmin.getRol().equals("admin")){			
+			return "errorPagina";
+		}
+		else{
+			if(!pass.equalsIgnoreCase("*****")){ //si ha cambiado
+				editAdmin.setHashedAndSalted(pass);
+			}
+			editAdmin.setNombre(nombreUsuario);
+			editAdmin.setEmail(email);
+			editAdmin.setTelefono(telefono);
+			entityManager.persist(editAdmin);
+			entityManager.flush();
+	        if (!photo.isEmpty()) {
+	            try {
+	                byte[] bytes = photo.getBytes();
+	                BufferedOutputStream stream = new BufferedOutputStream(
+	                		new FileOutputStream(ContextInitializer.getFile(
+	                				"usuarios", editAdmin.getID()+".jpg")));
+	                stream.write(bytes);
+	                stream.close();		
+	            } catch (Exception e) {
+	            	e.getMessage();
+	            }
+	        }	
+		}
+		return "redirect:administracion";	
 	}
 }
