@@ -38,7 +38,7 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-                            <img src="usuariosFoto?id=${usuario.foto}" height="275" width="275">                              
+                            <img src="usuariosFoto?id=${usuario.ID}" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3>Mis datos</h3>
 							<p>${usuario.email}</p>
@@ -68,11 +68,12 @@ $(function() {
 													<h4 class="media-heading">${i.oferta.nombre}</h4>
 													<p>En ${i.oferta.local.nombre}</p>
 													<p>A las ${i.fechaReserva}</p>
-													<p>Para ${i.numPersonas}</p>
+													<p>Para <b>${i.numPersonas}</b></p>
 													<br>
 													<button id="delR_${i.ID}" class="eliminaReserva"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												</div>													
-												 <div class="col-md-5" id="qrcode">										            
+												 <div class="col-md-5" id="qrcode">	
+												 	<button type="submit" id="showQR"class="btn btn-default" data-toggle="modal" data-target="#ModalShowQR">Ver código QR</button>									            
 										            <script>															
 															$('#qrcode').qrcode({
 															    "render": "div",
@@ -223,11 +224,12 @@ $(function() {
 											<c:forEach items="${usuario.comentarios}" var="i">
 												<div class="media">
 												<div class="pull-left">
-													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.local.foto}">
+													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.local.ID}">
 												</div>
 												<div class="media-body">
-													<h4 class="media-heading">Comentario</h4>
-													<p>${i.texto}</p>
+													<br>
+													<h4 class="media-heading">${i.local.nombre} </h4>
+													<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
 													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												</div>
 												</div>

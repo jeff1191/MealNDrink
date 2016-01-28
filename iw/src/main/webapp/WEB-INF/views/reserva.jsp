@@ -1,41 +1,5 @@
 <%@ include file="../fragments/header.jspf" %>
-<script type="text/javascript">
-	$(function() {
-		$("#botonReserva").click(function() {
-			validacion();			
-		})
-	})	
-	function validacion() {
-		var val = validacionReserva();
-		
-		if (val === true) {
-			var cap = $("#reservas").val();
-			var date = $("#datepicker").val();
-			var hour = $("#timepicker").val();
-			var offer = $("#oferta").val();
-			//var where = $("#dondeEstoy").val();
 
-			$.ajax({
-				url : "nuevaReserva",
-				type : "POST",
-				data : {
-					capacidad : cap,
-					fecha : date,
-					hora : hour,
-					oferta : offer,
-					//dondeEstoy : where					
-				},
-				error : function() {
-					alert("Algun campo no se ha rellenado correctamente o ha surgido un problema con su reserva");
-				},
-				success : function() {
-					$("#formBook").submit();
-					location.href = "${prefix}/mealndrink/${paginaVuelta}";
-				}
-			})
-		}
-	};
-</script>
 <section id="about-us">
         <div class="container">
 			<div class="center">
@@ -55,21 +19,21 @@
 						<div class="form-group">
 				        	<label class="control-label col-lg-4" for="reservas"> Comensales</label>
 				        	<div class="col-lg-6">
-				        		<input id="reservas" name="reservas" class="form-control" required="required" 
+				        		<input id="capacidad" name="capacidad" class="form-control" required="required" 
 				        		type="number" min=1 max="${infoOferta.capacidadTotal}" value="" placeholder="¿Cuantos sois?"/>
 			            	</div>
 			            </div>			            
 			            <div class="form-group">
 				        	<label class="control-label col-lg-4" for="datepicker"> Fecha</label>
 				        	<div class="col-lg-6">
-								<input id="datepicker" name="datepicker" class="form-control" required="required" 
+								<input id="datepicker" name="fecha" class="form-control" required="required" 
 								placeholder="Selecciona una fecha" value="" />	
 							</div>									        	
 			            </div>				            
 			             <div class="form-group">
 				        	<label class="control-label col-lg-4" for="timepicker"> Hora</label>
 				        	<div class="col-lg-6">
-				        		<input id="timepicker" name="timepicker" class="form-control" required="required" 
+				        		<input id="hora" name="hora" class="form-control" required="required" 
 				        		type="text" placeholder="Selecciona una hora" value="" />
 				        	</div>						
 						</div>		

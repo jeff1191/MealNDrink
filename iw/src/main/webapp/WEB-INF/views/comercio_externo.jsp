@@ -63,7 +63,7 @@
 				    <c:forEach items="${infoLocal.comentarios}" var="i">
 					<div class="media">
 						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/user.jpg">
+							<img class="media-object" src="usuariosFoto?id=${(i.usuario).ID}.jpg">
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">${(i.usuario).nombre}</h4>

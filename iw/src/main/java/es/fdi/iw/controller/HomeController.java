@@ -397,11 +397,11 @@ public class HomeController {
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
 	public String usuario(@RequestParam("id") long id, Model model, HttpSession session) {
 		model.addAttribute("active", "usuario");
-		model.addAttribute("pageTitle", "User");
-
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("pageTitle", "Perfil de " + usuario.getNombre());
+		
 		return "usuario";		
 	}	
 
@@ -432,13 +432,11 @@ public class HomeController {
 			comentario.setTexto(comment);
 			comentario.setFecha(fecha);
 						
-			//Creo que falla algo con JPA -- Saca un error raro si se descomenta lo de abajo
+			usuario.getComentarios().add(comentario);
+			local.getComentarios().add(comentario);
 			
-			//usuario.getComentarios().add(comentario);
-			//local.getComentarios().add(comentario);
-			
-			//entityManager.persist(usuario);
-			//entityManager.persist(local);
+			entityManager.persist(usuario);
+			entityManager.persist(local);
 		
 		return "redirect:comercio_externo?id="+local.getID();
 	}	
@@ -470,17 +468,15 @@ public class HomeController {
 	}	
 	
 	@Transactional
-	@ResponseBody
 	@RequestMapping(value = "/nuevaReserva", method = RequestMethod.POST)	
-	public ResponseEntity<String> nuevaReserva(
-			@RequestParam("capacidad") String cap, 
+	public String nuevaReserva(
+			@RequestParam("capacidad") int cap, 
 			@RequestParam("fecha") String fecha, 
 			@RequestParam("hora") String hora, 
 			@RequestParam("oferta") long ofertaID,
+			@RequestParam("dondeEstoy") String pag,
 			HttpSession session, Locale locale, Model model) {
-		//@RequestParam("dondeEstoy") String pag, 
-		
-	
+			
 		/*Cosas al hacer una reserva:
 		 *  - Generar codigo qr
 		 *	- Crearse un objeto reserva (el cual guarda el codigo qr) que se añade en Usuario y en Oferta
@@ -519,7 +515,7 @@ public class HomeController {
 		reserva.setCodigoQr(qrInfo);			
 		reserva.setUsuario(user);
 		reserva.setOferta(oferta);
-		reserva.setNumPersonas(Integer.parseInt(cap));
+		reserva.setNumPersonas(cap);
 		reserva.setfechaReserva(timestamp);	
 		reserva.setValidado(false);
 		
@@ -528,14 +524,14 @@ public class HomeController {
 		oferta.getReservas().add(reserva);		
 		
 		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + Integer.parseInt(cap);
+		int nuevacap = oferta.getCapacidadActual() + cap;
 		oferta.setCapacidadActual(nuevacap);
 		
 		entityManager.persist(reserva);
 		entityManager.persist(user);
-		entityManager.persist(oferta);
-		return new ResponseEntity<String>("Reserva creada satisfactoriamente", HttpStatus.OK);
-		//return "redirect:" + pag;
+		entityManager.persist(oferta);		
+		
+		return "redirect:" + pag;
 	}	
 	
 	@Transactional
