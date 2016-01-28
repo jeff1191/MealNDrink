@@ -42,7 +42,8 @@
 						},
 						success : function() {
 							$("#formRegis").submit();
-							location.href = "${prefix}/mealndrink";
+							alert(data);
+							//location.href = "${prefix}/mealndrink";
 
 						}
 					})

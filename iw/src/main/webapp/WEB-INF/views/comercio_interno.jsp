@@ -50,11 +50,16 @@ function rellenaDatosTags() {
 }
 
 function activaBotonEliminacionTag() {
-	var nombreTag=$("#idEliminarTags").attr("value");
-	var idLocal=$('#id_local').get(0).value;
-
-	$.post( "eliminarTag",{idLocal:idLocal,nombreTag:nombreTag},function(data){ 
-			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
+	var nombreTag = $("#idEliminarTags").attr("value");
+	var idLocal = $('#id_local').get(0).value;
+	var envio = {
+			idLocal:idLocal,
+			nombreTag:nombreTag
+	}; 
+	$.post("eliminarTag", envio,
+			function(data) { 
+				$('#TodosTags').load(
+						'comercio_interno?id='+idLocal+' div#TodosTags');
 	});
 }
 
@@ -66,17 +71,40 @@ function activaBotonValidarReserva(ob) {
 	$.ajax({
 		url : "${prefix}validarReserva",
 		type : "POST",
-		data : {
+		data : {serva
 			id_reserva : nombre
 		},
 
-		success : function() {
-			//$(‘#contenido’).fadeOut(1000);
-			$("#tabla1").load('comercio_interno?id=${local.ID} div#tabla1');
-			$("#tabla2").load('comercio_interno?id=${local.ID} div#tabla2');
-			//$(‘#contenido’).fadeIn(1000);
-			ok = true;
-
+		success : function(data) {
+			
+			if(data === "ok"){
+				//$(‘#contenido’).fadeOut(1000);
+			//	var r = $("#r"+nombre);
+			//	r.remove();
+			//	$("#tabla2 tbody").append(r);
+				//$(‘#contenido’).fadeIn(1000);
+			//	ok = true;
+			
+				$("#tabla1").load('comercio_interno?id=${local.ID} div#tabla1');
+				$("#tabla2").load('comercio_interno?id=${local.ID} div#tabla2');
+			
+				
+				$(window).load(function(){
+					$('.qrcode').each(function(i, o) {
+			   	        $(o).qrcode({
+			   	            "render": "div",
+			   	            "size": 100,
+			   	            "color": "#3a3",
+			   	            "text": $(o).text()
+		   	     	    })
+		  	 		});
+				});
+				
+			} else if(data === "reserva_no_existe"){
+				location.href = "${prefix}/mealndrink";
+			} else if(data === "usuario_no_permitido"){
+				location.href = "${prefix}/mealndrink";
+			}
 		}
 	})
 }
@@ -124,16 +152,16 @@ $(function() {
 	$('.QRvalidar').each(function(i, o) {
 		//$("body").on("click", "#" + o.id , null, activaBotonValidarReserva(o.id));
         $("#" + o.id).click( function(){
-    	   activaBotonValidarReserva(o.id);
-    	   $('.qrcode').each(function(i, o) {
-   	        $(o).qrcode({
-   	            "render": "div",
-   	            "size": 100,
-   	            "color": "#3a3",
-   	            "text": $(o).text()
-   	        })
-   	 });
-      });  
+			activaBotonValidarReserva(o.id);
+			/*$('.qrcode').each(function(i, o) {
+   	       		$(o).qrcode({
+	   	            "render": "div",
+	   	            "size": 100,
+	   	            "color": "#3a3",
+	   	            "text": $(o).text()
+   	         	})
+  	 		});*/
+     	});
     
 	});
 })
@@ -270,7 +298,7 @@ $(function() {
 								        <h4 class="modal-title" id="editModalLabel"> Editar oferta</h4>
 								      </div>
 								      <div class="modal-body">
-										<form role="form" method="POST" enctype="multipart/form-data" action="editarOferta">
+										<form role="form" method="POST" en$("#editarUsuario").click(fun);ctype="multipart/form-data" action="editarOferta">
 										<input hidden="submit" name="id_local" value="${local.ID}" />
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
@@ -285,7 +313,7 @@ $(function() {
 											<input type="number" class="form-control" name="Editcap" id="Editcap" placeholder="Introduzca el numero máximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
-											<label for="descriptcion">Descripción:</label>
+											<label for="de$("#editarUsuario").click(fun);scriptcion">Descripción:</label>
 											<input type="text" class="form-control" name="Editdescription" id="Editdescription" placeholder="Introduzca la descripción de la oferta">
 										  </div>
 										  <div class="form-group">
@@ -347,7 +375,7 @@ $(function() {
 											    	<c:forEach items="${local.ofertas}" var="i">
 											    	 	<c:forEach items="${i.reservas}" var="j">
 												    		<c:if test="${j.validado == false}">
-													    		<tr>
+													    		<tr id="r${j.ID}">
 														            <td><h4 class="media-heading">${i.nombre}</h4>
 	<%-- 														            <button id="ValRes_${j.ID}" value="${j.ID}"  class="ValRes" data-toggle="modal" data-target="#ModalValRes" ><span class="glyphicon glyphicon-ok"></span> Validar</button>	 --%>
 															            <button id="valR_${j.ID}" name="valR_${j.ID}" type="submit" class="QRvalidar"><span class="glyphicon glyphicon-ok"></span> Validar</button>
@@ -355,7 +383,7 @@ $(function() {
 														            <td><div class="qrcode">${j.codigoQr}</div></td>		            									       
 														        </tr>	
 															</c:if>
-												    	</c:forEach>
+									$(window).load(function(){			    	</c:forEach>
 											   		</c:forEach>
 											    </tbody>
 											</table>
@@ -422,7 +450,7 @@ $(function() {
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
 											<input type="text" class="form-control" id="name"  name="name" value="${local.nombre}">
-										  </div>
+										  </div>$("#editarUsuario").click(fun);
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
 											<input type="time" class="form-control" id="horario"  name="horario" value="${local.horario}">

@@ -28,6 +28,42 @@ $(function() {
             "text": $(o).text()
         })
     });
+    
+    $("#editarUsuario").click(function() {
+
+    	var idUsuario = $("#editId_usuario").val();
+    	var redireccion = $("#editRedireccion").val();
+    	
+    	var nombr = $("#editNameUser").val();
+    	var contr = $("#editPwd").val();
+    	var e_mail = $("#editEmail").val();
+    	var telef = $("#editTel").val();
+    	var foto = $("#editfileToUpload").val();
+    		
+    	$.ajax({
+    		url : "${prefix}editarUsuario",
+    		type : "POST",
+    		data : {
+    			editId_usuario : idUsuario,
+    			editNameUser : nombr,
+    			editPwd : contr,
+    			editEmail : e_mail,
+    			editTel : telef,
+    			editRedireccion : redireccion
+    		},
+    		error : function() {
+    			alert("Ups :(");
+    		},
+    		success : function(data) {
+    			
+    			alert(data);
+    			
+    			
+    			$("#formEditarFoto").submit();
+    	
+    		}
+    	})
+    })
 })
 
 $("body").on( "keyup", "#nameUser", null, function(){
@@ -163,7 +199,7 @@ function editarDatos(){
 								
 								<!-- Modal Add Local-->
 						<div class="modal fade" id="ModalAddLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
-						  <div class="modal-dialog modal-sm" role="document">
+						  <div class="modal-dialog modal-sm" role="document"><form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -274,7 +310,7 @@ function editarDatos(){
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 								  </div>
-								  <div class="modal-footer">						      	 
+								  <div class="modal-footer">						      	 $("#formRegis").submit();
 									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
 							      </div>	
@@ -310,32 +346,36 @@ function editarDatos(){
 								
 								<div class="tab-pane fade" id="editar">
 									
-										<form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
-										 <input hidden="submit" name="id_usuario" value="${usuario.ID}" />
-										  <input hidden="submit" name="redireccion" value="usuario" />
-										  <div class="form-group">
+										<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${usuario.ID}" />
+										<input hidden="submit" name="editRedireccion" id="editRedireccion" value="usuario" />
+										<div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" name="nameUser" id="nameUser" value="${usuario.nombre }">
-										  </div>
-										  <div class="form-group">
+											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${usuario.nombre }">
+										</div>
+										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" name="pwd" id="pwd" value="">
-										  </div>
-										  <div class="form-group">
+											<input type="password" class="form-control" name="editPwd" id="editPwd" value="">
+										</div>
+										<div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" name="email" id="email" value="${usuario.email }">
-										  </div>
-										  <div class="form-group">
+											<input type="email" class="form-control" name="editEmail" id="editEmail" value="${usuario.email }">
+										</div>
+										<div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" name="tel" id="tel" value="${usuario.telefono }">
-										  </div>
-										  <div class="form-group">
-											<label for="file">Imagen de perfil:</label>
-											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-										  </div>										  
-										  <br>
-										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-										</form>										
+											<input type="tel" class="form-control" name="editTel" id="editTel" value="${usuario.telefono }">
+										</div>
+										  
+										  
+										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
+											  
+											<div class="form-group">
+												<label for="file">Imagen de perfil:</label>
+												<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
+											</div>
+										</form>  										  
+										<br>
+										 <button id="editarUsuario" name="editarUsuario" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+																				
 																	
 								</div>
 							</div><!--tab content-->

@@ -790,43 +790,137 @@ public class HomeController {
 	}
 	
 	@Transactional
+	@ResponseBody
 	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
-	public String editarUsuario(@RequestParam("fileToUpload") MultipartFile photo,
-    		@RequestParam("id_usuario") long id, @RequestParam("nameUser") String nombreUsuario,@RequestParam("pwd") String pass
-    		, @RequestParam("email") String email,@RequestParam("tel") String telefono,@RequestParam("redireccion")String pagina, 
-    		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+	public ResponseEntity<String> editarUsuario(@RequestParam("editId_usuario") long id, @RequestParam("editNameUser") String nombreUsuario,@RequestParam("editPwd") String pass
+    		, @RequestParam("editEmail") String email,@RequestParam("editTel") String telefono,@RequestParam("editRedireccion")String pagina, 
+    		 Model model, HttpSession session){
+
+
+		int cambio = -1;
+		String res;
+		
 		Usuario edit= entityManager.find(Usuario.class, id);
+		Usuario u = (Usuario)session.getAttribute("user");
+
 		
-		if(!pass.equalsIgnoreCase("*****")){ //si ha cambiado
-			edit.setHashedAndSalted(pass);
+		if(id == u.getID() || u.getRol().equals("admin")){
+			cambio = comprobarCampos(edit, nombreUsuario, pass, email, telefono);
+			
+			if((andLogica(1, cambio, 1000000001) == false) && (andLogica(9, cambio, 1000100001) == true)) //1er and es si el valor es erroneo - 2do campo si se ha cambiado el valor
+				edit.setNombre(nombreUsuario);
+			if((andLogica(2, cambio, 1000000010) == false) && (andLogica(10, cambio, 1001000010) == true))
+				edit.setHashedAndSalted(edit.generateHashedAndSalted(pass));
+			if((andLogica(3, cambio, 1000000100) == false) && (andLogica(11, cambio, 1010000100) == true))
+				edit.setEmail(email);
+			if((andLogica(4, cambio, 1000001000) == false) && (andLogica(12, cambio, 1100001000) == true))
+				edit.setTelefono(telefono);
+			/*if(andLogica(8, cambio, 1000010000))
+				edit.setFoto(photo.getOriginalFilename());*/
 		}
-		edit.setNombre(nombreUsuario);
-		edit.setEmail(email);
-		MultipartFile p = photo; 
-		//edit.setFoto(photo.getOriginalFilename());
-		edit.setTelefono(telefono);
 		
-		if(pagina.equalsIgnoreCase("usuario"))
-			return "redirect:usuario?id="+id;
-		else
-			return "redirect:administracion";	
+		res = Integer.toString(cambio);
+		
+		return new ResponseEntity<String>(res, HttpStatus.OK);
+		
+			
 	}
 	
+	@Transactional
+	@ResponseBody
 	@RequestMapping(value = "/editarUsuarioFoto", method = RequestMethod.POST)
-	public String editarUsuario(@RequestParam("fileToUpload") MultipartFile photo,
-			@RequestParam("redireccion")String pagina, Model model, HttpSession session){
-		
+	public ResponseEntity<String> editarUsuario(@RequestParam("editFileToUpload") MultipartFile photo, @RequestParam("editId_usuario") long id, Model model, HttpSession session){
+
+		Usuario edit= entityManager.find(Usuario.class, id);
 		Usuario u = (Usuario)session.getAttribute("user");
-		Usuario edit= entityManager.find(Usuario.class, u.getID());
-		edit.setFoto(photo.getOriginalFilename());
-		entityManager.persist(edit);
 		
-		if(pagina.equalsIgnoreCase("usuario"))
-			return "redirect:usuario?id="+u.getID();
-		else
-			return "redirect:administracion";
+		
+		if(!photo.isEmpty()){
+			edit.setFoto(photo.getOriginalFilename());
+		}
+		
+		return new ResponseEntity<String>("MEC", HttpStatus.OK);
+		
+			
+	}
+	
+	private boolean andLogica(int pos, int num1, int num2){
+		boolean res = true;
+		String op;
+		int suma;
+		char valor;
+		
+		if(pos < 1 || pos > 9){
+			res = false;
+		}
+		else{
+			suma = num1 + num2;
+			op = Integer.toString(suma);
+			
+			valor = op.charAt(pos);
+			
+			if(valor == '0'){  // 0 and 0 -> 0
+				res = false;
+			}
+			else if(valor == '1'){  // 0 and 1 -> 0
+				res = false;
+			}
+			else if(valor == '2'){  // 1 and 1 -> 1
+				res = true;
+			}
+			
+		}
+		
+		return res;
+	}
+	
+	int comprobarCampos(Usuario sesion, String nombre, String contra, String email, String telef){
+		int camposModificados = 1000000000; //1-ErrorNombre-ErrorContra-ErrorEmail-ErrorTelef---ModificadoNombre-ModificadoContra-ModificadoEmail-ModificadoTelef-ModificadoFoto
+		             //ejemplo  1100110110    1-    1      -      0    -    0     -   1      ---   1            -     0          -    1          -      1        -     0   
+		if(!nombre.equals(sesion.getNombre())){
+			if(nombre.length() < 4 || nombre.length() > 12){
+				camposModificados += 100000;
+			}
+			else{
+				camposModificados += 1; 
+			}
+		}
+		
+		if(contra != ""){
+			if(contra.length() < 6 || contra.length() > 12){
+				camposModificados += 1000000;
+			}
+			else{
+				camposModificados += 10;
+			}
+		}
+		
+		if(!email.equalsIgnoreCase(sesion.getEmail())){
+			String patron = new String("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+		            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+			if (!email.matches(patron)) {
+				camposModificados += 10000000;
+			}
+			else{
+				camposModificados += 100;
+			}
+		}
+		
+		if(!telef.equals(sesion.getTelefono())){
+			String patron = new String("^[0-9]{9}$");
+			if( !telef.matches(patron)){
+				camposModificados += 100000000;
+			}
+			else{
+				camposModificados += 1000;
+			}
+		}
+		
+		/*if(!photo.isEmpty()){
+			camposModificados += 10000;
+		}*/
+		
+		return camposModificados;
 	}
 	
 	@Transactional
@@ -846,9 +940,12 @@ public class HomeController {
     }
 
 	@Transactional
+	@ResponseBody
 	@RequestMapping(value = "/validarReserva", method = RequestMethod.POST)
-	public String validarReserva(@RequestParam("id_reserva") String idRes, Model model){
+	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") String idRes, Model model, HttpSession session){
 		
+		Usuario sesion = (Usuario)session.getAttribute("user");
+		String res = new String("ok");
 		long idResBueno;
 		String test;
 		
@@ -861,14 +958,19 @@ public class HomeController {
 			idResBueno = Long.parseLong(test);
 			
 			Reserva edit= entityManager.find(Reserva.class, idResBueno);
+			
+			if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueño del local
 
-			edit.setValidado(true);
-			entityManager.persist(edit);	
+				edit.setValidado(true);
+				entityManager.persist(edit);
+			}
+			else
+				res = "usuario_no_permitido";
 			
 		} catch (NumberFormatException e) {
-			// TODO: handle exception
+			res = "reserva_no_existe";
 		}
-		return "validarReserva";
+		return new ResponseEntity<String>(res, HttpStatus.OK);
 
 	}
 	
