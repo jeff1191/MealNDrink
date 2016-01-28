@@ -421,10 +421,7 @@ public class HomeController {
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String reservaEnHome(@RequestParam("capacidad") int cap, @RequestParam("fecha") Date fecha, 
 		@RequestParam("hora") int hora, @RequestParam("oferta") long ofertaID, Locale locale, Model model,HttpSession session) {		
-	
-		System.out.println("Comensales que vienen es " + cap);
-		System.out.println("La fecha en la que vienen es " + fecha);
-		System.out.println("La hora a la que vienen es " + hora);
+
 		
 		/*Cosas al hacer una reserva:
 		 *  - Generar código qr
@@ -907,7 +904,7 @@ public class HomeController {
                 				"usuarios", edit.getID()+".jpg")));
                 stream.write(bytes);
                 stream.close();		
-                System.err.println("SUBIDA CON ÉXITO");
+               
             } catch (Exception e) {
             	e.getMessage();
             }
@@ -1257,8 +1254,6 @@ public class HomeController {
     		@RequestParam("adminTel") String telefono, 
     		HttpSession session,
     		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 		Usuario edit = (Usuario)session.getAttribute("user");
 		Usuario editAdmin = entityManager.find(Usuario.class, edit.getID());
 		if(!editAdmin.getRol().equals("admin")){			
