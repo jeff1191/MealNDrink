@@ -60,7 +60,6 @@ function activaBotonEliminacionTag() {
 function rellenaDatosComentario() {
 	var nombreC = $(this).attr("id").substring("delComment_".length); 
 	$("#idEliminarComentario").attr("value" ,nombreC);
-
 }
 function activaBotonEliminacionComentario() {
 	var idComentario=$("#idEliminarComentario").attr("value");
@@ -410,7 +409,8 @@ $(function() {
 									<div id="TodosTags" class="TodosTags">	
 										<c:forEach items="${alltagsLocal}" var="i">
 											<h4>${i}</h4> 					               				
-								         	<button id="delTags_${i}" value="${i}"  class="rellenaDatosTags" data-toggle="modal" data-target="#ModalDelTags" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>					               				
+								         	<button id="delTags_${i}" value="${i}"  class="rellenaDatosTags" data-toggle="modal" data-target="#ModalDelTags" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
+								         	<HR width=50% align="left">				               				
 							            </c:forEach>	
 									</div>
 								</div>

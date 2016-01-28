@@ -758,6 +758,58 @@ public class HomeController {
 			return "redirect:"+pagina+"?id="+idUser;
 		
 	}
+	@Transactional
+	@RequestMapping(value = "/nuevoUsuario", method = RequestMethod.POST)
+	public String nuevoUsuario(@RequestParam("fileToUpload") MultipartFile photo,
+    		@RequestParam("name") String nombreUsuario,
+    		@RequestParam("pwd") String pass,
+    		@RequestParam("email") String email,
+    		@RequestParam("tel") String telefono,
+    		@RequestParam("rol") String rol,    		 
+    		Model model){
+		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
+		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
+	
+		//UBICACI�N!!!!!!!!!!!!!		
+		Usuario usuario = creaUsuario(nombreUsuario, email, telefono, rol, pass);
+		entityManager.persist(usuario);
+		entityManager.flush();
+        if (!photo.isEmpty()) {
+            try {
+                byte[] bytes = photo.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(
+                        		new FileOutputStream(
+                        				ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
+                stream.write(bytes);
+                stream.close();
+            } catch (Exception e) {
+            	return "redirect:administracion";
+            }
+        } else { //no ha seleccionado foto, poner la por defecto
+          
+    	    	BufferedInputStream in = new BufferedInputStream(
+    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+    	    	BufferedOutputStream stream = null;
+				try {
+					stream = new BufferedOutputStream(
+							new FileOutputStream(
+									ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					stream.write(IOUtils.toByteArray(in));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+        }
+		
+			return "redirect:administracion";	
+    }
 	
 	@Transactional
 	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
@@ -810,6 +862,14 @@ public class HomeController {
 			local.setTags(nuevo);
 			entityManager.persist(local);	
 			return "AddNuevoTag";
+    }
+	
+	@RequestMapping(value = "/editarTag", method = RequestMethod.POST)
+	public String editarTag(@RequestParam("nombreTagEdit") String nombreTagEdit,
+			@RequestParam("nombreViejo") String nombreViejo, 
+			Model model){
+			//System.err.println(nombreTagEdit+":"+nombreViejo);
+			return "editarTag";
     }
 	
 	@Transactional

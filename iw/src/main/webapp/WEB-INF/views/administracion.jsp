@@ -36,11 +36,32 @@ function activaBotonAddLocal(){
 	});
 	
 }
+function activaBotonRellenaTag() {
+	var nombreTagEdit = $(this).attr("id").substring("editTags_".length); 
+	$("#nameEditTag").attr("value" ,nombreTagEdit);
+}
+function activaBotonEditTag() {
+	var nombreTagEdit = $("#nameEditTag").attr("value");
+	var nombreViejo =$(this).attr("id").substring("editTags_".length); 
+	    //Se verifica que el valor del campo este vacio y se eliminan los espacios
+	 
+	    if (nombreTagEdit.trim() === ''){
+	    	$('#TodosTags').load('administracion div#TodosTags');
+	    }
+		else{
+			$.post("editarTag",{nombreTagEdit:nombreTagEdit,nombreViejo:nombreViejo},function(data){
+				$('#TodosTags').load('administracion div#TodosTags');
+			});	
+			
+		}
+}
 $(function() {	
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 	$("body").on("click", ".eliminaUsuario", null, activaBotonEliminacionUsuario);
 	$("body").on("click", ".anyadirLocal", null, activaBotonAddLocal);
+	$("body").on("click", ".rellenaEditTag", null, activaBotonRellenaTag);
+	$("body").on("click", ".editaTag", null, activaBotonEditTag);
 })
 </script>
 
@@ -106,28 +127,28 @@ $(function() {
 						        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo usuario</h4>
 						      </div>
 						      <div class="modal-body">
-								<form role="form">
+								<form role="form" method="POST" enctype="multipart/form-data" action="nuevoUsuario">
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" required="required" id="name" placeholder="Introduce un nuevo nombre">
+									<input type="text" class="form-control" required="required" id="name" name="name" placeholder="Introduce un nuevo nombre">
 								  </div>
 								  <div class="form-group">
 									<label for="pwd">Contraseña:</label>
-									<input type="password" class="form-control" required="required" id="pwd" placeholder="Introduce una nueva contraseña">
+									<input type="password" class="form-control" required="required" id="pwd" name="pwd" placeholder="Introduce una nueva contraseña">
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
-									<input type="email" class="form-control" id="email" required="required" placeholder="Introduce un nuevo email">
+									<input type="email" class="form-control" id="email" required="required" name="email" placeholder="Introduce un nuevo email">
 								  </div>
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" id="tel" required="required" placeholder="Introduce un nuevo telefono">
+									<input type="tel" class="form-control" id="tel" required="required" name="tel" placeholder="Introduce un nuevo telefono">
 								  </div>
 								  <div class="form-group">
-									<label for="tag">Rol:</label>
-									 <select class="form-control" id="tag">
+									<label for="rol">Rol:</label>
+									 <select class="form-control" id="rol" name="rol">
 									  <option value="usuario">Usuario</option>
-									  <option value="local">Local</option>
+									  <option value="local">Usuario con comercio</option>
 									</select>						
 								  </div>
 								  <div class="form-group">
@@ -248,7 +269,7 @@ $(function() {
 						        <h4 class="modal-title" id="myModalLabel"> Editar local</h4>
 						      </div>
 						      <div class="modal-body">
-								<form role="form" method="POST" enctype="multipart/form-data" action="nuevoLocal">
+								<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
 								<input hidden="submit" name="redireccion" value="administracion" />
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
@@ -292,9 +313,12 @@ $(function() {
 						<!-- End Modal Edit Local-->	
         			<!-- tags -->
      				<div class="tab-pane fade" id="ltags"> 							
+						<h4>Editar tags disponibles:</h4><br>					
 						<div id="TodosTags" class="TodosTags">	
 							<c:forEach items="${alltags}" var="i">
-								<h4>${i}</h4>		               				
+								<h4>${i}</h4> 					               				
+					         	<button id="editTags_${i}" value="${i}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>	
+					         	<HR width=50% align="left">				               				
 				            </c:forEach>	
 						</div>
 					</div>
@@ -329,6 +353,32 @@ $(function() {
 						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 						</form>	
 					  </div>
+					  <!-- Modal Edit Tags-->
+						<div class="modal fade" id="ModalEditTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+						  <div class="modal-dialog modal-sm" role="document">
+						    <div class="modal-content">
+										    
+						    		<div class="modal-header">
+						    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        	<h4 class="modal-title" id="editModalLabel"> Editar tag</h4>
+
+									</div>
+									<div class="modal-body">									
+										<form role="form" id="formEditTag">
+										<div class="form-group">
+											<label for="name">Tag:</label>
+											<input type="text" class="form-control" required="required" value="" id="nameEditTag" name="nameEditTag">
+										  </div>
+											<div class="modal-footer">
+												<button id="idEditarTag" value ="" type="submit" class="editaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+												<button type="submit" data-dismiss="modal">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					<!-- End Modal Edit Tags-->
 					</div>
 
 				</div>
