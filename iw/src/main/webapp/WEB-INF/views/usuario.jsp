@@ -159,7 +159,7 @@ function editarDatos(){
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-                            <img src="usuariosFoto?id=${usuario.foto}" height="275" width="275">                              
+                            <img src="usuariosFoto?id=${usuario.ID}.jpg" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3>Mis datos</h3>
 							<p>${usuario.email}</p>
@@ -178,7 +178,8 @@ function editarDatos(){
 									
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="reservas">
-									<c:forEach items="${usuario.reservas}" var="i">
+									<div id="TodasReservas" class="TodasReservas">
+										<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
 												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.foto}">
@@ -333,8 +334,9 @@ function editarDatos(){
 													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
 												</div>
 												<div class="media-body">
-													<h4 class="media-heading">Comentario</h4>
-													<p>${i.texto}</p>
+													<br>
+													<h4 class="media-heading">${i.local.nombre} </h4>
+													<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
 													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												</div>
 												</div>

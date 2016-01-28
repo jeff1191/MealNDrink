@@ -18,21 +18,21 @@
 						<div class="form-group">
 				        	<label class="control-label col-lg-4" for="reservas"> Comensales</label>
 				        	<div class="col-lg-6">
-				        		<input id="reservas" name="reservas" class="form-control" required="required" 
+				        		<input id="capacidad" name="capacidad" class="form-control" required="required" 
 				        		type="number" min=1 max="${infoOferta.capacidadTotal}" value="" placeholder="¿Cuantos sois?"/>
 			            	</div>
 			            </div>			            
 			            <div class="form-group">
 				        	<label class="control-label col-lg-4" for="datepicker"> Fecha</label>
 				        	<div class="col-lg-6">
-								<input id="datepicker" name="datepicker" class="form-control" required="required" 
+								<input id="datepicker" name="fecha" class="form-control" required="required" 
 								placeholder="Selecciona una fecha" value="" />	
 							</div>									        	
 			            </div>				            
 			             <div class="form-group">
 				        	<label class="control-label col-lg-4" for="timepicker"> Hora</label>
 				        	<div class="col-lg-6">
-				        		<input id="timepicker" name="timepicker" class="form-control" required="required" 
+				        		<input id="hora" name="hora" class="form-control" required="required" 
 				        		type="text" placeholder="Selecciona una hora" value="" />
 				        	</div>						
 						</div>		
