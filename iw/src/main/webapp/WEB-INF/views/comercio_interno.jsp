@@ -178,9 +178,6 @@ $(function() {
 							<p>${(local.usuario).email}</p>
 							<p>${(local.usuario).telefono}</p>
 
-                        	<h3>Tags</h3>
-							<p>${local.tags}</p>
-
                             <div>
 								<h3>Puntuación</h3>
 								<h2>${local.puntuacion}</h2>
@@ -457,7 +454,7 @@ $(function() {
 											<input type="text" class="form-control" id="editHorarioLocal" required="required" name="editHorarioLocal" value="${local.horario}">
 										  </div>
 										   <div class="form-group">
-											<label for="dir">Dirección:</label>
+											<label for="dir">Direccion:</label>
 											<input type="text" class="form-control" id="editDirLocal" required="required" name="editDirLocal" value="${local.direccion}">
 										  </div>
 										  <div class="form-group">
@@ -465,7 +462,7 @@ $(function() {
 											<input type="email" class="form-control" id="editEmailLocal" required="required"  name="editEmailLocal" value="${local.email}">
 										  </div>
 										  <div class="form-group">
-											<label for="tel">Teléfono:</label>
+											<label for="tel">Telefono:</label>
 											<input type="tel" class="form-control" id="editTelLocal" required="required"  name="editTelLocal" value="${local.telefono}">
 										  </div>
 										  <div class="form-group">
@@ -495,7 +492,7 @@ $(function() {
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo tag</h4>
+								        <h4 class="modal-title" id="myModalLabel"> Anadir un nuevo tag</h4>
 								      </div>
 										
 								      <div class="modal-body">
@@ -531,7 +528,7 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>¿Está seguro que quiere eliminar este tag?</p>
+											<p>�Esta seguro que quiere eliminar este tag?</p>
 												<div class="modal-footer">
 													<button id="idEliminarTags" value ="" type="submit" class="eliminaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
 													<button type="submit" data-dismiss="modal">Cancel</button>
@@ -555,7 +552,7 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>¿Está seguro que quiere eliminar este comentario?</p>
+											<p>�Esta seguro que quiere eliminar este comentario?</p>
 												<div class="modal-footer">
 													<button id="idEliminarComentario" value ="" type="submit" class="eliminaComentario" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
 													<button type="submit" data-dismiss="modal">Cancel</button>

@@ -10,27 +10,27 @@ INSERT INTO USUARIO VALUES (8, 'bach1243@chachi.com', '$2a$10$oIfHz5GRXI6uJ2yYEl
 INSERT INTO USUARIO VALUES (9, 'dormirlonSensual@snoopy.com', '$2a$10$oPtEHhBxHLTYxZD5sgyBP.AvZs7Zv5qr2AeoqEYZBBtFASx4igdx2', 'Pablito', 'user', '676439012') /*pa1234*/
 INSERT INTO USUARIO VALUES (10, 'callMeMaybe@tux.com',  '$2a$10$4jlxSkFm/fl2tryEbCAxiuYBEeLTV/dryHzf5XzJnJBVdFl4HURYS', 'Eloisa', 'user', '663214658') /*isaelo96*/
 
---( "ID", "DIRECCION", "EMAIL", "FOTO", "HORARIO", "NOMBRE", "PUNTUACION", "TAGS", "TELEFONO", "UBICACION", "USUARIO" ) 
-INSERT INTO LOCAL VALUES (1, 'Calle concha espina nº10','elmaildeDani@dan.da', '10-23', 'Bistro', 5, 'comida_mexicana,comida_india','111-111-111',3)
-INSERT INTO LOCAL VALUES (2, 'Paseo del valle nº43', 'elmaildeTapep@taew.da','10-23', 'Tapas', 5, 'comida_china', '111-111-111',3)
-INSERT INTO LOCAL VALUES (3, 'Calle mordor nº123', 'juanluar@cerve.ce', '9-20', 'Cubos y tapas', 5, 'comida_mexicana,comida_americana,comida_espa�ola','222-222-222', 4)
-INSERT INTO LOCAL VALUES (4, 'Calle alpargata nº21', 'juanluZam@zamap.za','22-4', 'A zampar!', 5, 'comida_espa�ola,comida_india', '333-333-333',4)
-INSERT INTO LOCAL VALUES (5, 'Avenida puerto principe nº21','sabrosito@sabroseo.sa', '14-22', '100 sabrositos', 5, 'comida_libanesa,comida_espa�ola,comida_mexicana', '444-444-444', 4)
-INSERT INTO LOCAL VALUES (6, 'Calle de la sabrosusa nº3', 'filetonton@ton.to','9-21', 'Fileton', 5, 'comida_mexicana,comida_china', '555-555-555', 5)
+--( "ID", "DIRECCION", "EMAIL", "FOTO", "HORARIO", "NOMBRE", "PUNTUACION", "TELEFONO", "UBICACION", "USUARIO" ) 
+INSERT INTO LOCAL VALUES (1, 'Calle concha espina n10','elmaildeDani@dan.da', '10-23', 'Bistro', 5, '111-111-111',3) --'comida_mexicana,comida_india',
+INSERT INTO LOCAL VALUES (2, 'Paseo del valle n43', 'elmaildeTapep@taew.da','10-23', 'Tapas', 5, '111-111-111',3) --'comida_china', 
+INSERT INTO LOCAL VALUES (3, 'Calle mordor n123', 'juanluar@cerve.ce', '9-20', 'Cubos y tapas', 5, '222-222-222', 4) --'comida_mexicana,comida_americana,comida_espanola',
+INSERT INTO LOCAL VALUES (4, 'Calle alpargata n21', 'juanluZam@zamap.za','22-4', 'A zampar!', 5, '333-333-333',4) --'comida_espanola,comida_india', 
+INSERT INTO LOCAL VALUES (5, 'Avenida puerto principe n21','sabrosito@sabroseo.sa', '14-22', '100 sabrositos', 5, '444-444-444', 4) --'comida_libanesa,comida_espanola,comida_mexicana', 
+INSERT INTO LOCAL VALUES (6, 'Calle de la sabrosusa n3', 'filetonton@ton.to','9-21', 'Fileton', 5, '555-555-555', 5) --'comida_mexicana,comida_china', 
 
 --( "ID", "CAPACIDADACTUAL", "CAPACIDAD_TOTAL", "DESCRIPCION", "FECHA_LIMITE", "FOTO", "NOMBRE", "TAGS, "LOCAL")
-INSERT INTO OFERTA VALUES (1, 6, 10, 'Toma todas tus copas por 4 euros', '2015-07-02 06:14:00',  'Copas a 4eur', 1, 'comida_mexicana,comida_china', 1)
-INSERT INTO OFERTA VALUES (2, 0, 11, 'Rico y sabroso. Ven a cenar aqui', '2015-07-02 06:14:00',  'Riconudo', 0, 'comida_india,comida_china', 1)
-INSERT INTO OFERTA VALUES (3, 17, 30, 'Cena 100% romantica', '2015-07-02 06:14:00', 'Ven con tu pareja', 1, 'plan_romantico', 1)
-INSERT INTO OFERTA VALUES (4, 0, 20, 'Chewbacca te cantara el cumpleaños feliz', '2016-07-02 06:14:00',  'Celebra tu cumple', 0, 'comida_mexicana,comida_rusa', 2)
-INSERT INTO OFERTA VALUES (5, 8, 14, 'Vente de fiesta con nosotros', '2015-07-02 06:14:00', 'Flow non stop', 1, 'comida_china', 2)
-INSERT INTO OFERTA VALUES (6, 0, 13, 'Tapeo del bueno y barato', '2015-07-02 06:14:00', 'Tapas gratis', 1, 'comida_española,comida_mexicana,comida_rusa', 3)
-INSERT INTO OFERTA VALUES (7, 0, 18, 'Ponte bien fino, hasta que revientes', '2015-07-02 06:14:00','Come lo que quieras', 1, 'comida_china,comida_rusa', 4)
-INSERT INTO OFERTA VALUES (8, 13, 22, 'El refill mas molon', '2016-07-02 06:14:00', 'Rellena tu bebida', 1, 'comida_turca,comida_india', 4)
-INSERT INTO OFERTA VALUES (9, 0, 78, 'Qué ricas estas alitas', '2017-07-02 06:14:00', 'Alitas con tu primera consumicion', 0, 'comida_picante', 5)
-INSERT INTO OFERTA VALUES (10, 3, 9, 'Invitate a unas cañas ;)', '2015-07-02 06:14:00', 'Invitar es facil', 1, 'comida_italiana,comida_francesa', 1)
-INSERT INTO OFERTA VALUES (11, 0, 11, 'Gran variedad de vinos de la tierra', '2017-07-02 06:14:00', 'Nos vamos de potes?', 0, 'comida_turca, comida_española', 3)
-INSERT INTO OFERTA VALUES (12, 0, 5, 'El mejor jamon serrano de la ciudad', '2015-07-02 06:14:00', 'Al jamon lo invito yo', 1, 'comida_italiana', 5)
+INSERT INTO OFERTA VALUES (1, 6, 10, 'Toma todas tus copas por 4 euros', '2015-07-02 06:14:00',  'Copas a 4 euros', 1) 
+INSERT INTO OFERTA VALUES (2, 0, 11, 'Rico y sabroso. Ven a cenar aqui', '2015-07-02 06:14:00',  'Riconudo', 1)  
+INSERT INTO OFERTA VALUES (3, 17, 30, 'Cena 100% romantica', '2015-07-02 06:14:00', 'Ven con tu pareja', 1) 
+INSERT INTO OFERTA VALUES (4, 0, 20, 'Chewbacca te cantara el cumpleanos feliz', '2016-07-02 06:14:00', 'Celebra tu cumple', 2)
+INSERT INTO OFERTA VALUES (5, 8, 14, 'Vente de fiesta con nosotros', '2015-07-02 06:14:00', 'Flow non stop', 2) 
+INSERT INTO OFERTA VALUES (6, 0, 13, 'Tapeo del bueno y barato', '2015-07-02 06:14:00', 'Tapas gratis', 3) 
+INSERT INTO OFERTA VALUES (7, 0, 18, 'Ponte bien fino, hasta que revientes', '2015-07-02 06:14:00','Come lo que quieras',  4) 
+INSERT INTO OFERTA VALUES (8, 13, 22, 'El refill mas molon', '2016-07-02 06:14:00', 'Rellena tu bebida', 4) 
+INSERT INTO OFERTA VALUES (9, 0, 78, 'Que ricas estas alitas', '2017-07-02 06:14:00', 'Alitas con tu primera consumicion', 5)  
+INSERT INTO OFERTA VALUES (10, 3, 9, 'Invitate a unas canas ;)', '2015-07-02 06:14:00', 'Invitar es facil', 1)
+INSERT INTO OFERTA VALUES (11, 0, 11, 'Gran variedad de vinos de la tierra', '2017-07-02 06:14:00', 'Nos vamos de potes?', 3)  
+INSERT INTO OFERTA VALUES (12, 0, 5, 'El mejor jamon serrano de la ciudad', '2015-07-02 06:14:00', 'Al jamon lo invito yo', 5) 
 
 --( "ID", "CODIGO_QR", "FECHA_RESERVA", "NUM_PERSONAS", "VALIDADO", "OFERTA", "USUARIO" )
 INSERT INTO RESERVA VALUES (1, 'QR1', '2016-01-02 06:14:00', 5, 1, 1, 2)
@@ -50,3 +50,41 @@ INSERT INTO COMENTARIO VALUES (5, '2015-07-02 06:14:00', 'Suele estar muy lleno'
 INSERT INTO COMENTARIO VALUES (6, '2015-07-02 06:14:00', 'No se parece en nada a la descripcion. Es horrible', 5, 9)
 INSERT INTO COMENTARIO VALUES (7, '2015-07-02 06:14:00', 'Fantastico local', 5, 10)
 INSERT INTO COMENTARIO VALUES (8, '2015-07-02 06:14:00', 'Aqui conoci a mi mujer. Me trae muy buenos recuerdo cuando voy', 2, 7)
+
+--( "ID", "TEXTO" )
+INSERT INTO TAGS VALUES (1, 'plan_romantico')
+INSERT INTO TAGS VALUES (2, 'comida_india')
+INSERT INTO TAGS VALUES (3, 'comida_mexicana')
+INSERT INTO TAGS VALUES (4, 'comida_china')
+INSERT INTO TAGS VALUES (5, 'comida_rusa')
+INSERT INTO TAGS VALUES (6, 'comida_espanola')
+INSERT INTO TAGS VALUES (7, 'comida_turca')
+INSERT INTO TAGS VALUES (8, 'comida_picante')
+INSERT INTO TAGS VALUES (9, 'comida_italiana')
+INSERT INTO TAGS VALUES (10, 'comida_francesa')
+
+--( "OFERTA", "TAGS" )
+INSERT INTO OFERTA_TAGS VALUES (1, 3)
+INSERT INTO OFERTA_TAGS VALUES (1, 4)
+INSERT INTO OFERTA_TAGS VALUES (2, 9)
+INSERT INTO OFERTA_TAGS VALUES (2, 8)
+INSERT INTO OFERTA_TAGS VALUES (3, 1)
+INSERT INTO OFERTA_TAGS VALUES (4, 5)
+INSERT INTO OFERTA_TAGS VALUES (4, 4)
+INSERT INTO OFERTA_TAGS VALUES (5, 2)
+INSERT INTO OFERTA_TAGS VALUES (6, 5)
+INSERT INTO OFERTA_TAGS VALUES (6, 6)
+INSERT INTO OFERTA_TAGS VALUES (6, 4)
+INSERT INTO OFERTA_TAGS VALUES (7, 3)
+INSERT INTO OFERTA_TAGS VALUES (7, 8)
+INSERT INTO OFERTA_TAGS VALUES (8, 2)
+INSERT INTO OFERTA_TAGS VALUES (8, 7)
+INSERT INTO OFERTA_TAGS VALUES (9, 6)
+INSERT INTO OFERTA_TAGS VALUES (10, 8)
+INSERT INTO OFERTA_TAGS VALUES (10, 10)
+INSERT INTO OFERTA_TAGS VALUES (11, 9)
+INSERT INTO OFERTA_TAGS VALUES (12, 5)
+INSERT INTO OFERTA_TAGS VALUES (12, 7)
+
+
+

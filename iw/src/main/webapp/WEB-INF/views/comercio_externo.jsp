@@ -19,9 +19,6 @@
 							<p>${(infoLocal.usuario).telefono}</p>
 							<p>Preguntar por ${(infoLocal.usuario).nombre}</p>
 
-							<h3>Tags</h3>
-							<p>${infoLocal.tags}</p>
-
 							<div>
 								<h3>Puntuación</h3>
 								<h2>${infoLocal.puntuacion}/5</h2>

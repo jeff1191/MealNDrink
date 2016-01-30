@@ -60,21 +60,21 @@
 			</div>
 				
 				<div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<label for="name">Apodo:</label>
-					<input required type="text" class="form-control-center" id="regname" name="regname" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
+					<input required type="text" class="form-control" id="regname" name="regname" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
 				  </div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<label for="pwd">Contrasena:</label>
-					<input required type="password" class="form-control-center" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
+					<input required type="password" class="form-control" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
 				  </div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<label for="email">Email:</label>
 					<input required type="email" class="form-control" id="regemail" name="regemail" placeholder="Introduce un nuevo email">
 				  </div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<label for="tel">Telefono:</label>
-					<input required type="tel" class="form-control-center" id="regtel" name="regtel" placeholder="Introduce un nuevo telefono">
+					<input required type="tel" class="form-control" id="regtel" name="regtel" placeholder="Introduce un nuevo telefono">
 				  </div>
 				  <div class="form-group-center">
 					<form id="formRegis" action="${prefix}registroUsuarioFoto" method="post" name="formRegis" enctype="multipart/form-data">
@@ -83,6 +83,7 @@
 				  	</form>	
 				  </div>
 				  <div>
+				  <br>
 				  	<label for="file">Que tipo de actividad tendra en MealNDrink?:</label>
 					<select required id="regRol" name="regRol">
 						<option value="cliente">Cliente</option>

@@ -27,7 +27,6 @@ public class Local {
 	
 	private long ID;
 	private long puntuacion;
-	private String tags;
 	private String direccion;
 	private String horario;
 	private String email;
@@ -36,7 +35,6 @@ public class Local {
 	private List<Comentario> comentarios;
 	private Usuario usuario;
 	private String nombre;
-
 	
 	public Local() {
 		this.puntuacion=5;
@@ -51,29 +49,6 @@ public class Local {
 	public void setID(long iD) {
 		ID = iD;
 	}
-	public String getTags() {
-		return tags;
-	}
-
-	public String[] dameTagsSeparados() {
-		return tags.split(",");
-	}
-	
-	public void ponTagsSeparados(String[] ts) {		
-		StringBuilder sb = new StringBuilder();		
-		for(String t : ts){
-			sb.append(t.trim()).append(" ");
-		}
-		if (sb.length()>0) {
-			sb.setLength(sb.length()-1);
-		}
-		tags = sb.toString();
-	}
-	
-	public void setTags(String tags) {		
-		this.tags = tags;
-	}
-	
 
 	public String getDireccion() {
 		return direccion;
@@ -149,4 +124,5 @@ public class Local {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+
 }

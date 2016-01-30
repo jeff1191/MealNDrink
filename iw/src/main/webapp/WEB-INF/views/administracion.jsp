@@ -64,7 +64,7 @@ function activaBotonEditTag() {
 	var nombreViejo =$(this).attr("id").substring("editTags_".length); 
 	    //Se verifica que el valor del campo este vacio y se eliminan los espacios
 	 
-	    if (nombreTagEdit.trim() === ''){
+	    if (nombreTagEdit.trim() == ''){
 	    	$('#TodosTags').load('administracion div#TodosTags');
 	    }
 		else{

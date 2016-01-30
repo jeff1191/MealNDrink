@@ -286,11 +286,7 @@ function editarDatos(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
-								  </div>
-								  <div class="form-group">
-									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
-								  </div>
+								  </div>								  
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
@@ -361,18 +357,14 @@ function editarDatos(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
-								  </div>
-								  <div class="form-group">
-									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
-								  </div>
+								  </div>								 
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 								  </div>
-								  <div class="modal-footer">						      	 $("#formRegis").submit();
+								  <div class="modal-footer">						      	
 									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+									  <button type="submit" class="btn" data-dismiss="modal">Cancelar</button>
 							      </div>	
 							      </form>											
 						      </div>

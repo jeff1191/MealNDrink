@@ -68,7 +68,7 @@ public class HomeController {
 	@PersistenceContext
 	private EntityManager entityManager;
 	String[] allTags = {"plan_romantico", "comida_india", "comida_mexicana", "comida_china", "comida_rusa",
-			"comida_española", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
+			"comida_espanola", "comida_turca", "comida_picante", "comida_italiana", "comida_francesa"};
 	
 
 	//tags por defecto, en nuestro sistema ya viene incorporado 
@@ -259,8 +259,13 @@ public class HomeController {
 		idsLocals.add((long) 5);
 		idsLocals.add((long) 2);
 		idsLocals.add((long) 3);	
+		
+		
+		//List<Object> tmp = entityManager.createNamedQuery("localesConMasReservas").setMaxResults(3).getResultList();				
+		//System.out.println(tmp.size());		
 	
-		model.addAttribute("alltags", allTags);	
+		//model.addAttribute("alltags", allTags);	
+		model.addAttribute("alltags", entityManager.createNamedQuery("allTags").getResultList());
 		model.addAttribute("platos", auxOffers);	
 		model.addAttribute("locales", auxLocals);
 		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
@@ -504,7 +509,7 @@ public class HomeController {
 		model.addAttribute("pageTitle", local.getNombre());
 		model.addAttribute("active", "comercio_interno");
 		model.addAttribute("local", local);
-		model.addAttribute("alltagsLocal", local.dameTagsSeparados());	
+		//model.addAttribute("alltagsLocal", local.getTags());	
 		model.addAttribute("alltags", allTags);	
 		return "comercio_interno";
 	}	
@@ -541,9 +546,8 @@ public class HomeController {
 		offer.setFechaLimite(timestamp);
 		offer.setCapacidadTotal(capacidad);
 		offer.setDescripcion(descripcion);
-		offer.setTags(tag+",");		
+		//offer.setTags(tag+","); // esto se hace ahora de otra forma
 		offer.setLocal(local);
-		offer.setOfertaMes(false);
 		local.getOfertas().add(offer);
 		entityManager.persist(offer);
 		entityManager.flush();
@@ -617,8 +621,7 @@ public class HomeController {
 		//offer.setFechaLimite(timestamp);
 		offer.setCapacidadTotal(capacidad);
 		offer.setDescripcion(descripcion);	
-		offer.setLocal(local);
-		offer.setOfertaMes(false);
+		offer.setLocal(local);		
 		local.getOfertas().add(offer);
 		entityManager.persist(offer);
 		entityManager.flush();
@@ -664,7 +667,7 @@ public class HomeController {
 		local.setDireccion(direccion);
 		local.setHorario(horario);
 		local.setUsuario(usuario);
-		local.setTags(tag+",");
+		//local.setTags(tag+","); //esto ahora es diferente
 		local.setEmail(email);
 		local.setTelefono(telefono);
 		entityManager.persist(local);
@@ -975,33 +978,33 @@ public class HomeController {
 	public String addNuevoTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String addName, Model model){
 			Local local= entityManager.find(Local.class, idLocal);
 			//FALTA ENVIAR ERRORES
-			String nuevo= local.getTags();
-			nuevo+=","+addName;			
-			local.setTags(nuevo);
+			//String nuevo= local.getTags();
+			//nuevo+=","+addName;			
+			//local.setTags(nuevo); //esto ahora es diferente
 			entityManager.persist(local);	
 			return "AddNuevoTag";
     }
 	
 	@RequestMapping(value = "/editarTag", method = RequestMethod.POST)
-	public String editarTag(@RequestParam("nombreTagEdit") String nombreTagEdit,
+	public void editarTag(@RequestParam("nombreTagEdit") String nombreTagEdit,
 			@RequestParam("nombreViejo") String nombreViejo, 
 			Model model){
-			//System.err.println(nombreTagEdit+":"+nombreViejo);
-			return "editarTag";
+			System.err.println(nombreTagEdit+":"+nombreViejo);
+			//return "editarTag";
     }
 	
 	@Transactional
 	@RequestMapping(value = "/eliminarTag", method = RequestMethod.POST)
 	public String eliminarTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String delName, Model model){
 			Local local= entityManager.find(Local.class, idLocal);
-			local.getTags().replaceAll(delName, "");
+			//local.getTags().replaceAll(delName, "");
 			//principio de una coma(mirar bbdd)
-			String ret = local.getTags().replaceAll(delName+",", "");
+			//String ret = local.getTags().replaceAll(delName+",", "");
 			//siguiente de una coma(mirar bbdd)
-			ret = ret.replaceAll(","+delName, "");
+			//ret = ret.replaceAll(","+delName, "");
 			//cuando solamente tienes un elem, ponemos una coma porque en comercio interno invocamos a dameTagsSeparador(split)
-			ret = ret.replaceAll(delName, ","); 
-			local.setTags(ret);
+			//ret = ret.replaceAll(delName, ","); 
+			//local.setTags(ret); // esto ahora es diferente
 			entityManager.persist(local);	
 			return "eliminarTag";
     }
@@ -1067,7 +1070,8 @@ public class HomeController {
 		}
 		
 		model.addAttribute("platos", lastOffers);
-		model.addAttribute("alltags", allTags);
+		model.addAttribute("alltags", entityManager.createNamedQuery("allTags").getResultList());
+		//model.addAttribute("alltags", allTags);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
@@ -1085,8 +1089,8 @@ public class HomeController {
 		//Ofertas del mes: son aquellas que han superado la mitad de su capacidad
 		
 		model.addAttribute("platos", entityManager.createNamedQuery("monthlySpecials").getResultList());
-	
-		model.addAttribute("alltags", allTags);
+		model.addAttribute("alltags", entityManager.createNamedQuery("allTags").getResultList());
+		//model.addAttribute("alltags", allTags);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
@@ -1095,21 +1099,7 @@ public class HomeController {
 		return "ofertasMes";
 	}	
 
-	/**
-	 * A not-very-dynamic view that shows an "about us".
-	 */
-	@RequestMapping(value = "/about", method = RequestMethod.GET)
-	@Transactional
-	public String about(Locale locale, Model model) {
-		/*logger.info("User is looking up 'about us'");
-		@SuppressWarnings("unchecked")
-		List<User> us = (List<User>)entityManager.createQuery("select u from User u").getResultList();
-		System.err.println(us.size());
-		model.addAttribute("users", us);
-		model.addAttribute("pageTitle", "Quienes somos");*/
 	
-		return "about";
-	}	
 	
 	/**
 	 * Checks the anti-csrf token for a session against a value

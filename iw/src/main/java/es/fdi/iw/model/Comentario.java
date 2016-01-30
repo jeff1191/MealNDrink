@@ -6,8 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
-@Entity
+@Entity	
+@NamedQuery(name="localesConMasReservas", 
+		    query="select o.local, count(o.texto) from Comentario o group by o.local order by count(o.texto) desc")
+
 public class Comentario {
 
 	private long ID;

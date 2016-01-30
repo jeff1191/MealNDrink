@@ -10,7 +10,7 @@
             <ul class="portfolio-filter text-center">
                 <li><a class="btn btn-default active" href="#" data-filter="*">Todas las ofertas</a></li>
                 <c:forEach items="${alltags}" var="i">
-                	<li><a class="btn btn-default" href="#" data-filter=".${i}">#${i}</a></li>
+                	<li><a class="btn btn-default" href="#" data-filter=".${i.texto}">#${i.texto}</a></li>
                 </c:forEach>
             </ul><!--/#portfolio-filter-->
            
