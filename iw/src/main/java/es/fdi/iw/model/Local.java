@@ -27,7 +27,6 @@ public class Local {
 	
 	private long ID;
 	private long puntuacion;
-	private String ubicacion;
 	private String tags;
 	private String direccion;
 	private String horario;
@@ -106,14 +105,6 @@ public class Local {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	
-	public String getUbicacion() {
-		return ubicacion;
-	}
-
-	public void setUbicacion(String ubicacion) {
-		this.ubicacion = ubicacion;
 	}
 	@OneToMany(targetEntity=Oferta.class, cascade=CascadeType.ALL)
 	@JoinColumn(name="local")

@@ -205,6 +205,11 @@ $(function() {
 								  	<br></br>
 								  </div>
 									  <div id="TodasOfertas" class="TodasOfertas">
+									  <c:choose>
+										<c:when test="${empty local.ofertas}">	
+											<p><b>Este local no tiene ninguna oferta</b></p>
+										</c:when>
+										<c:otherwise>
 											<c:forEach items="${local.ofertas}" var="i">
 												<div class="media">
 													<div class="pull-left">
@@ -213,14 +218,16 @@ $(function() {
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 													<p>${i.descripcion}</p>	
-													<p>Número de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
+													<p>Numero de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
 													<p>${i.fechaLimite}</p>												
 													<button type="submit" id="edit_${i.nombre}/,${i.fechaLimite}/,${i.capacidadTotal}/,${i.descripcion}/,${i.ID}" value="${i}" class="rellenarEditarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 													<button id="del_${i.ID}" value="${i}"  class="rellenaDatosEliminarOferta" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												
 												</div>
 												</div>
-											</c:forEach>																		
+											</c:forEach>
+										</c:otherwise>
+										</c:choose>																		
 										</div>
 									<br></br>
 									
@@ -232,7 +239,7 @@ $(function() {
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        <h4 class="modal-title" id="addModalLabel"> Añadir una nueva oferta</h4>
+								        <h4 class="modal-title" id="addModalLabel"> Anadir una nueva oferta</h4>
 								      </div>
 								      <div class="modal-body">
 										<form id="formAddOferta" role="form" method="POST" enctype="multipart/form-data" action="nuevaOferta">
@@ -413,19 +420,25 @@ $(function() {
 									
 									
 									<div id="TodosComentarios" class="TodosComentarios">
-									<c:forEach items="${local.comentarios}" var="i">
-										<div class="media">
-										<div class="pull-left">
-											<img class="media-object" src="localesFoto?id=${i.local.ID}.jpg" height="135" width="180"> 
-										</div>
-										
-										<div class="media-body">											
-											<h4 class="media-heading">Comentario #1</h4>
-											<p>${i.texto}</p>
-											<button id="delComment_${i.ID}" value="${i.ID}"  class="rellenaDatosComentario" data-toggle="modal" data-target="#ModalDelComentario" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
-										</div>
-										</div>
-									</c:forEach>
+									<c:choose>
+									<c:when test="${empty local.comentarios}">	
+										<p><b>Ningun usuario ha hecho un comentario sobre tu local</b></p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach items="${local.comentarios}" var="i">
+											<div class="media">
+											<div class="pull-left">
+												<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180"> 
+											</div>
+											<div class="media-body">											
+												<h4 class="media-heading">${(i.usuario).nombre}</h4>
+												<p>${i.texto} </br> <small>${i.fecha}</small></p>
+												<button id="delComment_${i.ID}" value="${i.ID}"  class="rellenaDatosComentario" data-toggle="modal" data-target="#ModalDelComentario" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
+											</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+									</c:choose>
 									
 									</div>
 									

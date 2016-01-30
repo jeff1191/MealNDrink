@@ -23,6 +23,17 @@ function activaBotonEliminacionComentario() {
 			$('#TodosComentarios').load('usuario?id='+idUsuario+' div#TodosComentarios');
 	});
 }
+function rellenarQRModal() {
+	var codeQR = $(this).attr("id").substring("edit_".length);	
+
+	$("#codeQR").attr("value" , $(o).qrcode({
+        "render": "div",
+        "size": 100,
+        "color": "#3a3",
+        "text": codeQR
+    }));
+
+}
 $(function() {
 	
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
@@ -36,6 +47,7 @@ $(function() {
             "text": $(o).text()
         })
     });
+   
     
     $("#editarUsuario").click(function() {
 
@@ -171,7 +183,11 @@ function editarDatos(){
                        
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#reservas" data-toggle="tab">Mis reservas</a></li>
-								<li><a href="#locales" data-toggle="tab">Mis locales</a></li>
+								<c:choose>
+									<c:when test="${usuario.rol != 'user'}">
+										<li><a href="#locales" data-toggle="tab">Mis locales</a></li>
+									</c:when>
+								</c:choose>
 								<li><a href="#opiniones" data-toggle="tab">Mis opiniones</a></li>
 								<li><a href="#editar" data-toggle="tab">Mis datos</a></li>
 							</ul>						
@@ -179,29 +195,65 @@ function editarDatos(){
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="reservas">
 									<div id="TodasReservas" class="TodasReservas">
-										<c:forEach items="${usuario.reservas}" var="i">
-										<div class="media">
-											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.foto}">
-											</div>										
-											<div class="media-body">
-												<h4 class="media-heading">Reserva #1</h4>
-												<p>${i.oferta.nombre}</p>
-												
-												 <div class="qrcode">${i.codigoQr}</div>
-												
-												<button id="delO_${i.oferta.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-											</div>
-										</div>	
-										</c:forEach>
+											<!-- Modal Show QR-->
+											<div class="modal fade" id="ModalShowQR" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+											  <div class="modal-dialog modal-sm" role="document">
+											    <div class="modal-content">
+											      <div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											        <h4 class="modal-title" id="myModalLabel"> Código QR </h4>
+											      </div>
+											      <div class="modal-body">									
+													  <div class="qrcode" id="codeQR"></div>
+													 								 						
+											      </div>
+											    </div>
+											  </div>
+											</div>     
+											<!-- End Modal Show QR-->
+											<c:choose>
+											<c:when test="${empty usuario.reservas}">	
+												<p><b>Aun no has hecho ninguna reserva</b></p>
+											</c:when>
+											<c:otherwise>
+												<c:forEach items="${usuario.reservas}" var="i">
+												<div class="media">
+													<div class="pull-left">
+														<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.ID}.jpg">
+													</div>										
+													<div class="media-body">
+														<div class="col-md-6">
+														<h4 class="media-heading">${i.oferta.nombre}</h4>
+														<p>En ${i.oferta.local.nombre}</p>
+														<p>A las ${i.fechaReserva}</p>
+														<p>Para <b>${i.numPersonas}</b></p>
+		 												<br>
+														<button id="delR_${i.ID}" class="eliminaReserva"><span class="glyphicon glyphicon-trash"></span>  Eliminar</button>
+														 </div>
+														 <div class="col-md-6" id="qrcode">	
+														 <button type="submit" id="edit_${i.codigoQr}" 
+														 	value="${i}" class="rellenarQRModal" data-toggle="modal" data-target="#ModalShowQR">
+														 	Ver códigoQR</button>
+														 <!-- 
+														 <div class="qrcode">${i.codigoQr}</div>										 
+															<button type="submit" id="showQR" class="btn btn-default" data-toggle="modal" data-target="#ModalShowQR">Ver código QR</button>	
+														</div>	
+														 -->											
+													</div>
+												</div>
+												</div>	
+												</c:forEach>
+											</c:otherwise>
+										</c:choose>
 									</div>
-								</div>	
-								
+								</div>						
+						 
 								<div class="tab-pane fade" id="locales">
 								<div class="media">
 								  	<button type="submit" id="AddNuevoLocal"class="btn btn-default" data-toggle="modal" data-target="#ModalAddLocal"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo local</button>
 								  	<br></br>
 								</div>
+								
 								
 								<!-- Modal Add Local-->
 						<div class="modal fade" id="ModalAddLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
@@ -249,30 +301,36 @@ function editarDatos(){
 							      </div>
 							      </form>											
 						      </div>
-							      
-						      
 						    </div>
 						  </div>
 						</div>     
 						<!-- End Modal Add Local-->
+						
 								<div id="TodosLocales" class="TodosLocales">
-										<c:forEach items="${usuario.locales}" var="i">
-										<div class="media">
-											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
-											</div>										
-											<div class="media-body">
-												<h4 class="media-heading">${i.nombre}</h4>
-												<p>Dirección:${i.direccion }</p>
-												<p>Horario: ${i.horario }</p>								
-												<p>Puntuación: ${i.puntuacion }</p>
-												<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-												<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
-											</div>
-										</div>	
-										</c:forEach>
-									</div>
+								<c:choose>
+								<c:when test="${empty usuario.locales}">	
+									<p><b>Aun no tienes ningun local</b></p>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${usuario.locales}" var="i">
+									<div class="media">
+										<div class="pull-left">
+											<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
+										</div>										
+										<div class="media-body">
+											<h4 class="media-heading">${i.nombre}</h4>
+											<p>Dirección:${i.direccion }</p>
+											<p>Horario: ${i.horario }</p>								
+											<p>Puntuación: ${i.puntuacion }</p>
+											<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+											<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
+										</div>
+									</div>	
+									</c:forEach>
+								</c:otherwise>
+								</c:choose>
 								</div>
+							</div>
         				<!-- Modal Edit Local-->
 						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 						  <div class="modal-dialog modal-sm" role="document">
@@ -328,20 +386,26 @@ function editarDatos(){
 												
 								<div class="tab-pane fade" id="opiniones">
 									<div id="TodosComentarios" class="TodosComentarios">	
-											<c:forEach items="${usuario.comentarios}" var="i">
-												<div class="media">
-												<div class="pull-left">
-													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
-												</div>
-												<div class="media-body">
-													<br>
-													<h4 class="media-heading">${i.local.nombre} </h4>
-													<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
-													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-												</div>
-												</div>
-											</c:forEach>
-																		
+									<c:choose>
+									<c:when test="${empty usuario.comentarios}">	
+										<p><b>Aun no has hecho ningun comentario</b></p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach items="${usuario.comentarios}" var="i">
+											<div class="media">
+											<div class="pull-left">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
+											</div>
+											<div class="media-body">
+												<br>
+												<h4 class="media-heading">${i.local.nombre} </h4>
+												<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
+												<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+											</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+									</c:choose>					
 									</div>
 								</div>
 								
@@ -380,6 +444,7 @@ function editarDatos(){
 																	
 								</div>
 							</div><!--tab content-->
+							
 						
 					</div><!--/.services-->
             </div><!--/.row--> 

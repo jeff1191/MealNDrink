@@ -38,18 +38,25 @@
 
 
 				<div class="tab-content">
-				  <div class="tab-pane fade in active" id="ofertas">				  
-				    <c:forEach items="${infoLocal.ofertas}" var="i">
-						<div class="media">
-							<div class="pull-left">
-								<img class="media-object" src="${prefix}ofertasFoto?id=${infoLocal.foto}">
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">${i.nombre}</h4>
-								<p>${i.descripcion}</p>
-							</div>
-						</div>
-					</c:forEach>
+				  <div class="tab-pane fade in active" id="ofertas">
+				   <c:choose>
+						<c:when test="${empty infoLocal.ofertas}">	
+							<p><b>Este local no tiene ninguna oferta</b></p>
+						</c:when>
+						<c:otherwise>				  
+						    <c:forEach items="${infoLocal.ofertas}" var="i">
+								<div class="media">
+									<div class="pull-left">
+										<img class="media-object" src="${prefix}ofertasFoto?id=${infoLocal.ID}.jpg">
+									</div>
+									<div class="media-body">
+										<h4 class="media-heading">${i.nombre}</h4>
+										<p>${i.descripcion}</p>
+									</div>
+								</div>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 					
 					<br></br>
 				
@@ -57,21 +64,37 @@
 
 				   <div class="tab-pane fade" id="opiniones">
 				    <div class="media">
-				  		<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddComment"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo comentario</button>
-				  		<br></br>
+				    	<c:choose>
+							<c:when test="${not empty user}">	
+								<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddComment">
+								<span class="glyphicon glyphicon-plus"></span> Añadir nuevo comentario</button>
+					  		<br></br>
+							</c:when>		
+							<c:otherwise>
+								<p><b>Necesitas estar registrado para realizar comentarios</b></p>
+								<br></br>
+							</c:otherwise>
+						</c:choose>				  		
 				    </div>
-				    <c:forEach items="${infoLocal.comentarios}" var="i">
-					<div class="media">
-						<div class="pull-left">
-							<img class="media-object" src="${prefix}resources/img/user.jpg">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">${(i.usuario).nombre}</h4>
-							<p>${i.texto} - ${i.fecha}</p>
-						</div>
-					</div>
-					</c:forEach>				
-					<br></br>
+				    <c:choose>
+						<c:when test="${empty infoLocal.comentarios}">	
+							<p><b>Este local no tiene ningun comentario</b></p>
+						</c:when>
+						<c:otherwise>
+						    <c:forEach items="${infoLocal.comentarios}" var="i">
+							<div class="media">
+								<div class="pull-left">
+									<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">${(i.usuario).nombre}</h4>
+									<p>${i.texto} - ${i.fecha}</p>
+								</div>
+							</div>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>				
+					<br>
 					
 				</div>
 						<!-- Modal Add Comment-->
@@ -105,14 +128,6 @@
                 </div><!--/.services-->
             </div><!--/.row--> 
 </div>
-            <div class="clients-area center">
-                <h2>Ubicación</h2>
-                <div>
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.289259162295!2d-120.7989351!3d37.5246781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8091042b3386acd7%3A0x3b4a4cedc60363dd!2sMain+St%2C+Denair%2C+CA+95316%2C+Hoa+K%E1%BB%B3!5e0!3m2!1svi!2s!4v1434016649434" width="100%" height="300" frameborder="0" style="border:0"></iframe>
-				</div>
-                <div>
-					
-				</div>
-            </div>
+           
         </section>
 <%@ include file="../fragments/footer.jspf" %>

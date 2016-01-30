@@ -76,7 +76,7 @@
                         <div class="row slide-margin">
                             
                                 <div class="carousel-content">
-                                    <h1 class="animation animated-item-1">Locales más populares</h1>
+                                    <h1 class="animation animated-item-1">Locales de los habla todo el mundo</h1>
                                     <c:forEach items="${popularLocals}" var="i">							
 						  				<h2 class="animation animated-item-1"><a href="comercio_externo?id=${i.ID}">${i.nombre}</a></h2>		
 									</c:forEach>
@@ -117,13 +117,28 @@
 	            	<c:forEach items="${platos}" var="i">
 	               		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
 	               		    <div class="recent-work-wrap">
-		                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.foto}" alt="">
+		                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.ID}.jpg" alt="">
 		                        <div class="overlay">
 		                        <div class="recent-work-inner">
 		                               <h3><a href="#">${i.nombre}</a></h3>
-		                                <p>${i.descripcion}</p>									
-										<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=home"><i class="glyphicon glyphicon-cutlery"></i> Reservar</a>
-										<a class="preview" href="comercio_externo?id=${(i.local).ID}"><i class="fa fa-eye"></i> Ver restaurante</a>	
+		                                <p>${i.descripcion}</p>	
+		                                <p>Cap: ${i.capacidadActual}/${i.capacidadTotal}</p>	
+		                                <c:choose>
+										<c:when test="${not empty user}">	
+										<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=home">
+											<i class="glyphicon glyphicon-cutlery"></i> Reservar
+										</a>
+										<a class="preview" href="comercio_externo?id=${(i.local).ID}">
+											<i class="fa fa-eye"></i> Ver restaurante
+										</a>	
+										</c:when>		
+										<c:otherwise>
+										<a class="preview" href="comercio_externo?id=${(i.local).ID}">
+											<i class="fa fa-eye"></i> Ver restaurante
+										</a>
+										</c:otherwise>
+										</c:choose>					
+										
 									</div> 
 		                        </div>
 		                    </div>
@@ -136,7 +151,11 @@
              	<br>             
                 <h3>Aqui puedes encontrar todas los locales que estan en MealNDrink</h3>
             </div>
-            
+              <ul class="portfolio-filter text-center">              
+                <c:forEach items="${locales}" var="i">
+                	<li><a class="btn btn-default" href="comercio_externo?id=${i.ID}" data-filter=".${i}">${i.nombre}</a></li>
+                </c:forEach>
+            </ul><!--/#portfolio-filter-->
             	          
         </div><!--/.container-->
     </section><!--/#recent-works-->

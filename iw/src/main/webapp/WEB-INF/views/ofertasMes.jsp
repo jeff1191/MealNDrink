@@ -3,7 +3,7 @@
         <div class="container">
             <div class="center">
                <h2>Ofertas del mes</h2>
-               <h3>Las ofertas que más popularidad tienen</h3>
+               <h3>Las ofertas que mas popularidad tienen</h3>
             </div>
         
 
@@ -23,21 +23,22 @@
 	                        <div class="overlay">
 	                        <div class="recent-work-inner">
 	                                <h3><a href="#">${i.nombre}</a></h3>
-	                                <p>${i.descripcion}</p>									 
+	                                <p>${i.descripcion}</p>		
+	                                <p>Cap: ${i.capacidadActual}/${i.capacidadTotal}</p>							 
 							<c:choose>
 									<c:when test="${not empty user}">	
 									<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=ofertasMes">
 										<i class="glyphicon glyphicon-cutlery"></i> Reservar
 									</a>	
-									</c:when>
-									
-							<c:otherwise>
-									<a class="preview" href="registrarse">
-										<i class="glyphicon glyphicon-cutlery"></i> Reservar
-									</a>
 									<a class="preview" href="comercio_externo?id=${(i.local).ID}">
 										<i class="fa fa-eye"></i> Ver restaurante
 									</a>
+									</c:when>
+									
+							<c:otherwise>
+									<a class="preview" href="comercio_externo?id=${(i.local).ID}">
+										<i class="fa fa-eye"></i> Ver restaurante
+									</a>									
 							</c:otherwise>	
 							</c:choose>
 								</div> 

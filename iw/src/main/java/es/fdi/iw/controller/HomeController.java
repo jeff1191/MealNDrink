@@ -161,125 +161,6 @@ public class HomeController {
 	public String user(HttpSession session, HttpServletRequest request) {		
 		return "user";
 	}	
-
-	/**
-	 * Displays single-book details
-	 */
-	@RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
-	public String book(@PathVariable("id") long id, HttpServletResponse response, Model model) {
-	/*	Book b = entityManager.find(Book.class, id);
-		if (b == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			logger.error("No such book: {}", id);
-		} else {
-			model.addAttribute("book", b);
-		}
-		model.addAttribute("prefix", "../");*/
-		return "book";
-	}	
-	
-	/**
-	 * Delete a book
-	 */
-	@RequestMapping(value = "/book/{id}", method = RequestMethod.DELETE)
-	@Transactional
-	@ResponseBody
-	public String rmbook(@PathVariable("id") long id, HttpServletResponse response, Model model) {
-		/*try {
-			Book b = entityManager.find(Book.class, id);
-			for (Author a : b.getAuthors()) {
-				a.getWritings().remove(b);
-				entityManager.persist(a);
-			}
-			entityManager.remove(b);
-			response.setStatus(HttpServletResponse.SC_OK);
-			return "OK";
-		} catch (NoResultException nre) {
-			logger.error("No such book: {}", id, nre);
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);*/
-			return "ERR";
-		//}
-	}		
-	
-	/*
-	 * List all books
-	 */
-	@RequestMapping(value = "/books", method = RequestMethod.GET)
-	@Transactional
-	public String books(Model model) {
-		/*model.addAttribute("books", entityManager.createNamedQuery("allBooks").getResultList());
-		model.addAttribute("owners", entityManager.createNamedQuery("allUsers").getResultList());
-		model.addAttribute("authors", entityManager.createNamedQuery("allAuthors").getResultList());
-		*/
-		return "books";
-	}	
-	
-	/*
-	 * Add a book
-	 */
-	@RequestMapping(value = "/book", method = RequestMethod.POST)
-	@Transactional
-	public String book(@RequestParam("owner") long ownerId,
-			@RequestParam("authors") long[] authorIds,
-			@RequestParam("title") String title,
-			@RequestParam("description") String description, Model model) {
-		/*Book b = new Book();
-		b.setTitle(title);
-		b.setDescription(description);
-		for (long aid : authorIds) {
-			// adding authors to book is useless, since author is the owning side (= has no mappedBy)
-			Author a = entityManager.find(Author.class, aid);
-			a.getWritings().add(b);
-			entityManager.persist(a);
-		}
-		b.setOwner(entityManager.getReference(User.class, ownerId));
-		entityManager.persist(b);
-		entityManager.flush();
-		logger.info("Book " + b.getId() + " written ok - owned by " + b.getOwner().getLogin() 
-				+ " written by " + b.getAuthors());
-		*/
-		return "";
-	}	
-	/**
-	 * Load book authors for a given book via post; return as JSON
-	 */
-	@RequestMapping(value = "/bookAuthors")
-	@ResponseBody
-	@Transactional // needed to allow lazy init to work
-	public ResponseEntity<String> bookAuthors(@RequestParam("id") long id, HttpServletRequest request) {
-		/*try {
-			Book book = (Book)entityManager.find(Book.class, id);
-			List<Author> authors = book.getAuthors();
-			StringBuilder sb = new StringBuilder("[");
-			for (Author a : authors) {
-				if (sb.length()>1) sb.append(",");
-				sb.append("{ "
-						+ "\"id\": \"" + a.getId() + "\", "
-						+ "\"familyName\": \"" + a.getFamilyName() + "\", "
-						+ "\"lastName\": \"" + a.getLastName() + "\"}");
-			}
-			return new ResponseEntity<String>(sb + "]", HttpStatus.OK);
-		} catch (NoResultException nre) {
-			logger.error("No such book: {}", id, nre);
-		}
-		return new ResponseEntity<String>("Error: libro no existe", HttpStatus.BAD_REQUEST);		
-	*/
-		return null;
-	}			
-	
-	/**
-	 * Displays author details
-	 */
-	@RequestMapping(value = "/author/{id}", method = RequestMethod.GET)
-	public String author(@PathVariable("id") long id, Model model) {		
-	/*	try {
-			model.addAttribute("author", entityManager.find(Author.class, id));
-		} catch (NoResultException nre) {
-			logger.error("No such author: {}", id, nre);
-		}
-		model.addAttribute("prefix", "../");*/
-		return "author";
-	}	
 	
 	/**
 	 * Returns a users' photo
@@ -364,9 +245,13 @@ public class HomeController {
 		//Esto es para los locales mas populares
 		//La idea es que vea que locales son los que mas reservas tienen
 		//y le pase a la vista los cinco primeros
-		List<Oferta> aux = new ArrayList<Oferta>();
-		aux = entityManager.createNamedQuery("allOffers").getResultList();	
 		
+		List<Oferta> auxOffers = new ArrayList<Oferta>();
+		auxOffers = entityManager.createNamedQuery("allOffers").getResultList();	
+		
+		//Para saber los locales mas populares se cogen los cinco que tengan mas comentarios
+		List<Local> auxLocals = new ArrayList<Local>();
+		auxLocals = entityManager.createNamedQuery("allLocals").getResultList();
 				
 		List<Long> idsLocals = new ArrayList<Long>();
 		idsLocals.add((long) 4);
@@ -376,7 +261,8 @@ public class HomeController {
 		idsLocals.add((long) 3);	
 	
 		model.addAttribute("alltags", allTags);	
-		model.addAttribute("platos", aux);		
+		model.addAttribute("platos", auxOffers);	
+		model.addAttribute("locales", auxLocals);
 		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
 				
 		
@@ -413,12 +299,12 @@ public class HomeController {
 	}	
 	@RequestMapping(value = "/usuario", method = RequestMethod.GET)
 	public String usuario(@RequestParam("id") long id, Model model, HttpSession session) {
-		model.addAttribute("active", "usuario");
-		model.addAttribute("pageTitle", "User");
+		model.addAttribute("active", "usuario");		
 
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("pageTitle", "Perfil de " + usuario.getNombre());
 		return "usuario";		
 	}	
 
@@ -431,7 +317,9 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/nuevoComentario", method = RequestMethod.POST)	
-	public String nuevoComentario(@RequestParam("idLocal") long idLocal, @RequestParam("comment") String comment, HttpSession session, Model model) {		
+	public String nuevoComentario(@RequestParam("idLocal") long idLocal, 
+								  @RequestParam("comment") String comment, 
+								  HttpSession session, Model model) {		
 			/* Al aï¿½adir un comentario hay que hacer:
 			 * 	- Aï¿½adir el comentario al usuario
 			 *  - Aï¿½adir el comentario al local
@@ -451,11 +339,11 @@ public class HomeController {
 						
 			//Creo que falla algo con JPA -- Saca un error raro si se descomenta lo de abajo
 			
-			//usuario.getComentarios().add(comentario);
-			//local.getComentarios().add(comentario);
+			usuario.getComentarios().add(comentario);
+			local.getComentarios().add(comentario);
 			
-			//entityManager.persist(usuario);
-			//entityManager.persist(local);
+			entityManager.persist(usuario);
+			entityManager.persist(local);
 		
 		return "redirect:comercio_externo?id="+local.getID();
 	}	
@@ -493,16 +381,15 @@ public class HomeController {
 	}	
 	
 	@Transactional
-	@ResponseBody
 	@RequestMapping(value = "/nuevaReserva", method = RequestMethod.POST)	
-	public ResponseEntity<String> nuevaReserva(
-			@RequestParam("capacidad") String cap, 
+	public String nuevaReserva(
+			@RequestParam("capacidad") int cap, 
 			@RequestParam("fecha") String fecha, 
 			@RequestParam("hora") String hora, 
 			@RequestParam("oferta") long ofertaID,
+			@RequestParam("dondeEstoy") String pag,
 			HttpSession session, Locale locale, Model model) {
-		//@RequestParam("dondeEstoy") String pag, 
-		
+			
 	
 		/*Cosas al hacer una reserva:
 		 *  - Generar codigo qr
@@ -542,7 +429,7 @@ public class HomeController {
 		reserva.setCodigoQr(qrInfo);			
 		reserva.setUsuario(user);
 		reserva.setOferta(oferta);
-		reserva.setNumPersonas(Integer.parseInt(cap));
+		reserva.setNumPersonas(cap);
 		reserva.setfechaReserva(timestamp);	
 		reserva.setValidado(false);
 		
@@ -551,14 +438,14 @@ public class HomeController {
 		oferta.getReservas().add(reserva);		
 		
 		//Cambiamos la capacidad de la oferta
-		int nuevacap = oferta.getCapacidadActual() + Integer.parseInt(cap);
+		int nuevacap = oferta.getCapacidadActual() + cap;
 		oferta.setCapacidadActual(nuevacap);
 		
 		entityManager.persist(reserva);
 		entityManager.persist(user);
 		entityManager.persist(oferta);
-		return new ResponseEntity<String>("Reserva creada satisfactoriamente", HttpStatus.OK);
-		//return "redirect:" + pag;
+		
+		return "redirect:" + pag;
 	}	
 	
 	@Transactional
@@ -580,10 +467,13 @@ public class HomeController {
 		try {
 			Local aux = entityManager.find(Local.class, id);
 			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
-			//Usuario usuario = entityManager.find(Usuario.class, usuarioSesion.getID());
-			model.addAttribute("infoLocal", aux);
-			//model.addAttribute("tipoUser", usuario.getRol());
+			model.addAttribute("infoLocal", aux);			
 			model.addAttribute("pageTitle", aux.getNombre());
+			Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+			if(usuarioOnline != null){
+				Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+				model.addAttribute("usuario", usuario);	
+			}
 		} catch (NoResultException nre) {
 			logger.error("No existe ese local: {}", id, nre);
 		}
