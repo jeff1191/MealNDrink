@@ -28,6 +28,7 @@ $(function() {
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
 	$("body").on("click", ".eliminaReserva", null, activaBotonEliminacionReserva);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);	
+
     $('.qrcode').each(function(i, o) {
         $(o).qrcode({
             "render": "div",
@@ -64,19 +65,66 @@ $(function() {
     		},
     		success : function(data) {
     			
-    			alert(data);
-    			
-    			
+    			alert(resultadoEditar(data));
     			$("#formEditarFoto").submit();
-    	
+    			
+    			location.href = "${prefix}/iw/usuario?id=${usuario.ID}";
+    			
+
     		}
     	})
     })
 })
 
-$("body").on( "keyup", "#nameUser", null, function(){
-	var campo = $("#nameUser");
-	var nombr = $("#nameUser").val();
+function resultadoEditar(codigo){
+	var respuestaPos = "Se han realizado los siguientes cambios correctamente en: ";
+	var respuestaNeg = "Los siguientes cambios no se han podido efectuar: ";
+	
+    if(codigo.charAt(9) === '1' && codigo.charAt(4) == '0'){  //1era columna si ha habido cambios   //2da columna si ha habido error
+    	respuestaPos = respuestaPos + "\n" + "- Apodo";
+    }
+    else if (codigo.charAt(9) === '0' && codigo.charAt(4) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Apodo (apodo no válido)";
+    }
+    
+    if(codigo.charAt(8) === '1' && codigo.charAt(3) == '0'){
+    	respuestaPos = respuestaPos + "\n" + "- Contraseña";
+    }
+    else if(codigo.charAt(8) === '0' && codigo.charAt(3) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Contraseña (longitud errónea)";
+    }
+    
+    if(codigo.charAt(7) === '1' && codigo.charAt(2) == '0'){
+    	respuestaPos = respuestaPos + "\n" + "- Email";
+    }
+    else if(codigo.charAt(7) === '0' && codigo.charAt(2) == '1'){
+    	respuestaNeg = respuestaNeg + "\n"  + "- Email (email con formato no válido)";
+    }
+    
+    if(codigo.charAt(6) === '1' && codigo.charAt(1) == '0'){
+    	respuestaPos = respuestaPos + "\n" + "- Teléfono";
+    }
+    else if(codigo.charAt(6) === '0' && codigo.charAt(1) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Teléfono (teléfono con formato no válido)";
+    }
+    
+    if(codigo === "1000000000"){
+    	return "No ha habido cambios";
+    }
+    else{
+    	if(respuestaPos == "Se han realizado los siguientes cambios correctamente en: " && respuestaNeg != "Los siguientes cambios no se han podido efectuar: ")
+    		return respuestaNeg;
+    	else if(respuestaNeg == "Los siguientes cambios no se han podido efectuar: " && respuestaPos != "Se han realizado los siguientes cambios correctamente en: ")
+    		return respuestaPos;
+    	else
+    		return respuestaPos + "\n" + "\n" + respuestaNeg;
+    }
+   
+}
+
+$("body").on( "keyup", "#editNameUser", null, function(){
+	var campo = $("#editNameUser");
+	var nombr = $("#editNameUser").val();
 	
 	$.ajax({
 		url : "${prefix}disponibilidadApodo",
@@ -98,57 +146,6 @@ $("body").on( "keyup", "#nameUser", null, function(){
 		}
 	})
 } )
-
-function editarDatos(){
-	var camposModificados = 100000;
-		
-	var nombre = $("#nameUser").val();
-	var contra = $("#pwd").val();
-	var email = $("#email").val();
-	var telef = $("#tel").val();
-	var foto = $("#fileToUpload").val();
-	
-	if(nombre != "${usuario.nombre}"){
-		if(nombre.val().length < 4 || nombre.val().length > 12){
-			//error
-		}
-		else{
-			camposModificados += 1;
-		}
-	}
-	
-	if(contra != ""){
-		if(contra.val().length < 6 || contra.val().length > 12){
-			//error
-		}
-		else{
-			camposModificados += 10;
-		}
-	}
-	
-	if(email != "${usuario.email}"){
-		if( !(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e_mail.val())) ){
-			//notificar error
-		}
-		else{
-			camposModificados += 100;
-		}
-	}
-	
-	if(telef != "${usuario.telefono}"){
-		if( !(/^\d{9}$/.test(telef.val()))){
-			//notificar error
-		}
-		else{
-			camposModificados += 1000;
-		}
-	}
-	
-	if(foto != ""){
-		camposModificados += 10000;
-	}
-	
-}
 
 </script>
 <section id="feature" class="transparent-bg">
@@ -182,7 +179,7 @@ function editarDatos(){
 										<c:forEach items="${usuario.reservas}" var="i">
 										<div class="media">
 											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.foto}">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.ID}">
 											</div>										
 											<div class="media-body">
 												<h4 class="media-heading">Reserva #1</h4>
@@ -205,7 +202,7 @@ function editarDatos(){
 								
 								<!-- Modal Add Local-->
 						<div class="modal fade" id="ModalAddLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
-						  <div class="modal-dialog modal-sm" role="document"><form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
+						  <div class="modal-dialog modal-sm" role="document">
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -271,7 +268,7 @@ function editarDatos(){
 											</div>
 										</div>	
 										</c:forEach>
-									</div>
+									</div>												
 								</div>
         				<!-- Modal Edit Local-->
 						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
@@ -340,8 +337,7 @@ function editarDatos(){
 													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												</div>
 												</div>
-											</c:forEach>
-																		
+											</c:forEach>			
 									</div>
 								</div>
 								
@@ -367,9 +363,10 @@ function editarDatos(){
 										</div>
 										  
 										  
-										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
+										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">
 											  
 											<div class="form-group">
+												<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${usuario.ID}">
 												<label for="file">Imagen de perfil:</label>
 												<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
 											</div>

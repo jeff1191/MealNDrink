@@ -950,15 +950,15 @@ public class HomeController {
 		if(id == u.getID() || u.getRol().equals("admin")){
 			cambio = comprobarCampos(edit, nombreUsuario, pass, email, telefono);
 			
-			if((andLogica(1, cambio, 1000000001) == false) && (andLogica(9, cambio, 1000100001) == true)) //1er and es si el valor es erroneo - 2do campo si se ha cambiado el valor
+			if((andLogica(9, cambio, 1000000001) == true) && (andLogica(4, cambio, 1000100001) == false)) //1ercampo si se ha cambiado el valor- 2do and es si el valor es erroneo 
 				edit.setNombre(nombreUsuario);
-			if((andLogica(2, cambio, 1000000010) == false) && (andLogica(10, cambio, 1001000010) == true))
+			if((andLogica(8, cambio, 1000000010) == true) && (andLogica(3, cambio, 1001000010) == false))
 				edit.setHashedAndSalted(edit.generateHashedAndSalted(pass));
-			if((andLogica(3, cambio, 1000000100) == false) && (andLogica(11, cambio, 1010000100) == true))
+			if((andLogica(7, cambio, 1000000100) == true) && (andLogica(2, cambio, 1010000100) == false))
 				edit.setEmail(email);
-			if((andLogica(4, cambio, 1000001000) == false) && (andLogica(12, cambio, 1100001000) == true))
+			if((andLogica(6, cambio, 1000001000) == true) && (andLogica(1, cambio, 1100001000) == false))
 				edit.setTelefono(telefono);
-			/*if(andLogica(8, cambio, 1000010000))
+			/*if(andLogica(5, cambio, 1000010000))
 				edit.setFoto(photo.getOriginalFilename());*/
 		}
 		
@@ -978,11 +978,23 @@ public class HomeController {
 		Usuario u = (Usuario)session.getAttribute("user");
 		
 		
-		if(!photo.isEmpty()){
-			//edit.setFoto(photo.getOriginalFilename());
+		if(!photo.isEmpty() && id == u.getID()){
+			if (!photo.isEmpty()) {
+			    try {
+			        byte[] bytes = photo.getBytes();
+			        BufferedOutputStream stream =
+			                new BufferedOutputStream(
+			                		new FileOutputStream(ContextInitializer.getFile("usuarios", Long.toString(u.getID()) + ".jpg")));
+			        stream.write(bytes);
+			        stream.close();
+					
+			    } catch (Exception e) {
+			    	return new ResponseEntity<String>("Fotografía no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
+			    }
+			 }
 		}
 		
-		return new ResponseEntity<String>("MEC", HttpStatus.OK);
+		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);
 		
 			
 	}
@@ -1021,11 +1033,18 @@ public class HomeController {
 		int camposModificados = 1000000000; //1-ErrorNombre-ErrorContra-ErrorEmail-ErrorTelef---ModificadoNombre-ModificadoContra-ModificadoEmail-ModificadoTelef-ModificadoFoto
 		             //ejemplo  1100110110    1-    1      -      0    -    0     -   1      ---   1            -     0          -    1          -      1        -     0   
 		if(!nombre.equals(sesion.getNombre())){
-			if(nombre.length() < 4 || nombre.length() > 12){
+			String res = new String("ocupado");
+			
+			try{				
+				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombre).getSingleResult();
 				camposModificados += 100000;
-			}
-			else{
-				camposModificados += 1; 
+			} catch (NoResultException nre) {
+				if(nombre.length() < 4 || nombre.length() > 12){
+					camposModificados += 100000;
+				}
+				else{
+					camposModificados += 1; 
+				}	
 			}
 		}
 		
@@ -1068,9 +1087,20 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/eliminarUsuario", method = RequestMethod.POST)
-	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario,Model model){
+	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario, Model model, HttpSession session){
+			
+		
 			Usuario usuario= entityManager.find(Usuario.class, idUsuario);
-			entityManager.remove(usuario);			
+			Usuario u = (Usuario)session.getAttribute("user");
+			
+			if(/*idUsuario == u.getID()*/u.getRol().equals("admin")){
+				entityManager.remove(usuario);
+			
+				File foto = ContextInitializer.getFile("usuarios", Long.toString(idUsuario));
+				foto.delete();
+				
+			}
+			
 			return "eliminarUsuario";
     }
 
@@ -1282,27 +1312,55 @@ public class HomeController {
 		
 		Usuario u;
 		logger.info("registro usuario");
+		boolean error = false;
 			
 		try{
 			u = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", nombre).getSingleResult();
 		} catch (NoResultException nre){
-				
-			if(rol.equals("propietario_comercio")){
-				rol = "local";
-			}	
-			else{
-				rol = "user";
+		
+			if(nombre.length() < 4 || nombre.length() > 12){
+				error = true;
 			}
+	
 			
-			u = creaUsuario(nombre, email, telefono, rol, password);
-			logger.info(Long.toString(u.getID()));
-			entityManager.persist(u);
-			entityManager.persist(u);
-			session.setAttribute("user", u);
-
-			logger.info("El usuario no existe");
+			if(password.length() < 6 || password.length() > 12){
+				error = true;
+			}	
 			
-			return new ResponseEntity<String>("Usuario creado satisfactoriamente", HttpStatus.OK);	
+			String patron1 = new String("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+			
+			if (!email.matches(patron1)) {
+				error = true;
+			}
+				
+			
+			String patron2 = new String("^[0-9]{9}$");
+			if(!telefono.matches(patron2)){
+				error = true;
+			}
+				
+	
+			if(!error){
+				if(rol.equals("propietario_comercio")){
+					rol = "local";
+				}	
+				else{
+					rol = "user";
+				}
+				
+				u = creaUsuario(nombre, email, telefono, rol, password);
+				logger.info(Long.toString(u.getID()));
+				entityManager.persist(u);
+				entityManager.persist(u);
+				session.setAttribute("user", u);
+	
+				logger.info("El usuario no existe");
+				
+				return new ResponseEntity<String>("Usuario creado satisfactoriamente", HttpStatus.OK);	
+			}
+			else{
+				return new ResponseEntity<String>("Usuario  no creado satisfactoriamente. Error en los datos", HttpStatus.BAD_REQUEST);
+			}
 		}
 		
 		logger.info("El usuario existia");
@@ -1340,7 +1398,26 @@ public class HomeController {
 		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
 	}
 	
-	@Transactional
+	@ResponseBody
+	@RequestMapping(value = "/disponibilidadApodo", method = RequestMethod.POST)
+	public ResponseEntity<String> comprobarDisponibilidadApodo(
+			@RequestParam("apodo") String apodo,
+			HttpSession session){
+		
+		String res = new String("ocupado");
+		
+		try{				
+			String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", apodo).getSingleResult();
+			
+		} catch (NoResultException nre) {
+			res = "libre";
+			return new ResponseEntity<String>(res, HttpStatus.OK);	
+			
+		}
+		return new ResponseEntity<String>(res, HttpStatus.OK);	
+	}
+	
+	/*@Transactional
 	@RequestMapping(value = "/editarAdmin", method = RequestMethod.POST)
 	public String editarAdmin(@RequestParam("fileToUpload") MultipartFile photo,
     		@RequestParam("adminName") String nombreUsuario,
@@ -1377,5 +1454,5 @@ public class HomeController {
 	        }	
 		}
 		return "redirect:administracion";	
-	}
+	}*/
 }

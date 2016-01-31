@@ -50,10 +50,10 @@ function rellenaDatosEditarModalLocal(){
 function rellenaDatosEditarModalUsuario(){
 	var idUsuario = $(this).attr("id").substring("edit_".length);
 	var res = idUsuario.split("/,");
-	$("#editName").attr("value" ,res[0]);
+	$("#editNameUser").attr("value" ,res[0]);
 	$("#editEmail").attr("value" ,res[1]);
 	$("#editTel").attr("value" ,res[2]);
-	$("#id_usuario").attr("value" ,res[3]);
+	$("#editId_usuario").attr("value" ,res[3]);
 }
 function activaBotonRellenaTag() {
 	var nombreTagEdit = $(this).attr("id").substring("editTags_".length); 
@@ -83,7 +83,176 @@ $(function() {
 	$("body").on("click", ".editaTag", null, activaBotonEditTag);
 	$("body").on("click", ".rellenarEditarLocal", null, rellenaDatosEditarModalLocal);
 	$("body").on("click", ".rellenarEditarUsuario", null, rellenaDatosEditarModalUsuario);
+	$("#editarUsuario").click(function() {
+
+    	var idUsuario = $("#editId_usuario").val();
+    	var redireccion = $("#editRedireccion").val();
+    	
+    	var nombr = $("#editNameUser").val();
+    	var contr = $("#editPwd").val();
+    	var e_mail = $("#editEmail").val();
+    	var telef = $("#editTel").val();
+    	var foto = $("#editfileToUpload").val();
+    		
+    	$.ajax({
+    		url : "${prefix}editarUsuario",
+    		type : "POST",
+    		data : {
+    			editId_usuario : idUsuario,
+    			editNameUser : nombr,
+    			editPwd : contr,
+    			editEmail : e_mail,
+    			editTel : telef,
+    			editRedireccion : redireccion
+    		},
+    		error : function() {
+    			alert("Ups :(");
+    		},
+    		success : function(data) {
+    			
+    			alert(resultadoEditar(data));
+    			$("#formEditarFoto").submit();
+    			
+    			location.href = "${prefix}/iw/administracion";
+    			
+
+    		}
+    	})
+    })
+    
+    $("#editarUsuarioAdmin").click(function() {
+
+    	var idUsuario = $("#editId_usuarioAdmin").val();
+    	var redireccion = $("#editRedireccionAdmin").val();
+    	
+    	var nombr = $("#editNameUserAdmin").val();
+    	var contr = $("#editPwdAdmin").val();
+    	var e_mail = $("#editEmailAdmin").val();
+    	var telef = $("#editTelAdmin").val();
+    	var foto = $("#editfileToUploadAdmin").val();
+    		
+    	$.ajax({
+    		url : "${prefix}editarUsuario",
+    		type : "POST",
+    		data : {
+    			editId_usuario : idUsuario,
+    			editNameUser : nombr,
+    			editPwd : contr,
+    			editEmail : e_mail,
+    			editTel : telef,
+    			editRedireccion : redireccion
+    		},
+    		error : function() {
+    			alert("Ups :(");
+    		},
+    		success : function(data) {
+    			
+    			alert(resultadoEditar(data));
+    			$("#formEditarFotoAdmin").submit();
+    			
+    			location.href = "${prefix}/iw/administracion";
+    			
+
+    		}
+    	})
+    })
 })
+
+function resultadoEditar(codigo){
+	var respuestaPos = "Se han realizado los siguientes cambios correctamente en: ";
+	var respuestaNeg = "Los siguientes cambios no se han podido efectuar: ";
+	
+    if(codigo.charAt(9) === '1' && codigo.charAt(4) == '0'){  //1era columna si ha habido cambios   //2da columna si ha habido error
+    	respuestaPos = respuestaPos + "\n" + "- Apodo";
+    }
+    else if (codigo.charAt(9) === '0' && codigo.charAt(4) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Apodo (apodo no válido)";
+    }
+    
+    if(codigo.charAt(8) === '1' && codigo.charAt(3) == '0'){
+    	respuestaPos = respuestaPos + "\n" + "- Contraseña";
+    }
+    else if(codigo.charAt(8) === '0' && codigo.charAt(3) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Contraseña (longitud errónea)";
+    }
+    
+    if(codigo.charAt(7) === '1' && codigo.charAt(2) == '0'){
+    	respuestaPos = respuestaPos + "\n" + "- Email";
+    }
+    else if(codigo.charAt(7) === '0' && codigo.charAt(2) == '1'){
+    	respuestaNeg = respuestaNeg + "\n"  + "- Email (email con formato no válido)";
+    }
+    
+    if(codigo.charAt(6) === '1' && codigo.charAt(1) == '0'){
+    	respuestaPos = respuestaPos + "\n" + "- Teléfono";
+    }
+    else if(codigo.charAt(6) === '0' && codigo.charAt(1) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Teléfono (teléfono con formato no válido)";
+    }
+    
+    if(codigo === "1000000000"){
+    	return "No ha habido cambios";
+    }
+    else{
+    	if(respuestaPos == "Se han realizado los siguientes cambios correctamente en: " && respuestaNeg != "Los siguientes cambios no se han podido efectuar: ")
+    		return respuestaNeg;
+    	else if(respuestaNeg == "Los siguientes cambios no se han podido efectuar: " && respuestaPos != "Se han realizado los siguientes cambios correctamente en: ")
+    		return respuestaPos;
+    	else
+    		return respuestaPos + "\n" + "\n" + respuestaNeg;
+    }
+   
+}
+
+$("body").on( "keyup", "#editNameUser", null, function(){
+	var campo = $("#editNameUser");
+	var nombr = $("#editNameUser").val();
+	
+	$.ajax({
+		url : "${prefix}disponibilidadApodo",
+		type : "POST",
+		data : {
+			apodo : nombr
+		},
+		error : function() {
+			alert("Ups :(");
+		},
+		success : function(data) {
+			if(data === "libre"){
+				campo.css("border-color", "green");
+			}
+			else if(data === "ocupado"){
+				campo.css("border-color", "red");
+			}
+	
+		}
+	})
+} )
+
+$("body").on( "keyup", "#editNameUserAdmin", null, function(){
+	var campo = $("#editNameUserAdmin");
+	var nombr = $("#editNameUserAdmin").val();
+	
+	$.ajax({
+		url : "${prefix}disponibilidadApodo",
+		type : "POST",
+		data : {
+			apodo : nombr
+		},
+		error : function() {
+			alert("Ups :(");
+		},
+		success : function(data) {
+			if(data === "libre"){
+				campo.css("border-color", "green");
+			}
+			else if(data === "ocupado"){
+				campo.css("border-color", "red");
+			}
+	
+		}
+	})
+} )
 </script>
 
 <section id="feature" class="transparent-bg">
@@ -198,34 +367,35 @@ $(function() {
 						        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo usuario</h4>
 						      </div>
 						      <div class="modal-body">
-								<form role="form" method="POST" enctype="multipart/form-data" action="editarUsuario">
-								<input hidden="submit" id="redireccion" name="redireccion" value="administracion" />
-								<input hidden="submit" id="id_usuario" name="id_usuario" />
+								<input hidden="submit" name="editRedireccion" id="editRedireccion" value="administracion" />
+								<input hidden="submit" name="editId_usuario" id="editId_usuario" />
 								  <div class="form-group">
-									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" required="required" id="editName" name="editName" placeholder="Introduce un nuevo nombre">
-								  </div>
-								  <div class="form-group">
-									<label for="pwd">Contraseña:</label>
-									<input type="password" class="form-control" required="required" id="editPwd" name="editPwd" value="****" placeholder="Introduce una nueva contraseña">
-								  </div>
-								  <div class="form-group">
-									<label for="email">Email:</label>
-									<input type="email" class="form-control" id="editEmail" required="required" name="editEmail" placeholder="Introduce un nuevo email">
-								  </div>
-								  <div class="form-group">
-									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" id="editTel" required="required" name="editTel" placeholder="Introduce un nuevo telefono">
-								  </div>
-								  <div class="form-group">
-									<label for="file">Imagen de perfil:</label>
-									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-								  </div>
+											<label for="name">Nombre:</label>
+											<input type="text" class="form-control" name="editNameUser" id="editNameUser">
+										</div>
+										<div class="form-group">
+											<label for="pwd">Contraseña:</label>
+											<input type="password" class="form-control" name="editPwd" id="editPwd" value="">
+										</div>
+										<div class="form-group">
+											<label for="email">Email:</label>
+											<input type="email" class="form-control" name="editEmail" id="editEmail">
+										</div>
+										<div class="form-group">
+											<label for="tel">Teléfono:</label>
+											<input type="tel" class="form-control" name="editTel" id="editTel">
+										</div>
+										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">  
+											<div class="form-group">
+												<input hidden="submit" name="editId_usuario" id="editId_usuario">
+												<label for="file">Imagen de perfil:</label>
+												<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
+											</div>
+										</form>
 								  <div class="modal-footer">						      	 
-									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+									  <button id="editarUsuario" name="editarUsuario" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
-							      </div>									  						  
-								</form>									
+							      </div>									  						  								
 						      </div>
 
 						    </div>
@@ -386,34 +556,34 @@ $(function() {
 					</div>
         			<!--  end tags -->		 
 					  <div class="tab-pane fade" id="editarDatos">
-
-						<form role="form" method="POST" enctype="multipart/form-data" action="editarAdmin">
-						<input hidden="submit" name="id_usuario" value="${admin.ID}" />
-						<input hidden="submit" name="redireccion" value="administracion" />
-						  <div class="form-group">
-							<label for="name">Nombre:</label>
-							<input type="text" class="form-control" required="required" id="adminName" name="adminName" value="${admin.nombre}">
-						  </div>
-						  <div class="form-group">
-							<label for="pwd">Contraseña:</label>
-							<input type="password" class="form-control" required="required" id="adminPwd" name="adminPwd" value="*****">
-						  </div>
-						  <div class="form-group">
-							<label for="email">Email:</label>
-							<input type="email" class="form-control" required="required" id="adminEmail" name="adminEmail" value="${admin.email }">
-						  </div>
-						  <div class="form-group">
-							<label for="tel">Teléfono:</label>
-							<input type="tel" class="form-control" required="required" id="adminTel" name="adminTel" value="${admin.telefono }">
-						  </div>
-						  <div class="form-group">
-							<label for="file">Imagen de perfil:</label>
-							<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-						  </div>										  
+						<input hidden="submit" name="editRedireccionAdmin" id="editRedireccionAdmin" value="administracion" />
+						<input hidden="submit" name="editId_usuarioAdmin" id="editId_usuarioAdmin" value="${admin.ID}" />
+								  <div class="form-group">
+											<label for="name">Nombre:</label>
+											<input type="text" class="form-control" name="editNameUserAdmin" id="editNameUserAdmin" value="${admin.nombre}">
+										</div>
+										<div class="form-group">
+											<label for="pwd">Contraseña:</label>
+											<input type="password" class="form-control" name="editPwdAdmin" id="editPwdAdmin" value="">
+										</div>
+										<div class="form-group">
+											<label for="email">Email:</label>
+											<input type="email" class="form-control" name="editEmailAdmin" id="editEmailAdmin" value="${admin.email}">
+										</div>
+										<div class="form-group">
+											<label for="tel">Teléfono:</label>
+											<input type="tel" class="form-control" name="editTelAdmin" id="editTelAdmin" value="${admin.telefono}">
+										</div>
+										<form id="formEditarFotoAdmin" name="formEditarFotoAdmin" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">  
+											<div class="form-group">
+												<input hidden="submit" name="editId_usuarioAdmin" id="editId_usuarioAdmin">
+												<label for="file">Imagen de perfil:</label>
+												<input type="file" name="editFileToUploadAdmin" accept="image/*" id="editFileToUploadAdmin">											
+											</div>
+										</form>										  
 						  <br></br>
 						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-						</form>	
+						  <button id="editarUsuarioAdmin" name="editarUsuarioAdmin" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 					  </div>
 					  <!-- Modal Edit Tags-->
 						<div class="modal fade" id="ModalEditTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
