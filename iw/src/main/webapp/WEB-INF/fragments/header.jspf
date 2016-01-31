@@ -44,6 +44,7 @@
 <script src="${prefix}resources/js/jquery.ui.datepicker-es.js"></script>
 <script src="${prefix}resources/js/validacionFormReg.js"></script>
 <script src="${prefix}resources/js/validacionFormBook.js"></script>
+<script src="${prefix}resources/js/textoSeguro.js"></script>
 <script src="${prefix}resources/js/jquery.qrcode-0.12.0.js"></script>
 
 

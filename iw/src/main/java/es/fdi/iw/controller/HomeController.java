@@ -629,69 +629,75 @@ public class HomeController {
     		@RequestParam("cap") int capacidad,
     		@RequestParam("description") String descripcion, 
     		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
-		String fechatTimesStamp="";
-		int pos=2;
-		List<String> aux = new ArrayList<String>();
-		StringTokenizer tokens = new StringTokenizer(fecha,"/");
-		while(tokens.hasMoreTokens()){			
-			aux.add(tokens.nextToken());
+		boolean seguro = textoSeguro(nombreOferta) && textoSeguro(tag) && textoSeguro(fecha) && textoSeguro(descripcion);
+		if (seguro) {
+		
+			String fechatTimesStamp="";
+			int pos=2;
+			List<String> aux = new ArrayList<String>();
+			StringTokenizer tokens = new StringTokenizer(fecha,"/");
+			while(tokens.hasMoreTokens()){			
+				aux.add(tokens.nextToken());
+			}
+			while(pos != -1){
+				fechatTimesStamp +=aux.get(pos);
+				if(pos != 0) fechatTimesStamp+= "-";
+				pos--;
+			}		
+			Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
+			Local local = entityManager.find(Local.class, id);
+			Oferta offer= new Oferta();
+			offer.setNombre(nombreOferta);
+			offer.setFechaLimite(timestamp);
+			offer.setCapacidadTotal(capacidad);
+			offer.setDescripcion(descripcion);
+			offer.setTags(tag+",");		
+			offer.setLocal(local);
+			offer.setOfertaMes(false);
+			local.getOfertas().add(offer);
+			entityManager.persist(offer);
+			entityManager.flush();
+	        if (!photo.isEmpty()) {
+	            try {            	
+	                byte[] bytes = photo.getBytes();
+	                BufferedOutputStream stream = new BufferedOutputStream(
+	                		new FileOutputStream(ContextInitializer.getFile(
+	                				"ofertas", ""+offer.getID()+".jpg")));
+	                stream.write(bytes);
+	                stream.close();
+	
+					entityManager.persist(offer);
+					entityManager.persist(local);		
+	            } catch (Exception e) {
+	            	return "redirect:comercio_interno?id="+local.getID();
+	            }
+	        } else { //no ha seleccionado foto, poner la por defecto          
+	    	    	BufferedInputStream in = new BufferedInputStream(
+	    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+	    	    	BufferedOutputStream stream = null;
+					try {
+						stream = new BufferedOutputStream(
+								new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						stream.write(IOUtils.toByteArray(in));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					entityManager.persist(offer);
+					entityManager.persist(local);				
+	        }
+	        return "redirect:comercio_interno?id="+local.getID();
 		}
-		while(pos != -1){
-			fechatTimesStamp +=aux.get(pos);
-			if(pos != 0) fechatTimesStamp+= "-";
-			pos--;
-		}		
-		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
-		Local local = entityManager.find(Local.class, id);
-		Oferta offer= new Oferta();
-		offer.setNombre(nombreOferta);
-		offer.setFechaLimite(timestamp);
-		offer.setCapacidadTotal(capacidad);
-		offer.setDescripcion(descripcion);
-		offer.setTags(tag+",");		
-		offer.setLocal(local);
-		offer.setOfertaMes(false);
-		local.getOfertas().add(offer);
-		entityManager.persist(offer);
-		entityManager.flush();
-        if (!photo.isEmpty()) {
-            try {            	
-                byte[] bytes = photo.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(
-                		new FileOutputStream(ContextInitializer.getFile(
-                				"ofertas", ""+offer.getID()+".jpg")));
-                stream.write(bytes);
-                stream.close();
-
-				entityManager.persist(offer);
-				entityManager.persist(local);		
-            } catch (Exception e) {
-            	return "redirect:comercio_interno?id="+local.getID();
-            }
-        } else { //no ha seleccionado foto, poner la por defecto          
-    	    	BufferedInputStream in = new BufferedInputStream(
-    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
-    	    	BufferedOutputStream stream = null;
-				try {
-					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("ofertas", offer.getNombre()+".jpg")));
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					stream.write(IOUtils.toByteArray(in));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				entityManager.persist(offer);
-				entityManager.persist(local);				
-        }
-        return "redirect:comercio_interno?id="+local.getID();
+		else
+			return "redirect:paginaError"; 
+			
     }
 	@Transactional
 	@RequestMapping(value = "/editarOferta", method = RequestMethod.POST)
@@ -704,7 +710,6 @@ public class HomeController {
     		@RequestParam("editDescription") String descripcion,
     		@RequestParam("id_Editoffer") String idOffer, 
     		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	/*
 		String fechatTimesStamp="";
@@ -720,34 +725,43 @@ public class HomeController {
 			pos--;
 		}		
 		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");*/
-		Local local = entityManager.find(Local.class, id);
-		System.err.println("+"+idOffer);
-		Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
-		offer.setNombre(nombreOferta);
-		//offer.setFechaLimite(timestamp);
-		offer.setCapacidadTotal(capacidad);
-		offer.setDescripcion(descripcion);	
-		offer.setLocal(local);
-		offer.setOfertaMes(false);
-		local.getOfertas().add(offer);
-		entityManager.persist(offer);
-		entityManager.flush();
-        if (!photo.isEmpty()) {
-            try {
-                byte[] bytes = photo.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(
-                		new FileOutputStream(ContextInitializer.getFile(
-                				"ofertas", ""+offer.getID()+".jpg")));
-                stream.write(bytes);
-                stream.close();
-
-				entityManager.persist(offer);
-				entityManager.persist(local);		
-            } catch (Exception e) {
-            	return "redirect:comercio_interno?id="+local.getID();
-            }
-        }
-        return "redirect:comercio_interno?id="+local.getID();
+		
+		boolean seguro = textoSeguro(nombreOferta) && textoSeguro(fecha) && textoSeguro(descripcion) && textoSeguro(idOffer);
+		if (seguro) {
+		
+		
+			Local local = entityManager.find(Local.class, id);
+			System.err.println("+"+idOffer);
+			Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
+			offer.setNombre(nombreOferta);
+			//offer.setFechaLimite(timestamp);
+			offer.setCapacidadTotal(capacidad);
+			offer.setDescripcion(descripcion);	
+			offer.setLocal(local);
+			offer.setOfertaMes(false);
+			local.getOfertas().add(offer);
+			entityManager.persist(offer);
+			entityManager.flush();
+	        if (!photo.isEmpty()) {
+	            try {
+	                byte[] bytes = photo.getBytes();
+	                BufferedOutputStream stream = new BufferedOutputStream(
+	                		new FileOutputStream(ContextInitializer.getFile(
+	                				"ofertas", ""+offer.getID()+".jpg")));
+	                stream.write(bytes);
+	                stream.close();
+	
+					entityManager.persist(offer);
+					entityManager.persist(local);		
+	            } catch (Exception e) {
+	            	return "redirect:comercio_interno?id="+local.getID();
+	            }
+	        }
+	        return "redirect:comercio_interno?id="+local.getID();
+		}
+		else
+			return "redirect:paginaError"; 
+			
     }
 	
 	@Transactional
@@ -764,65 +778,70 @@ public class HomeController {
     		@RequestParam("id_usuario") long id, @RequestParam("name") String nombreLocal,@RequestParam("timeBusiness") String horario
     		, @RequestParam("dir") String direccion,@RequestParam("email") String email,@RequestParam("tel") String telefono,
     		@RequestParam("tag") String tag,@RequestParam("redireccion")String pagina, Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
-		//UBICACI�N!!!!!!!!!!!!!		
-		Usuario usuario = entityManager.find(Usuario.class, id);
-		Local local= new Local();
-		local.setNombre(nombreLocal);
-		local.setDireccion(direccion);
-		local.setHorario(horario);
-		local.setUsuario(usuario);
-		local.setTags(tag+",");
-		local.setEmail(email);
-		local.setTelefono(telefono);
-		entityManager.persist(local);
-		entityManager.flush();
-        if (!photo.isEmpty()) {
-            try {
-                byte[] bytes = photo.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(
-                        		new FileOutputStream(
-                        				ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
-                stream.write(bytes);
-                stream.close();
-                usuario.getLocales().add(local);
-        		entityManager.persist(usuario);
-        		entityManager.persist(local);       		
-         
-            } catch (Exception e) {
-            	return "redirect:comercio_interno?id="+local.getID();
-            }
-        } else { //no ha seleccionado foto, poner la por defecto
-          
-    	    	BufferedInputStream in = new BufferedInputStream(
-    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
-    	    	BufferedOutputStream stream = null;
-				try {
-					stream = new BufferedOutputStream(
-							new FileOutputStream(ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					stream.write(IOUtils.toByteArray(in));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                usuario.getLocales().add(local);
-        		entityManager.persist(usuario);
-        		entityManager.persist(local);  
-				
-        }
-		
-		if(pagina.equalsIgnoreCase("usuario"))
-			return "redirect:usuario?id="+id;
+		boolean seguro = textoSeguro(nombreLocal) && textoSeguro(horario) && textoSeguro(direccion) && textoSeguro(email) && telefonoSeguro(telefono) && textoSeguro(tag);
+		if (seguro) {
+			
+			//UBICACI�N!!!!!!!!!!!!!		
+			Usuario usuario = entityManager.find(Usuario.class, id);
+			Local local= new Local();
+			local.setNombre(nombreLocal);
+			local.setDireccion(direccion);
+			local.setHorario(horario);
+			local.setUsuario(usuario);
+			local.setTags(tag+",");
+			local.setEmail(email);
+			local.setTelefono(telefono);
+			entityManager.persist(local);
+			entityManager.flush();
+	        if (!photo.isEmpty()) {
+	            try {
+	                byte[] bytes = photo.getBytes();
+	                BufferedOutputStream stream =
+	                        new BufferedOutputStream(
+	                        		new FileOutputStream(
+	                        				ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
+	                stream.write(bytes);
+	                stream.close();
+	                usuario.getLocales().add(local);
+	        		entityManager.persist(usuario);
+	        		entityManager.persist(local);       		
+	         
+	            } catch (Exception e) {
+	            	return "redirect:comercio_interno?id="+local.getID();
+	            }
+	        } else { //no ha seleccionado foto, poner la por defecto
+	          
+	    	    	BufferedInputStream in = new BufferedInputStream(
+	    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+	    	    	BufferedOutputStream stream = null;
+					try {
+						stream = new BufferedOutputStream(
+								new FileOutputStream(ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						stream.write(IOUtils.toByteArray(in));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	                usuario.getLocales().add(local);
+	        		entityManager.persist(usuario);
+	        		entityManager.persist(local);  
+					
+	        }
+			
+			if(pagina.equalsIgnoreCase("usuario"))
+				return "redirect:usuario?id="+id;
+			else
+				return "redirect:administracion";	
+		}
 		else
-			return "redirect:administracion";	
+			return "redirect:paginaError"; 
     }
 	
 	@Transactional
@@ -845,36 +864,45 @@ public class HomeController {
     		@RequestParam("redireccionLocal")String pagina, 
     		 Model model){
 		//Hay que revisar que el local pertenece a un usuario
-		Local edit= entityManager.find(Local.class, id);
-		edit.setNombre(nombreLocal);
-		edit.setHorario(horario);
-		edit.setDireccion(direccion);
-		edit.setEmail(email);
-		edit.setTelefono(telefono);
-		entityManager.persist(edit);
-		entityManager.flush();
-		if(!photo.isEmpty()){
-			
-            try {
-                byte[] bytes = photo.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(
-                        		new FileOutputStream(ContextInitializer.getFile("locales", ""+edit.getID()+".jpg")));
-                stream.write(bytes);
-                stream.close();        		     		
-         
-            } catch (Exception e) {
-            	e.getMessage();
-            }
-		}
 		
-		if(pagina.equalsIgnoreCase("comercio_interno"))
-			return "redirect:"+pagina+"?id="+id;
-		else
-			if(pagina.equalsIgnoreCase("usuario"))
-				return "redirect:"+pagina+"?id="+1; //MODIFICAR POR EL DE LA SESSION
+		boolean seguro = textoSeguro(nombreLocal) && textoSeguro(horario) && textoSeguro(direccion) && textoSeguro(email) && telefonoSeguro(telefono);
+		
+		if (seguro) {
+		
+			
+			Local edit= entityManager.find(Local.class, id);
+			edit.setNombre(nombreLocal);
+			edit.setHorario(horario);
+			edit.setDireccion(direccion);
+			edit.setEmail(email);
+			edit.setTelefono(telefono);
+			entityManager.persist(edit);
+			entityManager.flush();
+			if(!photo.isEmpty()){
+				
+	            try {
+	                byte[] bytes = photo.getBytes();
+	                BufferedOutputStream stream =
+	                        new BufferedOutputStream(
+	                        		new FileOutputStream(ContextInitializer.getFile("locales", ""+edit.getID()+".jpg")));
+	                stream.write(bytes);
+	                stream.close();        		     		
+	         
+	            } catch (Exception e) {
+	            	e.getMessage();
+	            }
+			}
+			
+			if(pagina.equalsIgnoreCase("comercio_interno"))
+				return "redirect:"+pagina+"?id="+id;
 			else
-				return "redirect:administracion";
+				if(pagina.equalsIgnoreCase("usuario"))
+					return "redirect:"+pagina+"?id="+1; //MODIFICAR POR EL DE LA SESSION
+				else
+					return "redirect:administracion";
+		}
+		else
+			return "redirect:paginaError";
 		
 	}
 	@Transactional
@@ -886,48 +914,52 @@ public class HomeController {
     		@RequestParam("tel") String telefono,
     		@RequestParam("rol") String rol,    		 
     		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
 		//UBICACI�N!!!!!!!!!!!!!		
-		Usuario usuario = creaUsuario(nombreUsuario, email, telefono, rol, pass);
-		entityManager.persist(usuario);
-		entityManager.flush();
-        if (!photo.isEmpty()) {
-            try {
-                byte[] bytes = photo.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(
-                        		new FileOutputStream(
-                        				ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
-                stream.write(bytes);
-                stream.close();
-            } catch (Exception e) {
-            	return "redirect:administracion";
-            }
-        } else { //no ha seleccionado foto, poner la por defecto
-          
-    	    	BufferedInputStream in = new BufferedInputStream(
-    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
-    	    	BufferedOutputStream stream = null;
-				try {
-					stream = new BufferedOutputStream(
-							new FileOutputStream(
-									ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					stream.write(IOUtils.toByteArray(in));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-        }
 		
-			return "redirect:administracion";	
+		boolean seguro = textoSeguro(nombreUsuario) && textoSeguro(pass) && textoSeguro(email) && telefonoSeguro(telefono) && textoSeguro(rol);
+		
+		if (seguro) {
+			Usuario usuario = creaUsuario(nombreUsuario, email, telefono, rol, pass);
+			entityManager.persist(usuario);
+			entityManager.flush();
+	        if (!photo.isEmpty()) {
+	            try {
+	                byte[] bytes = photo.getBytes();
+	                BufferedOutputStream stream =
+	                        new BufferedOutputStream(
+	                        		new FileOutputStream(
+	                        				ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
+	                stream.write(bytes);
+	                stream.close();
+	            } catch (Exception e) {
+	            	return "redirect:administracion";
+	            }
+	        } else { //no ha seleccionado foto, poner la por defecto
+	          
+	    	    	BufferedInputStream in = new BufferedInputStream(
+	    	    			this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+	    	    	BufferedOutputStream stream = null;
+					try {
+						stream = new BufferedOutputStream(
+								new FileOutputStream(
+										ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						stream.write(IOUtils.toByteArray(in));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    }
+				return "redirect:administracion";	
+		}
+		else
+			return "redirect:paginaError";
     }
 	
 	@Transactional
@@ -948,15 +980,15 @@ public class HomeController {
 		if(id == u.getID() || u.getRol().equals("admin")){
 			cambio = comprobarCampos(edit, nombreUsuario, pass, email, telefono);
 			
-			if((andLogica(1, cambio, 1000000001) == false) && (andLogica(9, cambio, 1000100001) == true)) //1er and es si el valor es erroneo - 2do campo si se ha cambiado el valor
+			if((andLogica(9, cambio, 1000000001) == true) && (andLogica(4, cambio, 1000100001) == false)) //1ercampo si se ha cambiado el valor- 2do and es si el valor es erroneo 
 				edit.setNombre(nombreUsuario);
-			if((andLogica(2, cambio, 1000000010) == false) && (andLogica(10, cambio, 1001000010) == true))
+			if((andLogica(8, cambio, 1000000010) == true) && (andLogica(3, cambio, 1001000010) == false))
 				edit.setHashedAndSalted(edit.generateHashedAndSalted(pass));
-			if((andLogica(3, cambio, 1000000100) == false) && (andLogica(11, cambio, 1010000100) == true))
+			if((andLogica(7, cambio, 1000000100) == true) && (andLogica(2, cambio, 1010000100) == false))
 				edit.setEmail(email);
-			if((andLogica(4, cambio, 1000001000) == false) && (andLogica(12, cambio, 1100001000) == true))
+			if((andLogica(6, cambio, 1000001000) == true) && (andLogica(1, cambio, 1100001000) == false))
 				edit.setTelefono(telefono);
-			/*if(andLogica(8, cambio, 1000010000))
+			/*if(andLogica(5, cambio, 1000010000))
 				edit.setFoto(photo.getOriginalFilename());*/
 		}
 		
@@ -976,11 +1008,23 @@ public class HomeController {
 		Usuario u = (Usuario)session.getAttribute("user");
 		
 		
-		if(!photo.isEmpty()){
-			//edit.setFoto(photo.getOriginalFilename());
+		if(!photo.isEmpty() && id == u.getID()){
+			if (!photo.isEmpty()) {
+			    try {
+			        byte[] bytes = photo.getBytes();
+			        BufferedOutputStream stream =
+			                new BufferedOutputStream(
+			                		new FileOutputStream(ContextInitializer.getFile("usuarios", Long.toString(u.getID()) + ".jpg")));
+			        stream.write(bytes);
+			        stream.close();
+					
+			    } catch (Exception e) {
+			    	return new ResponseEntity<String>("Fotografía no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
+			    }
+			 }
 		}
 		
-		return new ResponseEntity<String>("MEC", HttpStatus.OK);
+		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);
 		
 			
 	}
@@ -1015,20 +1059,39 @@ public class HomeController {
 		return res;
 	}
 	
+	boolean textoSeguro(String texto) {
+		
+		boolean seguro;
+		seguro = !texto.contains("<") && !texto.contains(">") && !texto.contains("$");
+		return seguro;
+		
+	}
+	
+	boolean telefonoSeguro (String telefono) {
+		return telefono.matches("^[0-9]{9}$");
+	}
+	
 	int comprobarCampos(Usuario sesion, String nombre, String contra, String email, String telef){
 		int camposModificados = 1000000000; //1-ErrorNombre-ErrorContra-ErrorEmail-ErrorTelef---ModificadoNombre-ModificadoContra-ModificadoEmail-ModificadoTelef-ModificadoFoto
 		             //ejemplo  1100110110    1-    1      -      0    -    0     -   1      ---   1            -     0          -    1          -      1        -     0   
 		if(!nombre.equals(sesion.getNombre())){
-			if(nombre.length() < 4 || nombre.length() > 12){
+			String res = new String("ocupado");
+			
+			try{				
+				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombre).getSingleResult();
 				camposModificados += 100000;
-			}
-			else{
-				camposModificados += 1; 
+			} catch (NoResultException nre) {
+				if(nombre.length() < 4 || nombre.length() > 12  || !textoSeguro(nombre)){
+					camposModificados += 100000;
+				}
+				else{
+					camposModificados += 1; 
+				}	
 			}
 		}
 		
 		if(contra != ""){
-			if(contra.length() < 6 || contra.length() > 12){
+			if(contra.length() < 6 || contra.length() > 12 || !textoSeguro(contra)){
 				camposModificados += 1000000;
 			}
 			else{
@@ -1039,7 +1102,7 @@ public class HomeController {
 		if(!email.equalsIgnoreCase(sesion.getEmail())){
 			String patron = new String("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 		            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-			if (!email.matches(patron)) {
+			if (!email.matches(patron) || !textoSeguro(email)) {
 				camposModificados += 10000000;
 			}
 			else{
@@ -1048,8 +1111,7 @@ public class HomeController {
 		}
 		
 		if(!telef.equals(sesion.getTelefono())){
-			String patron = new String("^[0-9]{9}$");
-			if( !telef.matches(patron)){
+			if( !telefonoSeguro(telef)){
 				camposModificados += 100000000;
 			}
 			else{
@@ -1066,9 +1128,20 @@ public class HomeController {
 	
 	@Transactional
 	@RequestMapping(value = "/eliminarUsuario", method = RequestMethod.POST)
-	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario,Model model){
+	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario, Model model, HttpSession session){
+			
+		
 			Usuario usuario= entityManager.find(Usuario.class, idUsuario);
-			entityManager.remove(usuario);			
+			Usuario u = (Usuario)session.getAttribute("user");
+			
+			if(/*idUsuario == u.getID()*/u.getRol().equals("admin")){
+				entityManager.remove(usuario);
+			
+				File foto = ContextInitializer.getFile("usuarios", Long.toString(idUsuario));
+				foto.delete();
+				
+			}
+			
 			return "eliminarUsuario";
     }
 
@@ -1277,34 +1350,69 @@ public class HomeController {
 			@RequestParam("email") String email,
 			@RequestParam("tel") String telefono,
 			@RequestParam("Rol") String rol, HttpSession session, Model model){
+		boolean seguro = textoSeguro(nombre) && textoSeguro(password) && textoSeguro(email) && telefonoSeguro(telefono) && textoSeguro(rol);
+		if (seguro) {
 		
-		Usuario u;
-		logger.info("registro usuario");
-			
-		try{
-			u = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", nombre).getSingleResult();
-		} catch (NoResultException nre){
+			Usuario u;
+			logger.info("registro usuario");
+			boolean error = false;
 				
-			if(rol.equals("propietario_comercio")){
-				rol = "local";
-			}	
-			else{
-				rol = "user";
+			try{
+				u = (Usuario) entityManager.createNamedQuery("dameUsuarioLogin").setParameter("nombre", nombre).getSingleResult();
+			} catch (NoResultException nre){
+			
+				if(nombre.length() < 4 || nombre.length() > 12){
+					error = true;
+				}
+		
+				
+				if(password.length() < 6 || password.length() > 12){
+					error = true;
+				}	
+				
+				String patron1 = new String("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+				
+				if (!email.matches(patron1)) {
+					error = true;
+				}
+					
+				
+				String patron2 = new String("^[0-9]{9}$");
+				if(!telefono.matches(patron2)){
+					error = true;
+				}
+					
+		
+				if(!error){
+					if(rol.equals("propietario_comercio")){
+						rol = "local";
+					}	
+					else{
+						rol = "user";
+					}
+					
+					u = creaUsuario(nombre, email, telefono, rol, password);
+					logger.info(Long.toString(u.getID()));
+					entityManager.persist(u);
+					entityManager.persist(u);
+					session.setAttribute("user", u);
+		
+					logger.info("El usuario no existe");
+					
+					return new ResponseEntity<String>("Usuario creado satisfactoriamente", HttpStatus.OK);	
+				}
+				else{
+					return new ResponseEntity<String>("Usuario  no creado satisfactoriamente. Error en los datos", HttpStatus.BAD_REQUEST);
+				}
 			}
 			
-			u = creaUsuario(nombre, email, telefono, rol, password);
-			logger.info(Long.toString(u.getID()));
-			entityManager.persist(u);
-			entityManager.persist(u);
-			session.setAttribute("user", u);
-
-			logger.info("El usuario no existe");
-			
-			return new ResponseEntity<String>("Usuario creado satisfactoriamente", HttpStatus.OK);	
+			logger.info("El usuario existia");
+			return new ResponseEntity<String>("Apodo ocupado, usuario no creado", HttpStatus.BAD_REQUEST);
 		}
-		
-		logger.info("El usuario existia");
-		return new ResponseEntity<String>("Apodo ocupado, usuario no creado", HttpStatus.BAD_REQUEST);
+		else {
+			logger.info("Datos no validos");
+			return new ResponseEntity<String>("Datos no validos, usuario no creado", HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@ResponseBody
@@ -1338,7 +1446,26 @@ public class HomeController {
 		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);	
 	}
 	
-	@Transactional
+	@ResponseBody
+	@RequestMapping(value = "/disponibilidadApodo", method = RequestMethod.POST)
+	public ResponseEntity<String> comprobarDisponibilidadApodo(
+			@RequestParam("apodo") String apodo,
+			HttpSession session){
+		
+		String res = new String("ocupado");
+		
+		try{				
+			String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", apodo).getSingleResult();
+			
+		} catch (NoResultException nre) {
+			res = "libre";
+			return new ResponseEntity<String>(res, HttpStatus.OK);	
+			
+		}
+		return new ResponseEntity<String>(res, HttpStatus.OK);	
+	}
+	
+	/*@Transactional
 	@RequestMapping(value = "/editarAdmin", method = RequestMethod.POST)
 	public String editarAdmin(@RequestParam("fileToUpload") MultipartFile photo,
     		@RequestParam("adminName") String nombreUsuario,
@@ -1375,5 +1502,5 @@ public class HomeController {
 	        }	
 		}
 		return "redirect:administracion";	
-	}
+	}*/
 }
