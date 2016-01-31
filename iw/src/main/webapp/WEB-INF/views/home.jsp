@@ -76,10 +76,7 @@
                         <div class="row slide-margin">
                             
                                 <div class="carousel-content">
-                                    <h1 class="animation animated-item-1">Locales de los habla todo el mundo</h1>
-                                    <c:forEach items="${popularLocals}" var="i">							
-						  				<h2 class="animation animated-item-1"><a href="comercio_externo?id=${i.ID}">${i.nombre}</a></h2>		
-									</c:forEach>
+                                    <h1 class="animation animated-item-1">Descubre los locales de los que habla todo el mundo</h1>                                   
                                 </div>								
                         
                         </div>
@@ -126,9 +123,11 @@
 		                                <c:choose>
 										<c:when test="${not empty user}">	
 											<c:if test="${i.capacidadActual != i.capacidadTotal}">
+											<c:if test="${user.rol != 'admin'}">
 											<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=home">
 												<i class="glyphicon glyphicon-cutlery"></i> Reservar
 											</a>
+											</c:if>
 											</c:if>
 										<a class="preview" href="comercio_externo?id=${(i.local).ID}">
 											<i class="fa fa-eye"></i> Ver restaurante

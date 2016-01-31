@@ -27,9 +27,11 @@
 	                                <p>Cap: ${i.capacidadActual}/${i.capacidadTotal}</p>							 
 							<c:choose>
 									<c:when test="${not empty user}">	
+									<c:if test="${user.rol != 'admin'}">
 									<a class="preview" href="reserva?id=${i.ID}&dondeEstoy=ofertasMes">
 										<i class="glyphicon glyphicon-cutlery"></i> Reservar
 									</a>	
+									</c:if>
 									<a class="preview" href="comercio_externo?id=${(i.local).ID}">
 										<i class="fa fa-eye"></i> Ver restaurante
 									</a>

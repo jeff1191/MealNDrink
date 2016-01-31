@@ -317,9 +317,8 @@ function editarDatos(){
 											<h4 class="media-heading">${i.nombre}</h4>
 											<p>Dirección:${i.direccion }</p>
 											<p>Horario: ${i.horario }</p>								
-											<p>Puntuación: ${i.puntuacion }</p>
-											<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-											<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
+											<p>Puntuación: ${i.puntuacion }</p>											
+											<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 										</div>
 									</div>	
 									</c:forEach>

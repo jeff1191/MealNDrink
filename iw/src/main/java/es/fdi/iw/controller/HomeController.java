@@ -247,19 +247,7 @@ public class HomeController {
 		//Para saber los locales mas populares se cogen los cinco que tengan mas comentarios
 		List<Local> auxLocals = new ArrayList<Local>();
 		auxLocals = entityManager.createNamedQuery("allLocals").getResultList();
-		
-		//List<Object> popular = entityManager.createNamedQuery("localesConMasComentarios").getResultList();
-		//long num = (Long) popular.get(1);
-		//System.out.println(((Local) popular.get(1)).getID());
-		//System.out.println(popular.get(0).toString());
 						
-		List<Long> idsLocals = new ArrayList<Long>();
-		idsLocals.add((long) 4);
-		idsLocals.add((long) 1);
-		idsLocals.add((long) 5);
-		idsLocals.add((long) 2);
-		idsLocals.add((long) 3);	
-				
 		List<String> tagsToShow = new ArrayList<String>();
 		for(int i =0; i < auxOffers.size(); i++){
 			tagsToShow.add(auxOffers.get(i).tagsToShow());
@@ -269,8 +257,6 @@ public class HomeController {
 		model.addAttribute("tagsString", tagsToShow);	
 		model.addAttribute("platos", auxOffers);	
 		model.addAttribute("locales", auxLocals);
-		model.addAttribute("popularLocals", entityManager.createNamedQuery("infoLocals").setParameter("idParam", idsLocals).getResultList());
-				
 		
 		return "home";
 	}	
@@ -533,7 +519,7 @@ public class HomeController {
 			@RequestParam("fileToUpload") MultipartFile photo,
     		@RequestParam("id_local") long id,     		
     		@RequestParam("name") String nombreOferta,
-    		@RequestParam("nombreTag") String tag, 
+    		@RequestParam("tagsIds") String tags, 
     		@RequestParam("fecha") String fecha,
     		@RequestParam("cap") int capacidad,
     		@RequestParam("description") String descripcion, 
@@ -551,16 +537,23 @@ public class HomeController {
 			if(pos != 0) fechatTimesStamp+= "-";
 			pos--;
 		}
-		System.out.println(fechatTimesStamp);
+		//System.out.println(fechatTimesStamp);
 		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
 		
+		//System.out.println(tags);
+		List<Tags> auxTags = new ArrayList<Tags>();
+		StringTokenizer ids = new StringTokenizer(tags,",");
+		while(ids.hasMoreTokens()){	
+			auxTags.add(entityManager.find(Tags.class, Long.parseLong(ids.nextToken())));					 
+		}
+				
 		Local local = entityManager.find(Local.class, id);
 		Oferta offer= new Oferta();
 		offer.setNombre(nombreOferta);
 		offer.setFechaLimite(timestamp);
 		offer.setCapacidadTotal(capacidad);
 		offer.setDescripcion(descripcion);
-		//offer.setTags(tag+","); // esto se hace ahora de otra forma
+		offer.setTags(auxTags); 
 		offer.setLocal(local);
 		local.getOfertas().add(offer);
 		entityManager.persist(offer);
@@ -605,13 +598,19 @@ public class HomeController {
 			@RequestParam("EditfileToUpload") MultipartFile photo,
     		@RequestParam("id_local") long id,     		
     		@RequestParam("editName") String nombreOferta, 
+    		@RequestParam("editTags") String tags,
     		@RequestParam("editFecha") String fecha,
     		@RequestParam("editCap") int capacidad,
     		@RequestParam("editDescription") String descripcion,
     		@RequestParam("id_Editoffer") String idOffer, 
     		Model model){
-		//FALTAN LOS TAGS
-		//offer.setTags(tag+","); // esto se hace ahora de otra forma
+		
+		List<Tags> auxTags = new ArrayList<Tags>();
+		StringTokenizer ids = new StringTokenizer(tags,",");
+		while(ids.hasMoreTokens()){	
+			auxTags.add(entityManager.find(Tags.class, Long.parseLong(ids.nextToken())));					 
+		}
+		
 		String fechatTimesStamp="";
 		int pos=2;
 		List<String> aux = new ArrayList<String>();
@@ -619,11 +618,21 @@ public class HomeController {
 		while(tokens.hasMoreTokens()){			
 			aux.add(tokens.nextToken());
 		}
-		while(pos != -1){
-			fechatTimesStamp +=aux.get(pos);
-			if(pos != 0) fechatTimesStamp+= "-";
-			pos--;
-		}		
+		if(Integer.parseInt(aux.get(0)) < 2000){
+			while(pos != -1){
+				fechatTimesStamp +=aux.get(pos);
+				if(pos != 0) fechatTimesStamp+= "-";
+				pos--;
+			}					
+		}
+		else{
+			pos = 0;
+			while(pos != 3){
+				fechatTimesStamp +=aux.get(pos);
+				if(pos != 2) fechatTimesStamp+= "-";
+				pos++;
+			}	
+		}
 		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
 		Local local = entityManager.find(Local.class, id);
 		System.err.println("+"+idOffer);
@@ -631,7 +640,8 @@ public class HomeController {
 		offer.setNombre(nombreOferta);
 		offer.setFechaLimite(timestamp);
 		offer.setCapacidadTotal(capacidad);
-		offer.setDescripcion(descripcion);	
+		offer.setDescripcion(descripcion);
+		offer.setTags(auxTags);
 		offer.setLocal(local);		
 		local.getOfertas().add(offer);
 		entityManager.persist(offer);
@@ -1012,6 +1022,7 @@ public class HomeController {
 			entityManager.persist(local);	
 			return "eliminarTag";
     }
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model,HttpSession session) {
@@ -1021,11 +1032,11 @@ public class HomeController {
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
-			if(usuario.getRol().equals("admin")){				
-			model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
-			model.addAttribute("usuarios", entityManager.createNamedQuery("allUsersExceptAdmin").getResultList());
-			model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
-			model.addAttribute("alltags", entityManager.createNamedQuery("allTags").getResultList());	
+			if(usuario.getRol().equals("admin")){	
+				model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
+				model.addAttribute("usuarios", entityManager.createNamedQuery("allUsersExceptAdmin").getResultList());
+				model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());
+				model.addAttribute("alltags", entityManager.createNamedQuery("allTags").getResultList());					
 				return "administracion";
 			}	
 		}

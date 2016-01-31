@@ -51,11 +51,13 @@
 										<p>${i.descripcion}</p>
 										<p>Cap: ${i.capacidadActual}/${i.capacidadTotal}</p>
 										<c:choose>
-											<c:when test="${not empty user}">	
+											<c:when test="${not empty user}">												
 											<c:if test="${i.capacidadActual != i.capacidadTotal}">
+												<c:if test="${user.rol != 'admin'}">
 												<a class="btn btn-primary" href="reserva?id=${i.ID}&dondeEstoy=comercio_externo">
 													Reservar
 												</a>	
+												</c:if>
 											</c:if>	
 											<c:if test="${i.capacidadActual == i.capacidadTotal}">
 												<p><b>Capacidad maxima alcanzada</b></p>

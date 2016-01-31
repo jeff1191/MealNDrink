@@ -28,7 +28,7 @@ function rellenarModalEditarOferta() {
 	var res = idOffer.split("/,");
 	$("#editName").attr("value" ,res[0]);
 	var fecha = res[1]; 
-	var posFe=fecha.split(" ");//quitamos la hora del timestamp
+	var posFe=fecha.split(" ");	
 	$("#editFecha" ).datepicker();
 	$("#editFecha").attr("value" ,posFe[0].replace(/-/gi,"/"));
 	$("#editCap").attr("value" ,res[2]);
@@ -245,20 +245,22 @@ $(function() {
 											<input type="text" class="form-control" name="name" required="required" id="name" placeholder="Introduzca el nuevo nombre">
 										  </div>
 										<div class="form-group" name="tag" id="tag ">
-										<label for="endTime">Tag:</label>
-										<select class="form-control" name="nombreTag" id="nombreTag">
-				               				<c:forEach items="${alltags}" var="i">					               				
-				               					<option value="${i.texto}"> ${i.texto} </option>					               				
-				               				</c:forEach>					               				
-					               		</select>
+										<label for="endTime">Tag:</label>	
+										<c:forEach items="${alltags}" var="i">									
+											<div class="checkbox">											  
+											  <label>
+											    <input type="checkbox" name="tagsIds" value="${i.ID}"> ${i.texto}
+											  </label>											  
+											</div>	
+										</c:forEach>
 					               		</div>
 									        <div class="form-group">
-									     	<label for="datepicker2"> Fecha: </label>									     
+									     	<label for="datepicker2"> Fecha limite: </label>									     
 												<input id=datepicker class="form-control" type="text" id="fecha" name="fecha" placeholder="Selecciona una fecha" value="" />	
 											</div>	
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero maximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
 											<label for="descriptcion">Descripcion:</label>
@@ -298,12 +300,22 @@ $(function() {
 											<input type="text" class="form-control" value="" name="editName" id="editName" placeholder="Introduzca el nombre" >
 										  </div>
 										  <div class="form-group">
+											<label for="endTime">Tag:</label>	
+											<c:forEach items="${alltags}" var="i">									
+												<div class="checkbox">											  
+												  <label>
+												    <input type="checkbox" name="editTags" id="editTags" value="${i.ID}"> ${i.texto}
+												  </label>											  
+												</div>	
+											</c:forEach>
+						               		</div>
+										  <div class="form-group">
 											<label for="endTime">Fecha limite:</label>
 											<input class="form-control" type="text" id="editFecha" name="editFecha" placeholder="Selecciona una fecha" />	
 										  </div>
 										  <div class="form-group">
 											<label for="cap">Capacidad total:</label>
-											<input type="number" class="form-control" name="editCap" id="editCap" placeholder="Introduzca el numero máximo de beneficiarios">
+											<input type="number" class="form-control" name="editCap" id="editCap" placeholder="Introduzca el numero maximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
 											<label for="descriptcion">Descripcion:</label>

@@ -121,8 +121,8 @@ $(function() {
 						  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddUser"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo usuario</button>
 						  	<br></br>
 						  </div>
-						  <div id="TodosUsuarios" class="TodosUsuarios">
-							  <c:forEach items="${usuarios }" var="i">
+						  <div id="TodosUsuarios" class="TodosUsuarios" varStatus="status">
+							  <c:forEach items="${usuarios}" var="i">
 								<div class="media">
 									<div class="pull-left">
 										<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg" height="140" width="140"> 
@@ -130,15 +130,7 @@ $(function() {
 									<div class="media-body">
 										<h4 class="media-heading">${i.nombre} (${i.rol})</h4>
 										<p>E-mail: ${i.email}</p>
-										<p>Teléfono: ${i.telefono}</p>
-										<c:choose>
-										<c:when test="${i.rol == 'user'}">	
-											<p>Numero de comentarios: </p>																				
-										</c:when>		
-										<c:when test="${i.rol == 'local'}">
-											<p>Numero de locales: </p>											
-										</c:when>
-										</c:choose>											
+										<p>Teléfono: ${i.telefono}</p>																		
 										<button type="submit" id="edit_${i.nombre}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarUsuario" data-toggle="modal" data-target="#ModalEditUser" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										<button id="delUsuario_${i.ID}" class="eliminaUsuario"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 									</div>
@@ -256,9 +248,7 @@ $(function() {
 								<div class="media-body">
 									<h4 class="media-heading">${i.nombre}</h4>
 									<p>Usuario: ${i.usuario.nombre}</p>																
-									<p>Puntuación: ${i.puntuacion}</p>
-									<p>Numero de reservas: </p>	
-									<p>Numero de ofertas: </p>
+									<p>Puntuación: ${i.puntuacion}</p>									
 									<button type="submit" id="edit_${i.nombre}/,${i.horario}/,${i.direccion}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarLocal" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									<button id="delLocal_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 								</div>
@@ -308,15 +298,7 @@ $(function() {
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" required="required" id="tel" name="tel" placeholder="Introduce un nuevo telefono" maxlength="9">
-								  </div>
-								<div class="form-group" name="nombreTag" id="nombreTag">
-								<label for="endTime">Tag:</label>
-								<select class="form-control" name="tag" id="tag">
-		               				<c:forEach items="${alltags}" var="i">					               				
-		               					<option value="${i.texto}"> ${i.texto} </option>					               				
-		               				</c:forEach>					               				
-			               		</select>
-			               		</div>
+								  </div>								
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
