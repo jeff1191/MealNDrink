@@ -54,6 +54,7 @@ import es.fdi.iw.model.Comentario;
 import es.fdi.iw.model.Local;
 import es.fdi.iw.model.Oferta;
 import es.fdi.iw.model.Reserva;
+import es.fdi.iw.model.Tags;
 import es.fdi.iw.model.Usuario;
 
 /**
@@ -246,15 +247,19 @@ public class HomeController {
 		//Para saber los locales mas populares se cogen los cinco que tengan mas comentarios
 		List<Local> auxLocals = new ArrayList<Local>();
 		auxLocals = entityManager.createNamedQuery("allLocals").getResultList();
-				
+		
+		//List<Object> popular = entityManager.createNamedQuery("localesConMasComentarios").getResultList();
+		//long num = (Long) popular.get(1);
+		//System.out.println(((Local) popular.get(1)).getID());
+		//System.out.println(popular.get(0).toString());
+						
 		List<Long> idsLocals = new ArrayList<Long>();
 		idsLocals.add((long) 4);
 		idsLocals.add((long) 1);
 		idsLocals.add((long) 5);
 		idsLocals.add((long) 2);
 		idsLocals.add((long) 3);	
-			
-		//tal vez traerse los datos de la tabla ofertas-tags			
+				
 		List<String> tagsToShow = new ArrayList<String>();
 		for(int i =0; i < auxOffers.size(); i++){
 			tagsToShow.add(auxOffers.get(i).tagsToShow());
@@ -351,7 +356,7 @@ public class HomeController {
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)	
 	public String reserva(@RequestParam("id") long id, @RequestParam("dondeEstoy") String pag,Model model, HttpSession session) {		
 		model.addAttribute("active", "comercio_externo");		
-		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");		
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			model.addAttribute("usuario", usuario);	
@@ -423,7 +428,7 @@ public class HomeController {
 		Oferta oferta= entityManager.find(Oferta.class, ofertaID);
 					
 		//fecha y hora nos serviran para generar el codigo qr >> para el user y para el local
-		String qrInfo = "Este cÃ³digo QR es valido para que " + cap + " personas disfruten de la oferta " 
+		String qrInfo = "Este codigo QR es valido para que " + cap + " personas disfruten de la oferta " 
 				+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
 				+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
 		
@@ -449,17 +454,29 @@ public class HomeController {
 		entityManager.persist(user);
 		entityManager.persist(oferta);
 		
-		return "redirect:" + pag;
+		if(pag.equals("comercio_externo")){		
+			return "redirect:comercio_externo?id=" + oferta.getLocal().getID();
+		}
+		else		
+			return "redirect:" + pag;
 	}	
 	
 	@Transactional
 	@RequestMapping(value = "/eliminarReserva", method = RequestMethod.POST)
-	public String eliminarReserva(@RequestParam("idReserva") long idReserva,Model model){
-			Reserva reserva= entityManager.find(Reserva.class, idReserva);
-			Oferta oferta = entityManager.find(Oferta.class, reserva.getOferta().getID());			
-			oferta.setCapacidadActual(oferta.getCapacidadActual() - reserva.getNumPersonas());
-			entityManager.persist(oferta);
-			entityManager.remove(reserva);	
+	public String eliminarReserva(@RequestParam("idUsuario") long idUsuario,
+								  @RequestParam("idReserva") long idReserva,
+								  Model model, HttpSession session){
+		
+			Usuario usuarioSesion = (Usuario)session.getAttribute("user");
+			if(usuarioSesion.getID() == idUsuario || usuarioSesion.getRol().equals("admin")){
+				Reserva reserva= entityManager.find(Reserva.class, idReserva);
+				Oferta oferta = entityManager.find(Oferta.class, reserva.getOferta().getID());			
+				oferta.setCapacidadActual(oferta.getCapacidadActual() - reserva.getNumPersonas());
+				entityManager.persist(oferta);
+				entityManager.remove(reserva);	
+			}
+			else
+				System.out.println("No se borro la reserva porque no es el dueño de esa oferta o el administrador");
 			
 			return "eliminarReserva";
     }
@@ -521,9 +538,7 @@ public class HomeController {
     		@RequestParam("cap") int capacidad,
     		@RequestParam("description") String descripcion, 
     		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
-	
+		
 		String fechatTimesStamp="";
 		int pos=2;
 		List<String> aux = new ArrayList<String>();
@@ -535,8 +550,10 @@ public class HomeController {
 			fechatTimesStamp +=aux.get(pos);
 			if(pos != 0) fechatTimesStamp+= "-";
 			pos--;
-		}		
+		}
+		System.out.println(fechatTimesStamp);
 		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
+		
 		Local local = entityManager.find(Local.class, id);
 		Oferta offer= new Oferta();
 		offer.setNombre(nombreOferta);
@@ -593,9 +610,8 @@ public class HomeController {
     		@RequestParam("editDescription") String descripcion,
     		@RequestParam("id_Editoffer") String idOffer, 
     		Model model){
-		//HABRIA QUE REVISAR ESTO PARA QUE NO SE NOS PUEDAN HACER INYECCIONES
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
-	/*
+		//FALTAN LOS TAGS
+		//offer.setTags(tag+","); // esto se hace ahora de otra forma
 		String fechatTimesStamp="";
 		int pos=2;
 		List<String> aux = new ArrayList<String>();
@@ -608,12 +624,12 @@ public class HomeController {
 			if(pos != 0) fechatTimesStamp+= "-";
 			pos--;
 		}		
-		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");*/
+		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
 		Local local = entityManager.find(Local.class, id);
 		System.err.println("+"+idOffer);
 		Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
 		offer.setNombre(nombreOferta);
-		//offer.setFechaLimite(timestamp);
+		offer.setFechaLimite(timestamp);
 		offer.setCapacidadTotal(capacidad);
 		offer.setDescripcion(descripcion);	
 		offer.setLocal(local);		
@@ -726,8 +742,8 @@ public class HomeController {
     		@RequestParam("editDirLocal") String direccion,
     		@RequestParam("editEmailLocal") String email,
     		@RequestParam("editTelLocal") String telefono,
-    		@RequestParam("redireccionLocal")String pagina, 
-    		 Model model){
+    		@RequestParam("redireccion")String pagina, 
+    		 Model model, HttpSession session){
 		//Hay que revisar que el local pertenece a un usuario
 		Local edit= entityManager.find(Local.class, id);
 		edit.setNombre(nombreLocal);
@@ -737,8 +753,7 @@ public class HomeController {
 		edit.setTelefono(telefono);
 		entityManager.persist(edit);
 		entityManager.flush();
-		if(!photo.isEmpty()){
-			
+		if(!photo.isEmpty()){		
             try {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream stream =
@@ -752,11 +767,12 @@ public class HomeController {
             }
 		}
 		
+		Usuario u = (Usuario)session.getAttribute("user");
 		if(pagina.equalsIgnoreCase("comercio_interno"))
 			return "redirect:"+pagina+"?id="+id;
 		else
 			if(pagina.equalsIgnoreCase("usuario"))
-				return "redirect:"+pagina+"?id="+1; //MODIFICAR POR EL DE LA SESSION
+				return "redirect:"+pagina+"?id="+u.getID(); //MODIFICAR POR EL DE LA SESSION
 			else
 				return "redirect:administracion";
 		
@@ -968,12 +984,17 @@ public class HomeController {
 			return "AddNuevoTag";
     }
 	
+	@Transactional
 	@RequestMapping(value = "/editarTag", method = RequestMethod.POST)
-	public void editarTag(@RequestParam("nombreTagEdit") String nombreTagEdit,
-			@RequestParam("nombreViejo") String nombreViejo, 
-			Model model){
-			System.err.println(nombreTagEdit+":"+nombreViejo);
-			//return "editarTag";
+	public String editarTag(@RequestParam("id_tag") long id,
+			@RequestParam("nameEditTag") String nombreTagEdit,
+			Model model){	
+			System.out.println("id: " + id + "  nuevoName: " + nombreTagEdit);
+			Tags edit= entityManager.find(Tags.class, id);
+			edit.setTexto(nombreTagEdit);			
+			entityManager.persist(edit);
+			entityManager.flush();			
+			return "redirect:administracion";
     }
 	
 	@Transactional
@@ -1000,7 +1021,7 @@ public class HomeController {
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
-			if(usuario.getRol().equals("admin")){
+			if(usuario.getRol().equals("admin")){				
 			model.addAttribute("admin", entityManager.createNamedQuery("roleUser").setParameter("role", "admin").getSingleResult());
 			model.addAttribute("usuarios", entityManager.createNamedQuery("allUsersExceptAdmin").getResultList());
 			model.addAttribute("locales", entityManager.createNamedQuery("allLocals").getResultList());

@@ -9,8 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
 @Entity	
-@NamedQuery(name="localesConMasReservas", 
-		    query="select o.local, count(o.texto) from Comentario o group by o.local order by count(o.texto) desc")
+@NamedQuery(name="localesConMasComentarios", 
+		    query="select count(o.texto) from Comentario o group by o.local order by count(o.texto) desc")
 
 public class Comentario {
 

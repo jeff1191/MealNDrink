@@ -173,9 +173,9 @@ function editarDatos(){
                         <div class="col-md-4 col-sm-4">
                             <img src="usuariosFoto?id=${usuario.ID}.jpg" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
-							<h3>Mis datos</h3>
-							<p>${usuario.email}</p>
-							<p>${usuario.telefono}</p>											
+							<h3><b>Mis datos</b></h3>
+							<p>Mi email: ${usuario.email}</p>
+							<p>Mi telefono: ${usuario.telefono}</p>											
 						</div>
                     </div><!--/.col-md-4-->
 
@@ -411,7 +411,7 @@ function editarDatos(){
 										</div>
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" name="editPwd" id="editPwd" value="">
+											<input type="password" class="form-control" name="editPwd" id="editPwd"  value="*****">
 										</div>
 										<div class="form-group">
 											<label for="email">Email:</label>

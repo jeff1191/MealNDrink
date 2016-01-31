@@ -57,7 +57,9 @@ function rellenaDatosEditarModalUsuario(){
 }
 function activaBotonRellenaTag() {
 	var nombreTagEdit = $(this).attr("id").substring("editTags_".length); 
-	$("#nameEditTag").attr("value" ,nombreTagEdit);
+	var res = nombreTagEdit.split("/");
+	$("#nameEditTag").attr("value" ,res[0]);
+	$('input[name="id_tag"]').val(res[1]);
 }
 function activaBotonEditTag() {
 	var nombreTagEdit = $("#nameEditTag").attr("value");
@@ -94,17 +96,17 @@ $(function() {
 
             <div class="row">
                 <div class="features">
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-5 col-sm-5">
 						<input hidden="submit" id="id_admin" value="${admin.ID}" />
 						<img src="usuariosFoto?id=${admin.ID}.jpg" height="175" width="250">  
-						<h3>Bienvenido Administrador ${admin.nombre}</h3>
-						<p>Esta es una página de administración, aqui podrá hacer todas las gestiones de usuarios y locales, además de editar tus datos personales</p><br/>
-						<h3>Mis datos</h3>
-						<p>+${admin.telefono}</p>
-						<p>${admin.email}</p>
+						<h3><b>Bienvenido Administrador ${admin.nombre}</b></h3>
+						<p>Esta es una página de administración. </br> Aqui podrá hacer todas las gestiones </br> de usuarios y locales, además de editar </br> sus datos personales</p><br/>
+						<h3><b>Mis datos</b></h3>
+						<p>Telefono: ${admin.telefono}</p>
+						<p>Email: ${admin.email}</p>
                     </div><!--/.col-md-4-->
 
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-7 col-sm-7">
 					<ul class="nav nav-tabs">
 					  <li><a href="#lusuarios" data-toggle="tab">Gestionar usuarios</a></li>
 					  <li><a href="#llocales" data-toggle="tab">Gestionar locales</a></li>
@@ -129,7 +131,14 @@ $(function() {
 										<h4 class="media-heading">${i.nombre} (${i.rol})</h4>
 										<p>E-mail: ${i.email}</p>
 										<p>Teléfono: ${i.telefono}</p>
-										<p>Rol: ${i.rol}</p>
+										<c:choose>
+										<c:when test="${i.rol == 'user'}">	
+											<p>Numero de comentarios: </p>																				
+										</c:when>		
+										<c:when test="${i.rol == 'local'}">
+											<p>Numero de locales: </p>											
+										</c:when>
+										</c:choose>											
 										<button type="submit" id="edit_${i.nombre}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarUsuario" data-toggle="modal" data-target="#ModalEditUser" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										<button id="delUsuario_${i.ID}" class="eliminaUsuario"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 									</div>
@@ -246,10 +255,10 @@ $(function() {
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">${i.nombre}</h4>
-									<p>Usuario: ${i.usuario.nombre}</p>
-									<p>Dirección:${i.direccion }</p>
-									<p>Horario: ${i.horario }</p>								
+									<p>Usuario: ${i.usuario.nombre}</p>																
 									<p>Puntuación: ${i.puntuacion}</p>
+									<p>Numero de reservas: </p>	
+									<p>Numero de ofertas: </p>
 									<button type="submit" id="edit_${i.nombre}/,${i.horario}/,${i.direccion}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarLocal" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									<button id="delLocal_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 								</div>
@@ -379,7 +388,8 @@ $(function() {
 						<div id="TodosTags" class="TodosTags">	
 							<c:forEach items="${alltags}" var="i">
 								<h4>${i.texto}</h4> 					               				
-					         	<button id="editTags_${i.texto}" value="${i.texto}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>	
+					         	<button id="editTags_${i.texto}/${i.ID}" value="${i.texto}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" >
+					         	<span class="glyphicon glyphicon-pencil"></span> Editar</button>	
 					         	<HR width=50% align="left">				               				
 				            </c:forEach>	
 						</div>
@@ -426,14 +436,15 @@ $(function() {
 
 									</div>
 									<div class="modal-body">									
-										<form role="form" id="formEditTag">
+										<form role="form" method="POST" enctype="multipart/form-data" action="editarTag">										
 										<div class="form-group">
-											<label for="name">Tag:</label>
+											<label for="name">Tag:</label>											
 											<input type="text" class="form-control" required="required" value="" id="nameEditTag" name="nameEditTag">
+										 	<input hidden="submit" id="id_tag" name="id_tag" value="" />
 										  </div>
 											<div class="modal-footer">
-												<button id="idEditarTag" value ="" type="submit" class="editaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
-												<button type="submit" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
 											</div>
 										</form>
 									</div>

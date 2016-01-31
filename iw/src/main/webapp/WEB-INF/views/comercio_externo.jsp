@@ -7,21 +7,21 @@
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-							<img src="${prefix}localesFoto?id=${infoLocal.ID}.jpg" height="350" width="350">                                  
-							<h3>Dirección</h3>
+							<img src="localesFoto?id=${infoLocal.ID}.jpg" height="350" width="350">                                  
+							<h3><b>Dirección</b></h3>
 							<p>${infoLocal.direccion}</p>
 														
-							<h3>Horario</h3>
+							<h3><b>Horario</b></h3>
 							<p>${infoLocal.horario}</p>
 																					
-							<h3>Contacto</h3>
-							<p>${(infoLocal.usuario).email}</p>
-							<p>${(infoLocal.usuario).telefono}</p>
-							<p>Preguntar por ${(infoLocal.usuario).nombre}</p>
+							<h3><b>Contacto</b></h3>
+							<p>E-mail: ${(infoLocal.usuario).email}</p>
+							<p>Telefono: ${(infoLocal.usuario).telefono}</p>
+							<p><small>Preguntar por ${(infoLocal.usuario).nombre}</small></p>
 
 							<div>
-								<h3>Puntuación</h3>
-								<h2>${infoLocal.puntuacion}/5</h2>
+								<h3><b>Puntuación</b></h3>
+								<h4>${infoLocal.puntuacion}/5</h4>
 							</div>
 						</div>
                     </div><!--/.col-md-4-->
@@ -44,11 +44,24 @@
 						    <c:forEach items="${infoLocal.ofertas}" var="i">
 								<div class="media">
 									<div class="pull-left">
-										<img class="media-object" src="${prefix}ofertasFoto?id=${infoLocal.ID}.jpg">
+										<img class="media-object" src="ofertasFoto?id=${i.ID}.jpg">
 									</div>
 									<div class="media-body">
 										<h4 class="media-heading">${i.nombre}</h4>
 										<p>${i.descripcion}</p>
+										<p>Cap: ${i.capacidadActual}/${i.capacidadTotal}</p>
+										<c:choose>
+											<c:when test="${not empty user}">	
+											<c:if test="${i.capacidadActual != i.capacidadTotal}">
+												<a class="btn btn-primary" href="reserva?id=${i.ID}&dondeEstoy=comercio_externo">
+													Reservar
+												</a>	
+											</c:if>	
+											<c:if test="${i.capacidadActual == i.capacidadTotal}">
+												<p><b>Capacidad maxima alcanzada</b></p>
+											</c:if>									
+											</c:when>
+										</c:choose>
 									</div>
 								</div>
 							</c:forEach>

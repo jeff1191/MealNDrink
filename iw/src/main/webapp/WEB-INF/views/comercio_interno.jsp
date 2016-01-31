@@ -168,19 +168,19 @@ $(function() {
                         <div class="col-md-4 col-sm-4">							
                             <img src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
-							<h3>Direcci贸n</h3>
+							<h3><b>Direcci髇</b></h3>
 							<p>${local.direccion}</p>
 														
-							<h3>Horario</h3>
+							<h3><b>Horario</b></h3>
 							<p>${local.horario}</p>
 														
-							<h3>Contacto</h3>
-							<p>${(local.usuario).email}</p>
-							<p>${(local.usuario).telefono}</p>
+							<h3><b>Contacto</b></h3>
+							<p>E-mail: ${(local.usuario).email}</p>
+							<p>Telefono: ${(local.usuario).telefono}</p>
 
                             <div>
-								<h3>Puntuaci贸n</h3>
-								<h2>${local.puntuacion}</h2>
+								<h3><b>Puntuaci髇</b></h3>
+								<h4>${local.puntuacion}/5</h4>
 							</div>
                         </div>
                     </div><!--/.col-md-4-->
@@ -191,14 +191,13 @@ $(function() {
 							  <li><a href="#ofertas" data-toggle="tab">Mis ofertas</a></li>
 							  <li><a href="#qrs" data-toggle="tab">QRs</a></li>
 							  <li><a href="#opiniones" data-toggle="tab">Opiniones</a></li>
-							  <li><a href="#editar" data-toggle="tab">Mis datos</a></li>							  
-							  <li><a href="#tags" data-toggle="tab">Mis tags</a></li>
+							  <li><a href="#editar" data-toggle="tab">Mis datos</a></li>
 							</ul>
 
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="ofertas">
 								 <div class="media">
-								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> A帽adir nueva oferta</button>
+								  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddOffer"><span class="glyphicon glyphicon-plus"></span> Anadir nueva oferta</button>
 								  	<br></br>
 								  </div>
 									  <div id="TodasOfertas" class="TodasOfertas">
@@ -216,7 +215,7 @@ $(function() {
 													<h4 class="media-heading">${i.nombre}</h4>
 													<p>${i.descripcion}</p>	
 													<p>Numero de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
-													<p>${i.fechaLimite}</p>												
+													<p>Fecha limite: ${i.fechaLimite}</p>												
 													<button type="submit" id="edit_${i.nombre}/,${i.fechaLimite}/,${i.capacidadTotal}/,${i.descripcion}/,${i.ID}" value="${i}" class="rellenarEditarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 													<button id="del_${i.ID}" value="${i}"  class="rellenaDatosEliminarOferta" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												
@@ -249,7 +248,7 @@ $(function() {
 										<label for="endTime">Tag:</label>
 										<select class="form-control" name="nombreTag" id="nombreTag">
 				               				<c:forEach items="${alltags}" var="i">					               				
-				               					<option value="${i}"> ${i} </option>					               				
+				               					<option value="${i.texto}"> ${i.texto} </option>					               				
 				               				</c:forEach>					               				
 					               		</select>
 					               		</div>
@@ -262,7 +261,7 @@ $(function() {
 											<input type="number" class="form-control" name="cap" id="cap" required="required" placeholder="Introduzca el numero m谩ximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
-											<label for="descriptcion">Descripci贸n:</label>
+											<label for="descriptcion">Descripcion:</label>
 											<input type="text" class="form-control" name="description" required="required" id="description" placeholder="Introduzca la descripci贸n de la oferta">
 										  </div>
 										  <div class="form-group">
@@ -270,8 +269,8 @@ $(function() {
 											<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 										  </div>
 											<div class="modal-footer">						      	 
-											  	<button type="submit" ><span class="glyphicon glyphicon-send"></span> Enviar</button>
-												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+											  	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+												<button type="submit" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Cancelar</button>
 									     	</div>
 										  	
 										</form>							
@@ -307,7 +306,7 @@ $(function() {
 											<input type="number" class="form-control" name="editCap" id="editCap" placeholder="Introduzca el numero m谩ximo de beneficiarios">
 										  </div>
 										  <div class="form-group">
-											<label for="descriptcion">Descripci贸n:</label>
+											<label for="descriptcion">Descripcion:</label>
 											<input type="text" class="form-control" name="editDescription" id="editDescription" placeholder="Introduzca la descripci贸n de la oferta">
 										  </div>
 										  <div class="form-group">
@@ -316,7 +315,7 @@ $(function() {
 										  </div>
 											<div class="modal-footer">						      	 
 											  	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
 									     	</div>
 										  	
 										</form>							
@@ -339,10 +338,10 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>縀sta seguro que quiere eliminar esta oferta?</p>
+											<p>縀sta seguro de que quiere eliminar esta oferta?</p>
 												<div class="modal-footer">
-													<button id="idEliminar" type="submit" class="eliminaOferta" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
-													<button type="submit" data-dismiss="modal">Cancel</button>
+													<button id="idEliminar" type="submit" class="eliminaOferta" data-dismiss="modal">Aceptar</button>
+													<button type="submit" data-dismiss="modal">Cancelar</button>
 												</div>
 		
 											</div>
@@ -474,72 +473,7 @@ $(function() {
 										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									</form>			
 								</div>
-								<div class="tab-pane fade" id="tags"> <!--tags-->
-									<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddTag"><span class="glyphicon glyphicon-plus"></span> A帽adir un nuevo tag</button>
-								  	<br></br>								
-									<div id="TodosTags" class="TodosTags">	
-										<c:forEach items="${alltagsLocal}" var="i">
-											<h4>${i}</h4> 					               				
-								         	<button id="delTags_${i}" value="${i}"  class="rellenaDatosTags" data-toggle="modal" data-target="#ModalDelTags" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
-								         	<HR width=50% align="left">				               				
-							            </c:forEach>	
-									</div>
-								</div>
-																	
-								<!-- Modal Add Tag-->
-								<div class="modal fade" id="ModalAddTag" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
-								  <div class="modal-dialog modal-sm" role="document">
-								    <div class="modal-content">
-								      <div class="modal-header">
-								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        <h4 class="modal-title" id="myModalLabel"> Anadir un nuevo tag</h4>
-								      </div>
-										
-								      <div class="modal-body">
-										<form role="form">									 							  
-										  <div class="form-group">
-										  <label for="tag">Tags disponibles:</label>
-										  	<select class="form-control" name="nuevoTag" id="nuevoTag">
-					               				<c:forEach items="${alltags}" var="i">					               				
-					               					<option value="${i}"> ${i} </option>					               				
-					               				</c:forEach>					               				
-						               		</select>
-										  </div>									  								  
-										</form>					
-								      </div>
-								      <div class="modal-footer">						      	 
-										  <button type="submit" class="btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-										  <button type="submit" class="anyadirTag" data-dismiss="modal"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-								      </div>
-								    </div>
-								  </div>
-								</div>     
-								<!-- End Modal Add Tag-->
-								
-								<!-- Modal Del Tags-->
-								<div class="modal fade" id="ModalDelTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
-								  <div class="modal-dialog modal-sm" role="document">
-								    <div class="modal-content">
-												    
-								    		<div class="modal-header">
-								    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        	<h4 class="modal-title" id="delModalLabel"> Eliminar tag</h4>
-
-											</div>
-											<div class="modal-body">
-											
-											<p>縀sta seguro que quiere eliminar este tag?</p>
-												<div class="modal-footer">
-													<button id="idEliminarTags" value ="" type="submit" class="eliminaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
-													<button type="submit" data-dismiss="modal">Cancel</button>
-												</div>
-		
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- End Modal Del Tags-->
-								
+															
 								<!-- Modal Del Comentario-->
 								<div class="modal fade" id="ModalDelComentario" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 								  <div class="modal-dialog modal-sm" role="document">
@@ -552,10 +486,10 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>縀sta seguro que quiere eliminar este comentario?</p>
+											<p>縀sta seguro de que quiere eliminar este comentario?</p>
 												<div class="modal-footer">
-													<button id="idEliminarComentario" value ="" type="submit" class="eliminaComentario" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
-													<button type="submit" data-dismiss="modal">Cancel</button>
+													<button id="idEliminarComentario" value ="" type="submit" class="eliminaComentario" data-dismiss="modal">Aceptar</button>
+													<button type="submit" data-dismiss="modal">Cancelar</button>
 												</div>
 		
 											</div>
