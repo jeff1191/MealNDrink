@@ -38,10 +38,33 @@ public class Oferta {
 	private Local local; //una oferta es puesta por un Local
 	private List<Tags> tags;
 	
+	
 	public Oferta() {
 		capacidadActual=0;
 	}
-	
+
+	public String tagsToShow() { 		
+ 		return ponTagsSeparados(dameTagsSeparados());
+ 	}
+ 
+ 	public String[] dameTagsSeparados() {
+ 		String[] aux = new String[tags.size()];
+ 		for(int i = 0; i < tags.size(); i++){
+ 			aux[i] = tags.get(i).getTexto(); 			
+ 		} 		
+ 		return aux;
+ 	}
+ 	
+ 	public String ponTagsSeparados(String[] ts) {		
+ 		StringBuilder sb = new StringBuilder();		
+ 		for(String t : ts){
+ 			sb.append(t.trim()).append(" ");
+ 		}
+ 		if (sb.length()>0) {
+ 			sb.setLength(sb.length()-1);
+ 		}
+ 		return sb.toString();
+ 	}
 	@Id
 	@GeneratedValue
 	public long getID() {
@@ -106,12 +129,5 @@ public class Oferta {
 	public void setTags(List<Tags> tags) {
 		this.tags = tags;
 	} 
-	/*public String getTags(){
-		return String.join(" ", (CharSequence[]) tags.toArray());
-	}
-
-	public void setTags(List<Tags> tags) {
-		this.tags = tags;
-	}*/
-
+	
 }

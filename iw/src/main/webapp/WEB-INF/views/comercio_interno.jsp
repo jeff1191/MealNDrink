@@ -299,7 +299,7 @@ $(function() {
 											<input type="text" class="form-control" value="" name="editName" id="editName" placeholder="Introduzca el nombre" >
 										  </div>
 										  <div class="form-group">
-											<label for="endTime">Fecha límite:</label>
+											<label for="endTime">Fecha limite:</label>
 											<input class="form-control" type="text" id="editFecha" name="editFecha" placeholder="Selecciona una fecha" />	
 										  </div>
 										  <div class="form-group">
@@ -339,7 +339,7 @@ $(function() {
 											</div>
 											<div class="modal-body">
 											
-											<p>¿Está seguro que quiere eliminar esta oferta?</p>
+											<p>�Esta seguro que quiere eliminar esta oferta?</p>
 												<div class="modal-footer">
 													<button id="idEliminar" type="submit" class="eliminaOferta" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
 													<button type="submit" data-dismiss="modal">Cancel</button>

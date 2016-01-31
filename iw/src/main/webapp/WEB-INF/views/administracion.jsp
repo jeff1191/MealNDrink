@@ -126,7 +126,7 @@ $(function() {
 										<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg" height="140" width="140"> 
 									</div>
 									<div class="media-body">
-										<h4 class="media-heading">${i.nombre} #1</h4>
+										<h4 class="media-heading">${i.nombre} (${i.rol})</h4>
 										<p>E-mail: ${i.email}</p>
 										<p>Teléfono: ${i.telefono}</p>
 										<p>Rol: ${i.rol}</p>
@@ -245,11 +245,11 @@ $(function() {
 									<img src="localesFoto?id=${i.ID}.jpg" height="175" width="250"> 
 								</div>
 								<div class="media-body">
-									<h4 class="media-heading">${i.nombre} #1</h4>
-									<p>Usuario: ${i.usuario.nombre }</p>
+									<h4 class="media-heading">${i.nombre}</h4>
+									<p>Usuario: ${i.usuario.nombre}</p>
 									<p>Dirección:${i.direccion }</p>
 									<p>Horario: ${i.horario }</p>								
-									<p>Puntuación: ${i.puntuacion }</p>
+									<p>Puntuación: ${i.puntuacion}</p>
 									<button type="submit" id="edit_${i.nombre}/,${i.horario}/,${i.direccion}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarLocal" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									<button id="delLocal_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 								</div>
@@ -304,7 +304,7 @@ $(function() {
 								<label for="endTime">Tag:</label>
 								<select class="form-control" name="tag" id="tag">
 		               				<c:forEach items="${alltags}" var="i">					               				
-		               					<option value="${i}"> ${i} </option>					               				
+		               					<option value="${i.texto}"> ${i.texto} </option>					               				
 		               				</c:forEach>					               				
 			               		</select>
 			               		</div>
@@ -378,8 +378,8 @@ $(function() {
 						<h4>Editar tags disponibles:</h4><br>					
 						<div id="TodosTags" class="TodosTags">	
 							<c:forEach items="${alltags}" var="i">
-								<h4>${i}</h4> 					               				
-					         	<button id="editTags_${i}" value="${i}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>	
+								<h4>${i.texto}</h4> 					               				
+					         	<button id="editTags_${i.texto}" value="${i.texto}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>	
 					         	<HR width=50% align="left">				               				
 				            </c:forEach>	
 						</div>

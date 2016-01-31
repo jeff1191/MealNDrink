@@ -114,8 +114,8 @@
 
             <div class="row">            
             	<div class="portfolio-items">            
-	            	<c:forEach items="${platos}" var="i">
-	               		<div class="portfolio-item ${i.tags} col-xs-12 col-sm-4 col-md-3">
+	            	<c:forEach items="${platos}" var="i" varStatus="status">	            		
+	               		<div class="portfolio-item ${tagsString[status.index]} col-xs-12 col-sm-4 col-md-3">
 	               		    <div class="recent-work-wrap">
 		                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.ID}.jpg" alt="">
 		                        <div class="overlay">
@@ -142,7 +142,7 @@
 									</div> 
 		                        </div>
 		                    </div>
-		                </div>   
+		                </div>   		               
 		            </c:forEach>
             	</div>
             </div><!--/.row-->     
