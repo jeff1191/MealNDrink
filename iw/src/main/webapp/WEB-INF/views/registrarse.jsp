@@ -18,7 +18,7 @@
 			})
 
 			function validacion() {
-				var val = validacionRegistrarse();
+				var val = validacionRegistrarse();  //se hace una segunda validación en el lado del servidor para evitar daños
 
 				if (val === true) {
 					var nombr = $("#regname").val();
@@ -42,8 +42,7 @@
 						},
 						success : function() {
 							$("#formRegis").submit();
-							alert(data);
-							//location.href = "${prefix}/mealndrink";
+							location.href = "${prefix}/iw";
 
 						}
 					})
@@ -60,30 +59,30 @@
 			</div>
 				
 				<div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<label for="name">Apodo:</label>
-					<input required type="text" class="form-control-center" id="regname" name="regname" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
+					<input required type="text" class="form-control" id="regname" name="regname" placeholder="Introduce un nuevo nombre(4-12 caracteres)">
 				  </div>
-				  <div class="form-group-center">
-					<label for="pwd">Contrasena:</label>
-					<input required type="password" class="form-control-center" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseÃ±a(6-12 caracteres)">
+				  <div class="form-group">
+					<label for="pwd">Contraseña:</label>
+					<input required type="password" class="form-control" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
 				  </div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<label for="email">Email:</label>
 					<input required type="email" class="form-control" id="regemail" name="regemail" placeholder="Introduce un nuevo email">
 				  </div>
-				  <div class="form-group-center">
-					<label for="tel">Telefono:</label>
-					<input required type="tel" class="form-control-center" id="regtel" name="regtel" placeholder="Introduce un nuevo telefono">
+				  <div class="form-group">
+					<label for="tel">Teléfono:</label>
+					<input required type="tel" class="form-control" id="regtel" name="regtel" placeholder="Introduce un nuevo telefono">
 				  </div>
-				  <div class="form-group-center">
+				  <div class="form-group">
 					<form id="formRegis" action="${prefix}registroUsuarioFoto" method="post" name="formRegis" enctype="multipart/form-data">
 						<label for="file">Imagen de perfil:</label>
 						<input required type="file" id="regfileToUpload" name="regfileToUpload" accept="image/*" id="fileToUpload">											
 				  	</form>	
 				  </div>
 				  <div>
-				  	<label for="file">Que tipo de actividad tendra en MealNDrink?:</label>
+				  	<label for="file">¿Qué tipo de actividad tendrá en MealNDrink?:</label>
 					<select required id="regRol" name="regRol">
 						<option value="cliente">Cliente</option>
 						<option value="propietario_comercio">Propietario de comercio</option>

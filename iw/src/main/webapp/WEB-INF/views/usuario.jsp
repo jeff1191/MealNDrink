@@ -79,31 +79,31 @@ function resultadoEditar(codigo){
 	var respuestaPos = "Se han realizado los siguientes cambios correctamente en: ";
 	var respuestaNeg = "Los siguientes cambios no se han podido efectuar: ";
 	
-    if(codigo.charAt(9) === '1' && codigo.charAt(1) == '0'){
+    if(codigo.charAt(9) === '1' && codigo.charAt(4) == '0'){  //1era columna si ha habido cambios   //2da columna si ha habido error
     	respuestaPos = respuestaPos + "\n" + "- Apodo";
     }
-    else if (codigo.charAt(9) === '1' && codigo.charAt(1) == '1'){
-    	respuestaNeg = respuestaNeg + "- Apodo (apodo no válido)";
+    else if (codigo.charAt(9) === '0' && codigo.charAt(4) == '1'){
+    	respuestaNeg = respuestaNeg + "\n" + "- Apodo (apodo no válido)";
     }
     
-    if(codigo.charAt(8) === '1' && codigo.charAt(2) == '0'){
+    if(codigo.charAt(8) === '1' && codigo.charAt(3) == '0'){
     	respuestaPos = respuestaPos + "\n" + "- Contraseña";
     }
-    else if(codigo.charAt(8) === '1' && codigo.charAt(2) == '1'){
+    else if(codigo.charAt(8) === '0' && codigo.charAt(3) == '1'){
     	respuestaNeg = respuestaNeg + "\n" + "- Contraseña (longitud errónea)";
     }
     
-    if(codigo.charAt(7) === '1' && codigo.charAt(3) == '0'){
+    if(codigo.charAt(7) === '1' && codigo.charAt(2) == '0'){
     	respuestaPos = respuestaPos + "\n" + "- Email";
     }
-    else if(codigo.charAt(7) === '1' && codigo.charAt(3) == '1'){
+    else if(codigo.charAt(7) === '0' && codigo.charAt(2) == '1'){
     	respuestaNeg = respuestaNeg + "\n"  + "- Email (email con formato no válido)";
     }
     
-    if(codigo.charAt(6) === '1' && codigo.charAt(4) == '0'){
+    if(codigo.charAt(6) === '1' && codigo.charAt(1) == '0'){
     	respuestaPos = respuestaPos + "\n" + "- Teléfono";
     }
-    else if(codigo.charAt(6) === '1' && codigo.charAt(4) == '1'){
+    else if(codigo.charAt(6) === '0' && codigo.charAt(1) == '1'){
     	respuestaNeg = respuestaNeg + "\n" + "- Teléfono (teléfono con formato no válido)";
     }
     
@@ -116,7 +116,7 @@ function resultadoEditar(codigo){
     	else if(respuestaNeg == "Los siguientes cambios no se han podido efectuar: " && respuestaPos != "Se han realizado los siguientes cambios correctamente en: ")
     		return respuestaPos;
     	else
-    		return respuestaPos + "\n" + respuestaNeg;
+    		return respuestaPos + "\n" + "\n" + respuestaNeg;
     }
    
 }
