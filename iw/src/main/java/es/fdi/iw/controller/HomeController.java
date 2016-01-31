@@ -631,7 +631,7 @@ public class HomeController {
     		Model model){
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
-		boolean seguro = textoSeguro(nombreOferta) && textoSeguro(tag) && textoSeguro(fecha) && textoSeguro(descripcion);
+		boolean seguro = palabraSeguro(nombreOferta) && palabraSeguro(tag) && fechaSeguro(fecha) && descripcionSeguro(descripcion);
 		if (seguro) {
 		
 			String fechatTimesStamp="";
@@ -726,7 +726,7 @@ public class HomeController {
 		}		
 		Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");*/
 		
-		boolean seguro = textoSeguro(nombreOferta) && textoSeguro(fecha) && textoSeguro(descripcion) && textoSeguro(idOffer);
+		boolean seguro = palabraSeguro(nombreOferta) && fechaSeguro(fecha) && descripcionSeguro(descripcion) && palabraSeguro(idOffer);
 		if (seguro) {
 		
 		
@@ -780,7 +780,7 @@ public class HomeController {
     		@RequestParam("tag") String tag,@RequestParam("redireccion")String pagina, Model model){
 		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
 	
-		boolean seguro = textoSeguro(nombreLocal) && textoSeguro(horario) && textoSeguro(direccion) && textoSeguro(email) && telefonoSeguro(telefono) && textoSeguro(tag);
+		boolean seguro = palabraSeguro(nombreLocal) && horarioSeguro(horario) && direccionSeguro(direccion) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(tag);
 		if (seguro) {
 			
 			//UBICACIï¿½N!!!!!!!!!!!!!		
@@ -865,7 +865,7 @@ public class HomeController {
     		 Model model){
 		//Hay que revisar que el local pertenece a un usuario
 		
-		boolean seguro = textoSeguro(nombreLocal) && textoSeguro(horario) && textoSeguro(direccion) && textoSeguro(email) && telefonoSeguro(telefono);
+		boolean seguro = palabraSeguro(nombreLocal) && horarioSeguro(horario) && direccionSeguro(direccion) && emailSeguro(email) && telefonoSeguro(telefono);
 		
 		if (seguro) {
 		
@@ -918,7 +918,7 @@ public class HomeController {
 	
 		//UBICACIï¿½N!!!!!!!!!!!!!		
 		
-		boolean seguro = textoSeguro(nombreUsuario) && textoSeguro(pass) && textoSeguro(email) && telefonoSeguro(telefono) && textoSeguro(rol);
+		boolean seguro = palabraSeguro(nombreUsuario) && palabraSeguro(pass) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(rol);
 		
 		if (seguro) {
 			Usuario usuario = creaUsuario(nombreUsuario, email, telefono, rol, pass);
@@ -1059,16 +1059,40 @@ public class HomeController {
 		return res;
 	}
 	
-	boolean textoSeguro(String texto) {
+	/*boolean textoSeguro(String texto) {
 		
 		boolean seguro;
 		seguro = !texto.contains("<") && !texto.contains(">") && !texto.contains("$");
 		return seguro;
 		
+	}*/
+	
+	boolean palabraSeguro(String palabra) {
+		return palabra.matches("^[a-zA-Z0-9_]*$");
+	}
+	
+	boolean descripcionSeguro (String descripcion) {
+		return descripcion.matches("^[a-zA-Z0-9 -_,.]*$");
+	}
+	
+	boolean direccionSeguro (String direccion) {
+		return direccion.matches("^[a-zA-Z0-9 -_,.º//]*$");
+	}
+	
+	boolean horarioSeguro (String direccion) {
+		return direccion.matches("^[0-9-]*$");
 	}
 	
 	boolean telefonoSeguro (String telefono) {
 		return telefono.matches("^[0-9]{9}$");
+	}
+	
+	boolean fechaSeguro (String fecha) {
+		return fecha.matches("^[0-9 -:]*$");
+	}
+	
+	boolean emailSeguro(String email) {
+		return email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 	}
 	
 	int comprobarCampos(Usuario sesion, String nombre, String contra, String email, String telef){
@@ -1081,7 +1105,7 @@ public class HomeController {
 				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombre).getSingleResult();
 				camposModificados += 100000;
 			} catch (NoResultException nre) {
-				if(nombre.length() < 4 || nombre.length() > 12  || !textoSeguro(nombre)){
+				if(nombre.length() < 4 || nombre.length() > 12  || !palabraSeguro(nombre)){
 					camposModificados += 100000;
 				}
 				else{
@@ -1091,7 +1115,7 @@ public class HomeController {
 		}
 		
 		if(contra != ""){
-			if(contra.length() < 6 || contra.length() > 12 || !textoSeguro(contra)){
+			if(contra.length() < 6 || contra.length() > 12 || !palabraSeguro(contra)){
 				camposModificados += 1000000;
 			}
 			else{
@@ -1102,7 +1126,7 @@ public class HomeController {
 		if(!email.equalsIgnoreCase(sesion.getEmail())){
 			String patron = new String("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 		            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-			if (!email.matches(patron) || !textoSeguro(email)) {
+			if (!email.matches(patron) || !emailSeguro(email)) {
 				camposModificados += 10000000;
 			}
 			else{
@@ -1350,7 +1374,7 @@ public class HomeController {
 			@RequestParam("email") String email,
 			@RequestParam("tel") String telefono,
 			@RequestParam("Rol") String rol, HttpSession session, Model model){
-		boolean seguro = textoSeguro(nombre) && textoSeguro(password) && textoSeguro(email) && telefonoSeguro(telefono) && textoSeguro(rol);
+		boolean seguro = palabraSeguro(nombre) && palabraSeguro(password) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(rol);
 		if (seguro) {
 		
 			Usuario u;
