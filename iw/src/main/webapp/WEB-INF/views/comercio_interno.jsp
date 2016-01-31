@@ -433,7 +433,7 @@ $(function() {
 								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
 									<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
-									<input hidden="submit" id="id_local" name="id_local" value="${local.ID}" />
+									<input hidden="submit" id="id_editLocal" name="id_editLocal" value="${local.ID}" />
 									<input hidden="submit" id="redireccion" name="redireccion" value="comercio_interno" />
 										  <div class="form-group">
 											<label for="name">Nombre:</label>

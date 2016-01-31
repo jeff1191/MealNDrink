@@ -45,7 +45,7 @@ function rellenaDatosEditarModalLocal(){
 	$("#editDirLocal").attr("value" ,res[2]);
 	$("#editEmailLocal").attr("value" ,res[3]);
 	$("#editTelLocal").attr("value" ,res[4]);
-	$("#id_localLocal").attr("value" ,res[5]);
+	$("#id_editLocal").attr("value" ,res[5]);
 }
 function rellenaDatosEditarModalUsuario(){
 	var idUsuario = $(this).attr("id").substring("edit_".length);
@@ -506,7 +506,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						      <div class="modal-body">
 								<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
 								<input hidden="submit" id="redireccion" name="redireccion" value="administracion" />
-								<input hidden="submit" id="id_local" name="id_local" />
+								<input hidden="submit" id="id_editLocal" name="id_editLocal" />
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
 									<input type="text" class="form-control" required="required" id="editNameLocal" name="editNameLocal" placeholder="Introduce un nuevo nombre">
