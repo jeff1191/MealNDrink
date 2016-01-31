@@ -28,7 +28,6 @@ $(function() {
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
 	$("body").on("click", ".eliminaReserva", null, activaBotonEliminacionReserva);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);	
-
     $('.qrcode').each(function(i, o) {
         $(o).qrcode({
             "render": "div",
@@ -37,6 +36,7 @@ $(function() {
             "text": $(o).text()
         })
     });
+   
     
     $("#editarUsuario").click(function() {
 
@@ -158,9 +158,9 @@ $("body").on( "keyup", "#editNameUser", null, function(){
                         <div class="col-md-4 col-sm-4">
                             <img src="usuariosFoto?id=${usuario.ID}.jpg" height="275" width="275">                              
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
-							<h3>Mis datos</h3>
-							<p>${usuario.email}</p>
-							<p>${usuario.telefono}</p>											
+							<h3><b>Mis datos</b></h3>
+							<p>Mi email: ${usuario.email}</p>
+							<p>Mi telefono: ${usuario.telefono}</p>											
 						</div>
                     </div><!--/.col-md-4-->
 
@@ -168,7 +168,11 @@ $("body").on( "keyup", "#editNameUser", null, function(){
                        
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#reservas" data-toggle="tab">Mis reservas</a></li>
-								<li><a href="#locales" data-toggle="tab">Mis locales</a></li>
+								<c:choose>
+									<c:when test="${usuario.rol != 'user'}">
+										<li><a href="#locales" data-toggle="tab">Mis locales</a></li>
+									</c:when>
+								</c:choose>
 								<li><a href="#opiniones" data-toggle="tab">Mis opiniones</a></li>
 								<li><a href="#editar" data-toggle="tab">Mis datos</a></li>
 							</ul>						
@@ -176,29 +180,35 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="reservas">
 									<div id="TodasReservas" class="TodasReservas">
-										<c:forEach items="${usuario.reservas}" var="i">
-										<div class="media">
-											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.ID}">
-											</div>										
-											<div class="media-body">
-												<h4 class="media-heading">Reserva #1</h4>
-												<p>${i.oferta.nombre}</p>
-												
-												 <div class="qrcode">${i.codigoQr}</div>
-												
-												<button id="delO_${i.oferta.ID}" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-											</div>
-										</div>	
-										</c:forEach>
+											<c:choose>
+											<c:when test="${empty usuario.reservas}">	
+												<p><b>Aun no has hecho ninguna reserva</b></p>
+											</c:when>
+											<c:otherwise>
+												<c:forEach items="${usuario.reservas}" var="i">
+												<div class="media">
+													<div class="pull-left">
+														<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.ID}.jpg">
+													</div>										
+													<div class="media-body">														
+														<h4 class="media-heading">${i.oferta.nombre}</h4>					
+														<div class="qrcode">${i.codigoQr}</div><br>		
+														<button id="delR_${i.ID}" class="eliminaReserva"><span class="glyphicon glyphicon-trash"></span>  Eliminar</button>																
+												</div>
+												</div>	
+												<HR width=100% align="left">		
+												</c:forEach>
+											</c:otherwise>
+										</c:choose>
 									</div>
-								</div>	
-								
+								</div>						
+						 
 								<div class="tab-pane fade" id="locales">
 								<div class="media">
 								  	<button type="submit" id="AddNuevoLocal"class="btn btn-default" data-toggle="modal" data-target="#ModalAddLocal"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo local</button>
 								  	<br></br>
 								</div>
+								
 								
 								<!-- Modal Add Local-->
 						<div class="modal fade" id="ModalAddLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
@@ -218,7 +228,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 								  </div>
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
-									<input type="time" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+									<input type="text" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
@@ -231,11 +241,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
-								  </div>
-								  <div class="form-group">
-									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
-								  </div>
+								  </div>								  
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
@@ -246,30 +252,35 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 							      </div>
 							      </form>											
 						      </div>
-							      
-						      
 						    </div>
 						  </div>
 						</div>     
 						<!-- End Modal Add Local-->
+						
 								<div id="TodosLocales" class="TodosLocales">
-										<c:forEach items="${usuario.locales}" var="i">
-										<div class="media">
-											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
-											</div>										
-											<div class="media-body">
-												<h4 class="media-heading">${i.nombre}</h4>
-												<p>Dirección:${i.direccion }</p>
-												<p>Horario: ${i.horario }</p>								
-												<p>Puntuación: ${i.puntuacion }</p>
-												<button type="submit" id="edit_${i.ID}" value="${i}" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-												<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
-											</div>
-										</div>	
-										</c:forEach>
-									</div>												
+								<c:choose>
+								<c:when test="${empty usuario.locales}">	
+									<p><b>Aun no tienes ningun local</b></p>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${usuario.locales}" var="i">
+									<div class="media">
+										<div class="pull-left">
+											<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
+										</div>										
+										<div class="media-body">
+											<h4 class="media-heading">${i.nombre}</h4>
+											<p>Dirección:${i.direccion }</p>
+											<p>Horario: ${i.horario }</p>								
+											<p>Puntuación: ${i.puntuacion }</p>											
+											<button id="del_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+										</div>
+									</div>	
+									</c:forEach>
+								</c:otherwise>
+								</c:choose>
 								</div>
+							</div>
         				<!-- Modal Edit Local-->
 						<div class="modal fade" id="ModalEditLocal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 						  <div class="modal-dialog modal-sm" role="document">
@@ -300,18 +311,14 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" id="tel" name="tel" placeholder="Introduce un nuevo telefono">
-								  </div>
-								  <div class="form-group">
-									<label for="tags">Tags iniciales:</label>
-									<input type="text" class="form-control" id="tags" name="tags" placeholder="Introduce unos tags iniciales">
-								  </div>
+								  </div>								 
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
 								  </div>
-								  <div class="modal-footer">						      	 $("#formRegis").submit();
+								  <div class="modal-footer">						      	
 									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+									  <button type="submit" class="btn" data-dismiss="modal">Cancelar</button>
 							      </div>	
 							      </form>											
 						      </div>
@@ -325,19 +332,27 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 												
 								<div class="tab-pane fade" id="opiniones">
 									<div id="TodosComentarios" class="TodosComentarios">	
-											<c:forEach items="${usuario.comentarios}" var="i">
-												<div class="media">
-												<div class="pull-left">
-													<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
-												</div>
-												<div class="media-body">
-													<br>
-													<h4 class="media-heading">${i.local.nombre} </h4>
-													<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
-													<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-												</div>
-												</div>
-											</c:forEach>			
+									<c:choose>
+									<c:when test="${empty usuario.comentarios}">	
+										<p><b>Aun no has hecho ningun comentario</b></p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach items="${usuario.comentarios}" var="i">
+											<div class="media">
+											<div class="pull-left">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.local.ID}.jpg" >
+											</div>
+											<div class="media-body">
+												<br>
+												<h4 class="media-heading">${i.local.nombre} </h4>
+												<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
+												<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+											</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+									</c:choose>					
+
 									</div>
 								</div>
 								
@@ -351,7 +366,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 										</div>
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" name="editPwd" id="editPwd" value="">
+											<input type="password" class="form-control" name="editPwd" id="editPwd"  value="*****">
 										</div>
 										<div class="form-group">
 											<label for="email">Email:</label>
@@ -377,6 +392,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 																	
 								</div>
 							</div><!--tab content-->
+							
 						
 					</div><!--/.services-->
             </div><!--/.row--> 

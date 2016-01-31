@@ -67,7 +67,6 @@
 				  <div class="form-group">
 					<label for="pwd">Contraseña:</label>
 					<input required type="password" class="form-control" id="regpwd" name="regpwd" placeholder="Introduce una nueva contraseña(6-12 caracteres)">
->>>>>>> origin/Dani
 				  </div>
 				  <div class="form-group">
 					<label for="email">Email:</label>

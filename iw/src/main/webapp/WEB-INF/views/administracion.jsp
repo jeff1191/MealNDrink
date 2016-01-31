@@ -57,14 +57,16 @@ function rellenaDatosEditarModalUsuario(){
 }
 function activaBotonRellenaTag() {
 	var nombreTagEdit = $(this).attr("id").substring("editTags_".length); 
-	$("#nameEditTag").attr("value" ,nombreTagEdit);
+	var res = nombreTagEdit.split("/");
+	$("#nameEditTag").attr("value" ,res[0]);
+	$('input[name="id_tag"]').val(res[1]);
 }
 function activaBotonEditTag() {
 	var nombreTagEdit = $("#nameEditTag").attr("value");
 	var nombreViejo =$(this).attr("id").substring("editTags_".length); 
 	    //Se verifica que el valor del campo este vacio y se eliminan los espacios
 	 
-	    if (nombreTagEdit.trim() === ''){
+	    if (nombreTagEdit.trim() == ''){
 	    	$('#TodosTags').load('administracion div#TodosTags');
 	    }
 		else{
@@ -263,17 +265,17 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 
             <div class="row">
                 <div class="features">
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-5 col-sm-5">
 						<input hidden="submit" id="id_admin" value="${admin.ID}" />
 						<img src="usuariosFoto?id=${admin.ID}.jpg" height="175" width="250">  
-						<h3>Bienvenido Administrador ${admin.nombre}</h3>
-						<p>Esta es una página de administración, aqui podrá hacer todas las gestiones de usuarios y locales, además de editar tus datos personales</p><br/>
-						<h3>Mis datos</h3>
-						<p>+${admin.telefono}</p>
-						<p>${admin.email}</p>
+						<h3><b>Bienvenido Administrador ${admin.nombre}</b></h3>
+						<p>Esta es una página de administración. </br> Aqui podrá hacer todas las gestiones </br> de usuarios y locales, además de editar </br> sus datos personales</p><br/>
+						<h3><b>Mis datos</b></h3>
+						<p>Telefono: ${admin.telefono}</p>
+						<p>Email: ${admin.email}</p>
                     </div><!--/.col-md-4-->
 
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-7 col-sm-7">
 					<ul class="nav nav-tabs">
 					  <li><a href="#lusuarios" data-toggle="tab">Gestionar usuarios</a></li>
 					  <li><a href="#llocales" data-toggle="tab">Gestionar locales</a></li>
@@ -288,17 +290,16 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						  	<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ModalAddUser"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo usuario</button>
 						  	<br></br>
 						  </div>
-						  <div id="TodosUsuarios" class="TodosUsuarios">
-							  <c:forEach items="${usuarios }" var="i">
+						  <div id="TodosUsuarios" class="TodosUsuarios" varStatus="status">
+							  <c:forEach items="${usuarios}" var="i">
 								<div class="media">
 									<div class="pull-left">
 										<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg" height="140" width="140"> 
 									</div>
 									<div class="media-body">
-										<h4 class="media-heading">${i.nombre} #1</h4>
+										<h4 class="media-heading">${i.nombre} (${i.rol})</h4>
 										<p>E-mail: ${i.email}</p>
-										<p>Teléfono: ${i.telefono}</p>
-										<p>Rol: ${i.rol}</p>
+										<p>Teléfono: ${i.telefono}</p>																		
 										<button type="submit" id="edit_${i.nombre}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarUsuario" data-toggle="modal" data-target="#ModalEditUser" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										<button id="delUsuario_${i.ID}" class="eliminaUsuario"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 									</div>
@@ -338,7 +339,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="rol">Rol:</label>
 									 <select class="form-control" id="rol" name="rol">
-									  <option value="usuario">Usuario</option>
+									  <option value="user">Usuario</option>
 									  <option value="local">Usuario con comercio</option>
 									</select>						
 								  </div>
@@ -415,11 +416,9 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 									<img src="localesFoto?id=${i.ID}.jpg" height="175" width="250"> 
 								</div>
 								<div class="media-body">
-									<h4 class="media-heading">${i.nombre} #1</h4>
-									<p>Usuario: ${i.usuario.nombre }</p>
-									<p>Dirección:${i.direccion }</p>
-									<p>Horario: ${i.horario }</p>								
-									<p>Puntuación: ${i.puntuacion }</p>
+									<h4 class="media-heading">${i.nombre}</h4>
+									<p>Usuario: ${i.usuario.nombre}</p>																
+									<p>Puntuación: ${i.puntuacion}</p>									
 									<button type="submit" id="edit_${i.nombre}/,${i.horario}/,${i.direccion}/,${i.email}/,${i.telefono}/,${i.ID}" value="${i}" class="rellenarEditarLocal" data-toggle="modal" data-target="#ModalEditLocal" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									<button id="delLocal_${i.ID}" class="eliminaLocal"><span class="glyphicon glyphicon-trash"></span>Eliminar</button>
 								</div>
@@ -469,15 +468,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" required="required" id="tel" name="tel" placeholder="Introduce un nuevo telefono" maxlength="9">
-								  </div>
-								<div class="form-group" name="nombreTag" id="nombreTag">
-								<label for="endTime">Tag:</label>
-								<select class="form-control" name="tag" id="tag">
-		               				<c:forEach items="${alltags}" var="i">					               				
-		               					<option value="${i}"> ${i} </option>					               				
-		               				</c:forEach>					               				
-			               		</select>
-			               		</div>
+								  </div>								
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
 									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
@@ -548,8 +539,9 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						<h4>Editar tags disponibles:</h4><br>					
 						<div id="TodosTags" class="TodosTags">	
 							<c:forEach items="${alltags}" var="i">
-								<h4>${i}</h4> 					               				
-					         	<button id="editTags_${i}" value="${i}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>	
+								<h4>${i.texto}</h4> 					               				
+					         	<button id="editTags_${i.texto}/${i.ID}" value="${i.texto}" class="rellenaEditTag" data-toggle="modal" data-target="#ModalEditTags" >
+					         	<span class="glyphicon glyphicon-pencil"></span> Editar</button>	
 					         	<HR width=50% align="left">				               				
 				            </c:forEach>	
 						</div>
@@ -596,14 +588,15 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 
 									</div>
 									<div class="modal-body">									
-										<form role="form" id="formEditTag">
+										<form role="form" method="POST" enctype="multipart/form-data" action="editarTag">										
 										<div class="form-group">
-											<label for="name">Tag:</label>
+											<label for="name">Tag:</label>											
 											<input type="text" class="form-control" required="required" value="" id="nameEditTag" name="nameEditTag">
+										 	<input hidden="submit" id="id_tag" name="id_tag" value="" />
 										  </div>
 											<div class="modal-footer">
-												<button id="idEditarTag" value ="" type="submit" class="editaTag" data-dismiss="modal" ><span class="glyphicon glyphicon-send"></span>Aceptar</button>
-												<button type="submit" data-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
 											</div>
 										</form>
 									</div>
