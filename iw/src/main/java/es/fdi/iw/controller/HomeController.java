@@ -690,8 +690,11 @@ public class HomeController {
 			Local local = entityManager.find(Local.class, idLocal);
 			Oferta oferta= entityManager.find(Oferta.class, idOffer);			
 			if(usuario.getLocales().contains(local) && local.getOfertas().contains(oferta)){
+				local.getOfertas().remove(oferta);
 				entityManager.remove(oferta);
 				model.addAttribute("usuario", usuario);
+				entityManager.persist(local);
+				entityManager.persist(usuario);
 			}
 		}			
 		return "paginaError";
@@ -783,9 +786,9 @@ public class HomeController {
 			Local local= entityManager.find(Local.class, idLocal);
 			if(usuario.getLocales().contains(local) || usuario.getRol().equals("admin")){
 				model.addAttribute("usuario", usuario);	
-				File foto = ContextInitializer.getFile("locales", Long.toString(local.getID()));
-				foto.delete();
+				usuario.getLocales().remove(local);
 				entityManager.remove(local);
+				entityManager.persist(usuario);
 			}
 			return "eliminarLocal";
 		}	
@@ -1104,8 +1107,6 @@ public class HomeController {
 			Usuario admin = entityManager.find(Usuario.class, u.getID());
 			if(admin.getRol().equals("admin")){
 				entityManager.remove(usuario);
-				File foto = ContextInitializer.getFile("usuarios", Long.toString(idUsuario));
-				foto.delete();
 				return "eliminarUsuario";
 			}
 		}
@@ -1118,15 +1119,24 @@ public class HomeController {
 			@RequestParam("idComentario") long idComentario,
 			@RequestParam("idLocal") long idLocal,
 			Model model, HttpSession session){		
+		System.err.println("asdasdsd");
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, idLocal);
 			Comentario comentario= entityManager.find(Comentario.class, idComentario);
-			if(local.getComentarios().contains(comentario)){				
-				entityManager.remove(comentario);			
+			if((usuario.getLocales().contains(local) && local.getComentarios().contains(comentario))){		
+				local.getComentarios().remove(comentario);
+				entityManager.remove(comentario);	
+				entityManager.persist(local);
 				return "eliminarComentario";
-			}	
+			}
+			if(usuario.getComentarios().contains(comentario)){
+				usuario.getComentarios().remove(comentario);				
+				entityManager.remove(comentario);	
+				entityManager.persist(usuario);
+				return "eliminarComentario";
+			}
 		}				
 		return "paginaError";
 	}
@@ -1241,7 +1251,7 @@ public class HomeController {
 
 		//Para delimitar las busquedas al mes actual
 		DateFormat dateFormatActualDay = new SimpleDateFormat("yyyy/MM/dd");		
-		DateFormat dateFormatActualHour = new SimpleDateFormat("hh:mm:ss");
+		DateFormat dateFormatActualHour = new SimpleDateFormat("HH:mm:ss");
 		Date dateActual = new Date();
 		Date hourActual = new Date();
 		String inifecha = ""; //inicio mes

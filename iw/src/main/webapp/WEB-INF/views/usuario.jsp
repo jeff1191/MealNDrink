@@ -20,7 +20,8 @@ function activaBotonEliminacionReserva() {
 function activaBotonEliminacionComentario() {	
 	var idComentario = $(this).attr("id").substring("delC_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
-	$.post( "eliminarComentario",{idUsuario:idUsuario,idComentario:idComentario},function(data){
+	var idLocal=0;
+	$.post( "eliminarComentario",{idComentario:idComentario,idLocal:idLocal},function(data){
 			$('#TodosComentarios').load('usuario?id='+idUsuario+' div#TodosComentarios');
 	});
 }

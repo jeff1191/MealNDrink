@@ -105,7 +105,7 @@ function activaBotonEliminacionComentario() {
 	var idComentario=$("#idEliminarComentario").attr("value");
 	var idLocal=$('#id_local').get(0).value;
 
-	$.post( "eliminarComentario",{idLocal:idLocal,idComentario:idComentario},function(data){ 
+	$.post( "eliminarComentario",{idComentario:idComentario,idLocal:idLocal},function(data){ 
 			$('#TodosComentarios').load('comercio_interno?id='+idLocal+' div#TodosComentarios');
 	});
 }

@@ -115,7 +115,7 @@
 						src="${prefix}resources/img/logo.png" alt="logo"></a>
 				</div>
 
-				<div id="localesUsuarioDesplegable" id="localesUsuarioDesplegable" class="collapse navbar-collapse navbar-right">
+				<div id="localesUsuarioDesplegable" class="collapse navbar-collapse navbar-right">
 					<ul class="nav navbar-nav">
 						<li class="${active eq 'home'?'active':''}"><a href="home">Inicio</a></li>
 						<li class="${active eq 'ofertasMes'?'active':''}"><a
