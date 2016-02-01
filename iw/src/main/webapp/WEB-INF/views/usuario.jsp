@@ -4,7 +4,7 @@
 function activaBotonEliminacionLocal() {	
 	var idLocal = $(this).attr("id").substring("del_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
-	$.post( "eliminarLocal",{idUsuario:idUsuario,idLocal:idLocal},function(data){
+	$.post( "eliminarLocal",{idLocal:idLocal},function(data){
 			$('#TodosLocales').load('usuario?id='+idUsuario+' div#TodosLocales');
 			$('#localesUsuarioDesplegable').load('usuario?id='+idUsuario+' div#localesUsuarioDesplegable');		
 	});

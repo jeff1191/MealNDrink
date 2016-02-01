@@ -19,7 +19,7 @@
             
             	<div class="portfolio-items">
             
-            	<c:forEach items="${platos}" var="i" varStatus="status">	            		
+            	<c:forEach items="${platos}" var="i" varStatus="status">						         		
 	               		<div class="portfolio-item ${tagsString[status.index]} col-xs-12 col-sm-4 col-md-3">
                		    <div class="recent-work-wrap">
 	                        <img class="img-responsive" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.ID}.jpg" >

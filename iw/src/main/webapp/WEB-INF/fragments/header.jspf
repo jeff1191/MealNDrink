@@ -90,7 +90,7 @@
 
 			},
 			success : function() {
-				location.href = "${prefix}/iw";
+				location.href = "${prefix}/mealndrink";
 
 			}
 		})
@@ -205,9 +205,12 @@
 							</div>
 							<div class="col-md-6">	
 								<br>
-								<h5>Si aun no tiene cuenta puedes 
-								registrarse ahora mismo, rapidamente y de forma
-								totalmente gratuita</h5>						
+								<h5>Estas a un click de vivir momentos inolvidables.
+									</br></br>
+									MealNDrink es mas que una pagina de ofertas.
+									</br></br>
+									Deja de buscar!! Aqui los mejores planes te estan esperando</h5>	
+									</br>					
 								<a class="btn btn-default" href="registrarse">Registrarse</a>
 							</div>						
 						</div>					

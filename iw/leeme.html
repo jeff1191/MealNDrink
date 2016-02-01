@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf8"><title>Leeme</title></head>
 <body>
-<h1>MealNDrink - entrega 2: Versión con JSPs y esquema de la BD</h1>
+<h1>MealNDrink - entrega final del proyecto</h1>
 <p>Componentes del grupo "MealNDrink"
 <ul>
 <li>Jefferson Almache Montoya
@@ -11,36 +11,56 @@
 </ul>
 <h2>Vistas que componen esta entrega</h2>
 <ul>
-<li><a href="http://localhost:8080/iw/">Inicio</a> - página de entrada.
-<li><a href="http://localhost:8080/iw/ofertasMes">Ofertas del mes</a> - en esta página se muestran las ofertas con más demanda del mes. 
-<li><a href="http://localhost:8080/iw/ultimasOfertas">Últimas ofertas</a> - versión parecida a ofertas del mes solo que mostrando las últimas ofertas añadidas.
-<li><a href="http://localhost:8080/iw/administracion">Perfil/Administrador</a> - ventana con las acciones posibles de un administrador.
-<li><a href="http://localhost:8080/iw/usuario">Perfil/Usuario</a> - vista de los datos, reservas y comentarios realizados por un usuario sin locales. También puede modificar sus datos.
-<li><a href="http://localhost:8080/iw/comercio_interno">Perfil/Local</a> - página de control para un usuario con locales. Puede gestionar sus ofertas, sus comentarios, sus tags, ver los códigos qr de las ofertas de todos sus locales y modificar sus datos personales.
+<li><a href="http://localhost:8080/mealndrink/">Inicio</a> - página de bienvenida, en ella aparecen todas las ofertas y todos los locales de nuestra pagina.
+<li><a href="http://localhost:8080/mealndrink/ofertasMes">Ofertas del mes</a> - en esta página se muestran las ofertas que han superado o igualado su capacidad máxima. 
+																				Es decir que son ofertas que tienen una demanda importante.
+<li><a href="http://localhost:8080/mealndrink/ultimasOfertas">Últimas ofertas</a> -  en esta página se muestran las ofertas que se han hecho desde la fecha actual 
+																					 hasta el primer dia de ese mes.
+<li><a href="http://localhost:8080/mealndrink/administracion">Administracion</a> - ventana con las acciones posibles de un administrador. Puede añadir usuarios y locales, 
+																				   asi como editar los datos o eliminar los existentes. El administrador es el único que 
+																				   puede editar los tags.
+<li><a href="http://localhost:8080/mealndrink/usuario?id=4">Perfil del usuario</a> - vista de los datos, reservas y comentarios realizados por un usuario. Puede modificar sus datos, 
+																					 ademas si tiene locales aparece una pestaña desde donde eliminarlos. Si quiere editarlos tiene que
+																					 ir al desplegable de PERFIL y seleccionar el local que quiere administrar.
+<li><a href="http://localhost:8080/mealndrink/comercio_interno?id=4">Pagina intera de un local</a> - página de control de un local. Solo el usuario que la posee puede gestionar las ofertas, 
+																						 los comentarios, ver los códigos qr y modificar los datos de ese local.
+<li><a href="http://localhost:8080/mealndrink/comercio_externo?id=1">Pagina externa de un local</a> - página de un local, es visible por todos los usuarios y en la que aparecen los comentarios 
+																						 junto con las ofertas que posee ese local. 
 </ul>
 
-<small>NOTA 1: Como de momento no tenemos login (bien hecho) hemos puesto a los diferentes usuarios en <b>Perfil</b>. Pero nuestra idea es que allí halla un muñequito o una ventana para que puedeas registrarte/acceder a tu cuenta</small>
-<br>
-<small>NOTA 2: Al meterse en <b>Últimas ofertas</b> y <b>Ofertas del mes</b>, dentro de las fotos, aparece la opción de reservar que es un pop up. Al no poder implementar un for que pudiera mostrar bien las imágenes hemos
-decidido no implementarlo aún. Cuando tengamos implementada la relación con la base de datos, lo incorporaremos.</small>
+<small>NOTA 1: La idea es que al llevar el raton sobre una imagen aparezcan dos iconos: VER RESTAURANTE, que lleva al restaurante dueño de esa oferta y RESERVAR, que lleva a una pagina
+para reservar directamente la oferta. </br>
+Si una persona no esta registrada no puede ver el icono de reservar, ademas si se ha llegado a la capacidad maxima de esa oferta tampoco aparecera el icono de reservar </br>
+Tambien desde la pagina "externa" del local se puede reservar pero para ver el boton con el que reservar, es necesario haber iniciado sesion</small>
 
 <h2>Esquema de la base de datos</h2>
 <img src="MealNDrink_BBDD.png" width=69%>
 <pre>
 <b>A tener en cuenta: </b>
 
-   1) <u>Ya hemos añadido las etiquetas JPA</u>, tanto en relaciones como en entidades de nuestro proyecto.
-
-   2) En el modelo consideramos que un usuario puede tener varios locales, eso en las vistas todavía no esta implementado. Lo que aspiramos a hacer 
-      es tener un login decente que dependiendo de la cuenta que inicia sesión se carge el perfil de administración, de usuarios sin locales y la 
-      de usuarios con locales. En este último habría un menu para que pudiera navegar entre sus diferentes locales y la vista para gestionar uno de 
-      ellos sería nuestro actual <b>Local</b>
+   Tan solo dejamos que se puedan editar tags, en el import.sql hemos añadido diez y tan solo las ofertas pueden tenerlos. Como un tag puede 
+   pertenecer a varias ofertas tenemos una tabla donde estan relacionados los tags y las ofertas (oferta_tags)
 </pre>
+<h2>Contraseñas de los usuarios del import.sql</h2>
+<ul>
+<li>Jeff = admin
+<li>JuanLu = 5678
+<li>Dani = pass
+<li>Josemi = 1234
+<li>Maria = maria
+<li>Fulano = fun123
+<li>Mengano = men123
+<li>Rosita = pecas34
+<li>Pablito = pa1234
+<li>Eloisa = isaelo96
+</ul>
+
 <h2>Recursos externos utilizados</h2>
 <ul>
 <li><a href="http://getbootstrap.com/">bootstrap</a> (licencia <a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">MIT</a>) - para el estilo general de la página
 <li><a href="https://jquery.com/">jquery</a> (licencia <a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt">MIT</a>) - es una dependencia de bootstrap
 <li><a href="https://shapebootstrap.net/item/1524962-corlate-free-responsive-business-html-template">Corlate Template</a> (licencia <a href="https://shapebootstrap.net/licenses">SHAPEBOOTSTRAP</a>) - plantilla que hemos usado para construir la pagina
+<li><a href="https://larsjung.de/jquery-qrcode/">jQuery.qrcode</a> (licencia <a href="https://github.com/lrsjng/jquery-qrcode">MIT</a>) - código para la generacion de códigos QR
 </ul>
 </body>
 </html>

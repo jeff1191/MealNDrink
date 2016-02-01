@@ -26,15 +26,14 @@
 				        	<label class="control-label col-lg-4" for="datepicker"> Fecha</label>
 				        	<div class="col-lg-6">
 								<input id="datepicker" name="fecha" class="form-control" required="required" 
-								placeholder="Selecciona una fecha" value="" />	
+								placeholder="Selecciona una fecha (dd/mm/yyyy)" value="" />	
 							</div>									        	
 			            </div>				            
 			             <div class="form-group">
 				        	<label class="control-label col-lg-4" for="timepicker"> Hora</label>
 				        	<div class="col-lg-6">
 				        		<input id="hora" name="hora" class="form-control" required="required" 
-				        		type="text" placeholder="Selecciona una hora" value="" />
-				        		<span class="help-block">Por ejemplo: 12:00</span>
+				        		type="text" placeholder="Selecciona una hora (hh:mm)" value="" />				        		
 				        	</div>						
 						</div>		
 							<input hidden="submit" id="oferta" name="oferta" value="${infoOferta.ID}" />

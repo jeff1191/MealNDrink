@@ -7,7 +7,9 @@
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-							<img src="localesFoto?id=${infoLocal.ID}.jpg" height="350" width="350">                                  
+                       		<div class="imagenMediaPerfil">	
+								<img src="localesFoto?id=${infoLocal.ID}.jpg" height="350" width="350">    
+							</div>                              
 							<h3><b>Dirección</b></h3>
 							<p>${infoLocal.direccion}</p>
 														
@@ -43,8 +45,8 @@
 						<c:otherwise>				  
 						    <c:forEach items="${infoLocal.ofertas}" var="i">
 								<div class="media">
-									<div class="pull-left">
-										<img class="media-object" src="ofertasFoto?id=${i.ID}.jpg">
+									<div class="pull-left">										
+										<img class="media-object" src="ofertasFoto?id=${i.ID}.jpg">										
 									</div>
 									<div class="media-body">
 										<h4 class="media-heading">${i.nombre}</h4>
@@ -96,7 +98,9 @@
 						    <c:forEach items="${infoLocal.comentarios}" var="i">
 							<div class="media">
 								<div class="pull-left">
-									<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180">
+									<div class="imagenMedia">
+										<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180">
+									</div>
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">${(i.usuario).nombre}</h4>

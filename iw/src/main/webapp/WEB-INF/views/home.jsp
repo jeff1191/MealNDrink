@@ -64,7 +64,7 @@
                         <div class="row slide-margin">
                             
                                 <div class="carousel-content">
-                                    <h1 class="animation animated-item-1">Cientos de ofertas y locales te estan esperando</h1>
+                                    <h1 class="animation animated-item-1">Elige entre cientos de ofertas y locales</h1>
                                 </div>								
                         
                         </div>
@@ -97,7 +97,17 @@
         <div class="container">
             <div class="center">
                 <h2>Bienvenidos</h2>
-                <h3>Aqui puedes encontrar todas las ofertas disponibles</h3>
+                <h3>Aqui puedes encontrar todas las ofertas disponibles.
+                	<c:if test="${empty user}">
+                	</br></br>
+                	Para poder reservar estas fantasticas
+                	oportunidades es necesario que te registres.
+                	</br> 
+                	Es totalmente gratuito y solo sera un momento.                	
+                	Puedes hacerlo desde                 	
+                	<a data-toggle="modal" data-target="#myModal"><b>aqui</b></a>
+                	</c:if>
+                </h3>
             </div>
 
 			<ul class="portfolio-filter text-center">

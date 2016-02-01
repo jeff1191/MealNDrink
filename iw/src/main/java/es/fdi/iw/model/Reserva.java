@@ -15,7 +15,7 @@ import javax.persistence.NamedQuery;
 	@NamedQuery(name="infoBooks", 
 		query="select o from Reserva o where o.id in (:idParam)"),
 	@NamedQuery(name="lastBooks", 
-		query="select o from Reserva o where o.fechaReserva >= (:inicioBusq) and o.fechaReserva <= (:finBusq)")
+		query="select o from Reserva o where o.fechaReserva between (:inicioBusq) and (:finBusq)")
 })
 
 public class Reserva {
