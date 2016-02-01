@@ -11,11 +11,11 @@
 			
 			recargarElementos(); //si al volver a dar a registrar se corrigen errores pero siguen habiendo otros esto quita el rojo a los corregidos
 			
-			seguro = textoSeguro(date.val()) && textoSeguro(hour.val()) && textoSeguro(cap.val());
+			seguro = fechaSeguro(date.val()) && horarioSeguro(hour.val()) && horarioSeguro(cap.val());
 			
 			
 			//validar fecha
-			if(!textoSeguro(date.val()) || date.val() > datelimit || date.val() < dateNow) {
+			if(!fechaSeguro(date.val()) || date.val() > datelimit || date.val() < dateNow) {
 				date.css("background", "red");
 				date.css("color", "white");
 				
@@ -23,7 +23,7 @@
 			}
 			
 			//validar hora formato hh:mm
-			if(!textoSeguro(hour.val()) || !(/^([0-9]{2})+\:([0-9]{2})+$/.test(hour.val()))) {
+			if(!horarioSeguro(hour.val()) || !(/^([0-9]{2})+\:([0-9]{2})+$/.test(hour.val()))) {
 				hour.css("background", "red");
 				hour.css("color", "white");
 				
@@ -31,7 +31,7 @@
 			}
 			
 			//validad capacidad
-			if(!textoSeguro(cap.val()) || cap.val() > capMax || cap.val() < 1) {
+			if(!horarioSeguro(cap.val()) || cap.val() > capMax || cap.val() < 1) {
 				cap.css("background", "red");
 				cap.css("color", "white");
 				

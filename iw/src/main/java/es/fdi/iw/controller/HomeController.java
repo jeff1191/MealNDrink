@@ -448,6 +448,7 @@ public class HomeController {
 	@RequestMapping(value = "/eliminarReserva", method = RequestMethod.POST)
 	public String eliminarReserva(@RequestParam("idReserva") long idReserva,
 			Model model, HttpSession session){
+
 		Usuario usuarioSesion = (Usuario)session.getAttribute("user");
 		if(usuarioSesion != null ){
 			Usuario usuarioBdd= entityManager.find(Usuario.class, usuarioSesion.getID());
@@ -744,11 +745,13 @@ public class HomeController {
 					stream = new BufferedOutputStream(
 							new FileOutputStream(ContextInitializer.getFile("locales", ""+local.getID()+".jpg")));
 				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
 					stream.write(IOUtils.toByteArray(in));
-				} catch (IOException e) {					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				usuario.getLocales().add(local);
@@ -773,13 +776,13 @@ public class HomeController {
 							Model model, HttpSession session){
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
-			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());			
-			Local local= entityManager.find(Local.class, idLocal);			
-			if(usuario.getLocales().contains(local)){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			Local local= entityManager.find(Local.class, idLocal);
+			if(usuario.getLocales().contains(local) || usuario.getRol().equals("admin")){
 				model.addAttribute("usuario", usuario);	
 				File foto = ContextInitializer.getFile("locales", Long.toString(local.getID()));
-				foto.delete();		
-				entityManager.remove(local);				
+				foto.delete();
+				entityManager.remove(local);
 			}
 			return "eliminarLocal";
 		}	
@@ -802,7 +805,7 @@ public class HomeController {
 		Usuario uSession = (Usuario)session.getAttribute("user");
 		Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
 
-		if(usuario != null){ //si esta en bbdd
+		if(usuario != null){ //si está en bbdd
 			boolean seguro = palabraSeguro(nombreLocal) && horarioSeguro(horario) && direccionSeguro(direccion) && emailSeguro(email) && telefonoSeguro(telefono);
 			if (seguro) {
 				Local edit= entityManager.find(Local.class, id);
@@ -872,11 +875,13 @@ public class HomeController {
 							new FileOutputStream(
 									ContextInitializer.getFile("usuarios", ""+usuario.getID()+".jpg")));
 				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
 					stream.write(IOUtils.toByteArray(in));
 				} catch (IOException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -992,7 +997,7 @@ public class HomeController {
 	}*/
 
 	boolean palabraSeguro(String palabra) {
-		return palabra.matches("^[a-zA-Z0-9_]*$");
+		return palabra.matches("^[a-zA-Z0-9_ ]*$");
 	}
 
 	boolean descripcionSeguro (String descripcion) {
@@ -1188,7 +1193,7 @@ public class HomeController {
 
 		//Para delimitar las busquedas al mes actual
 		DateFormat dateFormatActualDay = new SimpleDateFormat("yyyy/MM/dd");		
-		DateFormat dateFormatActualHour = new SimpleDateFormat("HH:mm:ss");
+		DateFormat dateFormatActualHour = new SimpleDateFormat("hh:mm:ss");
 		Date dateActual = new Date();
 		Date hourActual = new Date();
 		String inifecha = ""; //inicio mes
@@ -1199,11 +1204,11 @@ public class HomeController {
 			aux.add(tokens.nextToken());					 
 		}			
 		inifecha += aux.get(0) + "-" + aux.get(1) + "-01"; 
-		finfecha += aux.get(0) + "-" + aux.get(1) + "-" + aux.get(2); // fecha actual	
+		finfecha += aux.get(0) + "-" + aux.get(1) + "-" + aux.get(2); // fecha actual		
 
 		Timestamp beginLast = Timestamp.valueOf(inifecha + " " + "00:00:00.0");
 		Timestamp endLast = Timestamp.valueOf(finfecha + " " +  dateFormatActualHour.format(hourActual) + ".0");
-		
+
 		List<Reserva> temp = new ArrayList<Reserva>();
 		List<Oferta> lastOffers = new ArrayList<Oferta>();
 
