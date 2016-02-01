@@ -6,13 +6,14 @@ function activaBotonEliminacionLocal() {
 	var idUsuario=$('#id_usuario').get(0).value;
 	$.post( "eliminarLocal",{idUsuario:idUsuario,idLocal:idLocal},function(data){
 			$('#TodosLocales').load('usuario?id='+idUsuario+' div#TodosLocales');
+			$('#localesUsuarioDesplegable').load('usuario?id='+idUsuario+' div#localesUsuarioDesplegable');		
 	});
 }
 
 function activaBotonEliminacionReserva() {	
 	var idReserva = $(this).attr("id").substring("delR_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
-	$.post( "eliminarReserva",{idUsuario:idUsuario,idReserva:idReserva},function(data){
+	$.post( "eliminarReserva",{idReserva:idReserva},function(data){
 			$('#TodasReservas').load('usuario?id='+idUsuario+' div#TodasReservas');
 	});
 }
@@ -156,7 +157,9 @@ $("body").on( "keyup", "#editNameUser", null, function(){
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
-                            <img src="usuariosFoto?id=${usuario.ID}.jpg" height="275" width="275">                              
+                        	<div class="imagenMediaPerfil">
+                           		 <img src="usuariosFoto?id=${usuario.ID}.jpg">  
+                            </div>                            
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3><b>Mis datos</b></h3>
 							<p>Mi email: ${usuario.email}</p>
@@ -188,7 +191,9 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 												<c:forEach items="${usuario.reservas}" var="i">
 												<div class="media">
 													<div class="pull-left">
-														<img class="media-object" WIDTH=178 HEIGHT=150 src="ofertasFoto?id=${i.oferta.ID}.jpg">
+														<div class="imagenMedia">
+															<img class="media-object" src="ofertasFoto?id=${i.oferta.ID}.jpg">
+														</div>
 													</div>										
 													<div class="media-body">														
 														<h4 class="media-heading">${i.oferta.nombre}</h4>					
@@ -229,6 +234,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
 									<input type="text" class="form-control" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+								 	<span class="help-block">Por ejemplo: 10-18</span>
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
@@ -266,7 +272,9 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 									<c:forEach items="${usuario.locales}" var="i">
 									<div class="media">
 										<div class="pull-left">
-											<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
+											<div class="imagenMedia">
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.ID}.jpg" >
+											</div>
 										</div>										
 										<div class="media-body">
 											<h4 class="media-heading">${i.nombre}</h4>
@@ -375,6 +383,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 										<div class="form-group">
 											<label for="tel">Teléfono:</label>
 											<input type="tel" class="form-control" name="editTel" id="editTel" value="${usuario.telefono }">
+											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
 										  
 										  

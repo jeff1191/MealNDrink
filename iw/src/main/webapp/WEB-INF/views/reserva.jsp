@@ -34,6 +34,7 @@
 				        	<div class="col-lg-6">
 				        		<input id="hora" name="hora" class="form-control" required="required" 
 				        		type="text" placeholder="Selecciona una hora" value="" />
+				        		<span class="help-block">Por ejemplo: 12:00</span>
 				        	</div>						
 						</div>		
 							<input hidden="submit" id="oferta" name="oferta" value="${infoOferta.ID}" />

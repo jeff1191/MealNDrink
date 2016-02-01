@@ -87,7 +87,21 @@ hr {
 .btn-transparent:hover {
   border-color: rgba(255, 255, 255, 0.5);
 }
-
+.imagenMedia img{
+max-width:200px;
+max-height:200px;
+width: auto;
+height: auto;
+display: block;
+margin: 0 auto;
+}
+.imagenMediaPerfil img{
+max-width:250px;
+max-height:350px;
+position: left;
+width: auto;
+height: auto;
+}
 a:hover,
 a:focus {
   color: #111;

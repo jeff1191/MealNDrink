@@ -5,8 +5,9 @@ function activaBotonEliminacionOferta() {
 	//var idOffer = $(this).attr("id").substring("del_".length); 
 	var idOffer=$("#idEliminar").attr("value");
 	var idLocal=$('#id_local').get(0).value;
-	$.post( "eliminarOferta",{idOferta:idOffer},function(data){ 
+	$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer},function(data){ 
 			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+			
 	});
 }
 
@@ -108,7 +109,7 @@ function activaBotonEliminacionComentario() {
 	var idComentario=$("#idEliminarComentario").attr("value");
 	var idLocal=$('#id_local').get(0).value;
 
-	$.post( "eliminarComentario",{idComentario:idComentario},function(data){ 
+	$.post( "eliminarComentario",{idLocal:idLocal,idComentario:idComentario},function(data){ 
 			$('#TodosComentarios').load('comercio_interno?id='+idLocal+' div#TodosComentarios');
 	});
 }
@@ -165,8 +166,10 @@ $(function() {
                 </div>
                 <div class="row">
                     <div class="features">
-                        <div class="col-md-4 col-sm-4">							
-                            <img src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
+                        <div class="col-md-4 col-sm-4">	
+	                        <div class="imagenMediaPerfil">						
+	                            <img src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
+	                        </div>
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
 							<h3><b>Dirección</b></h3>
 							<p>${local.direccion}</p>
@@ -209,8 +212,10 @@ $(function() {
 											<c:forEach items="${local.ofertas}" var="i">
 												<div class="media">
 													<div class="pull-left">
-														<img class="media-object" height="135" width="180" src="ofertasFoto?id=${i.ID}.jpg">
-												</div>
+														<div class="imagenMedia">	
+															<img class="media-object" height="135" width="180" src="ofertasFoto?id=${i.ID}.jpg">
+														</div>
+													</div>
 												<div class="media-body">
 													<h4 class="media-heading">${i.nombre}</h4>
 													<p>${i.descripcion}</p>	
@@ -436,7 +441,9 @@ $(function() {
 										<c:forEach items="${local.comentarios}" var="i">
 											<div class="media">
 											<div class="pull-left">
-												<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180"> 
+												<div class="imagenMedia">
+													<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180"> 
+												</div>
 											</div>
 											<div class="media-body">											
 												<h4 class="media-heading">${(i.usuario).nombre}</h4>
@@ -463,6 +470,7 @@ $(function() {
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
 											<input type="text" class="form-control" id="editHorarioLocal" required="required" name="editHorarioLocal" value="${local.horario}">
+										  	<span class="help-block">Por ejemplo: 10-20</span>
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Direccion:</label>
@@ -475,6 +483,7 @@ $(function() {
 										  <div class="form-group">
 											<label for="tel">Telefono:</label>
 											<input type="tel" class="form-control" id="editTelLocal" required="required"  name="editTelLocal" value="${local.telefono}">
+										  	<span class="help-block">Por ejemplo: 651651651</span>
 										  </div>
 										  <div class="form-group">
 											<label for="file">Imagen de perfil:</label>

@@ -294,7 +294,9 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 							  <c:forEach items="${usuarios}" var="i">
 								<div class="media">
 									<div class="pull-left">
-										<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg" height="140" width="140"> 
+										<div id="imagenMedia" class="imagenMedia">
+											<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg"> 
+										</div>
 									</div>
 									<div class="media-body">
 										<h4 class="media-heading">${i.nombre} (${i.rol})</h4>
@@ -327,6 +329,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="pwd">Contraseña:</label>
 									<input type="password" class="form-control" required="required" id="pwd" name="pwd" placeholder="Introduce una nueva contraseña">
+								  	<span class="help-block">Mínimo 6 caracteres</span>
 								  </div>
 								  <div class="form-group">
 									<label for="email">Email:</label>
@@ -335,6 +338,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" id="tel" required="required" name="tel" placeholder="Introduce un nuevo telefono">
+								  	<span class="help-block">Por ejemplo: 651651651</span>
 								  </div>
 								  <div class="form-group">
 									<label for="rol">Rol:</label>
@@ -377,6 +381,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
 											<input type="password" class="form-control" name="editPwd" id="editPwd" value="">
+											<span class="help-block">Mínimo 6 caracteres</span>
 										</div>
 										<div class="form-group">
 											<label for="email">Email:</label>
@@ -385,6 +390,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 										<div class="form-group">
 											<label for="tel">Teléfono:</label>
 											<input type="tel" class="form-control" name="editTel" id="editTel">
+											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
 										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">  
 											<div class="form-group">
@@ -413,7 +419,9 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 					  	<c:forEach items="${locales}" var="i">
 							<div class="media">
 								<div class="pull-left">
-									<img src="localesFoto?id=${i.ID}.jpg" height="175" width="250"> 
+									<div id="imagenMedia" class="imagenMedia">
+										<img src="localesFoto?id=${i.ID}.jpg"> 
+									</div>
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">${i.nombre}</h4>
@@ -456,6 +464,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
 									<input type="text" class="form-control" required="required" id="timeBusiness" name="timeBusiness" placeholder="Introduce un nuevo horario">
+								 	<span class="help-block">Por ejemplo: 10-18</span>
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
@@ -468,6 +477,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" required="required" id="tel" name="tel" placeholder="Introduce un nuevo telefono" maxlength="9">
+								 	<span class="help-block">Por ejemplo: 651651651</span>
 								  </div>								
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
@@ -505,6 +515,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="timeBusiness">Horario:</label>
 									<input type="text" class="form-control" required="required" id="editHorarioLocal" name="editHorarioLocal" placeholder="Introduce un nuevo horario">
+								 	<span class="help-block">Por ejemplo: 10-18</span>
 								  </div>
 								  <div class="form-group">
 									<label for="dir">Dirección:</label>
@@ -517,6 +528,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								  <div class="form-group">
 									<label for="tel">Teléfono:</label>
 									<input type="tel" class="form-control" required="required" id="editTelLocal" name="editTelLocal" placeholder="Introduce un nuevo telefono">
+								  	<span class="help-block">Por ejemplo: 651651651</span>
 								  </div>
 								  <div class="form-group">
 									<label for="file">Imagen de perfil:</label>
@@ -565,6 +577,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 										<div class="form-group">
 											<label for="tel">Teléfono:</label>
 											<input type="tel" class="form-control" name="editTelAdmin" id="editTelAdmin" value="${admin.telefono}">
+											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
 										<form id="formEditarFotoAdmin" name="formEditarFotoAdmin" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">  
 											<div class="form-group">
