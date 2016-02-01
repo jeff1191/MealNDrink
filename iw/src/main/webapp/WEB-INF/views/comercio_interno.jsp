@@ -63,19 +63,12 @@ function activaBotonValidarReserva(ob) {
 		url : "${prefix}validarReserva",
 		type : "POST",
 		data : {
-			//id_reserva : nombre
+			id_reserva : nombre
 		},
 
 		success : function(data) {
 			
 			if(data === "ok"){
-				//$(‘#contenido’).fadeOut(1000);
-			//	var r = $("#r"+nombre);
-			//	r.remove();
-			//	$("#tabla2 tbody").append(r);
-				//$(‘#contenido’).fadeIn(1000);
-			//	ok = true;
-			
 				$("#tabla1").load('comercio_interno?id=${local.ID} div#tabla1');
 				$("#tabla2").load('comercio_interno?id=${local.ID} div#tabla2');
 			
@@ -96,6 +89,9 @@ function activaBotonValidarReserva(ob) {
 			} else if(data === "usuario_no_permitido"){
 				location.href = "${prefix}/mealndrink";
 			}
+			
+			alert("Reserva validada satisfactoriamente");
+			location.href = "${prefix}/mealndrink/comercio_interno?id=${local.ID}";
 		}
 	})
 }

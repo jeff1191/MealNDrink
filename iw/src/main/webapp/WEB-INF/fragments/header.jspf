@@ -90,7 +90,7 @@
 
 			},
 			success : function() {
-				location.href = "${prefix}/iw";
+				location.href = "${prefix}/mealndrink";
 
 			}
 		})

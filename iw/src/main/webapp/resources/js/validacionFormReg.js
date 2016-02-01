@@ -14,7 +14,8 @@
 			seguro = textoSeguro(e_mail.val()) && textoSeguro(telef.val()) && textoSeguro(nombr.val()) && textoSeguro(contr.val());
 			
 			//validar email
-			if(!textoSeguro(e_mail.val()) || !(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e_mail.val())) ) {
+			if(false === textoSeguro(e_mail.val()) || false === (/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e_mail.val())) ) {
+				
 				e_mail.css("background", "red");
 				e_mail.css("color", "white");
 				

@@ -853,6 +853,16 @@ public class HomeController {
 		boolean seguro = palabraSeguro(nombreUsuario) && palabraSeguro(pass) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(rol);
 
 		if (seguro) {
+			
+			try{				
+				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombreUsuario).getSingleResult();
+				return "redirect:paginaError";
+			} catch (NoResultException nre) {	
+				//Apodo libre, se puede continuar con la ejecución
+			}
+			
+			
+			
 			Usuario usuario = creaUsuario(nombreUsuario, email, telefono, rol, pass);
 			entityManager.persist(usuario);
 			entityManager.flush();
@@ -1119,6 +1129,41 @@ public class HomeController {
 			}	
 		}				
 		return "paginaError";
+	}
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value = "/validarReserva", method = RequestMethod.POST)
+	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") String idRes, Model model, HttpSession session){
+		
+		Usuario sesion = (Usuario)session.getAttribute("user");
+		String res = new String("ok");
+		long idResBueno;
+		String test;
+		
+		try {
+			test = idRes;
+			logger.info(test);
+			test = idRes.substring(5);
+			logger.info(test);
+			
+			idResBueno = Long.parseLong(test);
+			
+			Reserva edit= entityManager.find(Reserva.class, idResBueno);
+			
+			if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueño del local
+
+				edit.setValidado(true);
+				entityManager.persist(edit);
+			}
+			else
+				res = "usuario_no_permitido";
+			
+		} catch (NumberFormatException e) {
+			res = "reserva_no_existe";
+		}
+		return new ResponseEntity<String>(res, HttpStatus.OK);
+
 	}
 
 	@Transactional

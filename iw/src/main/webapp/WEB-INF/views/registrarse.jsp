@@ -42,7 +42,6 @@
 						},
 						success : function() {
 							$("#formRegis").submit();
-							alert(data);
 							location.href = "${prefix}/mealndrink";
 
 						}
