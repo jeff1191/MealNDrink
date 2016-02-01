@@ -1000,7 +1000,7 @@ public class HomeController {
 	}*/
 
 	boolean palabraSeguro(String palabra) {
-		return palabra.matches("^[a-zA-Z0-9_]*$");
+		return palabra.matches("^[a-zA-Z0-9_ ]*$");
 	}
 
 	boolean descripcionSeguro (String descripcion) {
