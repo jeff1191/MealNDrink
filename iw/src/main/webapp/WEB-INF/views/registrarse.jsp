@@ -42,7 +42,6 @@
 						},
 						success : function() {
 							$("#formRegis").submit();
-							alert(data);
 							location.href = "${prefix}/mealndrink";
 
 						}
@@ -99,3 +98,4 @@
 </body>
 </html>
 <%@ include file="../fragments/footer.jspf" %>
+

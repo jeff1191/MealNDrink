@@ -1,10 +1,3 @@
-//	function textoSeguro(str){
-//			
-//		var seguro = !(/^[^<>$]/.test(str));
-//	
-//		return seguro;
-//	};
-
 	function palabraSeguro(palabra) {
 		return palabra.matches("^[a-zA-Z0-9_ ]*$");
 	};
