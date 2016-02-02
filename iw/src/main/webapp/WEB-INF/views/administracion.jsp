@@ -115,7 +115,7 @@ $(function() {
     			alert(resultadoEditar(data));
     			$("#formEditarFoto").submit();
     			
-    			location.href = "${prefix}/iw/administracion";
+    			location.href = "${prefix}/mealndrink/administracion";
     			
 
     		}
@@ -152,7 +152,7 @@ $(function() {
     			alert(resultadoEditar(data));
     			$("#formEditarFotoAdmin").submit();
     			
-    			location.href = "${prefix}/iw/administracion";
+    			location.href = "${prefix}/mealndrink/administracion";
     			
 
     		}

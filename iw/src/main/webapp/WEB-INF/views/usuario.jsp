@@ -70,7 +70,7 @@ $(function() {
     			alert(resultadoEditar(data));
     			$("#formEditarFoto").submit();
     			
-    			location.href = "${prefix}/iw/usuario?id=${usuario.ID}";
+    			location.href = "${prefix}/mealndrink/usuario?id=${usuario.ID}";
     			
 
     		}
@@ -375,7 +375,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 										</div>
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" name="editPwd" id="editPwd"  value="*****">
+											<input type="password" class="form-control" name="editPwd" id="editPwd"  value="">
 										</div>
 										<div class="form-group">
 											<label for="email">Email:</label>
