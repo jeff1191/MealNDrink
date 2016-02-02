@@ -1037,7 +1037,8 @@ public class HomeController {
 	}
 
 	boolean emailSeguro(String email) {
-		return email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		return email.matches("^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$");
+		
 	}
 
 	int comprobarCampos(Usuario sesion, String nombre, String contra, String email, String telef){
