@@ -50,7 +50,8 @@ $(function() {
     	var e_mail = $("#editEmail").val();
     	var telef = $("#editTel").val();
     	var foto = $("#editfileToUpload").val();
-    		
+    	
+    	if($("#editTel").val() == "")$("#editTel").css("border-color", "red");
     	$.ajax({
     		url : "${prefix}editarUsuario",
     		type : "POST",

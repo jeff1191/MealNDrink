@@ -21,7 +21,7 @@ function activaBotonAddOferta() {
 	
 	$.post( "nuevaOferta",{fileToUpload:fileToUpload,id_local:id_local,name:name,endTime:endTime,
 		cap:cap,description:description},function(data){
-			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
+			$('#TodasOfertas').load('comercio_interno?id='+id_local+' div#TodasOfertas');
 	});
 }
 function rellenarModalEditarOferta() {
@@ -128,6 +128,27 @@ $(function() {
 	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 	$("body").on("click", ".anyadirTag", null, activaBotonAddTag);
+	$("#formuEditComercio").on("submit", function(e){
+        e.preventDefault();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("formuEditComercio"));
+      //  formData.append("dato", "valor");
+        //formData.append(f.attr("name"), $(this)[0].files[0]);
+        $.ajax({
+        	url : "${prefix}editarLocal",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+     processData: false
+        })
+            .done(function(res){
+          		var id_local=$('#id_local').get(0).value;
+          		$('#camposPrincipal').load('comercio_interno?id='+id_local+' div#camposPrincipal');
+          		$("#imagenLocal").removeAttr("src").attr("src", +"/"+id_local+".jpg");
+            });
+    });
 	$('.qrcode').each(function(i, o) {
         $(o).qrcode({
             "render": "div",
@@ -163,24 +184,27 @@ $(function() {
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">	
-	                        <div class="imagenMediaPerfil">						
-	                            <img src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
+                        <div id="camposPrincipal" name="camposPrincipal">
+	                        <div id="imagenMediaPerfil" class="imagenMediaPerfil">						
+	                            <img id ="imagenLocal" src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
 	                        </div>
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
-							<h3><b>Dirección</b></h3>
-							<p>${local.direccion}</p>
-														
-							<h3><b>Horario</b></h3>
-							<p>${local.horario}</p>
-														
-							<h3><b>Contacto</b></h3>
-							<p>E-mail: ${local.email}</p>
-							<p>Telefono: ${local.telefono}</p>
-
-                            <div>
-								<h3><b>Puntuación</b></h3>
-								<h4>${local.puntuacion}/5</h4>
-							</div>
+							
+								<h3><b>Dirección</b></h3>
+								<p>${local.direccion}</p>
+															
+								<h3><b>Horario</b></h3>
+								<p>${local.horario}</p>
+															
+								<h3><b>Contacto</b></h3>
+								<p>E-mail: ${local.email}</p>
+								<p>Telefono: ${local.telefono}</p>
+	
+	                         
+									<h3><b>Puntuación</b></h3>
+									<h4>${local.puntuacion}/5</h4>
+								
+						</div>
                         </div>
                     </div><!--/.col-md-4-->
 
@@ -208,7 +232,7 @@ $(function() {
 											<c:forEach items="${local.ofertas}" var="i">
 												<div class="media">
 													<div class="pull-left">
-														<div class="imagenMedia">	
+														<div id ="imagenMedia" class="imagenMedia">	
 															<img class="media-object" height="135" width="180" src="ofertasFoto?id=${i.ID}.jpg">
 														</div>
 													</div>
@@ -456,7 +480,7 @@ $(function() {
 								</div>
 								
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
-									<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
+									<form role="form" method="POST" id="formuEditComercio" enctype="multipart/form-data">
 									<input hidden="submit" id="id_editLocal" name="id_editLocal" value="${local.ID}" />
 									<input hidden="submit" id="redireccion" name="redireccion" value="comercio_interno" />
 										  <div class="form-group">
@@ -488,6 +512,7 @@ $(function() {
 										  <br>
 										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 									</form>			
+
 								</div>
 															
 								<!-- Modal Del Comentario-->

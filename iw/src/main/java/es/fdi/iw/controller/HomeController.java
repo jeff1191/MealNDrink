@@ -122,33 +122,6 @@ public class HomeController {
 	}
 
 	/**
-	 * Uploads a photo for a user
-	 * @param id of user 
-	 * @param photo to upload
-	 * @return
-	 */
-	@RequestMapping(value="/user", method=RequestMethod.POST)
-	public @ResponseBody String handleFileUpload(@RequestParam("photo") MultipartFile photo,
-			@RequestParam("id") String id){
-		if (!photo.isEmpty()) {
-			try {
-				byte[] bytes = photo.getBytes();
-				BufferedOutputStream stream =
-						new BufferedOutputStream(
-								new FileOutputStream(ContextInitializer.getFile("user", id)));
-				stream.write(bytes);
-				stream.close();
-				return "You successfully uploaded " + id + 
-						" into " + ContextInitializer.getFile("user", id).getAbsolutePath() + "!";
-			} catch (Exception e) {
-				return "You failed to upload " + id + " => " + e.getMessage();
-			}
-		} else {
-			return "You failed to upload a photo for " + id + " because the file was empty.";
-		}
-	}
-
-	/**
 	 * Displays user details
 	 */
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -372,6 +345,7 @@ public class HomeController {
 			}
 			return "reserva";
 		}
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}	
 	/**
@@ -440,8 +414,10 @@ public class HomeController {
 				return "redirect:" + pag;
 
 		}
-		else
+		else{
+			model.addAttribute("pageTitle", "Error!");
 			return "paginaError";
+		}
 	}	
 
 	@Transactional
@@ -460,7 +436,8 @@ public class HomeController {
 				entityManager.remove(reserva);
 				return "eliminarReserva";
 			}
-		}			
+		}		
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}
 
@@ -511,6 +488,7 @@ public class HomeController {
 				return "comercio_interno";
 			}
 		}
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}	
 	@Transactional
@@ -594,8 +572,10 @@ public class HomeController {
 			}
 			return "redirect:comercio_interno?id="+local.getID();
 		}
-		else 
-			return "redirect:paginaError"; 
+		else{ 
+			model.addAttribute("pageTitle", "Error!");
+			return "paginaError";
+		}
 	}
 	@Transactional
 	@RequestMapping(value = "/editarOferta", method = RequestMethod.POST)
@@ -674,8 +654,10 @@ public class HomeController {
 			}
 			return "redirect:comercio_interno?id="+local.getID();
 		}
-		else
-			return "redirect:paginaError";	
+		else{
+			model.addAttribute("pageTitle", "Error!");		
+			return "paginaError";
+		}
 	}
 
 	@Transactional
@@ -696,7 +678,8 @@ public class HomeController {
 				entityManager.persist(local);
 				entityManager.persist(usuario);
 			}
-		}			
+		}	
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}
 
@@ -771,8 +754,10 @@ public class HomeController {
 			else
 				return "redirect:administracion";	
 		}
-		else
-			return "redirect:paginaError"; 
+		else{
+			model.addAttribute("pageTitle", "Error!");
+			return "paginaError";
+		}
 	}
 
 	@Transactional
@@ -792,9 +777,10 @@ public class HomeController {
 			}
 			return "eliminarLocal";
 		}	
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}
-
+	@ResponseBody
 	@Transactional
 	@RequestMapping(value = "/editarLocal", method = RequestMethod.POST)
 	public String editarLocal(@RequestParam("fileToUpload") MultipartFile photo,
@@ -841,7 +827,8 @@ public class HomeController {
 					return "redirect:administracion";
 			}
 		}
-		return "redirect:paginaError";	
+		model.addAttribute("pageTitle", "Error!");
+		return "paginaError";	
 	}
 	@Transactional
 	@RequestMapping(value = "/nuevoUsuario", method = RequestMethod.POST)
@@ -856,10 +843,10 @@ public class HomeController {
 		boolean seguro = palabraSeguro(nombreUsuario) && palabraSeguro(pass) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(rol);
 
 		if (seguro) {
-			
 			try{				
 				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombreUsuario).getSingleResult();
-				return "redirect:paginaError";
+				model.addAttribute("pageTitle", "Error!");
+				return "paginaError";
 			} catch (NoResultException nre) {	
 				//Apodo libre, se puede continuar con la ejecución
 			}
@@ -903,8 +890,10 @@ public class HomeController {
 			}
 			return "redirect:administracion";	
 		}
-		else
-			return "redirect:paginaError";
+		else{
+			model.addAttribute("pageTitle", "Error!");
+			return "paginaError";
+		}
 	}
 
 	@Transactional
@@ -920,7 +909,8 @@ public class HomeController {
 
 		Usuario edit= entityManager.find(Usuario.class, id);
 		Usuario u = (Usuario)session.getAttribute("user");
-
+		entityManager.persist(u);
+		entityManager.flush();
 
 		if(id == u.getID() || u.getRol().equals("admin")){
 			cambio = comprobarCampos(edit, nombreUsuario, pass, email, telefono);
@@ -933,8 +923,6 @@ public class HomeController {
 				edit.setEmail(email);
 			if((andLogica(6, cambio, 1000001000) == true) && (andLogica(1, cambio, 1100001000) == false))
 				edit.setTelefono(telefono);
-			/*if(andLogica(5, cambio, 1000010000))
-				edit.setFoto(photo.getOriginalFilename());*/
 		}
 
 		res = Integer.toString(cambio);
@@ -951,9 +939,11 @@ public class HomeController {
 
 		
 		Usuario u = (Usuario)session.getAttribute("user");
-		Usuario edit= entityManager.find(Usuario.class, u.getID());
-
-		if(!photo.isEmpty() && id == edit.getID()){
+	
+		if(!photo.isEmpty() && u != null){
+			Usuario edit= entityManager.find(Usuario.class, u.getID());
+			entityManager.persist(edit);
+			entityManager.flush();
 			if (!photo.isEmpty()) {
 				try {
 					byte[] bytes = photo.getBytes();
@@ -1111,6 +1101,7 @@ public class HomeController {
 				return "eliminarUsuario";
 			}
 		}
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";	
 	}
 
@@ -1138,7 +1129,8 @@ public class HomeController {
 				entityManager.persist(usuario);
 				return "eliminarComentario";
 			}
-		}				
+		}		
+		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}
 	
