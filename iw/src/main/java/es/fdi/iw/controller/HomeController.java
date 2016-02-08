@@ -1176,19 +1176,19 @@ public class HomeController {
 		return new ResponseEntity<String>(res, HttpStatus.OK);
 
 	}
-
+	
 	@Transactional
-	@RequestMapping(value = "/addNuevoTag", method = RequestMethod.POST)
-	public String addNuevoTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String addName, Model model){
-		Local local= entityManager.find(Local.class, idLocal);
-		//FALTA ENVIAR ERRORES
-		//String nuevo= local.getTags();
-		//nuevo+=","+addName;			
-		//local.setTags(nuevo); //esto ahora es diferente
-		entityManager.persist(local);	
-		return "AddNuevoTag";
+	@RequestMapping(value = "/nuevoTag", method = RequestMethod.POST)
+	public String nuevoTag(@RequestParam("nameAddTag") String nombreNewTag,
+			Model model){	
+		
+		Tags nuevo = new Tags();
+		nuevo.setTexto(nombreNewTag);			
+		entityManager.persist(nuevo);
+				
+		return "redirect:administracion";
 	}
-
+	
 	@Transactional
 	@RequestMapping(value = "/editarTag", method = RequestMethod.POST)
 	public String editarTag(@RequestParam("id_tag") long id,
@@ -1202,21 +1202,6 @@ public class HomeController {
 		return "redirect:administracion";
 	}
 
-	@Transactional
-	@RequestMapping(value = "/eliminarTag", method = RequestMethod.POST)
-	public String eliminarTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String delName, Model model){
-		Local local= entityManager.find(Local.class, idLocal);
-		//local.getTags().replaceAll(delName, "");
-		//principio de una coma(mirar bbdd)
-		//String ret = local.getTags().replaceAll(delName+",", "");
-		//siguiente de una coma(mirar bbdd)
-		//ret = ret.replaceAll(","+delName, "");
-		//cuando solamente tienes un elem, ponemos una coma porque en comercio interno invocamos a dameTagsSeparador(split)
-		//ret = ret.replaceAll(delName, ","); 
-		//local.setTags(ret); // esto ahora es diferente
-		entityManager.persist(local);	
-		return "eliminarTag";
-	}
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model,HttpSession session) {
