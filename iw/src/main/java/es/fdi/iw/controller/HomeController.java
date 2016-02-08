@@ -1201,7 +1201,27 @@ public class HomeController {
 		entityManager.flush();			
 		return "redirect:administracion";
 	}
+	
+	@RequestMapping(value = "/moderador", method = RequestMethod.GET)
+	@Transactional
+	public String moderador(Locale locale, Model model,HttpSession session) {
+		model.addAttribute("active", "moderador");
+		model.addAttribute("pageTitle", "Moderacion");
 
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			if(usuario.getRol().equals("mod")){	
+				model.addAttribute("moderador", entityManager.createNamedQuery("roleUser").setParameter("role", "mod").getSingleResult());
+				model.addAttribute("usuarios", entityManager.createNamedQuery("allUsersExceptAdminOrMod").getResultList());				
+				model.addAttribute("comentarios", entityManager.createNamedQuery("allComments").getResultList());					
+				return "moderador";
+			}	
+		}
+		model.addAttribute("pageTitle", "Error!");
+		return "paginaError";
+	}	
+	
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model,HttpSession session) {

@@ -6,11 +6,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity	
-@NamedQuery(name="localesConMasComentarios", 
-		    query="select count(o.texto) from Comentario o group by o.local order by count(o.texto) desc")
+@NamedQueries({
+	@NamedQuery(name="localesConMasComentarios", 
+			    query="select count(o.texto) from Comentario o group by o.local order by count(o.texto) desc"),
+	@NamedQuery(name="allComments", 
+				query="select o from Comentario o")
+})
 
 public class Comentario {
 

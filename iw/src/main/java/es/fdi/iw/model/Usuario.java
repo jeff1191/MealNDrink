@@ -18,10 +18,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 			query="SELECT usu FROM Usuario usu WHERE usu.nombre = :nombre"),
 	@NamedQuery(name="allUsersExceptAdmin", 
 			query="select o from Usuario o where rol not like '%admin%' "),
-@NamedQuery(name="dameApodoUsuario", 
-			query="SELECT u.nombre FROM Usuario u where u.nombre = :apodo"),	
-@NamedQuery(name="allUsers", 
-			query="select o from Usuario o"),
+	@NamedQuery(name="allUsersExceptAdminOrMod", 
+			query="select o from Usuario o where rol not like '%admin%' AND rol not like '%mod%' "),
+	@NamedQuery(name="dameApodoUsuario", 
+				query="SELECT u.nombre FROM Usuario u where u.nombre = :apodo"),	
+	@NamedQuery(name="allUsers", 
+				query="select o from Usuario o"),
 	@NamedQuery(name="roleUser", 
 			query="select o from Usuario o where rol in (:role)")
 })

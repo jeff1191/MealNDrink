@@ -8,7 +8,7 @@ INSERT INTO USUARIO VALUES (6, 'user12@fake.com',  '$2a$10$iaoa.4QjDDGiZARLwcNhq
 INSERT INTO USUARIO VALUES (7, 'user1234@fake.com', '$2a$10$R77A6Kx.EPWUOiV4YO6DAucKlEgAm/ZZ9MTGINW/HLCHsxRPEfsHG', 'Mengano', 'user', '663256781') /*men123*/
 INSERT INTO USUARIO VALUES (8, 'bach1243@chachi.com', '$2a$10$oIfHz5GRXI6uJ2yYElGiUuImn1I/rSYniiGj1BPDIalWeC9Fro9ku', 'Rosita', 'user', '655213078') /*pecas34*/
 INSERT INTO USUARIO VALUES (9, 'dormirlonSensual@snoopy.com', '$2a$10$oPtEHhBxHLTYxZD5sgyBP.AvZs7Zv5qr2AeoqEYZBBtFASx4igdx2', 'Pablito', 'user', '676439012') /*pa1234*/
-INSERT INTO USUARIO VALUES (10, 'callMeMaybe@tux.com',  '$2a$10$4jlxSkFm/fl2tryEbCAxiuYBEeLTV/dryHzf5XzJnJBVdFl4HURYS', 'Eloisa', 'user', '663214658') /*isaelo96*/
+INSERT INTO USUARIO VALUES (10, 'callMeMaybe@tux.com',  '$2a$10$4jlxSkFm/fl2tryEbCAxiuYBEeLTV/dryHzf5XzJnJBVdFl4HURYS', 'Eloisa', 'mod', '663214658') /*isaelo96*/
 
 --( "ID", "DIRECCION", "EMAIL", "FOTO", "HORARIO", "NOMBRE", "PUNTUACION", "TELEFONO", "UBICACION", "USUARIO" ) 
 INSERT INTO LOCAL VALUES (1, 'Calle concha espina n10','elmaildeDani@dan.da', '10-23', 'Bistro', 5, '111111111',3) --'comida_mexicana,comida_india',
