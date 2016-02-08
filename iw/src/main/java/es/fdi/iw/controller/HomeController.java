@@ -790,17 +790,16 @@ public class HomeController {
 			@RequestParam("editDirLocal") String direccion,
 			@RequestParam("editEmailLocal") String email,
 			@RequestParam("editTelLocal") String telefono,
-			@RequestParam("redireccion")String pagina, 
 			Model model, HttpSession session){
-		//Hay que revisar que el local pertenece a un usuario
-
+		System.err.println("EDITAUSER");
 		Usuario uSession = (Usuario)session.getAttribute("user");
-		Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
-
-		if(usuario != null){ //si está en bbdd
+		if(uSession != null){ //si está en bbdd
+			Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
 			boolean seguro = palabraSeguro(nombreLocal) && horarioSeguro(horario) && direccionSeguro(direccion) && emailSeguro(email) && telefonoSeguro(telefono);
 			if (seguro) {
 				Local edit= entityManager.find(Local.class, id);
+				//si el usuario tiene ese local o si el usuario es el admin
+			if(usuario.getLocales().contains(edit) || usuario.getRol().equals("admin")){	
 				edit.setNombre(nombreLocal);
 				edit.setHorario(horario);
 				edit.setDireccion(direccion);
@@ -821,14 +820,11 @@ public class HomeController {
 						e.getMessage();
 					}
 				}					
-				if(pagina.equalsIgnoreCase("comercio_interno"))
-					return "redirect:comercio_interno?id="+id;
-				else
-					return "redirect:administracion";
+				return "OK";
+			}
 			}
 		}
-		model.addAttribute("pageTitle", "Error!");
-		return "paginaError";	
+		return "Error";	
 	}
 	@Transactional
 	@RequestMapping(value = "/nuevoUsuario", method = RequestMethod.POST)
@@ -896,74 +892,98 @@ public class HomeController {
 		}
 	}
 
+	
 	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
-	public ResponseEntity<String> editarUsuario(@RequestParam("editId_usuario") long id, @RequestParam("editNameUser") String nombreUsuario,@RequestParam("editPwd") String pass
-			, @RequestParam("editEmail") String email,@RequestParam("editTel") String telefono,@RequestParam("editRedireccion")String pagina, 
-			Model model, HttpSession session){
-
-
-		int cambio = -1;
-		String res;
-
-		Usuario edit= entityManager.find(Usuario.class, id);
-		Usuario u = (Usuario)session.getAttribute("user");
-		entityManager.persist(u);
-		entityManager.flush();
-
-		if(id == u.getID() || u.getRol().equals("admin")){
-			cambio = comprobarCampos(edit, nombreUsuario, pass, email, telefono);
-
-			if((andLogica(9, cambio, 1000000001) == true) && (andLogica(4, cambio, 1000100001) == false)) //1ercampo si se ha cambiado el valor- 2do and es si el valor es erroneo 
-				edit.setNombre(nombreUsuario);
-			if((andLogica(8, cambio, 1000000010) == true) && (andLogica(3, cambio, 1001000010) == false))
-				edit.setHashedAndSalted(edit.generateHashedAndSalted(pass));
-			if((andLogica(7, cambio, 1000000100) == true) && (andLogica(2, cambio, 1010000100) == false))
-				edit.setEmail(email);
-			if((andLogica(6, cambio, 1000001000) == true) && (andLogica(1, cambio, 1100001000) == false))
-				edit.setTelefono(telefono);
-		}
-
-		res = Integer.toString(cambio);
-
-		return new ResponseEntity<String>(res, HttpStatus.OK);
-
-
-	}
-
-	@Transactional
-	@ResponseBody
-	@RequestMapping(value = "/editarUsuarioFoto", method = RequestMethod.POST)
-	public ResponseEntity<String> editarUsuario(@RequestParam("editFileToUpload") MultipartFile photo, @RequestParam("editId_usuario") long id, Model model, HttpSession session){
-
-		
-		Usuario u = (Usuario)session.getAttribute("user");
-	
-		if(!photo.isEmpty() && u != null){
-			Usuario edit= entityManager.find(Usuario.class, u.getID());
+	public String editarUsuario(@RequestParam("editFileToUpload") MultipartFile photo,
+    		@RequestParam("editNameUser") String nombreUsuario,
+    		@RequestParam("editPwd") String pass,
+    		@RequestParam("editEmail") String email,
+    		@RequestParam("editTel") String telefono,
+    		Model model, HttpSession session){
+		Usuario uSession = (Usuario)session.getAttribute("user");
+		boolean seguro = palabraSeguro(nombreUsuario) &&  emailSeguro(email) && telefonoSeguro(telefono);
+		if(uSession != null && seguro){
+		Usuario edit=entityManager.find(Usuario.class, uSession.getID());
+		if(edit != null){
+			if(!pass.equalsIgnoreCase("") && pass.length() > 5){ //si ha cambiado
+				edit.setHashedAndSalted(pass);
+			}
+			edit.setNombre(nombreUsuario);
+			edit.setEmail(email);
+			edit.setTelefono(telefono);
 			entityManager.persist(edit);
 			entityManager.flush();
-			if (!photo.isEmpty()) {
+			if(!photo.isEmpty()){						
 				try {
 					byte[] bytes = photo.getBytes();
 					BufferedOutputStream stream =
 							new BufferedOutputStream(
-									new FileOutputStream(ContextInitializer.getFile("usuarios", Long.toString(u.getID()) + ".jpg")));
+									new FileOutputStream(ContextInitializer.getFile("usuarios", ""+edit.getID()+".jpg")));
 					stream.write(bytes);
-					stream.close();
+					stream.close();        		     		
 
 				} catch (Exception e) {
-					return new ResponseEntity<String>("Fotografía no adjuntada al usuario satisfactoriamente", HttpStatus.NOT_MODIFIED);	
+					e.getMessage();
 				}
-			}
+			}	
+			return "OK";
 		}
-
-		return new ResponseEntity<String>("Fotografía adjuntada al usuario satisfactoriamente", HttpStatus.OK);
-
-
+		
+		}
+		return "Error";
 	}
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value = "/editarUsuarioModal", method = RequestMethod.POST)
+	public String editarUsuarioModal(@RequestParam("editFileToUpload") MultipartFile photo,
+			@RequestParam("editIdUser") long idUsuario,
+			@RequestParam("editNameUser") String nombreUsuario,
+    		@RequestParam("editPwd") String pass,
+    		@RequestParam("editEmail") String email,
+    		@RequestParam("editTel") String telefono,
+    		Model model, HttpSession session){
+		Usuario uSession = (Usuario)session.getAttribute("user");
+		boolean seguro = palabraSeguro(nombreUsuario) &&  emailSeguro(email) && telefonoSeguro(telefono);
+		if(uSession != null && seguro){
+		Usuario admin=entityManager.find(Usuario.class, uSession.getID());
+		Usuario edit=entityManager.find(Usuario.class, idUsuario);
+		if(admin.getRol().equals("admin") && edit != null){
+			
+			if(!pass.equalsIgnoreCase("") && pass.length() > 5){ //si ha cambiado
+				edit.setHashedAndSalted(pass);
+			}
+			String apodoBd ="";
+		try{	
+			apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombreUsuario).getSingleResult();
+		} catch (NoResultException nre) {
 
+			edit.setNombre(nombreUsuario);
+			edit.setEmail(email);
+			edit.setTelefono(telefono);
+			entityManager.persist(edit);
+			entityManager.flush();
+			if(!photo.isEmpty()){						
+				try {
+					byte[] bytes = photo.getBytes();
+					BufferedOutputStream stream =
+							new BufferedOutputStream(
+									new FileOutputStream(ContextInitializer.getFile("usuarios", ""+edit.getID()+".jpg")));
+					stream.write(bytes);
+					stream.close();        		     		
+
+				} catch (Exception e) {
+					e.getMessage();
+				}
+			}	
+			return "OK";
+		}
+		}
+		
+		}
+		return "Error";
+	}
 	private boolean andLogica(int pos, int num1, int num2){
 		boolean res = true;
 		String op;
@@ -1312,7 +1332,18 @@ public class HomeController {
 		}
 		return "ofertasMes";
 	}	
+	@RequestMapping(value = "/paginaError", method = RequestMethod.GET)
+	@Transactional
+	public String paginaError(Locale locale, Model model, HttpSession session) {	
+		model.addAttribute("pageTitle", "Error!");	
 
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+		}
+		return "paginaError";
+	}	
 
 
 	/**

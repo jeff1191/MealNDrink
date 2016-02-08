@@ -132,8 +132,6 @@ $(function() {
         e.preventDefault();
         var f = $(this);
         var formData = new FormData(document.getElementById("formuEditComercio"));
-      //  formData.append("dato", "valor");
-        //formData.append(f.attr("name"), $(this)[0].files[0]);
         $.ajax({
         	url : "${prefix}editarLocal",
             type: "post",
@@ -144,9 +142,14 @@ $(function() {
      processData: false
         })
             .done(function(res){
-          		var id_local=$('#id_local').get(0).value;
-          		$('#camposPrincipal').load('comercio_interno?id='+id_local+' div#camposPrincipal');
-          		$("#imagenLocal").removeAttr("src").attr("src", +"/"+id_local+".jpg");
+            	if(res==="Error")
+            		alert("Campos erróneos, revisa el formulario");
+            	else{
+		          		var id_local=$('#id_local').get(0).value;
+		          		$('#camposPrincipal').load('comercio_interno?id='+id_local+' div#camposPrincipal');
+		          		$('#camposPrincipal1').load('comercio_interno?id='+id_local+' div#camposPrincipal1');
+		          		$("#imagenLocal").removeAttr("src").attr("src", +"/"+id_local+".jpg");
+	            	}
             });
     });
 	$('.qrcode').each(function(i, o) {
@@ -179,7 +182,9 @@ $(function() {
          <section id="feature" class="transparent-bg">
             <div class="container">
                 <div class="center">
+                <div id="camposPrincipal1" name="camposPrincipal1">
                     <h2>${local.nombre}</h2>
+                </div>
                 </div>
                 <div class="row">
                     <div class="features">
@@ -482,7 +487,6 @@ $(function() {
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
 									<form role="form" method="POST" id="formuEditComercio" enctype="multipart/form-data">
 									<input hidden="submit" id="id_editLocal" name="id_editLocal" value="${local.ID}" />
-									<input hidden="submit" id="redireccion" name="redireccion" value="comercio_interno" />
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
 											<input type="text" class="form-control" id="editNameLocal" required="required" name="editNameLocal" value="${local.nombre}">

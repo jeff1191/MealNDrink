@@ -50,10 +50,11 @@ function rellenaDatosEditarModalLocal(){
 function rellenaDatosEditarModalUsuario(){
 	var idUsuario = $(this).attr("id").substring("edit_".length);
 	var res = idUsuario.split("/,");
+	//$('#ModalEditUser').modal('hide');
 	$("#editNameUser").attr("value" ,res[0]);
 	$("#editEmail").attr("value" ,res[1]);
 	$("#editTel").attr("value" ,res[2]);
-	$("#editId_usuario").attr("value" ,res[3]);
+	$("#editIdUser").attr("value" ,res[3]);
 }
 function activaBotonRellenaTag() {
 	var nombreTagEdit = $(this).attr("id").substring("editTags_".length); 
@@ -85,79 +86,97 @@ $(function() {
 	$("body").on("click", ".editaTag", null, activaBotonEditTag);
 	$("body").on("click", ".rellenarEditarLocal", null, rellenaDatosEditarModalLocal);
 	$("body").on("click", ".rellenarEditarUsuario", null, rellenaDatosEditarModalUsuario);
-	$("#editarUsuario").click(function() {
-
-    	var idUsuario = $("#editId_usuario").val();
-    	var redireccion = $("#editRedireccion").val();
-    	
-    	var nombr = $("#editNameUser").val();
-    	var contr = $("#editPwd").val();
-    	var e_mail = $("#editEmail").val();
-    	var telef = $("#editTel").val();
-    	var foto = $("#editfileToUpload").val();
+	
+	$("#formuEditUsuario").on("submit", function(e){
+//	$("body").on( "submit", "#formuEditUsuario", null, function(){
+        e.preventDefault();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("formuEditUsuario"));
+        $.ajax({
+        	url : "${prefix}editarUsuario",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+     		processData: false
+        })
+            .done(function(res){
+            	if(res==="Error")
+            		alert("Campos erróneos, revisa el formulario");
+            	else{
+            		//$(location).attr('href','administracion');
+            		var id_admin=$('#id_admin').get(0).value;
+	          		$("#imagenAdmin").removeAttr("src").attr("src", +"/"+id_admin+".jpg");
+	          		$('#camposPrincipal').load('administracion div#camposPrincipal');	          		
+            	}
+            });
+    });
+	
+	
+	$("#formEditarModalUser").on("submit", function(e){
+        e.preventDefault();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("formEditarModalUser"));
+        $.ajax({
+        	url : "${prefix}editarUsuarioModal",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+     processData: false
+        })
+            .done(function(res){
+            	if(res==="Error")
+            		alert("Campos erróneos, revisa el formulario");
+            	else
+        		if(res === "errorNick")
+        			alert("Nick ocupado, elija otro");
+            	else{
+            		//$(location).attr('href','administracion');
+            		$('#ModalEditUser').modal('hide');
+            		$('#TodosUsuarios').load('administracion div#TodosUsuarios');
+            		$("#formEditarModalUser").trigger("reset");            		
+            		var idUserImagen=$("#editIdUser").val();
+            		$('#imagenUser'+idUserImagen).removeAttr("src").attr("src", +"/"+idUserImagen+".jpg");
     		
-    	$.ajax({
-    		url : "${prefix}editarUsuario",
-    		type : "POST",
-    		data : {
-    			editId_usuario : idUsuario,
-    			editNameUser : nombr,
-    			editPwd : contr,
-    			editEmail : e_mail,
-    			editTel : telef,
-    			editRedireccion : redireccion
-    		},
-    		error : function() {
-    			alert("Ups :(");
-    		},
-    		success : function(data) {
-    			
-    			alert(resultadoEditar(data));
-    			$("#formEditarFoto").submit();
-    			
-    			location.href = "${prefix}/mealndrink/administracion";
-    			
-
-    		}
-    	})
-    })
-    
-    $("#editarUsuarioAdmin").click(function() {
-
-    	var idUsuario = $("#editId_usuarioAdmin").val();
-    	var redireccion = $("#editRedireccionAdmin").val();
-    	
-    	var nombr = $("#editNameUserAdmin").val();
-    	var contr = $("#editPwdAdmin").val();
-    	var e_mail = $("#editEmailAdmin").val();
-    	var telef = $("#editTelAdmin").val();
-    	var foto = $("#editfileToUploadAdmin").val();
+            	}
+            });
+    });
+	
+	
+	$("#formEditarModalLocal").on("submit", function(e){
+        e.preventDefault();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("formEditarModalLocal"));
+        $.ajax({
+        	url : "${prefix}editarLocal",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+     processData: false
+        })
+            .done(function(res){
+            	if(res==="Error")
+            		alert("Campos erróneos, revisa el formulario");
+            	else
+        		if(res === "errorNick")
+        			alert("Nick ocupado, elija otro");
+            	else{
+            		
+            		//$(location).attr('href','administracion');
+            		$('#ModalEditLocal').modal('hide');
+            		$('#TodosLocales').load('administracion div#TodosLocales');
+            		$("#formEditarModalLocal").trigger("reset");            		
+            		var idLocalImagen=$("#id_editLocal").val();         	
+            		$('#imagenLocal'+idLocalImagen).removeAttr("src").attr("src", +"/"+idLocalImagen+".jpg");
     		
-    	$.ajax({
-    		url : "${prefix}editarUsuario",
-    		type : "POST",
-    		data : {
-    			editId_usuario : idUsuario,
-    			editNameUser : nombr,
-    			editPwd : contr,
-    			editEmail : e_mail,
-    			editTel : telef,
-    			editRedireccion : redireccion
-    		},
-    		error : function() {
-    			alert("Ups :(");
-    		},
-    		success : function(data) {
-    			
-    			alert(resultadoEditar(data));
-    			$("#formEditarFotoAdmin").submit();
-    			
-    			location.href = "${prefix}/mealndrink/administracion";
-    			
-
-    		}
-    	})
-    })
+            	}
+            });
+    });
 })
 
 function resultadoEditar(codigo){
@@ -266,13 +285,15 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
             <div class="row">
                 <div class="features">
                     <div class="col-md-5 col-sm-5">
+                    <div id="camposPrincipal" >
 						<input hidden="submit" id="id_admin" value="${admin.ID}" />
-						<img src="usuariosFoto?id=${admin.ID}.jpg" height="175" width="250">  
+						<img id="imagenAdmin" src="usuariosFoto?id=${admin.ID}.jpg" height="175" width="250">  
 						<h3><b>Bienvenido Administrador ${admin.nombre}</b></h3>
 						<p>Esta es una página de administración. </br> Aqui podrá hacer todas las gestiones </br> de usuarios y locales, además de editar </br> sus datos personales</p><br/>
 						<h3><b>Mis datos</b></h3>
 						<p>Telefono: ${admin.telefono}</p>
 						<p>Email: ${admin.email}</p>
+					</div>
                     </div><!--/.col-md-4-->
 
                     <div class="col-md-7 col-sm-7">
@@ -295,7 +316,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 								<div class="media">
 									<div class="pull-left">
 										<div id="imagenMedia" class="imagenMedia">
-											<img class="media-object" src="usuariosFoto?id=${i.ID}.jpg"> 
+											<img id="imagenUser${i.ID}"class="media-object" src="usuariosFoto?id=${i.ID}.jpg"> 
 										</div>
 									</div>
 									<div class="media-body">
@@ -372,8 +393,8 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						        <h4 class="modal-title" id="myModalLabel"> Añadir un nuevo usuario</h4>
 						      </div>
 						      <div class="modal-body">
-								<input hidden="submit" name="editRedireccion" id="editRedireccion" value="administracion" />
-								<input hidden="submit" name="editId_usuario" id="editId_usuario" />
+								  <form id="formEditarModalUser" role="form" method="POST" enctype="multipart/form-data" > 
+								 <input hidden="submit" name="editIdUser" id="editIdUser" />
 								  <div class="form-group">
 											<label for="name">Nombre:</label>
 											<input type="text" class="form-control" name="editNameUser" id="editNameUser">
@@ -392,17 +413,18 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 											<input type="tel" class="form-control" name="editTel" id="editTel">
 											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
-										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">  
+										 
 											<div class="form-group">
 												<input hidden="submit" name="editId_usuario" id="editId_usuario">
 												<label for="file">Imagen de perfil:</label>
 												<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
 											</div>
-										</form>
+										
 								  <div class="modal-footer">						      	 
-									  <button id="editarUsuario" name="editarUsuario" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+									  <button id="editarUsuario" name="editarUsuario"  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
 									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
-							      </div>									  						  								
+							      </div>
+							      </form>									  						  								
 						      </div>
 
 						    </div>
@@ -420,7 +442,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 							<div class="media">
 								<div class="pull-left">
 									<div id="imagenMedia" class="imagenMedia">
-										<img src="localesFoto?id=${i.ID}.jpg"> 
+										<img id="imagenLocal${i.ID}" class="media-object" src="localesFoto?id=${i.ID}.jpg"> 
 									</div>
 								</div>
 								<div class="media-body">
@@ -505,39 +527,38 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						        <h4 class="modal-title" id="myModalLabel"> Editar local</h4>
 						      </div>
 						      <div class="modal-body">
-								<form role="form" method="POST" enctype="multipart/form-data" action="editarLocal">
-								<input hidden="submit" id="redireccion" name="redireccion" value="administracion" />
-								<input hidden="submit" id="id_editLocal" name="id_editLocal" />
-								  <div class="form-group">
-									<label for="name">Nombre:</label>
-									<input type="text" class="form-control" required="required" id="editNameLocal" name="editNameLocal" placeholder="Introduce un nuevo nombre">
-								  </div>
-								  <div class="form-group">
-									<label for="timeBusiness">Horario:</label>
-									<input type="text" class="form-control" required="required" id="editHorarioLocal" name="editHorarioLocal" placeholder="Introduce un nuevo horario">
-								 	<span class="help-block">Por ejemplo: 10-18</span>
-								  </div>
-								  <div class="form-group">
-									<label for="dir">Dirección:</label>
-									<input type="text" class="form-control" required="required" id="editDirLocal" name="editDirLocal" placeholder="Introduce una nueva direccion">
-								  </div>
-								  <div class="form-group">
-									<label for="email">Email:</label>
-									<input type="email" class="form-control" required="required" id="editEmailLocal" name="editEmailLocal" placeholder="Introduce un nuevo email">
-								  </div>
-								  <div class="form-group">
-									<label for="tel">Teléfono:</label>
-									<input type="tel" class="form-control" required="required" id="editTelLocal" name="editTelLocal" placeholder="Introduce un nuevo telefono">
-								  	<span class="help-block">Por ejemplo: 651651651</span>
-								  </div>
-								  <div class="form-group">
-									<label for="file">Imagen de perfil:</label>
-									<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
-								  </div>
-								  <div class="modal-footer">						      	 
-									  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
-									  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
-							      </div>	
+								<form role="form" method="POST" id="formEditarModalLocal" enctype="multipart/form-data">
+									<input hidden="submit" id="id_editLocal" name="id_editLocal" />
+									  <div class="form-group">
+										<label for="name">Nombre:</label>
+										<input type="text" class="form-control" required="required" id="editNameLocal" name="editNameLocal" placeholder="Introduce un nuevo nombre">
+									  </div>
+									  <div class="form-group">
+										<label for="timeBusiness">Horario:</label>
+										<input type="text" class="form-control" required="required" id="editHorarioLocal" name="editHorarioLocal" placeholder="Introduce un nuevo horario">
+									 	<span class="help-block">Por ejemplo: 10-18</span>
+									  </div>
+									  <div class="form-group">
+										<label for="dir">Dirección:</label>
+										<input type="text" class="form-control" required="required" id="editDirLocal" name="editDirLocal" placeholder="Introduce una nueva direccion">
+									  </div>
+									  <div class="form-group">
+										<label for="email">Email:</label>
+										<input type="email" class="form-control" required="required" id="editEmailLocal" name="editEmailLocal" placeholder="Introduce un nuevo email">
+									  </div>
+									  <div class="form-group">
+										<label for="tel">Teléfono:</label>
+										<input type="tel" class="form-control" required="required" id="editTelLocal" name="editTelLocal" placeholder="Introduce un nuevo telefono">
+									  	<span class="help-block">Por ejemplo: 651651651</span>
+									  </div>
+									  <div class="form-group">
+										<label for="file">Imagen de perfil:</label>
+										<input type="file" name="fileToUpload" accept="image/*" id="fileToUpload">											
+									  </div>
+									  <div class="modal-footer">						      	 
+										  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Enviar</button>
+										  <button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+								      </div>	
 							      </form>											
 						      </div>
 							      
@@ -560,35 +581,32 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 					</div>
         			<!--  end tags -->		 
 					  <div class="tab-pane fade" id="editarDatos">
-						<input hidden="submit" name="editRedireccionAdmin" id="editRedireccionAdmin" value="administracion" />
-						<input hidden="submit" name="editId_usuarioAdmin" id="editId_usuarioAdmin" value="${admin.ID}" />
-								  <div class="form-group">
+									<form role="form" method="POST" id="formuEditUsuario" enctype="multipart/form-data">
+										<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${admin.ID}" />
+										<div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" name="editNameUserAdmin" id="editNameUserAdmin" value="${admin.nombre}">
+											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${admin.nombre }">
 										</div>
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
-											<input type="password" class="form-control" name="editPwdAdmin" id="editPwdAdmin" value="">
+											<input type="password" class="form-control" name="editPwd" id="editPwd"  value="">
 										</div>
 										<div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" name="editEmailAdmin" id="editEmailAdmin" value="${admin.email}">
+											<input type="email" class="form-control" name="editEmail" id="editEmail" value="${admin.email }">
 										</div>
 										<div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" name="editTelAdmin" id="editTelAdmin" value="${admin.telefono}">
+											<input type="tel" class="form-control" name="editTel" id="editTel" value="${admin.telefono }">
 											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
-										<form id="formEditarFotoAdmin" name="formEditarFotoAdmin" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">  
-											<div class="form-group">
-												<input hidden="submit" name="editId_usuarioAdmin" id="editId_usuarioAdmin">
-												<label for="file">Imagen de perfil:</label>
-												<input type="file" name="editFileToUploadAdmin" accept="image/*" id="editFileToUploadAdmin">											
-											</div>
-										</form>										  
-						  <br></br>
-						  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-						  <button id="editarUsuarioAdmin" name="editarUsuarioAdmin" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+										<div class="form-group">
+											<label for="file">Imagen de perfil:</label>
+											<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
+										</div>																				  
+										<br>
+										 <button id="editarUsuario" name="editarUsuario" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
+										</form> 
 					  </div>
 					  <!-- Modal Edit Tags-->
 						<div class="modal fade" id="ModalEditTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
