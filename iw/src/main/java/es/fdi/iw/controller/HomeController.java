@@ -791,7 +791,6 @@ public class HomeController {
 			@RequestParam("editEmailLocal") String email,
 			@RequestParam("editTelLocal") String telefono,
 			Model model, HttpSession session){
-		System.err.println("EDITAUSER");
 		Usuario uSession = (Usuario)session.getAttribute("user");
 		if(uSession != null){ //si está en bbdd
 			Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
