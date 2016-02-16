@@ -39,43 +39,31 @@ $(function() {
         })
     });
    
-    
-    $("#editarUsuario").click(function() {
+	$("#formuEditUsuario").on("submit", function(e){
+        e.preventDefault();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("formuEditUsuario"));
+        $.ajax({
+        	url : "${prefix}editarUsuario",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+     processData: false
+        })
+            .done(function(res){
+            	if(res==="Error")
+            		alert("Campos erróneos, revisa el formulario");
+            	else{
+            		idUsuario=$('#id_usuario').get(0).value;
+	          		$('#camposPrincipal').load('usuario?id='+idUsuario+' div#camposPrincipal');
+	          		$('#camposPrincipal1').load('usuario?id='+idUsuario+' div#camposPrincipal1');
+	          		$("#imagenUsuario").removeAttr("src").attr("src", +"/"+idUsuario+".jpg");
+            	}
+            });
+    });
 
-    	var idUsuario = $("#editId_usuario").val();
-    	var redireccion = $("#editRedireccion").val();
-    	
-    	var nombr = $("#editNameUser").val();
-    	var contr = $("#editPwd").val();
-    	var e_mail = $("#editEmail").val();
-    	var telef = $("#editTel").val();
-    	var foto = $("#editfileToUpload").val();
-    		
-    	$.ajax({
-    		url : "${prefix}editarUsuario",
-    		type : "POST",
-    		data : {
-    			editId_usuario : idUsuario,
-    			editNameUser : nombr,
-    			editPwd : contr,
-    			editEmail : e_mail,
-    			editTel : telef,
-    			editRedireccion : redireccion
-    		},
-    		error : function() {
-    			alert("Ups :(");
-    		},
-    		success : function(data) {
-    			
-    			alert(resultadoEditar(data));
-    			$("#formEditarFoto").submit();
-    			
-    			location.href = "${prefix}/mealndrink/usuario?id=${usuario.ID}";
-    			
-
-    		}
-    	})
-    })
 })
 
 function resultadoEditar(codigo){
@@ -153,18 +141,22 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 <section id="feature" class="transparent-bg">
             <div class="container">
                 <div class="center">
+                <div id="camposPrincipal1">
                      <h2>${usuario.nombre}</h2>
+                </div>
                 </div>
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
+                        <div id="camposPrincipal">
                         	<div class="imagenMediaPerfil">
-                           		 <img src="usuariosFoto?id=${usuario.ID}.jpg">  
+                           		 <img id="imagenUsuario" src="usuariosFoto?id=${usuario.ID}.jpg">  
                             </div>                            
 							<input hidden="submit" id="id_usuario" value="${usuario.ID}" /> 
 							<h3><b>Mis datos</b></h3>
 							<p>Mi email: ${usuario.email}</p>
-							<p>Mi telefono: ${usuario.telefono}</p>											
+							<p>Mi telefono: ${usuario.telefono}</p>	
+						</div>										
 						</div>
                     </div><!--/.col-md-4-->
 
@@ -366,9 +358,8 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 								</div>
 								
 								<div class="tab-pane fade" id="editar">
-									
+									<form role="form" method="POST" id="formuEditUsuario" enctype="multipart/form-data">
 										<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${usuario.ID}" />
-										<input hidden="submit" name="editRedireccion" id="editRedireccion" value="usuario" />
 										<div class="form-group">
 											<label for="name">Nombre:</label>
 											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${usuario.nombre }">
@@ -386,19 +377,13 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 											<input type="tel" class="form-control" name="editTel" id="editTel" value="${usuario.telefono }">
 											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
-										  
-										  
-										<form id="formEditarFoto" name="formEditarFoto" role="form" method="POST" enctype="multipart/form-data" action="editarUsuarioFoto">
-											  
-											<div class="form-group">
-												<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${usuario.ID}">
-												<label for="file">Imagen de perfil:</label>
-												<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
-											</div>
-										</form>  										  
+										<div class="form-group">
+											<label for="file">Imagen de perfil:</label>
+											<input type="file" name="editFileToUpload" accept="image/*" id="editFileToUpload">											
+										</div>																				  
 										<br>
 										 <button id="editarUsuario" name="editarUsuario" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
-																				
+										</form>  										
 																	
 								</div>
 							</div><!--tab content-->
