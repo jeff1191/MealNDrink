@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -348,6 +349,22 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}	
+	
+	String getCadenaAlfanumAleatoria(int longuitud){
+		String cadenaAleatoria ="";
+		long milis = new java.util.GregorianCalendar().getTimeInMillis();
+		Random r = new Random(milis);
+		int i = 0;
+		while(i < longuitud){
+			char c = (char)r.nextInt(255);
+			if((c >= '0' && c <= '9') || (c >= 'A') && c <= 'Z'){
+				cadenaAleatoria +=c;
+				i++;
+			}
+		}
+		return cadenaAleatoria;
+	}
+	
 	/**
 	 * 	Nueva Reserva, cosas al hacer una reserva:
 	 * 		- Generar codigo qr
@@ -388,9 +405,12 @@ public class HomeController {
 			String qrInfo = "Este codigo QR es valido para que " + cap + " personas disfruten de la oferta " 
 					+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
 					+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
+			String cadena = getCadenaAlfanumAleatoria(5);
 			//Crear un objeto reserva
 			Reserva reserva = new Reserva();
-			reserva.setCodigoQr(qrInfo);			
+			reserva.setCodigoQr("mealndrink/validarReserva#"+cadena); 
+			reserva.setCode(cadena);
+			reserva.setTexto(qrInfo);
 			reserva.setUsuario(user);
 			reserva.setOferta(oferta);
 			reserva.setNumPersonas(cap);
@@ -1160,27 +1180,37 @@ public class HomeController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/validarReserva", method = RequestMethod.POST)
-	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") String idRes, Model model, HttpSession session){
+	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") long idRes, Model model, HttpSession session){
 		
 		Usuario sesion = (Usuario)session.getAttribute("user");
-		String res = new String("ok");
-		long idResBueno;
-		String test;
+		String res = "";		
 		
 		try {
-			test = idRes;
-			logger.info(test);
-			test = idRes.substring(5);
-			logger.info(test);
+		
+			Reserva edit= entityManager.find(Reserva.class, idRes);					
 			
-			idResBueno = Long.parseLong(test);
-			
-			Reserva edit= entityManager.find(Reserva.class, idResBueno);
-			
-			if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueÃ±o del local
-
-				edit.setValidado(true);
-				entityManager.persist(edit);
+			if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueño del local
+				List<String> aux = new ArrayList<String>();			
+				StringTokenizer tokens = new StringTokenizer(edit.getCodigoQr(),"/");
+				while(tokens.hasMoreTokens()){						
+					aux.add(tokens.nextToken());					 
+				}				
+				if(aux.get(0).equals("mealndrink")){
+					List<String> aux2 = new ArrayList<String>();			
+					StringTokenizer tokens2 = new StringTokenizer(aux.get(1),"#");
+					while(tokens2.hasMoreTokens()){			
+						aux2.add(tokens2.nextToken());					 
+					}					
+					if(aux2.get(0).equals("validarReserva") && aux2.get(1).equals(edit.getCode())){
+						edit.setValidado(true);
+						entityManager.persist(edit);
+						res = "ok";
+					}
+					else
+						res = "codigo_qr_no_valido";
+				}
+				else
+					res = "codigo_qr_no_valido";				
 			}
 			else
 				res = "usuario_no_permitido";
