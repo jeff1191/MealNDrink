@@ -350,6 +350,30 @@ public class HomeController {
 		return "paginaError";
 	}	
 	
+	@Transactional
+	@RequestMapping(value = "/verReserva", method = RequestMethod.POST)	
+	public String verReserva(
+			@RequestParam("idReserva") long id,			
+			Model model, 
+			HttpSession session) {		
+		model.addAttribute("active", "comercio_externo");		
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");		
+		if(usuarioOnline != null){
+			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+			model.addAttribute("usuario", usuario);	
+			
+			Reserva aux = entityManager.find(Reserva.class, id);
+		
+			model.addAttribute("infoRes", aux);
+			
+			model.addAttribute("pageTitle", "Informacion de la reserva");
+			
+			return "verReserva";
+		}
+		model.addAttribute("pageTitle", "Error!");
+		return "paginaError";
+	}	
+	
 	String getCadenaAlfanumAleatoria(int longuitud){
 		String cadenaAleatoria ="";
 		long milis = new java.util.GregorianCalendar().getTimeInMillis();
@@ -407,8 +431,8 @@ public class HomeController {
 					+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
 			String cadena = getCadenaAlfanumAleatoria(5);
 			//Crear un objeto reserva
-			Reserva reserva = new Reserva();
-			reserva.setCodigoQr("mealndrink/validarReserva#"+cadena); 
+			Reserva reserva = new Reserva();			
+			reserva.setCodigoQr("mealndrink/verReserva?"+cadena); 
 			reserva.setCode(cadena);
 			reserva.setTexto(qrInfo);
 			reserva.setUsuario(user);
@@ -1154,7 +1178,7 @@ public class HomeController {
 			@RequestParam("idComentario") long idComentario,
 			@RequestParam("idLocal") long idLocal,
 			Model model, HttpSession session){		
-		System.err.println("asdasdsd");
+		
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
@@ -1197,11 +1221,11 @@ public class HomeController {
 				}				
 				if(aux.get(0).equals("mealndrink")){
 					List<String> aux2 = new ArrayList<String>();			
-					StringTokenizer tokens2 = new StringTokenizer(aux.get(1),"#");
+					StringTokenizer tokens2 = new StringTokenizer(aux.get(1),"?");
 					while(tokens2.hasMoreTokens()){			
 						aux2.add(tokens2.nextToken());					 
 					}					
-					if(aux2.get(0).equals("validarReserva") && aux2.get(1).equals(edit.getCode())){
+					if(aux2.get(0).equals("verReserva") && aux2.get(1).equals(edit.getCode())){
 						edit.setValidado(true);
 						entityManager.persist(edit);
 						res = "ok";

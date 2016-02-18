@@ -2,10 +2,10 @@
 <section id="about-us">
         <div class="container">
 			<div class="center">
-				<h2>Reserva #${infoOferta.code}</h2>
+				<h2>Informacion de la reserva</h2>
 				<br>	
 				<p class="lead">
-					${infoOferta.texto}
+					${infoRes.texto}
 				</p>			
 			</div>
 			
