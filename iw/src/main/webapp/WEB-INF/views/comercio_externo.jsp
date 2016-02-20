@@ -46,7 +46,7 @@
 						    <c:forEach items="${infoLocal.ofertas}" var="i">
 								<div class="media">
 									<div class="pull-left">										
-										<img class="media-object" src="ofertasFoto?id=${i.ID}.jpg">										
+										<img class="media-object" src="ofertasFoto?id=${i.ID}.jpg" height="135" width="180">										
 									</div>
 									<div class="media-body">
 										<h4 class="media-heading">${i.nombre}</h4>
