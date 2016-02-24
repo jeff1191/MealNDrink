@@ -87,11 +87,11 @@ $(function() {
 	$("body").on("click", ".rellenarEditarLocal", null, rellenaDatosEditarModalLocal);
 	$("body").on("click", ".rellenarEditarUsuario", null, rellenaDatosEditarModalUsuario);
 	
-	$("#formuEditUsuario").on("submit", function(e){
-//	$("body").on( "submit", "#formuEditUsuario", null, function(){
-        e.preventDefault();
+	$("#formuEditUsuario").on("submit", function(a){
+        a.preventDefault();
         var f = $(this);
         var formData = new FormData(document.getElementById("formuEditUsuario"));
+
         $.ajax({
         	url : "${prefix}editarUsuario",
             type: "post",
@@ -105,7 +105,7 @@ $(function() {
             	if(res==="Error")
             		alert("Campos erróneos, revisa el formulario");
             	else{
-            		//$(location).attr('href','administracion');
+            		$(location).attr('href','administracion');
             		var id_admin=$('#id_admin').get(0).value;
 	          		$("#imagenAdmin").removeAttr("src").attr("src", +"/"+id_admin+".jpg");
 	          		$('#camposPrincipal').load('administracion div#camposPrincipal');	          		
@@ -114,8 +114,8 @@ $(function() {
     });
 	
 	
-	$("#formEditarModalUser").on("submit", function(e){
-        e.preventDefault();
+	$("#formEditarModalUser").on("submit", function(a){
+        a.preventDefault();
         var f = $(this);
         var formData = new FormData(document.getElementById("formEditarModalUser"));
         $.ajax({
@@ -134,7 +134,7 @@ $(function() {
         		if(res === "errorNick")
         			alert("Nick ocupado, elija otro");
             	else{
-            		//$(location).attr('href','administracion');
+            		$(location).attr('href','administracion');
             		$('#ModalEditUser').modal('hide');
             		$('#TodosUsuarios').load('administracion div#TodosUsuarios');
             		$("#formEditarModalUser").trigger("reset");            		
@@ -146,8 +146,8 @@ $(function() {
     });
 	
 	
-	$("#formEditarModalLocal").on("submit", function(e){
-        e.preventDefault();
+	$("#formEditarModalLocal").on("submit", function(a){
+       a.preventDefault();
         var f = $(this);
         var formData = new FormData(document.getElementById("formEditarModalLocal"));
         $.ajax({
@@ -167,7 +167,7 @@ $(function() {
         			alert("Nick ocupado, elija otro");
             	else{
             		
-            		//$(location).attr('href','administracion');
+            		$(location).attr('href','administracion');
             		$('#ModalEditLocal').modal('hide');
             		$('#TodosLocales').load('administracion div#TodosLocales');
             		$("#formEditarModalLocal").trigger("reset");            		
@@ -582,15 +582,16 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
         			<!--  end tags -->		 
 					  <div class="tab-pane fade" id="editarDatos">
 									<form role="form" method="POST" id="formuEditUsuario" enctype="multipart/form-data">
+										<input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 										<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${admin.ID}" />
 										<div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${admin.nombre }">
+											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${admin.nombre}">
 										</div>
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
 											<input type="password" class="form-control" name="editPwd" id="editPwd"  value="">
-										</div>
+										</div>									
 										<div class="form-group">
 											<label for="email">Email:</label>
 											<input type="email" class="form-control" name="editEmail" id="editEmail" value="${admin.email }">

@@ -8,6 +8,7 @@
  --%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib  uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="r" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,9 +47,6 @@
 <script src="${prefix}resources/js/validacionFormBook.js"></script>
 <script src="${prefix}resources/js/textoSeguro.js"></script>
 <script src="${prefix}resources/js/jquery.qrcode-0.12.0.js"></script>
-
-
-
 <%-- pageExtraScripts --%>
 <c:forEach var="i" items="${pageExtraScripts}">
 	<script src="${prefix}resources/js/${i}"></script>
@@ -138,14 +136,14 @@
 											</c:when>
 											<c:when test="${user.rol == 'user'}">
 												<li class="${active eq 'usuario'?'active':''}"><a
-													href="usuario?id=${user.ID}">Mi perfil</a></li>
+													href="usuario?id=${r:forHtmlContent(user.ID)}">Mi perfil</a></li>
 											</c:when>
 											<c:when test="${user.rol == 'local'}">
 												<li class="${active eq 'comercio_interno'?'active':''}"><a
-													href="usuario?id=${user.ID}">Mi perfil</a></li>
+													href="usuario?id=${r:forHtmlContent(user.ID)}">Mi perfil</a></li>
 													
 											            <c:forEach items="${usuario.locales}" var="i">
-											            	<li><a href="comercio_interno?id=${i.ID}">${i.nombre}</a></li>
+											            	<li><a href="comercio_interno?id=${i.ID}">${r:forHtmlContent(i.nombre)}</a></li>
 											            </c:forEach>
 										            
 											</c:when>

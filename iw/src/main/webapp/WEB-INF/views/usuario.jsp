@@ -43,6 +43,7 @@ $(function() {
         e.preventDefault();
         var f = $(this);
         var formData = new FormData(document.getElementById("formuEditUsuario"));
+        var nombr = $("#editNameUser").val();
         $.ajax({
         	url : "${prefix}editarUsuario",
             type: "post",
@@ -57,6 +58,7 @@ $(function() {
             		alert("Campos erróneos, revisa el formulario");
             	else{
             		idUsuario=$('#id_usuario').get(0).value;
+            		$(location).attr('href','usuario?id='+idUsuario);
 	          		$('#camposPrincipal').load('usuario?id='+idUsuario+' div#camposPrincipal');
 	          		$('#camposPrincipal1').load('usuario?id='+idUsuario+' div#camposPrincipal1');
 	          		$("#imagenUsuario").removeAttr("src").attr("src", +"/"+idUsuario+".jpg");
@@ -218,7 +220,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 						      </div>
 						      <div class="modal-body">
 								<form role="form" method="POST" enctype="multipart/form-data" action="nuevoLocal">
-								<input hidden="submit" name="id_usuario" value="${usuario.ID}" />	
+								<input hidden="submit" name="id_usuario" value="${r:forHtmlContent(usuario.ID)}" />	
 								<input hidden="submit" name="redireccion" value="usuario" />	
 								  <div class="form-group">
 									<label for="name">Nombre:</label>
@@ -341,12 +343,12 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 										<c:forEach items="${usuario.comentarios}" var="i">
 											<div class="media">
 											<div class="pull-left">
-												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${i.local.ID}.jpg" >
+												<img class="media-object" WIDTH=178 HEIGHT=150 src="localesFoto?id=${r:forHtmlContent(i.local.ID)}.jpg" >
 											</div>
 											<div class="media-body">
 												<br>
-												<h4 class="media-heading">${i.local.nombre} </h4>
-												<p>${i.texto} </br> <small>Comentario realizado el ${i.fecha}</small></p>
+												<h4 class="media-heading">${r:forHtmlContent(i.local.nombre)} </h4>
+												<p>${r:forHtmlContent(i.texto)} </br> <small>Comentario realizado el ${r:forHtmlContent(i.fecha)}</small></p>
 												<button id="delC_${i.ID}" class="eliminaComentario"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 											</div>
 											</div>
@@ -360,9 +362,10 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 								<div class="tab-pane fade" id="editar">
 									<form role="form" method="POST" id="formuEditUsuario" enctype="multipart/form-data">
 										<input hidden="submit" name="editId_usuario" id="editId_usuario" value="${usuario.ID}" />
+										<input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 										<div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${usuario.nombre }">
+											<input type="text" class="form-control" name="editNameUser" id="editNameUser" value="${r:forHtmlContent(usuario.nombre)}">
 										</div>
 										<div class="form-group">
 											<label for="pwd">Contraseña:</label>
@@ -370,11 +373,11 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 										</div>
 										<div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" name="editEmail" id="editEmail" value="${usuario.email }">
+											<input type="email" class="form-control" name="editEmail" id="editEmail" value="${r:forHtmlContent(usuario.email) }">
 										</div>
 										<div class="form-group">
 											<label for="tel">Teléfono:</label>
-											<input type="tel" class="form-control" name="editTel" id="editTel" value="${usuario.telefono }">
+											<input type="tel" class="form-control" name="editTel" id="editTel" value="${r:forHtmlContent(usuario.telefono) }">
 											<span class="help-block">Por ejemplo: 651651651</span>
 										</div>
 										<div class="form-group">

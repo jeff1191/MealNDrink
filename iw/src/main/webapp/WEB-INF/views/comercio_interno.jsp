@@ -146,6 +146,7 @@ $(function() {
             		alert("Campos erróneos, revisa el formulario");
             	else{
 		          		var id_local=$('#id_local').get(0).value;
+		          		$(location).attr('href','comercio_interno?id='+id_local);
 		          		$('#camposPrincipal').load('comercio_interno?id='+id_local+' div#camposPrincipal');
 		          		$('#camposPrincipal1').load('comercio_interno?id='+id_local+' div#camposPrincipal1');
 		          		$("#imagenLocal").removeAttr("src").attr("src", +"/"+id_local+".jpg");
@@ -183,7 +184,7 @@ $(function() {
             <div class="container">
                 <div class="center">
                 <div id="camposPrincipal1" name="camposPrincipal1">
-                    <h2>${local.nombre}</h2>
+                    <h2>${r:forHtmlContent(local.nombre)}</h2>
                 </div>
                 </div>
                 <div class="row">
@@ -191,23 +192,23 @@ $(function() {
                         <div class="col-md-4 col-sm-4">	
                         <div id="camposPrincipal" name="camposPrincipal">
 	                        <div id="imagenMediaPerfil" class="imagenMediaPerfil">						
-	                            <img id ="imagenLocal" src="localesFoto?id=${local.ID}.jpg" height="350" width="300">
+	                            <img id ="imagenLocal" src="localesFoto?id=${r:forHtmlContent(local.ID)}.jpg" height="350" width="300">
 	                        </div>
                             <input hidden="submit" id="id_local" value="${local.ID}" />   
 							
 								<h3><b>Dirección</b></h3>
-								<p>${local.direccion}</p>
+								<p>${r:forHtmlContent(local.direccion)}</p>
 															
 								<h3><b>Horario</b></h3>
-								<p>${local.horario}</p>
+								<p>${r:forHtmlContent(local.horario)}</p>
 															
 								<h3><b>Contacto</b></h3>
-								<p>E-mail: ${local.email}</p>
-								<p>Telefono: ${local.telefono}</p>
+								<p>E-mail: ${r:forHtmlContent(local.email)}</p>
+								<p>Telefono: ${r:forHtmlContent(local.telefono)}</p>
 	
 	                         
 									<h3><b>Puntuación</b></h3>
-									<h4>${local.puntuacion}/5</h4>
+									<h4>${r:forHtmlContent(local.puntuacion)}/5</h4>
 								
 						</div>
                         </div>
@@ -242,10 +243,10 @@ $(function() {
 														</div>
 													</div>
 												<div class="media-body">
-													<h4 class="media-heading">${i.nombre}</h4>
-													<p>${i.descripcion}</p>	
-													<p>Numero de personas: ${i.capacidadActual}/${i.capacidadTotal}</p>	
-													<p>Fecha limite: ${i.fechaLimite}</p>												
+													<h4 class="media-heading">${r:forHtmlContent(i.nombre)}</h4>
+													<p>${r:forHtmlContent(i.descripcion)}</p>	
+													<p>Numero de personas: ${r:forHtmlContent(i.capacidadActual)}/${r:forHtmlContent(i.capacidadTotal)}</p>	
+													<p>Fecha limite: ${r:forHtmlContent(i.fechaLimite)}</p>												
 													<button type="submit" id="edit_${i.nombre}/,${i.fechaLimite}/,${i.capacidadTotal}/,${i.descripcion}/,${i.ID}" value="${i}" class="rellenarEditarOferta" data-toggle="modal" data-target="#ModalEditOffer" ><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 													<button id="del_${i.ID}" value="${i}"  class="rellenaDatosEliminarOferta" data-toggle="modal" data-target="#ModalDelOffer" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
 												
@@ -279,7 +280,7 @@ $(function() {
 										<c:forEach items="${alltags}" var="i">									
 											<div class="checkbox">											  
 											  <label>
-											    <input type="checkbox" name="tagsIds" value="${i.ID}"> ${i.texto}
+											    <input type="checkbox" name="tagsIds" value="${i.ID}"> ${r:forHtmlContent(i.texto)}
 											  </label>											  
 											</div>	
 										</c:forEach>
@@ -334,7 +335,7 @@ $(function() {
 											<c:forEach items="${alltags}" var="i">									
 												<div class="checkbox">											  
 												  <label>
-												    <input type="checkbox" name="editTags" id="editTags" value="${i.ID}"> ${i.texto}
+												    <input type="checkbox" name="editTags" id="editTags" value="${i.ID}"> ${r:forHtmlContent(i.texto)}
 												  </label>											  
 												</div>	
 											</c:forEach>
@@ -411,11 +412,11 @@ $(function() {
 											    	 	<c:forEach items="${i.reservas}" var="j">
 												    		<c:if test="${j.validado == false}">
 													    		<tr id="r${j.ID}">
-														            <td><h4 class="media-heading">${i.nombre}</h4>
+														            <td><h4 class="media-heading">${r:forHtmlContent(i.nombre)}</h4>
 	<%-- 														            <button id="ValRes_${j.ID}" value="${j.ID}"  class="ValRes" data-toggle="modal" data-target="#ModalValRes" ><span class="glyphicon glyphicon-ok"></span> Validar</button>	 --%>
 															            <button id="valR_${j.ID}" name="valR_${j.ID}" type="submit" class="QRvalidar"><span class="glyphicon glyphicon-ok"></span> Validar</button>
 														            </td>
-														            <td><div class="qrcode">${j.codigoQr}</div></td>		            									       
+														            <td><div class="qrcode">${r:forHtmlContent(j.codigoQr)}</div></td>		            									       
 														        </tr>	
 															</c:if>
 											    	</c:forEach>
@@ -441,7 +442,7 @@ $(function() {
 											    	 	<c:forEach items="${i.reservas}" var="j">
 												    		<c:if test="${j.validado == true}">
 													    		<tr>
-														            <td><h4 class="media-heading">${i.nombre}</h4></td>
+														            <td><h4 class="media-heading">${r:forHtmlContent(i.nombre)}</h4></td>
 																	<td><div class="qrcode">${j.codigoQr}</div></td>
 														        </tr>	
 															</c:if>
@@ -467,12 +468,12 @@ $(function() {
 											<div class="media">
 											<div class="pull-left">
 												<div class="imagenMedia">
-													<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180"> 
+													<img class="media-object" src="usuariosFoto?id=${r:forHtmlContent(i.usuario.ID)}.jpg" height="135" width="180"> 
 												</div>
 											</div>
 											<div class="media-body">											
-												<h4 class="media-heading">${(i.usuario).nombre}</h4>
-												<p>${i.texto} </br> <small>${i.fecha}</small></p>
+												<h4 class="media-heading">${r:forHtmlContent((i.usuario).nombre)}</h4>
+												<p>${r:forHtmlContent(i.texto)} </br> <small>${r:forHtmlContent(i.fecha)}</small></p>
 												<button id="delComment_${i.ID}" value="${i.ID}"  class="rellenaDatosComentario" data-toggle="modal" data-target="#ModalDelComentario" ><span class="glyphicon glyphicon-trash"></span> Eliminar</button>	
 											</div>
 											</div>
@@ -489,24 +490,24 @@ $(function() {
 									<input hidden="submit" id="id_editLocal" name="id_editLocal" value="${local.ID}" />
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
-											<input type="text" class="form-control" id="editNameLocal" required="required" name="editNameLocal" value="${local.nombre}">
+											<input type="text" class="form-control" id="editNameLocal" required="required" name="editNameLocal" value="${r:forHtmlContent(local.nombre)}">
 										  </div>
 										   <div class="form-group">
 											<label for="timeBusiness">Horario:</label>
-											<input type="text" class="form-control" id="editHorarioLocal" required="required" name="editHorarioLocal" value="${local.horario}">
+											<input type="text" class="form-control" id="editHorarioLocal" required="required" name="editHorarioLocal" value="${r:forHtmlContent(local.horario)}">
 										  	<span class="help-block">Por ejemplo: 10-20</span>
 										  </div>
 										   <div class="form-group">
 											<label for="dir">Direccion:</label>
-											<input type="text" class="form-control" id="editDirLocal" required="required" name="editDirLocal" value="${local.direccion}">
+											<input type="text" class="form-control" id="editDirLocal" required="required" name="editDirLocal" value="${r:forHtmlContent(local.direccion)}">
 										  </div>
 										  <div class="form-group">
 											<label for="email">Email:</label>
-											<input type="email" class="form-control" id="editEmailLocal" required="required"  name="editEmailLocal" value="${local.email}">
+											<input type="email" class="form-control" id="editEmailLocal" required="required"  name="editEmailLocal" value="${r:forHtmlContent(local.email)}">
 										  </div>
 										  <div class="form-group">
 											<label for="tel">Telefono:</label>
-											<input type="tel" class="form-control" id="editTelLocal" required="required"  name="editTelLocal" value="${local.telefono}">
+											<input type="tel" class="form-control" id="editTelLocal" required="required"  name="editTelLocal" value="${r:forHtmlContent(local.telefono)}">
 										  	<span class="help-block">Por ejemplo: 651651651</span>
 										  </div>
 										  <div class="form-group">

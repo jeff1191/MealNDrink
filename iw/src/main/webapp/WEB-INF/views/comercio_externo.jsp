@@ -2,28 +2,28 @@
    <section id="feature" class="transparent-bg">
             <div class="container">
                 <div class="center">
-                     <h2>${infoLocal.nombre}</h2>
+                     <h2>${r:forHtmlContent(infoLocal.nombre)}</h2>
                 </div>
                 <div class="row">
                     <div class="features">
                         <div class="col-md-4 col-sm-4">
                        		<div class="imagenMediaPerfil">	
-								<img src="localesFoto?id=${infoLocal.ID}.jpg" height="350" width="350">    
+								<img src="localesFoto?id=${r:forHtmlContent(infoLocal.ID)}.jpg" height="350" width="350">    
 							</div>                              
 							<h3><b>Dirección</b></h3>
-							<p>${infoLocal.direccion}</p>
+							<p>${r:forHtmlContent(infoLocal.direccion)}</p>
 														
 							<h3><b>Horario</b></h3>
-							<p>${infoLocal.horario}</p>
+							<p>${r:forHtmlContent(infoLocal.horario)}</p>
 																					
 							<h3><b>Contacto</b></h3>
-							<p>E-mail: ${(infoLocal.usuario).email}</p>
-							<p>Telefono: ${(infoLocal.usuario).telefono}</p>
-							<p><small>Preguntar por ${(infoLocal.usuario).nombre}</small></p>
+							<p>E-mail: ${r:forHtmlContent((infoLocal.usuario).email)}</p>
+							<p>Telefono: ${r:forHtmlContent((infoLocal.usuario).telefono)}</p>
+							<p><small>Preguntar por ${r:forHtmlContent((infoLocal.usuario).nombre)}</small></p>
 
 							<div>
 								<h3><b>Puntuación</b></h3>
-								<h4>${infoLocal.puntuacion}/5</h4>
+								<h4>${r:forHtmlContent(infoLocal.puntuacion)}/5</h4>
 							</div>
 						</div>
                     </div><!--/.col-md-4-->
@@ -46,12 +46,12 @@
 						    <c:forEach items="${infoLocal.ofertas}" var="i">
 								<div class="media">
 									<div class="pull-left">										
-										<img class="media-object" src="ofertasFoto?id=${i.ID}.jpg">										
+										<img class="media-object" src="ofertasFoto?id=${r:forHtmlContent(i.ID)}.jpg">										
 									</div>
 									<div class="media-body">
-										<h4 class="media-heading">${i.nombre}</h4>
-										<p>${i.descripcion}</p>
-										<p>Cap: ${i.capacidadActual}/${i.capacidadTotal}</p>
+										<h4 class="media-heading">${r:forHtmlContent(i.nombre)}</h4>
+										<p>${r:forHtmlContent(i.descripcion)}</p>
+										<p>Cap: ${r:forHtmlContent(i.capacidadActual)}/${r:forHtmlContent(i.capacidadTotal)}</p>
 										<c:choose>
 											<c:when test="${not empty user}">												
 											<c:if test="${i.capacidadActual != i.capacidadTotal}">
@@ -99,12 +99,12 @@
 							<div class="media">
 								<div class="pull-left">
 									<div class="imagenMedia">
-										<img class="media-object" src="usuariosFoto?id=${i.usuario.ID}.jpg" height="135" width="180">
+										<img class="media-object" src="usuariosFoto?id=${r:forHtmlContent(i.usuario.ID)}.jpg" height="135" width="180">
 									</div>
 								</div>
 								<div class="media-body">
-									<h4 class="media-heading">${(i.usuario).nombre}</h4>
-									<p>${i.texto} - ${i.fecha}</p>
+									<h4 class="media-heading">${r:forHtmlContent((i.usuario).nombre)}</h4>
+									<p>${r:forHtmlContent(i.texto)} - ${r:forHtmlContent(i.fecha)}</p>
 								</div>
 							</div>
 							</c:forEach>

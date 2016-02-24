@@ -1,6 +1,7 @@
 package es.fdi.iw.controller;
 
 import java.io.BufferedInputStream;
+import org.owasp.encoder.Encode;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -299,7 +300,7 @@ public class HomeController {
 
 			comentario.setLocal(local);
 			comentario.setUsuario(usuario);
-			comentario.setTexto(comment);
+			comentario.setTexto(Encode.forHtmlContent(comment));
 			comentario.setFecha(fecha);
 
 			usuario.getComentarios().add(comentario);
@@ -502,9 +503,8 @@ public class HomeController {
 			@RequestParam("cap") int capacidad,
 			@RequestParam("description") String descripcion, 
 			Model model, HttpSession session){
-		boolean seguro = palabraSeguro(nombreOferta) /*&& palabraSeguro(tags)*/&& fechaSeguro(fecha) && descripcionSeguro(descripcion);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if (seguro && usuarioOnline != null) {
+		if (fechaSeguro(fecha) && usuarioOnline != null) {
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, id);
 			//comprobamos que el local efectivamente lo tiene este usuario, si tiene permiso
@@ -515,7 +515,7 @@ public class HomeController {
 				List<String> aux = new ArrayList<String>();
 				StringTokenizer tokens = new StringTokenizer(fecha,"/");
 				while(tokens.hasMoreTokens()){			
-					aux.add(tokens.nextToken());
+					aux.add(Encode.forHtmlContent(tokens.nextToken()));
 				}
 				while(pos != -1){
 					fechatTimesStamp +=aux.get(pos);
@@ -529,10 +529,10 @@ public class HomeController {
 					auxTags.add(entityManager.find(Tags.class, Long.parseLong(ids.nextToken())));					 
 				}
 				Oferta offer= new Oferta();
-				offer.setNombre(nombreOferta);
+				offer.setNombre(Encode.forHtmlContent(nombreOferta));
 				offer.setFechaLimite(timestamp);
 				offer.setCapacidadTotal(capacidad);
-				offer.setDescripcion(descripcion);
+				offer.setDescripcion(Encode.forHtmlContent(descripcion));
 				offer.setTags(auxTags); 
 				offer.setLocal(local);
 				local.getOfertas().add(offer);
@@ -590,9 +590,8 @@ public class HomeController {
 			@RequestParam("id_Editoffer") String idOffer, 
 			Model model, HttpSession session){
 
-		boolean seguro = palabraSeguro(nombreOferta) && fechaSeguro(fecha) && descripcionSeguro(descripcion) && palabraSeguro(idOffer);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if (seguro && usuarioOnline != null) {			
+		if (fechaSeguro(fecha) && usuarioOnline != null) {			
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, id);
 			//comprobamos que el local efectivamente lo tiene este usuario, si tiene permiso
@@ -628,10 +627,10 @@ public class HomeController {
 				}
 				Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
 				Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
-				offer.setNombre(nombreOferta);
+				offer.setNombre(Encode.forHtmlContent(nombreOferta));
 				offer.setFechaLimite(timestamp);
 				offer.setCapacidadTotal(capacidad);
-				offer.setDescripcion(descripcion);	
+				offer.setDescripcion(Encode.forHtmlContent(descripcion));	
 				offer.setLocal(local);
 				local.getOfertas().add(offer);
 				entityManager.persist(offer);
@@ -696,17 +695,17 @@ public class HomeController {
 			@RequestParam("redireccion")String pagina, 
 			Model model, HttpSession session){
 
-		boolean seguro = palabraSeguro(nombreLocal) && horarioSeguro(horario) && direccionSeguro(direccion) && emailSeguro(email) && telefonoSeguro(telefono);
+		boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if (seguro && usuarioOnline != null) {
 			Usuario usuario = entityManager.find(Usuario.class, id);
 			Local local= new Local();
-			local.setNombre(nombreLocal);
-			local.setDireccion(direccion);
-			local.setHorario(horario);
+			local.setNombre(Encode.forHtmlContent(nombreLocal));
+			local.setDireccion(Encode.forHtmlContent(direccion));
+			local.setHorario(Encode.forHtmlContent(horario));
 			local.setUsuario(usuario);
-			local.setEmail(email);
-			local.setTelefono(telefono);
+			local.setEmail(Encode.forHtmlContent(email));
+			local.setTelefono(Encode.forHtmlContent(telefono));
 			entityManager.persist(local);
 			entityManager.flush();
 			if (!photo.isEmpty()) {
@@ -794,16 +793,16 @@ public class HomeController {
 		Usuario uSession = (Usuario)session.getAttribute("user");
 		if(uSession != null){ //si está en bbdd
 			Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
-			boolean seguro = palabraSeguro(nombreLocal) && horarioSeguro(horario) && direccionSeguro(direccion) && emailSeguro(email) && telefonoSeguro(telefono);
+			boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
 			if (seguro) {
 				Local edit= entityManager.find(Local.class, id);
 				//si el usuario tiene ese local o si el usuario es el admin
 			if(usuario.getLocales().contains(edit) || usuario.getRol().equals("admin")){	
-				edit.setNombre(nombreLocal);
-				edit.setHorario(horario);
-				edit.setDireccion(direccion);
-				edit.setEmail(email);
-				edit.setTelefono(telefono);
+				edit.setNombre(Encode.forHtmlContent(nombreLocal));
+				edit.setHorario(Encode.forHtmlContent(horario));
+				edit.setDireccion(Encode.forHtmlContent(direccion));
+				edit.setEmail(Encode.forHtmlContent(email));
+				edit.setTelefono(Encode.forHtmlContent(telefono));
 				entityManager.persist(edit);
 				entityManager.flush();
 				if(!photo.isEmpty()){						
@@ -834,8 +833,7 @@ public class HomeController {
 			@RequestParam("tel") String telefono,
 			@RequestParam("rol") String rol,    		 
 			Model model){
-		//REVISAR LO DE LA FECHA....O PONEMOS HORAS O PONEMOS FECHA O PONEMOS LAS DOS
-		boolean seguro = palabraSeguro(nombreUsuario) && palabraSeguro(pass) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(rol);
+		boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
 
 		if (seguro) {
 			try{				
@@ -848,7 +846,7 @@ public class HomeController {
 			
 			
 			
-			Usuario usuario = creaUsuario(nombreUsuario, email, telefono, rol, pass);
+			Usuario usuario = creaUsuario(Encode.forHtmlContent(nombreUsuario), Encode.forHtmlContent(email), Encode.forHtmlContent(telefono), Encode.forHtmlContent(rol), Encode.forHtmlContent(pass));
 			entityManager.persist(usuario);
 			entityManager.flush();
 			if (!photo.isEmpty()) {
@@ -900,18 +898,20 @@ public class HomeController {
     		@RequestParam("editPwd") String pass,
     		@RequestParam("editEmail") String email,
     		@RequestParam("editTel") String telefono,
+    		@RequestParam("csrf") String token,
     		Model model, HttpSession session){
 		Usuario uSession = (Usuario)session.getAttribute("user");
-		boolean seguro = palabraSeguro(nombreUsuario) &&  emailSeguro(email) && telefonoSeguro(telefono);
-		if(uSession != null && seguro){
+		boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
+	
+		if(uSession != null /*&& isTokenValid(session, token)*/){
 		Usuario edit=entityManager.find(Usuario.class, uSession.getID());
 		if(edit != null){
 			if(!pass.equalsIgnoreCase("") && pass.length() > 5){ //si ha cambiado
 				edit.setHashedAndSalted(pass);
 			}
-			edit.setNombre(nombreUsuario);
-			edit.setEmail(email);
-			edit.setTelefono(telefono);
+			edit.setNombre(Encode.forHtmlContent(nombreUsuario));
+			edit.setEmail(Encode.forHtmlContent(email));
+			edit.setTelefono(Encode.forHtmlContent(telefono));
 			entityManager.persist(edit);
 			entityManager.flush();
 			if(!photo.isEmpty()){						
@@ -944,7 +944,7 @@ public class HomeController {
     		@RequestParam("editTel") String telefono,
     		Model model, HttpSession session){
 		Usuario uSession = (Usuario)session.getAttribute("user");
-		boolean seguro = palabraSeguro(nombreUsuario) &&  emailSeguro(email) && telefonoSeguro(telefono);
+		boolean seguro =  emailSeguro(email) && telefonoSeguro(telefono);
 		if(uSession != null && seguro){
 		Usuario admin=entityManager.find(Usuario.class, uSession.getID());
 		Usuario edit=entityManager.find(Usuario.class, idUsuario);
@@ -958,9 +958,9 @@ public class HomeController {
 			apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombreUsuario).getSingleResult();
 		} catch (NoResultException nre) {
 
-			edit.setNombre(nombreUsuario);
-			edit.setEmail(email);
-			edit.setTelefono(telefono);
+			edit.setNombre(Encode.forHtmlContent(nombreUsuario));
+			edit.setEmail(Encode.forHtmlContent(email));
+			edit.setTelefono(Encode.forHtmlContent(telefono));
 			entityManager.persist(edit);
 			entityManager.flush();
 			if(!photo.isEmpty()){						
@@ -1013,30 +1013,6 @@ public class HomeController {
 		return res;
 	}
 
-	/*boolean textoSeguro(String texto) {
-
-		boolean seguro;
-		seguro = !texto.contains("<") && !texto.contains(">") && !texto.contains("$");
-		return seguro;
-
-	}*/
-
-	boolean palabraSeguro(String palabra) {
-		return palabra.matches("^[a-zA-Z0-9_ ]*$");
-	}
-
-	boolean descripcionSeguro (String descripcion) {
-		return descripcion.matches("^[a-zA-Z0-9-_,._ ]*$");
-	}
-
-	boolean direccionSeguro (String direccion) {
-		return direccion.matches("^[a-zA-Z0-9-_,._ ]*$");
-	}
-
-	boolean horarioSeguro (String direccion) {
-		return direccion.matches("^[0-9-]*$");
-	}
-
 	boolean telefonoSeguro (String telefono) {
 		return telefono.matches("^[0-9]{9}$");
 	}
@@ -1060,7 +1036,7 @@ public class HomeController {
 				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombre).getSingleResult();
 				camposModificados += 100000;
 			} catch (NoResultException nre) {
-				if(nombre.length() < 4 || nombre.length() > 12  || !palabraSeguro(nombre)){
+				if(nombre.length() < 4 || nombre.length() > 12  /*|| !palabraSeguro(nombre)*/){
 					camposModificados += 100000;
 				}
 				else{
@@ -1070,7 +1046,7 @@ public class HomeController {
 		}
 
 		if(contra != ""){
-			if(contra.length() < 6 || contra.length() > 12 || !palabraSeguro(contra)){
+			if(contra.length() < 6 || contra.length() > 12 /*|| !palabraSeguro(contra)*/){
 				camposModificados += 1000000;
 			}
 			else{
@@ -1187,32 +1163,36 @@ public class HomeController {
 		return new ResponseEntity<String>(res, HttpStatus.OK);
 
 	}
-
+/* para el futuro
 	@Transactional
 	@RequestMapping(value = "/addNuevoTag", method = RequestMethod.POST)
-	public String addNuevoTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String addName, Model model){
-		Local local= entityManager.find(Local.class, idLocal);
-		//FALTA ENVIAR ERRORES
-		//String nuevo= local.getTags();
-		//nuevo+=","+addName;			
-		//local.setTags(nuevo); //esto ahora es diferente
-		entityManager.persist(local);	
+	public String addNuevoTag(@RequestParam("nombreTag") String addName,
+			Model model, HttpSession session){
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		Tags tag = new Tags();
+		tag.setTexto(Encode.forHtmlContent(addName));	
+		if(usuarioOnline != null && usuarioOnline.getRol().equals("admin")){
+			entityManager.persist(tag);		
+		}	
 		return "AddNuevoTag";
 	}
-
+*/
 	@Transactional
 	@RequestMapping(value = "/editarTag", method = RequestMethod.POST)
 	public String editarTag(@RequestParam("id_tag") long id,
 			@RequestParam("nameEditTag") String nombreTagEdit,
-			Model model){	
-		System.out.println("id: " + id + "  nuevoName: " + nombreTagEdit);
-		Tags edit= entityManager.find(Tags.class, id);
-		edit.setTexto(nombreTagEdit);			
-		entityManager.persist(edit);
-		entityManager.flush();			
-		return "redirect:administracion";
+			Model model, HttpSession session){	
+		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+		if(usuarioOnline != null && entityManager.find(Usuario.class, usuarioOnline.getID()).getRol().equals("admin")){
+			Tags edit= entityManager.find(Tags.class, id);
+			edit.setTexto(Encode.forHtmlContent(nombreTagEdit));			
+			entityManager.persist(edit);
+			entityManager.flush();	
+			return "redirect:administracion";
+		}
+		return "redirect:paginaError";
 	}
-
+/*
 	@Transactional
 	@RequestMapping(value = "/eliminarTag", method = RequestMethod.POST)
 	public String eliminarTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String delName, Model model){
@@ -1228,6 +1208,7 @@ public class HomeController {
 		entityManager.persist(local);	
 		return "eliminarTag";
 	}
+*/
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model,HttpSession session) {
@@ -1364,6 +1345,7 @@ public class HomeController {
 	static String getTokenForSession (HttpSession session) {
 		String token=UUID.randomUUID().toString();
 		session.setAttribute("csrf_token", token);
+		System.err.println("Generando token"+token);
 		return token;
 	}
 
@@ -1388,7 +1370,7 @@ public class HomeController {
 			@RequestParam("email") String email,
 			@RequestParam("tel") String telefono,
 			@RequestParam("Rol") String rol, HttpSession session, Model model){
-		boolean seguro = palabraSeguro(nombre) && palabraSeguro(password) && emailSeguro(email) && telefonoSeguro(telefono) && palabraSeguro(rol);
+		boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
 		if (seguro) {
 
 			Usuario u;
@@ -1429,7 +1411,7 @@ public class HomeController {
 						rol = "user";
 					}
 
-					u = creaUsuario(nombre, email, telefono, rol, password);
+					u = creaUsuario(Encode.forHtmlContent(nombre), Encode.forHtmlContent(email), Encode.forHtmlContent(telefono), Encode.forHtmlContent(rol), Encode.forHtmlContent(password));
 					logger.info(Long.toString(u.getID()));
 					entityManager.persist(u);
 					entityManager.persist(u);
