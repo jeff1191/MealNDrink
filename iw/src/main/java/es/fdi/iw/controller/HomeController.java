@@ -137,42 +137,63 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/usuariosFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] usuariosfoto(@RequestParam("id") String id) throws IOException {
-		File f = ContextInitializer.getFile("usuarios", id);
-		InputStream in = null;
-		if (f.exists()) {
-			in = new BufferedInputStream(new FileInputStream(f));
-		} else {
-			in = new BufferedInputStream(
-					this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
+		
+		if(esNumerico(id)){
+		
+			File f = ContextInitializer.getFile("usuarios", id);
+			InputStream in = null;
+			if (f.exists()) {
+				in = new BufferedInputStream(new FileInputStream(f));
+			} else {
+				in = new BufferedInputStream(
+						this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
+			}
+			return IOUtils.toByteArray(in);
 		}
-		return IOUtils.toByteArray(in);		
+		else{
+			return null;
+		}
 	}
 
 	@ResponseBody
 	@RequestMapping(value="/ofertasFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] offerPhoto(@RequestParam("id") String id) throws IOException {
-		File f = ContextInitializer.getFile("ofertas", id);
-		InputStream in = null; 
-		if (f.exists()) {
-			in = new BufferedInputStream(new FileInputStream(f));
-		} else {
-			in = new BufferedInputStream(
-					this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+		
+		if(esNumerico(id)){
+		
+			File f = ContextInitializer.getFile("ofertas", id);
+			InputStream in = null; 
+			if (f.exists()) {
+				in = new BufferedInputStream(new FileInputStream(f));
+			} else {
+				in = new BufferedInputStream(
+						this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+			}
+			return IOUtils.toByteArray(in);	
 		}
-		return IOUtils.toByteArray(in);		
+		else{
+			return null;
+		}
 	}
 	@ResponseBody
 	@RequestMapping(value="/localesFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] localFoto(@RequestParam("id") String id) throws IOException {
-		File f = ContextInitializer.getFile("locales", id);
-		InputStream in = null; 
-		if (f.exists()) {
-			in = new BufferedInputStream(new FileInputStream(f));
-		} else {
-			in = new BufferedInputStream(
-					this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+		
+		if(esNumerico(id)){
+		
+			File f = ContextInitializer.getFile("locales", id);
+			InputStream in = null; 
+			if (f.exists()) {
+				in = new BufferedInputStream(new FileInputStream(f));
+			} else {
+				in = new BufferedInputStream(
+						this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+			}
+			return IOUtils.toByteArray(in);	
+			
+		}else{
+			return null;
 		}
-		return IOUtils.toByteArray(in);		
 	}
 
 	/**
@@ -590,72 +611,78 @@ public class HomeController {
 			@RequestParam("id_Editoffer") String idOffer, 
 			Model model, HttpSession session){
 
-		boolean seguro = palabraSeguro(nombreOferta) && fechaSeguro(fecha) && descripcionSeguro(descripcion) && palabraSeguro(idOffer);
-		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if (seguro && usuarioOnline != null) {			
-			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
-			Local local = entityManager.find(Local.class, id);
-			//comprobamos que el local efectivamente lo tiene este usuario, si tiene permiso
-			//para editar una oferta.
-			if(usuario.getLocales().contains(local)){				
-				List<Tags> auxTags = new ArrayList<Tags>();
-				StringTokenizer ids = new StringTokenizer(tags,",");
-				while(ids.hasMoreTokens()){	
-					auxTags.add(entityManager.find(Tags.class, Long.parseLong(ids.nextToken())));					 
-				}
-	
-				String fechatTimesStamp="";
-				int pos=2;
-				List<String> aux = new ArrayList<String>();
-				StringTokenizer tokens = new StringTokenizer(fecha,"/");
-				while(tokens.hasMoreTokens()){			
-					aux.add(tokens.nextToken());
-				}	
-				if(Integer.parseInt(aux.get(0)) < 2000){
-					while(pos != -1){
-						fechatTimesStamp +=aux.get(pos);
-						if(pos != 0) fechatTimesStamp+= "-";
-						pos--;
-					}					
-				}
-				else{
-					pos = 0;
-					while(pos != 3){
-						fechatTimesStamp +=aux.get(pos);
-						if(pos != 2) fechatTimesStamp+= "-";
-						pos++;
+		if(esNumerico(idOffer)){
+		
+			boolean seguro = palabraSeguro(nombreOferta) && fechaSeguro(fecha) && descripcionSeguro(descripcion) && palabraSeguro(idOffer);
+			Usuario usuarioOnline = (Usuario)session.getAttribute("user");
+			if (seguro && usuarioOnline != null) {			
+				Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
+				Local local = entityManager.find(Local.class, id);
+				//comprobamos que el local efectivamente lo tiene este usuario, si tiene permiso
+				//para editar una oferta.
+				if(usuario.getLocales().contains(local)){				
+					List<Tags> auxTags = new ArrayList<Tags>();
+					StringTokenizer ids = new StringTokenizer(tags,",");
+					while(ids.hasMoreTokens()){	
+						auxTags.add(entityManager.find(Tags.class, Long.parseLong(ids.nextToken())));					 
+					}
+		
+					String fechatTimesStamp="";
+					int pos=2;
+					List<String> aux = new ArrayList<String>();
+					StringTokenizer tokens = new StringTokenizer(fecha,"/");
+					while(tokens.hasMoreTokens()){			
+						aux.add(tokens.nextToken());
 					}	
-				}
-				Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
-				Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
-				offer.setNombre(nombreOferta);
-				offer.setFechaLimite(timestamp);
-				offer.setCapacidadTotal(capacidad);
-				offer.setDescripcion(descripcion);	
-				offer.setLocal(local);
-				local.getOfertas().add(offer);
-				entityManager.persist(offer);
-				entityManager.flush();
-				if (!photo.isEmpty()) {
-					try {
-						byte[] bytes = photo.getBytes();
-						BufferedOutputStream stream = new BufferedOutputStream(
-								new FileOutputStream(ContextInitializer.getFile(
-										"ofertas", ""+offer.getID()+".jpg")));
-						stream.write(bytes);
-						stream.close();
-	
-						entityManager.persist(offer);
-						entityManager.persist(local);		
-					} catch (Exception e) {
-						return "redirect:comercio_interno?id="+local.getID();
+					if(Integer.parseInt(aux.get(0)) < 2000){
+						while(pos != -1){
+							fechatTimesStamp +=aux.get(pos);
+							if(pos != 0) fechatTimesStamp+= "-";
+							pos--;
+						}					
+					}
+					else{
+						pos = 0;
+						while(pos != 3){
+							fechatTimesStamp +=aux.get(pos);
+							if(pos != 2) fechatTimesStamp+= "-";
+							pos++;
+						}	
+					}
+					Timestamp timestamp = Timestamp.valueOf(fechatTimesStamp+ " 00:00:00.0");
+					Oferta offer= entityManager.find(Oferta.class, Long.valueOf(idOffer));
+					offer.setNombre(nombreOferta);
+					offer.setFechaLimite(timestamp);
+					offer.setCapacidadTotal(capacidad);
+					offer.setDescripcion(descripcion);	
+					offer.setLocal(local);
+					local.getOfertas().add(offer);
+					entityManager.persist(offer);
+					entityManager.flush();
+					if (!photo.isEmpty()) {
+						try {
+							byte[] bytes = photo.getBytes();
+							BufferedOutputStream stream = new BufferedOutputStream(
+									new FileOutputStream(ContextInitializer.getFile(
+											"ofertas", ""+offer.getID()+".jpg")));
+							stream.write(bytes);
+							stream.close();
+		
+							entityManager.persist(offer);
+							entityManager.persist(local);		
+						} catch (Exception e) {
+							return "redirect:comercio_interno?id="+local.getID();
+						}
 					}
 				}
+				return "redirect:comercio_interno?id="+local.getID();
 			}
-			return "redirect:comercio_interno?id="+local.getID();
-		}
-		else{
-			model.addAttribute("pageTitle", "Error!");		
+			else{
+				model.addAttribute("pageTitle", "Error!");		
+				return "paginaError";
+			}
+		}else{
+			model.addAttribute("pageTitle", "Error!");
 			return "paginaError";
 		}
 	}
@@ -1158,33 +1185,39 @@ public class HomeController {
 	@RequestMapping(value = "/validarReserva", method = RequestMethod.POST)
 	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") String idRes, Model model, HttpSession session){
 		
-		Usuario sesion = (Usuario)session.getAttribute("user");
-		String res = new String("ok");
-		long idResBueno;
-		String test;
+		if(esIdReservaValido(idRes)){  
 		
-		try {
-			test = idRes;
-			logger.info(test);
-			test = idRes.substring(5);
-			logger.info(test);
+			Usuario sesion = (Usuario)session.getAttribute("user");
+			String res = new String("ok");
+			long idResBueno;
+			String test;
 			
-			idResBueno = Long.parseLong(test);
-			
-			Reserva edit= entityManager.find(Reserva.class, idResBueno);
-			
-			if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueño del local
-
-				edit.setValidado(true);
-				entityManager.persist(edit);
+			try {
+				test = idRes;
+				logger.info(test);
+				test = idRes.substring(5);
+				logger.info(test);
+				
+				idResBueno = Long.parseLong(test);
+				
+				Reserva edit= entityManager.find(Reserva.class, idResBueno);
+				
+				if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueño del local
+	
+					edit.setValidado(true);
+					entityManager.persist(edit);
+				}
+				else
+					res = "usuario_no_permitido";
+				
+			} catch (NumberFormatException e) {
+				res = "reserva_no_existe";
 			}
-			else
-				res = "usuario_no_permitido";
-			
-		} catch (NumberFormatException e) {
-			res = "reserva_no_existe";
+			return new ResponseEntity<String>(res, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(res, HttpStatus.OK);
+		else{
+			return new ResponseEntity<String>("id no numérico", HttpStatus.BAD_REQUEST);
+		}
 
 	}
 
@@ -1501,6 +1534,34 @@ public class HomeController {
 
 		}
 		return new ResponseEntity<String>(res, HttpStatus.OK);	
+	}
+	
+	private boolean esNumerico(String id){
+		
+		try {
+			Long.parseLong(id);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
+	}
+	
+	private boolean esIdReservaValido(String id){
+		String[] formato = id.split("_");
+		int i = 0;
+		
+		if(formato[0].equals("valR") && formato.length == 2){
+			try {
+				Integer.parseInt(formato[1]);
+				return true;
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
 	}
 
 }
