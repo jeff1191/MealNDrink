@@ -54,16 +54,14 @@ function activaBotonEliminacionTag() {
 	});
 }
 
-function activaBotonValidarReserva(ob) {
-	
-	var nombre = ob;
-	var ok= false;
-	
+function activaBotonValidarReserva() {	
+	var idRes = $(this).attr("id").substring("valR_".length);	
+		
 	$.ajax({
 		url : "${prefix}validarReserva",
 		type : "POST",
 		data : {
-			id_reserva : nombre
+			id_reserva : idRes			
 		},
 
 		success : function(data) {
@@ -88,7 +86,9 @@ function activaBotonValidarReserva(ob) {
 				location.href = "${prefix}/mealndrink";
 			} else if(data === "usuario_no_permitido"){
 				location.href = "${prefix}/mealndrink";
-			}
+			} else if(data === "codigo_qr_no_valido"){
+				location.href = "${prefix}/paginaError";
+			} 
 			
 			alert("Reserva validada satisfactoriamente");
 			location.href = "${prefix}/mealndrink/comercio_interno?id=${local.ID}";
@@ -128,6 +128,7 @@ $(function() {
 	$("body").on("click", ".rellenaDatosComentario", null, rellenaDatosComentario);
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);
 	$("body").on("click", ".anyadirTag", null, activaBotonAddTag);
+	$("body").on("click", ".QRvalidar", null, activaBotonValidarReserva);
 	$("#formuEditComercio").on("submit", function(e){
         e.preventDefault();
         var f = $(this);
@@ -443,7 +444,7 @@ $(function() {
 												    		<c:if test="${j.validado == true}">
 													    		<tr>
 														            <td><h4 class="media-heading">${r:forHtmlContent(i.nombre)}</h4></td>
-																	<td><div class="qrcode">${j.codigoQr}</div></td>
+																	<td><div class="qrcode">${j.texto}</div></td>
 														        </tr>	
 															</c:if>
 												    	</c:forEach>

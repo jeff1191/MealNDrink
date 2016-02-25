@@ -28,7 +28,7 @@ function activaBotonEliminacionComentario() {
 $(function() {
 	
 	$("body").on("click", ".eliminaLocal", null, activaBotonEliminacionLocal);	
-	$("body").on("click", ".eliminaReserva", null, activaBotonEliminacionReserva);
+	$("body").on("click", ".eliminaReserva", null, activaBotonEliminacionReserva);	
 	$("body").on("click", ".eliminaComentario", null, activaBotonEliminacionComentario);	
     $('.qrcode').each(function(i, o) {
         $(o).qrcode({
@@ -192,7 +192,7 @@ $("body").on( "keyup", "#editNameUser", null, function(){
 													</div>										
 													<div class="media-body">														
 														<h4 class="media-heading">${i.oferta.nombre}</h4>					
-														<div class="qrcode">${i.codigoQr}</div><br>		
+														<div class="qrcode">${i.codigoQr}</div><br>															
 														<button id="delR_${i.ID}" class="eliminaReserva"><span class="glyphicon glyphicon-trash"></span>  Eliminar</button>																
 												</div>
 												</div>	

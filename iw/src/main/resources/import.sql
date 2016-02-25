@@ -8,7 +8,7 @@ INSERT INTO USUARIO VALUES (6, 'user12@fake.com',  '$2a$10$iaoa.4QjDDGiZARLwcNhq
 INSERT INTO USUARIO VALUES (7, 'user1234@fake.com', '$2a$10$R77A6Kx.EPWUOiV4YO6DAucKlEgAm/ZZ9MTGINW/HLCHsxRPEfsHG', 'Mengano', 'user', '663256781') /*men123*/
 INSERT INTO USUARIO VALUES (8, 'bach1243@chachi.com', '$2a$10$oIfHz5GRXI6uJ2yYElGiUuImn1I/rSYniiGj1BPDIalWeC9Fro9ku', 'Rosita', 'user', '655213078') /*pecas34*/
 INSERT INTO USUARIO VALUES (9, 'dormirlonSensual@snoopy.com', '$2a$10$oPtEHhBxHLTYxZD5sgyBP.AvZs7Zv5qr2AeoqEYZBBtFASx4igdx2', 'Pablito', 'user', '676439012') /*pa1234*/
-INSERT INTO USUARIO VALUES (10, 'callMeMaybe@tux.com',  '$2a$10$4jlxSkFm/fl2tryEbCAxiuYBEeLTV/dryHzf5XzJnJBVdFl4HURYS', 'Eloisa', 'user', '663214658') /*isaelo96*/
+INSERT INTO USUARIO VALUES (10, 'callMeMaybe@tux.com',  '$2a$10$4jlxSkFm/fl2tryEbCAxiuYBEeLTV/dryHzf5XzJnJBVdFl4HURYS', 'Eloisa', 'mod', '663214658') /*isaelo96*/
 
 --( "ID", "DIRECCION", "EMAIL", "FOTO", "HORARIO", "NOMBRE", "PUNTUACION", "TELEFONO", "UBICACION", "USUARIO" ) 
 INSERT INTO LOCAL VALUES (1, 'Calle concha espina n10','elmaildeDani@dan.da', '10-23', 'Bistro', 5, '111111111',3) --'comida_mexicana,comida_india',
@@ -32,14 +32,14 @@ INSERT INTO OFERTA VALUES (10, 3, 9, 'Invitate a unas canas ;)', '2015-07-02 06:
 INSERT INTO OFERTA VALUES (11, 0, 11, 'Gran variedad de vinos de la tierra', '2017-07-02 06:14:00', 'Nos vamos de potes?', 3)  
 INSERT INTO OFERTA VALUES (12, 0, 5, 'El mejor jamon serrano de la ciudad', '2015-07-02 06:14:00', 'Al jamon lo invito yo', 5) 
 
---( "ID", "CODIGO_QR", "FECHA_RESERVA", "NUM_PERSONAS", "VALIDADO", "OFERTA", "USUARIO" )
-INSERT INTO RESERVA VALUES (1, 'Este codigo QR es valido para que 5 personas disfruten de la oferta Copas a 4 euros en el local Bistro a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Mengano', '2016-02-01 12:12:00', 5, 1, 1, 7)
-INSERT INTO RESERVA VALUES (2, 'Este codigo QR es valido para que 2 personas disfruten de la oferta Ven con tu pareja en el local Bistro a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Fulano', '2016-02-01 12:12:00', 2, 1, 3, 6)
-INSERT INTO RESERVA VALUES (3, 'Este codigo QR es valido para que 12 personas disfruten de la oferta Rellena tu bebida en el local A zampar! a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Rosita', '2016-02-01 12:12:00', 12, 0, 8, 8)
-INSERT INTO RESERVA VALUES (4, 'Este codigo QR es valido para que 11 personas disfruten de la oferta Flow non stop en el local Tapas a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Rosita', '2016-02-01 12:12:00', 11, 0, 5, 8)
-INSERT INTO RESERVA VALUES (5, 'Este codigo QR es valido para que 3 personas disfruten de la oferta Tapas gratis en el local Cubos y tapas a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Mengano', '2016-02-01 12:12:00', 3, 0, 6, 7)
-INSERT INTO RESERVA VALUES (6, 'Este codigo QR es valido para que 21 personas disfruten de la oferta Celebra tu cumple en el local Tapas a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Pablito', '2016-02-01 12:12:00', 21, 1, 4, 9)
-INSERT INTO RESERVA VALUES (7, 'Este codigo QR es valido para que 4 personas disfruten de la oferta Rellena tu bebida en el local A zampar! a las 06:14 el 02/12/2015. Esta reserva ha sido realizada por Eloisa', '2015-12-02 06:14:00', 4, 1, 8, 10)
+--( "ID", "CODE", "CODIGO_QR", "FECHA_RESERVA", "NUM_PERSONAS", "TEXTO", "VALIDADO", "OFERTA", "USUARIO" )
+INSERT INTO RESERVA VALUES (1, 'A45SS', 'mealndrink/verReserva?A45SS', '2016-02-01 12:12:00', 5, 'Este codigo QR es valido para que 5 personas disfruten de la oferta Copas a 4 euros en el local Bistro a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Mengano', 1, 1, 7)
+INSERT INTO RESERVA VALUES (2, '1YY74', 'mealndrink/verReserva?1YY74', '2016-02-01 12:12:00', 2, 'Este codigo QR es valido para que 2 personas disfruten de la oferta Ven con tu pareja en el local Bistro a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Fulano', 1, 3, 6)
+INSERT INTO RESERVA VALUES (3, 'HHX34', 'mealndrink/verReserva?HHX34', '2016-02-01 12:12:00', 12, 'Este codigo QR es valido para que 12 personas disfruten de la oferta Rellena tu bebida en el local A zampar! a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Rosita', 0, 8, 8)
+INSERT INTO RESERVA VALUES (4, '23T34', 'mealndrink/verReserva?23T34', '2016-02-01 12:12:00', 11, 'Este codigo QR es valido para que 11 personas disfruten de la oferta Flow non stop en el local Tapas a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Rosita', 0, 5, 8)
+INSERT INTO RESERVA VALUES (5, 'LLOP4', 'mealndrink/verReserva?LLOP4', '2016-02-01 12:12:00', 3, 'Este codigo QR es valido para que 3 personas disfruten de la oferta Tapas gratis en el local Cubos y tapas a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Mengano', 0, 6, 7)
+INSERT INTO RESERVA VALUES (6, 'ER284', 'mealndrink/verReserva?ER284', '2016-02-01 12:12:00', 21, 'Este codigo QR es valido para que 21 personas disfruten de la oferta Celebra tu cumple en el local Tapas a las 12:12 el 01/02/2016. Esta reserva ha sido realizada por Pablito', 1, 4, 9)
+INSERT INTO RESERVA VALUES (7, '1R3QW', 'mealndrink/verReserva?1R3QW', '2015-12-02 06:14:00', 4, 'Este codigo QR es valido para que 4 personas disfruten de la oferta Rellena tu bebida en el local A zampar! a las 06:14 el 02/12/2015. Esta reserva ha sido realizada por Eloisa', 1, 8, 10)
 
 --( "ID", "FECHA", "TEXTO", "LOCAL", "USUARIO")
 INSERT INTO COMENTARIO VALUES (1, '2015-07-02 06:14:00', 'Estuvo genial. Mis diez', 4, 2)

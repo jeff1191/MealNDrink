@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -85,8 +86,8 @@ public class HomeController {
 
 		// validate request
 		if (formLogin == null || formLogin.length() < 4 || formPass == null || formPass.length() < 4) { 
-			model.addAttribute("loginError", "usuarios y contrase�as: 4 caracteres m�nimo");
-			return new ResponseEntity<String>("Inicio de sesi�n incorrecto", HttpStatus.BAD_REQUEST);
+			model.addAttribute("loginError", "usuarios y contraseï¿½as: 4 caracteres mï¿½nimo");
+			return new ResponseEntity<String>("Inicio de sesiï¿½n incorrecto", HttpStatus.BAD_REQUEST);
 		} else {
 			Usuario u = null;
 			try{				
@@ -349,6 +350,25 @@ public class HomeController {
 		model.addAttribute("pageTitle", "Error!");
 		return "paginaError";
 	}	
+
+
+	
+	
+	String getCadenaAlfanumAleatoria(int longuitud){
+		String cadenaAleatoria ="";
+		long milis = new java.util.GregorianCalendar().getTimeInMillis();
+		Random r = new Random(milis);
+		int i = 0;
+		while(i < longuitud){
+			char c = (char)r.nextInt(255);
+			if((c >= '0' && c <= '9') || (c >= 'A') && c <= 'Z'){
+				cadenaAleatoria +=c;
+				i++;
+			}
+		}
+		return cadenaAleatoria;
+	}
+	
 	/**
 	 * 	Nueva Reserva, cosas al hacer una reserva:
 	 * 		- Generar codigo qr
@@ -389,9 +409,12 @@ public class HomeController {
 			String qrInfo = "Este codigo QR es valido para que " + cap + " personas disfruten de la oferta " 
 					+ oferta.getNombre() + " en el local " + oferta.getLocal().getNombre() + " a las " + hora
 					+ " el "+ fecha + ". Esta reserva ha sido realizada por " + user.getNombre();
+			String cadena = getCadenaAlfanumAleatoria(5);
 			//Crear un objeto reserva
-			Reserva reserva = new Reserva();
-			reserva.setCodigoQr(qrInfo);			
+			Reserva reserva = new Reserva();			
+			reserva.setCodigoQr("mealndrink/verReserva?"+cadena); 
+			reserva.setCode(cadena);
+			reserva.setTexto(qrInfo);
 			reserva.setUsuario(user);
 			reserva.setOferta(oferta);
 			reserva.setNumPersonas(cap);
@@ -503,6 +526,7 @@ public class HomeController {
 			@RequestParam("cap") int capacidad,
 			@RequestParam("description") String descripcion, 
 			Model model, HttpSession session){
+
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if (fechaSeguro(fecha) && usuarioOnline != null) {
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
@@ -590,6 +614,7 @@ public class HomeController {
 			@RequestParam("id_Editoffer") String idOffer, 
 			Model model, HttpSession session){
 
+	
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if (fechaSeguro(fecha) && usuarioOnline != null) {			
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
@@ -790,6 +815,7 @@ public class HomeController {
 			@RequestParam("editEmailLocal") String email,
 			@RequestParam("editTelLocal") String telefono,
 			Model model, HttpSession session){
+
 		Usuario uSession = (Usuario)session.getAttribute("user");
 		if(uSession != null){ //si está en bbdd
 			Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
@@ -836,6 +862,7 @@ public class HomeController {
 		boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
 
 		if (seguro) {
+			
 			try{				
 				String apodoBd = (String) entityManager.createNamedQuery("dameApodoUsuario").setParameter("apodo", nombreUsuario).getSingleResult();
 				model.addAttribute("pageTitle", "Error!");
@@ -933,6 +960,7 @@ public class HomeController {
 		}
 		return "Error";
 	}
+
 	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/editarUsuarioModal", method = RequestMethod.POST)
@@ -983,6 +1011,7 @@ public class HomeController {
 		}
 		return "Error";
 	}
+
 	private boolean andLogica(int pos, int num1, int num2){
 		boolean res = true;
 		String op;
@@ -1106,7 +1135,7 @@ public class HomeController {
 			@RequestParam("idComentario") long idComentario,
 			@RequestParam("idLocal") long idLocal,
 			Model model, HttpSession session){		
-		System.err.println("asdasdsd");
+		
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
 		if(usuarioOnline != null){
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
@@ -1132,27 +1161,37 @@ public class HomeController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/validarReserva", method = RequestMethod.POST)
-	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") String idRes, Model model, HttpSession session){
+	public ResponseEntity<String> validarReserva(@RequestParam("id_reserva") long idRes, Model model, HttpSession session){
 		
 		Usuario sesion = (Usuario)session.getAttribute("user");
-		String res = new String("ok");
-		long idResBueno;
-		String test;
+		String res = "";		
 		
 		try {
-			test = idRes;
-			logger.info(test);
-			test = idRes.substring(5);
-			logger.info(test);
-			
-			idResBueno = Long.parseLong(test);
-			
-			Reserva edit= entityManager.find(Reserva.class, idResBueno);
+		
+			Reserva edit= entityManager.find(Reserva.class, idRes);					
 			
 			if(edit.getOferta().getLocal().getUsuario().getID() == sesion.getID()){ // comprobar que el que valida la reserva es el dueño del local
-
-				edit.setValidado(true);
-				entityManager.persist(edit);
+				List<String> aux = new ArrayList<String>();			
+				StringTokenizer tokens = new StringTokenizer(edit.getCodigoQr(),"/");
+				while(tokens.hasMoreTokens()){						
+					aux.add(tokens.nextToken());					 
+				}				
+				if(aux.get(0).equals("mealndrink")){
+					List<String> aux2 = new ArrayList<String>();			
+					StringTokenizer tokens2 = new StringTokenizer(aux.get(1),"?");
+					while(tokens2.hasMoreTokens()){			
+						aux2.add(tokens2.nextToken());					 
+					}					
+					if(aux2.get(0).equals("verReserva") && aux2.get(1).equals(edit.getCode())){
+						edit.setValidado(true);
+						entityManager.persist(edit);
+						res = "ok";
+					}
+					else
+						res = "codigo_qr_no_valido";
+				}
+				else
+					res = "codigo_qr_no_valido";				
 			}
 			else
 				res = "usuario_no_permitido";
@@ -1385,6 +1424,7 @@ public class HomeController {
 					error = true;
 				}
 
+		
 
 				if(password.length() < 6 || password.length() > 12){
 					error = true;

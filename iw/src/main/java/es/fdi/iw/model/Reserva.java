@@ -22,6 +22,8 @@ public class Reserva {
 
 	private long ID;
 	private String codigoQr;
+	private String texto;
+	private String code;
 	private Usuario cliente;
 	private Oferta oferta;
 	private int numPersonas;
@@ -89,5 +91,21 @@ public class Reserva {
 
 	public void setValidado(boolean validado) {
 		this.validado = validado;
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

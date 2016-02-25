@@ -568,8 +568,11 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						</div>     
 						<!-- End Modal Edit Local-->	
         			<!-- tags -->
-     				<div class="tab-pane fade" id="ltags"> 							
-						<h4>Editar tags disponibles:</h4><br>					
+     				<div class="tab-pane fade" id="ltags"> 	
+						<div class="media">
+						  	<button type="submit" id="AddNuevoTag"class="btn btn-default" data-toggle="modal" data-target="#ModalAddTags"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo tag</button>
+						  	<br></br>
+						</div>						
 						<div id="TodosTags" class="TodosTags">	
 							<c:forEach items="${alltags}" var="i">
 								<h4>${i.texto}</h4> 					               				
@@ -609,6 +612,32 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 										 <button id="editarUsuario" name="editarUsuario" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										</form> 
 					  </div>
+					  		  <!-- Modal Add Tags-->
+						<div class="modal fade" id="ModalAddTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
+						  <div class="modal-dialog modal-sm" role="document">
+						    <div class="modal-content">
+										    
+						    		<div class="modal-header">
+						    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        	<h4 class="modal-title" id="editModalLabel"> Nuevo tag</h4>
+
+									</div>
+									<div class="modal-body">									
+										<form role="form" method="POST" enctype="multipart/form-data" action="nuevoTag">										
+										<div class="form-group">
+											<label for="name">Tag:</label>											
+											<input type="text" class="form-control" required="required" value="" id="nameAddTag" name="nameAddTag">										 	
+										  </div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span>Aceptar</button>
+												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					<!-- End Modal Add Tags-->
 					  <!-- Modal Edit Tags-->
 						<div class="modal fade" id="ModalEditTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 						  <div class="modal-dialog modal-sm" role="document">
