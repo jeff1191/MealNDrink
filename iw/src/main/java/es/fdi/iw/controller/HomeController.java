@@ -1538,18 +1538,19 @@ public class HomeController {
 	
 	private boolean esNumerico(String id){
 		
+		String[] formato = id.split(".jpg");
+		
 		try {
-			Long.parseLong(id);
+			Integer.parseInt(formato[0]);
 			return true;
+
 		} catch (NumberFormatException e) {
 			return false;
 		}
-
 	}
 	
 	private boolean esIdReservaValido(String id){
 		String[] formato = id.split("_");
-		int i = 0;
 		
 		if(formato[0].equals("valR") && formato.length == 2){
 			try {
