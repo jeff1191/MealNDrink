@@ -9,6 +9,28 @@
 <li>Daniel García Moreno 
 <li>Jose Miguel Tajuelo Garrigos
 </ul>
+<h2>Problemas solucionados - Última entrega</h2>
+
+<p><li>Hemos usado OWASP para corregir los fallos que teníamos de seguridad, hemos sido precavidos y lo hemos usado
+tanto en el HTML(r:forJavaScript(csrf_token), r:forJavaScript(variable)) como en el código del backend(Java): usuario.setNombre(Encode.forHtmlContent(variable))
+principalmente, además hemos dejado expresiones regulares para que nos comprueben el correcto formato tanto del email, teléfono(9 caracteres) y fecha.
+<b>(Hay que añadir el jar OWASP al proyecto, lo hemos adjuntado en la entrega)</b>
+</li>
+<li>Corregido el problema de insertar Javascript cuando añades un comentario.
+<br>
+<li>Hemos añadido en (Usuarios, reservas, etc..)el token en los formularios con un input hiddenvalue="${r:forJavaScript(csrf_token)}" o en por via Ajax (csrf: "${csrf_token}") dependiendo de 
+la operación para luego comprobarla con la función isTokenValid(session,token) del HomeController.java que nos ha dado el profesor.
+<br>
+<li>También hemos corregido que los ids que son strings sean numéricos para que no se pueda navegar en el sistema de archivos.
+<li>Los códigos qr se generan mediante una funcion javascript, no hemos podido hacer que tan solo apareciera la imagen, ahora se muestra el texto
+con el que es generado el código qr y la imagen qr. Antes no habia ningún problema dado que tan sólo era un texto, sin embargo como 
+hemos querido añadir seguridad al proceso y que ningún usuario pudiera generar códigos qr válidos, hubiera sido preferible que no pudiera
+ver la "url" que nos hemos creado con una serie de caracteres que se generan aleatoriamente. 
+<br>La idea sería que al leer el código qr fuera
+a la página y se mostrara la información de esa reserva. En los locales al validar el codigo qr se analiza los caracteres que tiene la imagen
+con los que tiene asociados en la base de datos, si son iguales se valida, si no da error, una vez validados se muestra el texto con toda la 
+información de la reserva. (*) La vista a la que iría sería el jsp verReserva.
+
 <h2>Vistas que componen esta entrega</h2>
 <ul>
 <li><a href="http://localhost:8080/mealndrink/">Inicio</a> - página de bienvenida, en ella aparecen todas las ofertas y todos los locales de nuestra pagina.
@@ -61,6 +83,8 @@ Tambien desde la pagina "externa" del local se puede reservar pero para ver el b
 <li><a href="https://jquery.com/">jquery</a> (licencia <a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt">MIT</a>) - es una dependencia de bootstrap
 <li><a href="https://shapebootstrap.net/item/1524962-corlate-free-responsive-business-html-template">Corlate Template</a> (licencia <a href="https://shapebootstrap.net/licenses">SHAPEBOOTSTRAP</a>) - plantilla que hemos usado para construir la pagina
 <li><a href="https://larsjung.de/jquery-qrcode/">jQuery.qrcode</a> (licencia <a href="https://github.com/lrsjng/jquery-qrcode">MIT</a>) - código para la generacion de códigos QR
+<li><a href="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project">OWASP_Java_Encoder_Project</a> (licencia <a href="http://opensource.org/licenses/BSD-3-Clause">BSD</a>) - libreria para evitar ataques Javascript/CSS/JAVA/Html
 </ul>
+
 </body>
 </html>

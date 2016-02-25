@@ -3,21 +3,21 @@
 
 function activaBotonEliminacionLocal() {	
 	var idLocal = $(this).attr("id").substring("delLocal_".length); 
-	$.post( "eliminarLocal",{idLocal:idLocal},function(data){
+	$.post( "eliminarLocal",{idLocal:idLocal,csrf: "${csrf_token}"},function(data){
 			$('#TodosLocales').load('administracion div#TodosLocales');
 	});
 }
 function activaBotonEliminacionComentario() {	
 	var idComentario = $(this).attr("id").substring("delC_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
-	$.post( "eliminarComentario",{idUsuario:idUsuario,idComentario:idComentario},function(data){
+	$.post( "eliminarComentario",{idUsuario:idUsuario,idComentario:idComentario,csrf: "${csrf_token}"},function(data){
 			$('#TodosComentarios').load('usuario?id='+idUsuario+' div#TodosComentarios');
 	});
 }
 
 function activaBotonEliminacionUsuario() {	
 	var idUsuario = $(this).attr("id").substring("delUsuario_".length); 
-	$.post( "eliminarUsuario",{idUsuario:idUsuario},function(data){
+	$.post( "eliminarUsuario",{idUsuario:idUsuario,csrf: "${csrf_token}"},function(data){
 			$('#TodosUsuarios').load('administracion div#TodosUsuarios');
 	});
 }
@@ -395,6 +395,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						      <div class="modal-body">
 								  <form id="formEditarModalUser" role="form" method="POST" enctype="multipart/form-data" > 
 								 <input hidden="submit" name="editIdUser" id="editIdUser" />
+								 <input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 								  <div class="form-group">
 											<label for="name">Nombre:</label>
 											<input type="text" class="form-control" name="editNameUser" id="editNameUser">
@@ -529,6 +530,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						      <div class="modal-body">
 								<form role="form" method="POST" id="formEditarModalLocal" enctype="multipart/form-data">
 									<input hidden="submit" id="id_editLocal" name="id_editLocal" />
+									<input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 									  <div class="form-group">
 										<label for="name">Nombre:</label>
 										<input type="text" class="form-control" required="required" id="editNameLocal" name="editNameLocal" placeholder="Introduce un nuevo nombre">
@@ -568,11 +570,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 						</div>     
 						<!-- End Modal Edit Local-->	
         			<!-- tags -->
-     				<div class="tab-pane fade" id="ltags"> 	
-						<div class="media">
-						  	<button type="submit" id="AddNuevoTag"class="btn btn-default" data-toggle="modal" data-target="#ModalAddTags"><span class="glyphicon glyphicon-plus"></span> Añadir nuevo tag</button>
-						  	<br></br>
-						</div>						
+     				<div class="tab-pane fade" id="ltags">
 						<div id="TodosTags" class="TodosTags">	
 							<c:forEach items="${alltags}" var="i">
 								<h4>${i.texto}</h4> 					               				
@@ -611,33 +609,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 										<br>
 										 <button id="editarUsuario" name="editarUsuario" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</button>
 										</form> 
-					  </div>
-					  		  <!-- Modal Add Tags-->
-						<div class="modal fade" id="ModalAddTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
-						  <div class="modal-dialog modal-sm" role="document">
-						    <div class="modal-content">
-										    
-						    		<div class="modal-header">
-						    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						        	<h4 class="modal-title" id="editModalLabel"> Nuevo tag</h4>
-
-									</div>
-									<div class="modal-body">									
-										<form role="form" method="POST" enctype="multipart/form-data" action="nuevoTag">										
-										<div class="form-group">
-											<label for="name">Tag:</label>											
-											<input type="text" class="form-control" required="required" value="" id="nameAddTag" name="nameAddTag">										 	
-										  </div>
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span>Aceptar</button>
-												<button type="submit" class="btn" data-dismiss="modal">Cancel</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					<!-- End Modal Add Tags-->
+					  </div>				
 					  <!-- Modal Edit Tags-->
 						<div class="modal fade" id="ModalEditTags" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel">
 						  <div class="modal-dialog modal-sm" role="document">
@@ -650,6 +622,7 @@ $("body").on( "keyup", "#editNameUserAdmin", null, function(){
 									</div>
 									<div class="modal-body">									
 										<form role="form" method="POST" enctype="multipart/form-data" action="editarTag">										
+										<input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 										<div class="form-group">
 											<label for="name">Tag:</label>											
 											<input type="text" class="form-control" required="required" value="" id="nameEditTag" name="nameEditTag">

@@ -372,9 +372,6 @@ public class HomeController {
 		return "paginaError";
 	}	
 
-
-	
-	
 	String getCadenaAlfanumAleatoria(int longuitud){
 		String cadenaAleatoria ="";
 		long milis = new java.util.GregorianCalendar().getTimeInMillis();
@@ -467,11 +464,16 @@ public class HomeController {
 
 	@Transactional
 	@RequestMapping(value = "/eliminarReserva", method = RequestMethod.POST)
-	public String eliminarReserva(@RequestParam("idReserva") long idReserva,
+	public String eliminarReserva(
+			@RequestParam("idReserva") long idReserva,
+			@RequestParam("csrf") String token,
 			Model model, HttpSession session){
 
 		Usuario usuarioSesion = (Usuario)session.getAttribute("user");
-		if(usuarioSesion != null ){
+		if(usuarioSesion == null || !isTokenValid(session, token)){
+			model.addAttribute("pageTitle", "Error!");			
+		}
+		else{
 			Usuario usuarioBdd= entityManager.find(Usuario.class, usuarioSesion.getID());
 			if(usuarioBdd.getID() == usuarioSesion.getID()){//si el usuario es el mismo de la sesion
 				Reserva reserva= entityManager.find(Reserva.class, idReserva);
@@ -481,8 +483,7 @@ public class HomeController {
 				entityManager.remove(reserva);
 				return "eliminarReserva";
 			}
-		}		
-		model.addAttribute("pageTitle", "Error!");
+		}
 		return "paginaError";
 	}
 
@@ -633,11 +634,16 @@ public class HomeController {
 			@RequestParam("editCap") int capacidad,
 			@RequestParam("editDescription") String descripcion,
 			@RequestParam("id_Editoffer") String idOffer, 
+			@RequestParam("csrf") String token,
 			Model model, HttpSession session){
 
 	
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if (fechaSeguro(fecha) && usuarioOnline != null && esNumerico(idOffer)) {			
+		if(!fechaSeguro(fecha)|| usuarioOnline == null || !esNumerico(idOffer) || isTokenValid(session, token)){
+			model.addAttribute("pageTitle", "Error!");		
+			return "paginaError";
+		}
+		else{			
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, id);
 			//comprobamos que el local efectivamente lo tiene este usuario, si tiene permiso
@@ -699,10 +705,6 @@ public class HomeController {
 			}
 			return "redirect:comercio_interno?id="+local.getID();
 		}
-		else{
-			model.addAttribute("pageTitle", "Error!");		
-			return "paginaError";
-		}
 	}
 
 	@Transactional
@@ -710,9 +712,13 @@ public class HomeController {
 	public String eliminarOferta(
 						@RequestParam("idOferta") long idOffer,
 						@RequestParam("idLocal") long idLocal,
+						@RequestParam("csrf") String token,
 						Model model, HttpSession session){
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if(usuarioOnline != null){
+		if(usuarioOnline == null || !isTokenValid(session, token)){
+			model.addAttribute("pageTitle", "Error!");
+		}
+		else{
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, idLocal);
 			Oferta oferta= entityManager.find(Oferta.class, idOffer);			
@@ -722,9 +728,9 @@ public class HomeController {
 				model.addAttribute("usuario", usuario);
 				entityManager.persist(local);
 				entityManager.persist(usuario);
+				return "eliminarReserva";
 			}
-		}	
-		model.addAttribute("pageTitle", "Error!");
+		}		
 		return "paginaError";
 	}
 
@@ -809,9 +815,13 @@ public class HomeController {
 	@RequestMapping(value = "/eliminarLocal", method = RequestMethod.POST)
 	public String eliminarLocal(
 							@RequestParam("idLocal") long idLocal,
+							@RequestParam("csrf") String token,
 							Model model, HttpSession session){
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if(usuarioOnline != null){
+		if(usuarioOnline == null || !isTokenValid(session, token)){
+			model.addAttribute("pageTitle", "Error!");
+		}	
+		else{
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local= entityManager.find(Local.class, idLocal);
 			if(usuario.getLocales().contains(local) || usuario.getRol().equals("admin")){
@@ -821,8 +831,8 @@ public class HomeController {
 				entityManager.persist(usuario);
 			}
 			return "eliminarLocal";
-		}	
-		model.addAttribute("pageTitle", "Error!");
+		}
+		
 		return "paginaError";
 	}
 	@ResponseBody
@@ -835,14 +845,17 @@ public class HomeController {
 			@RequestParam("editDirLocal") String direccion,
 			@RequestParam("editEmailLocal") String email,
 			@RequestParam("editTelLocal") String telefono,
+			@RequestParam("csrf") String token,
 			Model model, HttpSession session){
 
 		Usuario uSession = (Usuario)session.getAttribute("user");
-		if(uSession != null){ //si está en bbdd
+		
+		if(uSession == null || !telefonoSeguro(telefono) || !emailSeguro(email) || isTokenValid(session, token)){
+			return "Error";	
+		}
+		else{
 			Usuario usuario=entityManager.find(Usuario.class, uSession.getID());
-			boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
-			if (seguro) {
-				Local edit= entityManager.find(Local.class, id);
+			Local edit= entityManager.find(Local.class, id);
 				//si el usuario tiene ese local o si el usuario es el admin
 			if(usuario.getLocales().contains(edit) || usuario.getRol().equals("admin")){	
 				edit.setNombre(Encode.forHtmlContent(nombreLocal));
@@ -867,9 +880,9 @@ public class HomeController {
 				}					
 				return "OK";
 			}
-			}
+			return "Error";	
 		}
-		return "Error";	
+		
 	}
 	@Transactional
 	@RequestMapping(value = "/nuevoUsuario", method = RequestMethod.POST)
@@ -937,7 +950,6 @@ public class HomeController {
 		}
 	}
 
-	
 	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/editarUsuario", method = RequestMethod.POST)
@@ -951,7 +963,10 @@ public class HomeController {
 		Usuario uSession = (Usuario)session.getAttribute("user");
 		boolean seguro = emailSeguro(email) && telefonoSeguro(telefono);
 	
-		if(uSession != null /*&& isTokenValid(session, token)*/){
+		if(uSession == null || !emailSeguro(email) || !telefonoSeguro(telefono) || isTokenValid(session, token)){
+			return "Error";
+		}
+		else{
 		Usuario edit=entityManager.find(Usuario.class, uSession.getID());
 		if(edit != null){
 			if(!pass.equalsIgnoreCase("") && pass.length() > 5){ //si ha cambiado
@@ -977,9 +992,9 @@ public class HomeController {
 			}	
 			return "OK";
 		}
-		
-		}
 		return "Error";
+		}
+
 	}
 
 	@Transactional
@@ -991,10 +1006,14 @@ public class HomeController {
     		@RequestParam("editPwd") String pass,
     		@RequestParam("editEmail") String email,
     		@RequestParam("editTel") String telefono,
+    		@RequestParam("csrf") String token,
     		Model model, HttpSession session){
 		Usuario uSession = (Usuario)session.getAttribute("user");
-		boolean seguro =  emailSeguro(email) && telefonoSeguro(telefono);
-		if(uSession != null && seguro){
+
+		if(uSession == null || !emailSeguro(email) && !telefonoSeguro(telefono) || isTokenValid(session, token)){
+			return "Error";
+		}
+		else{
 		Usuario admin=entityManager.find(Usuario.class, uSession.getID());
 		Usuario edit=entityManager.find(Usuario.class, idUsuario);
 		if(admin.getRol().equals("admin") && edit != null){
@@ -1028,9 +1047,9 @@ public class HomeController {
 			return "OK";
 		}
 		}
-		
-		}
 		return "Error";
+		}
+		
 	}
 
 	private boolean andLogica(int pos, int num1, int num2){
@@ -1133,20 +1152,23 @@ public class HomeController {
 
 	@Transactional
 	@RequestMapping(value = "/eliminarUsuario", method = RequestMethod.POST)
-	public String eliminarUsuario(@RequestParam("idUsuario") long idUsuario, Model model, HttpSession session){
-
-
-		Usuario usuario= entityManager.find(Usuario.class, idUsuario);
+	public String eliminarUsuario(
+			@RequestParam("idUsuario") long idUsuario,
+			@RequestParam("csrf") String token,
+			Model model, HttpSession session){	
 		Usuario u = (Usuario)session.getAttribute("user");
 
-		if(usuario != null){
+		if(u == null || !isTokenValid(session, token)){
+			model.addAttribute("pageTitle", "Error!");
+		}else{
+			Usuario usuario= entityManager.find(Usuario.class, idUsuario);
 			Usuario admin = entityManager.find(Usuario.class, u.getID());
-			if(admin.getRol().equals("admin")){
+			if(admin.getRol().equals("admin") && usuario != null){
 				entityManager.remove(usuario);
 				return "eliminarUsuario";
 			}
 		}
-		model.addAttribute("pageTitle", "Error!");
+		
 		return "paginaError";	
 	}
 
@@ -1155,10 +1177,14 @@ public class HomeController {
 	public String eliminarComentario(
 			@RequestParam("idComentario") long idComentario,
 			@RequestParam("idLocal") long idLocal,
+			@RequestParam("csrf") String token,
 			Model model, HttpSession session){		
 		
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if(usuarioOnline != null){
+		if(usuarioOnline == null || !isTokenValid(session, token)){
+			model.addAttribute("pageTitle", "Error!");
+		}
+		else{
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, idLocal);
 			Comentario comentario= entityManager.find(Comentario.class, idComentario);
@@ -1175,7 +1201,7 @@ public class HomeController {
 				return "eliminarComentario";
 			}
 		}		
-		model.addAttribute("pageTitle", "Error!");
+		
 		return "paginaError";
 	}
 	
@@ -1223,52 +1249,26 @@ public class HomeController {
 		return new ResponseEntity<String>(res, HttpStatus.OK);
 
 	}
-/* para el futuro
-	@Transactional
-	@RequestMapping(value = "/addNuevoTag", method = RequestMethod.POST)
-	public String addNuevoTag(@RequestParam("nombreTag") String addName,
-			Model model, HttpSession session){
-		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		Tags tag = new Tags();
-		tag.setTexto(Encode.forHtmlContent(addName));	
-		if(usuarioOnline != null && usuarioOnline.getRol().equals("admin")){
-			entityManager.persist(tag);		
-		}	
-		return "AddNuevoTag";
-	}
-*/
+
 	@Transactional
 	@RequestMapping(value = "/editarTag", method = RequestMethod.POST)
 	public String editarTag(@RequestParam("id_tag") long id,
 			@RequestParam("nameEditTag") String nombreTagEdit,
+			@RequestParam("csrf") String token,
 			Model model, HttpSession session){	
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if(usuarioOnline != null && entityManager.find(Usuario.class, usuarioOnline.getID()).getRol().equals("admin")){
+		if(usuarioOnline == null || !entityManager.find(Usuario.class, usuarioOnline.getID()).getRol().equals("admin")||isTokenValid(session, token)){
+			return "redirect:paginaError";
+		}
+		else{
 			Tags edit= entityManager.find(Tags.class, id);
 			edit.setTexto(Encode.forHtmlContent(nombreTagEdit));			
 			entityManager.persist(edit);
 			entityManager.flush();	
 			return "redirect:administracion";
-		}
-		return "redirect:paginaError";
+		}		
 	}
-/*
-	@Transactional
-	@RequestMapping(value = "/eliminarTag", method = RequestMethod.POST)
-	public String eliminarTag(@RequestParam("idLocal") long idLocal,@RequestParam("nombreTag") String delName, Model model){
-		Local local= entityManager.find(Local.class, idLocal);
-		//local.getTags().replaceAll(delName, "");
-		//principio de una coma(mirar bbdd)
-		//String ret = local.getTags().replaceAll(delName+",", "");
-		//siguiente de una coma(mirar bbdd)
-		//ret = ret.replaceAll(","+delName, "");
-		//cuando solamente tienes un elem, ponemos una coma porque en comercio interno invocamos a dameTagsSeparador(split)
-		//ret = ret.replaceAll(delName, ","); 
-		//local.setTags(ret); // esto ahora es diferente
-		entityManager.persist(local);	
-		return "eliminarTag";
-	}
-*/
+
 	@RequestMapping(value = "/administracion", method = RequestMethod.GET)
 	@Transactional
 	public String administracion(Locale locale, Model model,HttpSession session) {

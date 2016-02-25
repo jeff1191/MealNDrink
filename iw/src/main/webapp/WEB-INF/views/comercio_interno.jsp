@@ -5,7 +5,7 @@ function activaBotonEliminacionOferta() {
 	//var idOffer = $(this).attr("id").substring("del_".length); 
 	var idOffer=$("#idEliminar").attr("value");
 	var idLocal=$('#id_local').get(0).value;
-	$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer},function(data){ 
+	$.post( "eliminarOferta",{idLocal:idLocal,idOferta:idOffer,csrf: "${csrf_token}"},function(data){ 
 			$('#TodasOfertas').load('comercio_interno?id='+idLocal+' div#TodasOfertas');
 			
 	});
@@ -49,7 +49,7 @@ function activaBotonEliminacionTag() {
 	var nombreTag=$("#idEliminarTags").attr("value");
 	var idLocal=$('#id_local').get(0).value;
 
-	$.post( "eliminarTag",{idLocal:idLocal,nombreTag:nombreTag},function(data){ 
+	$.post( "eliminarTag",{idLocal:idLocal,nombreTag:nombreTag,csrf: "${csrf_token}"},function(data){ 
 			$('#TodosTags').load('comercio_interno?id='+idLocal+' div#TodosTags');
 	});
 }
@@ -105,7 +105,7 @@ function activaBotonEliminacionComentario() {
 	var idComentario=$("#idEliminarComentario").attr("value");
 	var idLocal=$('#id_local').get(0).value;
 
-	$.post( "eliminarComentario",{idComentario:idComentario,idLocal:idLocal},function(data){ 
+	$.post( "eliminarComentario",{idComentario:idComentario,idLocal:idLocal,csrf: "${csrf_token}"},function(data){ 
 			$('#TodosComentarios').load('comercio_interno?id='+idLocal+' div#TodosComentarios');
 	});
 }
@@ -327,6 +327,7 @@ $(function() {
 										<form role="form" method="POST" enctype="multipart/form-data" action="editarOferta">
 										<input hidden="submit" id="id_local" name="id_local" value="${local.ID}" />
 										<input hidden="submit" id="id_Editoffer" name="id_Editoffer" />
+										<input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 										  <div class="form-group">
 											<label for="name">Nombre de la oferta:</label>
 											<input type="text" class="form-control" value="" name="editName" id="editName" placeholder="Introduzca el nombre" >
@@ -489,6 +490,7 @@ $(function() {
 								<div class="tab-pane fade" id="editar"><!--form to edit restaurant profile data-->
 									<form role="form" method="POST" id="formuEditComercio" enctype="multipart/form-data">
 									<input hidden="submit" id="id_editLocal" name="id_editLocal" value="${local.ID}" />
+									<input type="hidden" name="csrf" value="${r:forJavaScript(csrf_token)}"/>
 										  <div class="form-group">
 											<label for="name">Nombre:</label>
 											<input type="text" class="form-control" id="editNameLocal" required="required" name="editNameLocal" value="${r:forHtmlContent(local.nombre)}">

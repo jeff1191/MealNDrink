@@ -4,7 +4,7 @@
 function activaBotonEliminacionLocal() {	
 	var idLocal = $(this).attr("id").substring("del_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
-	$.post( "eliminarLocal",{idLocal:idLocal},function(data){
+	$.post( "eliminarLocal",{idLocal:idLocal,csrf: "${csrf_token}"},function(data){
 			$('#TodosLocales').load('usuario?id='+idUsuario+' div#TodosLocales');
 			$('#localesUsuarioDesplegable').load('usuario?id='+idUsuario+' div#localesUsuarioDesplegable');		
 	});
@@ -13,7 +13,7 @@ function activaBotonEliminacionLocal() {
 function activaBotonEliminacionReserva() {	
 	var idReserva = $(this).attr("id").substring("delR_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
-	$.post( "eliminarReserva",{idReserva:idReserva},function(data){
+	$.post( "eliminarReserva",{idReserva:idReserva, csrf: "${csrf_token}"},function(data){
 			$('#TodasReservas').load('usuario?id='+idUsuario+' div#TodasReservas');
 	});
 }
@@ -21,7 +21,7 @@ function activaBotonEliminacionComentario() {
 	var idComentario = $(this).attr("id").substring("delC_".length); 
 	var idUsuario=$('#id_usuario').get(0).value;
 	var idLocal=0;
-	$.post( "eliminarComentario",{idComentario:idComentario,idLocal:idLocal},function(data){
+	$.post( "eliminarComentario",{idComentario:idComentario,idLocal:idLocal,csrf: "${csrf_token}"},function(data){
 			$('#TodosComentarios').load('usuario?id='+idUsuario+' div#TodosComentarios');
 	});
 }
