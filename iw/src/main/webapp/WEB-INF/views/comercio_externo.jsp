@@ -46,9 +46,9 @@
 						    <c:forEach items="${infoLocal.ofertas}" var="i">
 								<div class="media">
 									<div class="pull-left">										
-										<img class="media-object" src="ofertasFoto?id=${r:forHtmlContent(i.ID)}.jpg">										
+										<img class="media-object" src="ofertasFoto?id=${r:forHtmlContent(i.ID)}.jpg" width=180>										
 									</div>
-									<div class="media-body">
+									<div>
 										<h4 class="media-heading">${r:forHtmlContent(i.nombre)}</h4>
 										<p>${r:forHtmlContent(i.descripcion)}</p>
 										<p>Cap: ${r:forHtmlContent(i.capacidadActual)}/${r:forHtmlContent(i.capacidadTotal)}</p>

@@ -139,42 +139,63 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/usuariosFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] usuariosfoto(@RequestParam("id") String id) throws IOException {
-		File f = ContextInitializer.getFile("usuarios", id);
-		InputStream in = null;
-		if (f.exists()) {
-			in = new BufferedInputStream(new FileInputStream(f));
-		} else {
-			in = new BufferedInputStream(
-					this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
+		
+		if(esNumerico(id)){
+		
+			File f = ContextInitializer.getFile("usuarios", id);
+			InputStream in = null;
+			if (f.exists()) {
+				in = new BufferedInputStream(new FileInputStream(f));
+			} else {
+				in = new BufferedInputStream(
+						this.getClass().getClassLoader().getResourceAsStream("unknown_user.jpg"));
+			}
+			return IOUtils.toByteArray(in);
 		}
-		return IOUtils.toByteArray(in);		
+		else{
+			return null;
+		}
 	}
 
 	@ResponseBody
 	@RequestMapping(value="/ofertasFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] offerPhoto(@RequestParam("id") String id) throws IOException {
-		File f = ContextInitializer.getFile("ofertas", id);
-		InputStream in = null; 
-		if (f.exists()) {
-			in = new BufferedInputStream(new FileInputStream(f));
-		} else {
-			in = new BufferedInputStream(
-					this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+		
+		if(esNumerico(id)){
+		
+			File f = ContextInitializer.getFile("ofertas", id);
+			InputStream in = null; 
+			if (f.exists()) {
+				in = new BufferedInputStream(new FileInputStream(f));
+			} else {
+				in = new BufferedInputStream(
+						this.getClass().getClassLoader().getResourceAsStream("unknown_offer.jpg"));
+			}
+			return IOUtils.toByteArray(in);	
 		}
-		return IOUtils.toByteArray(in);		
+		else{
+			return null;
+		}
 	}
 	@ResponseBody
 	@RequestMapping(value="/localesFoto", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] localFoto(@RequestParam("id") String id) throws IOException {
-		File f = ContextInitializer.getFile("locales", id);
-		InputStream in = null; 
-		if (f.exists()) {
-			in = new BufferedInputStream(new FileInputStream(f));
-		} else {
-			in = new BufferedInputStream(
-					this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
-		}
-		return IOUtils.toByteArray(in);		
+		
+		if(esNumerico(id)){
+		
+			File f = ContextInitializer.getFile("locales", id);
+			InputStream in = null; 
+			if (f.exists()) {
+				in = new BufferedInputStream(new FileInputStream(f));
+			} else {
+				in = new BufferedInputStream(
+						this.getClass().getClassLoader().getResourceAsStream("unknown_local.jpg"));
+			}
+			return IOUtils.toByteArray(in);	
+			
+		}else{
+			return null;
+		}	
 	}
 
 	/**
@@ -616,7 +637,7 @@ public class HomeController {
 
 	
 		Usuario usuarioOnline = (Usuario)session.getAttribute("user");
-		if (fechaSeguro(fecha) && usuarioOnline != null) {			
+		if (fechaSeguro(fecha) && usuarioOnline != null && esNumerico(idOffer)) {			
 			Usuario usuario = entityManager.find(Usuario.class, usuarioOnline.getID());
 			Local local = entityManager.find(Local.class, id);
 			//comprobamos que el local efectivamente lo tiene este usuario, si tiene permiso
@@ -1524,5 +1545,17 @@ public class HomeController {
 		}
 		return new ResponseEntity<String>(res, HttpStatus.OK);	
 	}
+	
+	private boolean esNumerico(String id){
+		
+		String[] formato = id.split(".jpg");
+		
+		try {
+			Integer.parseInt(formato[0]);
+			return true;
 
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 }
